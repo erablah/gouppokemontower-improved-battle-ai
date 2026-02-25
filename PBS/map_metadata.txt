@@ -1,0 +1,478 @@
+﻿# See the documentation on the wiki to learn how to edit this file.
+#-------------------------------
+[001]   # Intro
+Name = 인트로
+#-------------------------------
+[002]   # 로비
+Name = 타워 로비
+#-------------------------------
+[003]   # 컬렉션룸
+Name = 컬렉션룸
+#-------------------------------
+[004]   # 들판1
+Name = 와일드 플로어 - 들판
+Outdoor = true
+ShowArea = true
+Weather = Rain,10
+BattleBack = field
+#-------------------------------
+[006]   # 들판2
+Name = 와일드 플로어 - 들판
+Outdoor = true
+ShowArea = true
+Weather = Rain,10
+BattleBack = field
+#-------------------------------
+[007]   # 숲1
+Name = 와일드 플로어 - 숲
+Outdoor = true
+ShowArea = true
+BattleBack = forest
+#-------------------------------
+[008]   # 숲2
+Name = 와일드 플로어 - 숲
+Outdoor = true
+ShowArea = true
+BattleBack = forest
+#-------------------------------
+[009]   # 호수1
+Name = 와일드 플로어 - 호수
+Outdoor = true
+ShowArea = true
+Weather = Rain,30
+BattleBack = riverroute
+#-------------------------------
+[010]   # 호수2
+Name = 와일드 플로어 - 호수
+Outdoor = true
+ShowArea = true
+Weather = Rain,30
+BattleBack = riverroute
+#-------------------------------
+[011]   # 바다
+Name = 와일드 플로어 - 바다
+Outdoor = true
+ShowArea = true
+Weather = Rain,20
+BattleBack = island
+#-------------------------------
+[013]   # 바다2
+Name = 와일드 플로어 - 바다
+Outdoor = true
+ShowArea = true
+Weather = Rain,20
+BattleBack = island
+#-------------------------------
+[014]   # 해저
+Name = 와일드 플로어 - 심해
+ShowArea = true
+BattleBack = watercave
+#-------------------------------
+[015]   # 들판1
+Name = 와일드 플로어 - 들판
+Outdoor = true
+ShowArea = true
+Weather = Sun,20
+BattleBack = field
+#-------------------------------
+[016]   # 들판2
+Name = 와일드 플로어 - 들판
+Outdoor = true
+ShowArea = true
+Weather = Sun,20
+BattleBack = field
+#-------------------------------
+[017]   # 숲1
+Name = 와일드 플로어 - 숲
+Outdoor = true
+ShowArea = true
+BattleBack = forest
+#-------------------------------
+[018]   # 숲2
+Name = 와일드 플로어 - 숲
+Outdoor = true
+ShowArea = true
+BattleBack = forest
+#-------------------------------
+[019]   # 호수1
+Name = 와일드 플로어 - 호수
+Outdoor = true
+ShowArea = true
+Weather = Sun,20
+BattleBack = riverroute
+#-------------------------------
+[020]   # 호수2
+Name = 와일드 플로어 - 호수
+Outdoor = true
+ShowArea = true
+Weather = Sun,20
+BattleBack = riverroute
+#-------------------------------
+[021]   # 바다
+Name = 와일드 플로어 - 바다
+Outdoor = true
+ShowArea = true
+Weather = Sun,20
+BattleBack = island
+#-------------------------------
+[022]   # 바다2
+Name = 와일드 플로어 - 바다
+Outdoor = true
+ShowArea = true
+Weather = Sun,20
+BattleBack = island
+#-------------------------------
+[023]   # 해저
+Name = 와일드 플로어 - 심해
+ShowArea = true
+BattleBack = watercave
+#-------------------------------
+[024]   # 해저2
+Name = 와일드 플로어 - 심해
+ShowArea = true
+BattleBack = watercave
+#-------------------------------
+[025]   # 해저2
+Name = 와일드 플로어 - 심해
+ShowArea = true
+BattleBack = watercave
+#-------------------------------
+[026]   # 사막1
+Name = 와일드 플로어 - 사막
+Outdoor = true
+ShowArea = true
+Weather = Sandstorm,50
+BattleBack = desert
+#-------------------------------
+[027]   # 사막1
+Name = 와일드 플로어 - 사막
+Outdoor = true
+ShowArea = true
+Weather = Sandstorm,50
+BattleBack = desert
+#-------------------------------
+[028]   # 사막2
+Name = 와일드 플로어 - 사막
+Outdoor = true
+ShowArea = true
+Weather = Sandstorm,50
+BattleBack = desert
+#-------------------------------
+[029]   # 사막2
+Name = 와일드 플로어 - 사막
+Outdoor = true
+ShowArea = true
+Weather = Sandstorm,50
+BattleBack = desert
+#-------------------------------
+[030]   # 화산
+Name = 와일드 플로어 - 화산
+ShowArea = true
+BattleBack = lavacave
+#-------------------------------
+[031]   # 화산
+Name = 와일드 플로어 - 화산
+ShowArea = true
+BattleBack = lavacave
+#-------------------------------
+[032]   # 화산2
+Name = 와일드 플로어 - 화산
+ShowArea = true
+BattleBack = lavacave
+#-------------------------------
+[033]   # 화산2
+Name = 와일드 플로어 - 화산
+ShowArea = true
+BattleBack = lavacave
+#-------------------------------
+[034]   # 동굴1
+Name = 와일드 플로어 - 동굴
+ShowArea = true
+BattleBack = cave2
+#-------------------------------
+[035]   # 동굴1
+Name = 와일드 플로어 - 동굴
+ShowArea = true
+BattleBack = cave2
+#-------------------------------
+[036]   # 동굴2
+Name = 와일드 플로어 - 동굴
+ShowArea = true
+BattleBack = cave1
+#-------------------------------
+[037]   # 동굴2
+Name = 와일드 플로어 - 동굴
+ShowArea = true
+BattleBack = cave1
+#-------------------------------
+[038]   # 공장
+Name = 와일드 플로어 - 공장
+ShowArea = true
+BattleBack = powerplant
+#-------------------------------
+[039]   # 공장
+Name = 와일드 플로어 - 공장
+ShowArea = true
+BattleBack = powerplant
+#-------------------------------
+[040]   # 공장2
+Name = 와일드 플로어 - 공장
+ShowArea = true
+BattleBack = powerplant
+#-------------------------------
+[041]   # 공장2
+Name = 와일드 플로어 - 공장
+ShowArea = true
+BattleBack = powerplant
+#-------------------------------
+[042]   # 묘지1
+Name = 와일드 플로어 - 묘지
+ShowArea = true
+BattleBack = tomb
+#-------------------------------
+[043]   # 묘지1
+Name = 와일드 플로어 - 묘지
+ShowArea = true
+BattleBack = tomb
+#-------------------------------
+[044]   # 묘지2
+Name = 와일드 플로어 - 묘지
+Outdoor = true
+ShowArea = true
+BattleBack = fieldroute
+#-------------------------------
+[045]   # 묘지2
+Name = 와일드 플로어 - 묘지
+Outdoor = true
+ShowArea = true
+BattleBack = fieldroute
+#-------------------------------
+[046]   # 정원1
+Name = 와일드 플로어 - 정원
+Outdoor = true
+ShowArea = true
+Weather = Sun,20
+BattleBack = garden
+#-------------------------------
+[047]   # 정원1
+Name = 와일드 플로어 - 정원
+Outdoor = true
+ShowArea = true
+Weather = Sun,20
+BattleBack = garden
+#-------------------------------
+[048]   # 정원2
+Name = 와일드 플로어 - 정원
+Outdoor = true
+ShowArea = true
+Weather = Sun,20
+BattleBack = garden
+#-------------------------------
+[049]   # 정원2
+Name = 와일드 플로어 - 정원
+Outdoor = true
+ShowArea = true
+Weather = Sun,20
+BattleBack = garden
+#-------------------------------
+[050]   # 타이가
+Name = 와일드 플로어 - 설원
+Outdoor = true
+ShowArea = true
+Weather = Snow,40
+BattleBack = taiga
+#-------------------------------
+[051]   # 타이가
+Name = 와일드 플로어 - 설원
+Outdoor = true
+ShowArea = true
+Weather = Snow,40
+BattleBack = taiga
+#-------------------------------
+[052]   # 타이가2
+Name = 와일드 플로어 - 설원
+Outdoor = true
+ShowArea = true
+Weather = Snow,40
+BattleBack = taiga
+#-------------------------------
+[053]   # 타이가2
+Name = 와일드 플로어 - 설원
+Outdoor = true
+ShowArea = true
+Weather = Snow,40
+BattleBack = taiga
+#-------------------------------
+[054]   # 얼음동굴
+Name = 와일드 플로어 - 얼음동굴
+ShowArea = true
+BattleBack = icecave
+#-------------------------------
+[055]   # 얼음동굴
+Name = 와일드 플로어 - 얼음동굴
+ShowArea = true
+BattleBack = icecave
+#-------------------------------
+[056]   # 늪지1
+Name = 와일드 플로어 - 늪지
+Outdoor = true
+ShowArea = true
+Weather = Rain,50
+BattleBack = swamp
+#-------------------------------
+[057]   # 늪지1
+Name = 와일드 플로어 - 늪지
+Outdoor = true
+ShowArea = true
+Weather = Rain,50
+BattleBack = swamp
+#-------------------------------
+[058]   # 늪지2
+Name = 와일드 플로어 - 늪지
+Outdoor = true
+ShowArea = true
+Weather = Rain,50
+BattleBack = swamp
+#-------------------------------
+[059]   # 늪지2
+Name = 와일드 플로어 - 늪지
+Outdoor = true
+ShowArea = true
+Weather = Rain,50
+BattleBack = swamp
+#-------------------------------
+[060]   # 산1
+Name = 와일드 플로어 - 산
+Outdoor = true
+ShowArea = true
+Weather = Sun,10
+BattleBack = mountain
+#-------------------------------
+[061]   # 산1
+Name = 와일드 플로어 - 산
+Outdoor = true
+ShowArea = true
+Weather = Sun,10
+BattleBack = mountain
+#-------------------------------
+[062]   # 산2
+Name = 와일드 플로어 - 산
+Outdoor = true
+ShowArea = true
+Weather = Sun,10
+BattleBack = mountain
+#-------------------------------
+[063]   # 산2
+Name = 와일드 플로어 - 산
+Outdoor = true
+ShowArea = true
+Weather = Sun,10
+BattleBack = mountain
+#-------------------------------
+[064]   # 배틀스테이지
+Name = 배틀 플로어
+ShowArea = true
+BattleBack = gym
+#-------------------------------
+[065]   # 배틀스테이지
+Name = 배틀 플로어
+ShowArea = true
+BattleBack = gym
+#-------------------------------
+[066]   # 배틀스테이지
+Name = 배틀 플로어
+ShowArea = true
+BattleBack = gym
+#-------------------------------
+[067]   # 쇼핑 플로어
+Name = 쇼핑 플로어
+ShowArea = true
+BattleBack = gym
+#-------------------------------
+[068]   # 레전드 플로어
+Name = 레전드 플로어
+ShowArea = true
+BattleBack = ultra
+#-------------------------------
+[069]   # 트레이닝 플로어
+Name = 트레이닝 플로어
+Outdoor = true
+ShowArea = true
+BattleBack = town
+#-------------------------------
+[070]   # 미라클 플로어
+Name = 미라클 플로어
+ShowArea = true
+BattleBack = gym
+#-------------------------------
+[071]   # 퀴즈 플로어
+Name = 퀴즈 플로어
+ShowArea = true
+BattleBack = gym
+#-------------------------------
+[072]   # 보스 스테이지
+Name = 챔피언 플로어
+ShowArea = true
+BattleBack = lance
+#-------------------------------
+[074]   # 유적
+Name = 와일드 플로어 - 유적
+ShowArea = true
+BattleBack = ruin
+#-------------------------------
+[075]   # 유적
+Name = 와일드 플로어 - 유적
+ShowArea = true
+BattleBack = ruin
+#-------------------------------
+[077]   # 울트라스페이스
+Name = ???
+ShowArea = true
+BattleBack = ultra
+#-------------------------------
+[078]   # 제작자의 방
+Name = ???
+ShowArea = true
+#-------------------------------
+[079]   # 배틀스테이지
+Name = 배틀 플로어
+ShowArea = true
+BattleBack = gym
+#-------------------------------
+[080]   # 수상한 상점
+Name = ???
+ShowArea = true
+#-------------------------------
+[081]   # 아르세우스
+Name = ???
+ShowArea = true
+#-------------------------------
+[082]   # 보스 웨이브
+Name = 타워 최정상부
+ShowArea = true
+BattleBack = champion
+#-------------------------------
+[083]   # 업그레이드룸
+Name = 업그레이드룸
+ShowArea = true
+#-------------------------------
+[084]   # 트레이너의 방
+Name = 타워 개인실
+ShowArea = true
+#-------------------------------
+[085]   # 트레이너의 방
+Name = 타워 개인실
+ShowArea = true
+#-------------------------------
+[086]   # 트레이너의 방
+Name = 타워 개인실
+ShowArea = true
+#-------------------------------
+[087]   # 트레이너의 방
+Name = 타워 개인실
+ShowArea = true
+#-------------------------------
+[091]   # 레이드플로어
+Name = 레이드 에리어
+ShowArea = true
+BattleBack = ultra

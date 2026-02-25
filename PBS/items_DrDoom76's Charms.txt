@@ -1,0 +1,433 @@
+﻿# See the documentation on the wiki to learn how to edit this file.
+#-------------------------------
+[APRICORNCHARM]
+Name = Apricorn Charm
+NamePlural = Apricorn Charms
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = A charm that doubles the amount of Balls produced from Apricorn and lessens time taken to make them.
+#-------------------------------
+[BALANCECHARM]
+Name = 균형의 부적
+NamePlural = 균형의 부적
+Pocket = 10
+Price = 400
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 희귀한 야생 포켓몬이 더 자주 출현하는 부적.
+#-------------------------------
+[CLOVERCHARM]
+Name = 행운의 부적
+NamePlural = 행운의 부적
+Pocket = 10
+Price = 200
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 야생 포켓몬이 도구를 지니고 있을 확률이 늘어나는 부적.
+#-------------------------------
+[COLORCHARM]
+Name = Color Charm
+NamePlural = Color Charms
+Pocket = 10
+Price = 50
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 다양한 색의 포켓몬을 만날 수 있는 부적.
+#-------------------------------
+[CONTESTCHARM]
+Name = Contest Charm
+NamePlural = Contest Charms
+Pocket = 8
+Price = 5000
+Flags = KeyItem
+Description = A charm said to increase Ball count and score in the Bug Contest.
+#-------------------------------
+[COINCHARM]
+Name = Coin Charm
+NamePlural = Coin Charm
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = A charm that triples all gained coins.
+#-------------------------------
+[CRAFTINGCHARM]
+Name = Crafting Charm
+NamePlural = Crafting Charms
+Pocket = 8
+Price = 5000
+Flags = KeyItem
+Description = A Charm that adds to the yield and reduces crafting materials required to craft items.
+#-------------------------------
+[DISABLECHARM]
+Name = Disable Charm
+NamePlural = Disable Charms
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = A mystical charm that randomly disrupts foe's moves.
+#-------------------------------
+[FRUGALCHARM]
+Name = 검소한 부적
+NamePlural = 검소한 부적
+Pocket = 10
+Price = 400
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 상점 판매 가격이 할인되는 특별한 부적.
+#-------------------------------
+[GOLDCHARM]
+Name = 값비싼 부적
+NamePlural = 값비싼 부적
+Pocket = 10
+Price = 500
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 상금을 평소보다 더 많이 받을 수 있는 부적.
+#-------------------------------
+[TOKENCHARM]
+Name = 토큰의 부적
+NamePlural = 토큰의 부적
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 업그레이드 토큰을 평소보다 더 많이 받을 수 있는 부적.
+#-------------------------------
+[HEALINGCHARM]
+Name = 친절한 부적
+NamePlural = 친절한 부적
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 걸을 때마다 포켓몬들의 체력이 회복되는 부적.
+#-------------------------------
+[HEARTCHARM]
+Name = Heart Charm
+NamePlural = Heart Charms
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = A charm which reduces flee rate, doubles the encounter rate, and increases Happiness gain.
+#-------------------------------
+[IVCHARM]
+Name = 튼튼한 부적
+NamePlural = 튼튼한 부적
+Pocket = 10
+Price = 500
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 더 강한 개체값의 야생 포켓몬을 만날 수 있는 부적.
+#-------------------------------
+[KEYCHARM]
+Name = 열쇠 모양 부적
+NamePlural = 열쇠 모양 부적
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 희귀한 특성의 야생 포켓몬을 만날 수 있는 부적.
+#-------------------------------
+[LINKCHARM]
+Name = Link Charm
+NamePlural = Link Charms
+Pocket = 8
+Price = 5000
+Flags = KeyItem
+Description = A charm that increases encounter rate of Pokemon, while decreasing the rate of Pokemon you fled from.
+#-------------------------------
+[LURECHARM]
+Name = Lure Charm
+NamePlural = Lure Charms
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = A charm said to make all fishable Pokemon guaranteed to bite, while fishing.
+#-------------------------------
+[MERCYCHARM]
+Name = Mercy Charm
+NamePlural = Mercy Charms
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = A charm said to ward off wild Pokemon while you have a fainted Pokemon.
+#-------------------------------
+[MININGCHARM]
+Name = Mining Charm
+NamePlural = Mining Charms
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = A mining charm said to allow more hits before the wall collaspes.
+#-------------------------------
+[NATURECHARM]
+Name = Nature Charm
+NamePlural = Nature Charms
+Pocket = 8
+Price = 5000
+Flags = KeyItem
+Description = A charm said to increase chance of finding certain Nature Pokemon.
+#-------------------------------
+[PROMOCHARM]
+Name = Promo Charm
+NamePlural = Promo Charms
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = A charm said to force higher level Pokemon to spawn in the wild.
+#-------------------------------
+[ROAMINGCHARM]
+Name = Roaming Charm
+NamePlural = Roaming Charms
+Pocket = 10
+Price = 300
+Flags = KeyItem
+Description = A charm said to increase the encounter probably of Roaming Pokemon.
+#-------------------------------
+[RESISTORCHARM]
+Name = 저항의 부적
+NamePlural = 저항의 부적
+Pocket = 10
+Price = 600
+Flags = KeyItem
+Description = 지니고 있으면 매우 효과적인 기술을 받을 때, 데미지를 조금 덜 받을 수 있는 부적.
+#-------------------------------
+[SAFARICHARM]
+Name = Safari Charm
+NamePlural = Safari Charms
+Pocket = 10
+Price = 300
+Flags = KeyItem
+Description = A charm said to increase the steps, balls, and catch rate while in the Safari Zone.
+#-------------------------------
+[SMARTCHARM]
+Name = 똑똑한 부적
+NamePlural = 똑똑한 부적
+Pocket = 10
+Price = 200
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 특별한 기술을 배우고 있는 야생 포켓몬과 만날 수 있는 부적.
+#-------------------------------
+[SPIRITCHARM]
+Name = Spirit Charm
+NamePlural = Spirit Charms
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = A charm that causes Wild Pokemon match the Nature of your Lead Pokemon.
+#-------------------------------
+[STABCHARM]
+Name = 날카로운 부적
+NamePlural = 날카로운 부적
+Pocket = 10
+Price = 800
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 포켓몬의 타입과 일치하는 기술의 위력이 증가하는 부적.
+#-------------------------------
+[TRADINGCHARM]
+Name = 연결의 부적
+NamePlural = 연결의 부적
+Pocket = 8
+Price = 200
+Flags = KeyItem
+Description = 지니고 있으면 교환으로 더 높은 개체값의 포켓몬이나 색이 다른 포켓몬을 만날 확률이 늘어나는 부적.
+#-------------------------------
+[TRIPTRIADCHARM]
+Name = Trip Triad Charm
+NamePlural = Trip Triad Charms
+Pocket = 8
+Price = 5000
+Flags = KeyItem
+Description = A charm said to increase winnings earned from the Triple Triad Mini-Game.
+#-------------------------------
+[TWINCHARM]
+Name = Twin Charm
+NamePlural = Twin Charms
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = A charm said to double gains from hidden items.
+#-------------------------------
+[VIRALCHARM]
+Name = 감염된 부적
+NamePlural = 감염된 부적
+Pocket = 10
+Price = 200
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 포켓러스에 감염된 야생 포켓몬과 만날 수 있는 부적.
+#-------------------------------
+[WISHINGCHARM]
+Name = Wishing Charm
+NamePlural = Wishing Charms
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = A mysterious charm said to materialize a wish once a day.
+#-------------------------------
+[BUGCHARM]
+Name = 벌레 부적
+NamePlural = 벌레 부적
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 벌레 타입 포켓몬을 더 자주 만날 수 있는 부적.
+#-------------------------------
+[DRAGONCHARM]
+Name = 드래곤 부적
+NamePlural = 드래곤 부적
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 드래곤 타입 포켓몬을 더 자주 만날 수 있는 부적.
+#-------------------------------
+[ELECTRICCHARM]
+Name = 전기 부적
+NamePlural = 전기 부적
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 전기 타입 포켓몬을 더 자주 만날 수 있는 부적.
+#-------------------------------
+[FAIRYCHARM]
+Name = 페어리 부적
+NamePlural = 페어리 부적
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 벌레 타입 포켓몬을 더 자주 만날 수 있는 부적.
+#-------------------------------
+[FIGHTINGCHARM]
+Name = 격투 부적
+NamePlural = 격투 부적
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 격투 타입 포켓몬을 더 자주 만날 수 있는 부적.
+#-------------------------------
+[FIRECHARM]
+Name = 불꽃 부적
+NamePlural = 불꽃 부적
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 불꽃 타입 포켓몬을 더 자주 만날 수 있는 부적.
+#-------------------------------
+[FLYINGCHARM]
+Name = 비행 부적
+NamePlural = 비행 부적
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 비행 타입 포켓몬을 더 자주 만날 수 있는 부적.
+#-------------------------------
+[GHOSTCHARM]
+Name = 고스트 부적
+NamePlural = 고스트 부적
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 고스트 타입 포켓몬을 더 자주 만날 수 있는 부적.
+#-------------------------------
+[GRASSCHARM]
+Name = 풀 부적
+NamePlural = 풀 부적
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 풀 타입 포켓몬을 더 자주 만날 수 있는 부적.
+#-------------------------------
+[GROUNDCHARM]
+Name = 땅 부적
+NamePlural = 땅 부적
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 땅 타입 포켓몬을 더 자주 만날 수 있는 부적.
+#-------------------------------
+[ICECHARM]
+Name = 얼음 부적
+NamePlural = 얼음 부적
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 얼음 타입 포켓몬을 더 자주 만날 수 있는 부적.
+#-------------------------------
+[NORMALCHARM]
+Name = 노말 부적
+NamePlural = 노말 부적
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 노말 타입 포켓몬을 더 자주 만날 수 있는 부적.
+#-------------------------------
+[POISONCHARM]
+Name = 독 부적
+NamePlural = 독 부적
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 독 타입 포켓몬을 더 자주 만날 수 있는 부적.
+#-------------------------------
+[PSYCHICCHARM]
+Name = 에스퍼 부적
+NamePlural = 에스퍼 부적
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 에스퍼 타입 포켓몬을 더 자주 만날 수 있는 부적.
+#-------------------------------
+[ROCKCHARM]
+Name = 바위 부적
+NamePlural = 바위 부적
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 바위 타입 포켓몬을 더 자주 만날 수 있는 부적.
+#-------------------------------
+[STEELCHARM]
+Name = 강철 부적
+NamePlural = 강철 부적
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 강철 타입 포켓몬을 더 자주 만날 수 있는 부적.
+#-------------------------------
+[WATERCHARM]
+Name = 물 부적
+NamePlural = 물 부적
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 물 타입 포켓몬을 더 자주 만날 수 있는 부적.

@@ -1,0 +1,8 @@
+Name       = Automatic Level Scaling
+Version    = 1.6.3
+Essentials = 20
+Essentials = 20.1
+Essentials = 21
+Essentials = 21.1
+Credits    = Benitex, Joltik, Umbreon
+Website    = https://github.com/Benitex/Automatic-Level-Scaling

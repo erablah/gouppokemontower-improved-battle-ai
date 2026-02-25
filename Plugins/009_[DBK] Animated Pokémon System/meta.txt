@@ -1,0 +1,10 @@
+Name       = [DBK] Animated Pokémon System
+Version    = 1.1.1
+Essentials = 21.1
+Requires   = Deluxe Battle Kit, 1.2.8
+Optional   = [DBK] Dynamax, 1.1.2
+Optional   = [DBK] Terastallization, 1.1.5
+Conflicts  = Generation 8 Pack Scripts
+Conflicts  = 1.0
+Credits    = Lucidious89, Golisopod User, Luka S.J.
+Website    = https://lucidious89-tutorials.gitbook.io/deluxe-battle-kit-tutorial/deluxe-battle-kit-for-v21.1/add-on-tutorials/animated-pokemon-system

@@ -1,0 +1,213 @@
+﻿# See the documentation on the wiki to learn how to edit this file.
+#-------------------------------
+[0]
+StartMoney = 2000
+StartItemStorage = POTION
+Home = 157,6,10,2
+StorageCreator = Bill
+WildBattleBGM = Battle wild
+TrainerBattleBGM = Battle trainer
+WildVictoryBGM = Battle victory wild
+TrainerVictoryBGM = Battle victory trainer
+SurfBGM = Surf
+BicycleBGM = Bicycle
+#-------------------------------
+[1]
+TrainerType = RED
+WalkCharset = trainer_RED
+RunCharset = trainer_RED
+CycleCharset = boy_bike
+SurfCharset = trainer_RED
+DiveCharset = LAPRAS
+FishCharset = boy_fish_offset
+SurfFishCharset = boy_fish_offset
+#-------------------------------
+[2]
+TrainerType = LEAF
+WalkCharset = trainer_LEAF
+RunCharset = trainer_LEAF
+CycleCharset = girl_bike
+SurfCharset = trainer_LEAF
+DiveCharset = LAPRAS
+FishCharset = girl_fish_offset
+SurfFishCharset = girl_fish_offset
+#-------------------------------
+[3]
+TrainerType = GOLD
+WalkCharset = trainer_GOLD
+RunCharset = trainer_GOLD
+CycleCharset = boy_bike
+SurfCharset = trainer_GOLD
+DiveCharset = LAPRAS
+FishCharset = boy_fish_offset
+SurfFishCharset = boy_fish_offset
+#-------------------------------
+[4]
+TrainerType = LYRA
+WalkCharset = trainer_LYRA
+RunCharset = trainer_LYRA
+CycleCharset = girl_bike
+SurfCharset = trainer_LYRA
+DiveCharset = LAPRAS
+FishCharset = girl_fish_offset
+SurfFishCharset = girl_fish_offset
+#-------------------------------
+[5]
+TrainerType = RUBY
+WalkCharset = trainer_RUBY
+RunCharset = trainer_RUBY
+CycleCharset = boy_bike
+SurfCharset = trainer_RUBY
+DiveCharset = LAPRAS
+FishCharset = boy_fish_offset
+SurfFishCharset = boy_fish_offset
+#-------------------------------
+[6]
+TrainerType = MAY
+WalkCharset = trainer_MAY
+RunCharset = trainer_MAY
+CycleCharset = girl_bike
+SurfCharset = trainer_MAY
+DiveCharset = LAPRAS
+FishCharset = girl_fish_offset
+SurfFishCharset = girl_fish_offset
+#-------------------------------
+[7]
+TrainerType = LUCAS
+WalkCharset = trainer_LUCAS
+RunCharset = trainer_LUCAS
+CycleCharset = boy_bike
+SurfCharset = trainer_LUCAS
+DiveCharset = LAPRAS
+FishCharset = boy_fish_offset
+SurfFishCharset = boy_fish_offset
+#-------------------------------
+[8]
+TrainerType = DAWN
+WalkCharset = trainer_DAWN
+RunCharset = trainer_DAWN
+CycleCharset = girl_bike
+SurfCharset = trainer_DAWN
+DiveCharset = LAPRAS
+FishCharset = girl_fish_offset
+SurfFishCharset = girl_fish_offset
+#-------------------------------
+[9]
+TrainerType = HILBERT
+WalkCharset = trainer_HILBERT
+RunCharset = trainer_HILBERT
+CycleCharset = girl_bike
+SurfCharset = trainer_HILBERT
+DiveCharset = LAPRAS
+FishCharset = girl_fish_offset
+SurfFishCharset = girl_fish_offset
+#-------------------------------
+[10]
+TrainerType = HILDA
+WalkCharset = trainer_HILDA
+RunCharset = trainer_HILDA
+CycleCharset = girl_bike
+SurfCharset = trainer_HILDA
+DiveCharset = LAPRAS
+FishCharset = girl_fish_offset
+SurfFishCharset = girl_fish_offset
+#-------------------------------
+[11]
+TrainerType = NATE
+WalkCharset = trainer_NATE
+RunCharset = trainer_NATE
+CycleCharset = boy_bike
+SurfCharset = trainer_NATE
+DiveCharset = LAPRAS
+FishCharset = boy_fish_offset
+SurfFishCharset = boy_fish_offset
+#-------------------------------
+[12]
+TrainerType = ROSA
+WalkCharset = trainer_ROSA
+RunCharset = trainer_ROSA
+CycleCharset = girl_bike
+SurfCharset = trainer_ROSA
+DiveCharset = LAPRAS
+FishCharset = girl_fish_offset
+SurfFishCharset = girl_fish_offset
+#-------------------------------
+[13]
+TrainerType = CALEM
+WalkCharset = trainer_CALEM
+RunCharset = trainer_CALEM
+CycleCharset = boy_bike
+SurfCharset = trainer_CALEM
+DiveCharset = LAPRAS
+FishCharset = boy_fish_offset
+SurfFishCharset = boy_fish_offset
+#-------------------------------
+[14]
+TrainerType = SERENA
+WalkCharset = trainer_SERENA
+RunCharset = trainer_SERENA
+CycleCharset = girl_bike
+SurfCharset = trainer_SERENA
+DiveCharset = LAPRAS
+FishCharset = girl_fish_offset
+SurfFishCharset = girl_fish_offset
+#-------------------------------
+[15]
+TrainerType = ELIO
+WalkCharset = trainer_ELIO
+RunCharset = trainer_ELIO
+CycleCharset = girl_bike
+SurfCharset = trainer_ELIO
+DiveCharset = LAPRAS
+FishCharset = girl_fish_offset
+SurfFishCharset = girl_fish_offset
+#-------------------------------
+[16]
+TrainerType = SELENE
+WalkCharset = trainer_SELENE
+RunCharset = trainer_SELENE
+CycleCharset = girl_bike
+SurfCharset = trainer_SELENE
+DiveCharset = LAPRAS
+FishCharset = girl_fish_offset
+SurfFishCharset = girl_fish_offset
+#-------------------------------
+[17]
+TrainerType = VICTOR
+WalkCharset = trainer_VICTOR
+RunCharset = trainer_VICTOR
+CycleCharset = girl_bike
+SurfCharset = trainer_VICTOR
+DiveCharset = LAPRAS
+FishCharset = girl_fish_offset
+SurfFishCharset = girl_fish_offset
+#-------------------------------
+[18]
+TrainerType = GLORIA
+WalkCharset = trainer_GLORIA
+RunCharset = trainer_GLORIA
+CycleCharset = girl_bike
+SurfCharset = trainer_GLORIA
+DiveCharset = LAPRAS
+FishCharset = girl_fish_offset
+SurfFishCharset = girl_fish_offset
+#-------------------------------
+[19]
+TrainerType = FLORIAN
+WalkCharset = trainer_FLORIAN
+RunCharset = trainer_FLORIAN
+CycleCharset = girl_bike
+SurfCharset = trainer_FLORIAN
+DiveCharset = LAPRAS
+FishCharset = girl_fish_offset
+SurfFishCharset = girl_fish_offset
+#-------------------------------
+[20]
+TrainerType = JULIANA
+WalkCharset = trainer_JULIANA
+RunCharset = trainer_JULIANA
+CycleCharset = girl_bike
+SurfCharset = trainer_JULIANA
+DiveCharset = LAPRAS
+FishCharset = girl_fish_offset
+SurfFishCharset = girl_fish_offset

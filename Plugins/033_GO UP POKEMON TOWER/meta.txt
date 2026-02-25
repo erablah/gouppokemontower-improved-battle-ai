@@ -1,0 +1,6 @@
+Name       = GO UP POKEMON TOWER
+Version    = 1.0
+Essentials = 21.1
+Requires   = v21.1 Hotfixes, 1.0.7
+Requires   = [DBK] Improved Item AI, 1.0.2
+Credits    = YOUNG

@@ -1,0 +1,888 @@
+﻿# See the documentation on the wiki to learn how to edit this file.
+#-------------------------------
+[004] # 들판1
+Land,21
+    12,MIGHTYENA,1,5
+    12,UNFEZANT,1,5
+    8,DACHSBUN,1,5
+    8,FARFETCHD,1,5
+    8,FURFROU,1,5
+    8,KOMALA,1,5
+    8,MILTANK,1,5
+    8,OINKOLOGNE,1,5
+    8,ZEBSTRIKA,1,5
+    2,BLISSEY,1,5
+    2,SERPERIOR,1,5
+    2,VENUSAUR,1,5
+#-------------------------------
+[006] # 들판2
+Land,21
+    12,FURRET,1,5
+    12,GUMSHOOS,1,5
+    8,ARBOK,1,5
+    8,LUXRAY,1,5
+    8,MABOSSTIFF,1,5
+    8,PERSIAN,1,5
+    8,SCOVILLAIN,1,5
+    8,SMEARGLE,1,5
+    2,BLAZIKEN,1,5
+    2,KANGASKHAN,1,5
+    2,RHYDON,1,5
+    2,RHYPERIOR,1,5
+    2,SNORLAX,1,5
+#-------------------------------
+[007] # 숲1
+Land,21
+    12,BUTTERFREE,1,5
+    12,KRICKETUNE,1,5
+    8,LEAVANNY,1,5
+    8,LOKIX,1,5
+    8,ORANGURU,1,5
+    8,RAPIDASH_1,1,5
+    8,SHIFTRY,1,5
+    8,SLAKING,1,5
+    8,SPIDOPS,1,5
+    2,SCEPTILE,1,5
+    2,SCYTHER,1,5
+    1,DECIDUEYE,1,5
+    1,DECIDUEYE_1,1,5
+#-------------------------------
+[008] # 숲2
+Land,21
+    12,BUTTERFREE,1,5
+    12,PARASECT,1,5
+    8,BRELOOM,1,5
+    8,SHIFTRY,1,5
+    8,SHIINOTIC,1,5
+    8,TREVENANT,1,5
+    8,VIVILLON,1,5
+    2,COMBEE,1,5
+    2,GRIMMSNARL,1,5
+    2,HERACROSS,1,5
+    2,PIKACHU,1,5
+    2,RAICHU,1,5
+    2,SCYTHER,1,5
+    2,VESPIQUEN,1,5
+#-------------------------------
+[009] # 호수1
+Land,21
+    12,BIBAREL,1,5
+    8,ARAQUANID,1,5
+    8,FLAMIGO,1,5
+    8,GOLDUCK,1,5
+    8,LEDIAN,1,5
+    8,LUDICOLO,1,5
+    8,SIMIPOUR,1,5
+    2,FERALIGATR,1,5
+    2,GRENINJA,1,5
+    2,POLITOED,1,5
+    2,POLIWRATH,1,5
+#-------------------------------
+[010] # 호수2
+Land,21
+    12,MAGIKARP,1,5
+    8,AZUMARILL,1,5
+    8,BELLIBOLT,1,5
+    8,DREDNAW,1,5
+    8,FLOATZEL,1,5
+    8,MASQUERAIN,1,5
+    8,SWANNA,1,5
+    8,TATSUGIRI,1,5
+    2,INTELEON,1,5
+    2,QUAQUAVAL,1,5
+    2,TANGELA,1,5
+    2,TANGROWTH,1,5
+#-------------------------------
+[011] # 바다
+Land,5
+    12,KINGLER,1,5
+    8,CLAWITZER,1,5
+    8,CRAMORANT,1,5
+    8,DHELMISE,1,5
+    8,EXEGGUTOR_1,1,5
+    8,PALOSSAND,1,5
+    8,PINCURCHIN,1,5
+    6,SLOWBRO_1,1,5
+    6,SLOWKING_1,1,5
+    2,PRIMARINA,1,5
+    1,SAMUROTT,1,5
+    1,SAMUROTT_1,1,5
+#-------------------------------
+[013] # 바다2
+Water,5
+    12,LUVDISC,1,5
+    12,TENTACRUEL,1,5
+    8,ALOMOMOLA,1,5
+    8,BARRASKEWDA,1,5
+    8,BASCULIN,1,5
+    8,QWILFISH,1,5
+    8,VELUZA,1,5
+    8,WAILORD,1,5
+    8,WISHIWASHI,1,5
+    2,BASCULIN_2,1,5
+    2,BLASTOISE,1,5
+    2,OVERQWIL,1,5
+#-------------------------------
+[014] # 해저
+Cave,5
+    8,ARMALDO,1,5
+    8,CLOYSTER,1,5
+    8,CORSOLA,1,5
+    8,RELICANTH,1,5
+    8,SEAKING,1,5
+    8,WUGTRIO,1,5
+    2,GOREBYSS,1,5
+    2,HUNTAIL,1,5
+    2,KINGDRA,1,5
+    2,LAPRAS,1,5
+    2,MILOTIC,1,5
+    2,SEADRA,1,5
+#-------------------------------
+[015] # 들판1
+Land,21
+    12,RATICATE_1,1,5
+    12,WATCHOG,1,5
+    8,AMPHAROS,1,5
+    8,BOLTUND,1,5
+    8,CYCLIZAR,1,5
+    8,FARIGIRAF,1,5
+    8,NINETALES,1,5
+    8,PANGORO,1,5
+    8,VICTREEBEL,1,5
+    2,DITTO,1,5
+    2,SIRFETCHD,1,5
+    2,TORTERRA,1,5
+#-------------------------------
+[016] # 들판2
+Land,21
+    12,LINOONE,1,5
+    12,VENOMOTH,1,5
+    8,ARBOLIVA,1,5
+    8,LECHONK,1,5
+    8,MINUN,1,5
+    8,PLUSLE,1,5
+    8,STOUTLAND,1,5
+    8,TOEDSCRUEL,1,5
+    4,BOUFFALANT,1,5
+    2,CINDERACE,1,5
+    2,TAUROS_1,1,5
+    1,TAUROS,1,5
+    1,TAUROS_3,1,5
+#-------------------------------
+[017] # 숲1
+Land,21
+    12,BEEDRILL,1,5
+    8,FORRETRESS,1,5
+    8,HYPNO,1,5
+    8,SIMISAGE,1,5
+    8,TOGEDEMARU,1,5
+    8,TREVENANT,1,5
+    6,MOTHIM,1,5
+    6,WORMADAM,1,5
+    2,APPLETUN,1,5
+    2,FLAPPLE,1,5
+    2,HYDRAPPLE,1,5
+    2,NINJASK,1,5
+    2,PINSIR,1,5
+    2,RILLABOOM,1,5
+    2,SHEDINJA,1,5
+#-------------------------------
+[018] # 숲2
+Land,21
+    12,NOCTOWL,1,5
+    8,BRELOOM,1,5
+    8,DURANT,1,5
+    8,ELECTRODE_1,1,5
+    8,EXEGGUTOR,1,5
+    8,HYPNO,1,5
+    8,PACHIRISU,1,5
+    8,SCOLIPEDE,1,5
+    8,VILEPLUME,1,5
+    6,BEAUTIFLY,1,5
+    6,DUSTOX,1,5
+    2,PINSIR,1,5
+    2,RILLABOOM,1,5
+    2,SCEPTILE,1,5
+#-------------------------------
+[019] # 호수1
+Land,21
+    12,BIBAREL,1,5
+    8,ARAQUANID,1,5
+    8,DRAMPA,1,5
+    8,FLAMIGO,1,5
+    8,GOLDUCK,1,5
+    8,GREEDENT,1,5
+    8,LUDICOLO,1,5
+    2,FERALIGATR,1,5
+    2,GRENINJA,1,5
+    2,POLITOED,1,5
+    2,POLIWRATH,1,5
+#-------------------------------
+[020] # 호수2
+Land,21
+    12,MAGIKARP,1,5
+    8,AZUMARILL,1,5
+    8,BELLIBOLT,1,5
+    8,DREDNAW,1,5
+    8,FLOATZEL,1,5
+    8,MASQUERAIN,1,5
+    8,SWANNA,1,5
+    8,TATSUGIRI,1,5
+    2,INTELEON,1,5
+    2,QUAQUAVAL,1,5
+    2,TANGELA,1,5
+    2,TANGROWTH,1,5
+#-------------------------------
+[021] # 바다
+Land,5
+    12,PELIPPER,1,5
+    8,CARRACOSTA,1,5
+    8,CRAWDAUNT,1,5
+    8,GOLISOPOD,1,5
+    8,KILOWATTREL,1,5
+    8,PYUKUMUKU,1,5
+    8,TOXAPEX,1,5
+    6,SLOWBRO,1,5
+    6,SLOWKING,1,5
+    2,EMPOLEON,1,5
+    1,SAMUROTT,1,5
+    1,SAMUROTT_1,1,5
+#-------------------------------
+[022] # 바다2
+Water,5
+    12,GYARADOS,1,5
+    12,LUMINEON,1,5
+    8,BARRASKEWDA,1,5
+    8,BRUXISH,1,5
+    8,JELLICENT,1,5
+    8,MANTINE,1,5
+    8,PALAFIN,1,5
+    8,SHARPEDO,1,5
+    4,DONDOZO,1,5
+    2,BASCULIN_2,1,5
+    2,BLASTOISE,1,5
+    2,OVERQWIL,1,5
+#-------------------------------
+[023] # 해저
+Cave,5
+    8,ARMALDO,1,5
+    8,CLOYSTER,1,5
+    8,CURSOLA,1,5
+    8,RELICANTH,1,5
+    8,SEAKING,1,5
+    8,WUGTRIO,1,5
+    4,GOREBYSS,1,5
+    4,HUNTAIL,1,5
+    2,DRAGONITE,1,5
+    2,KINGDRA,1,5
+    2,LAPRAS,1,5
+    2,SEADRA,1,5
+#-------------------------------
+[024] # 해저2
+Cave,5
+    8,BARBARACLE,1,5
+    8,CLOYSTER,1,5
+    8,DRAGALGE,1,5
+    8,EELEKTROSS,1,5
+    8,GRAPPLOCT,1,5
+    8,KABUTOPS,1,5
+    8,LANTURN,1,5
+    8,OCTILLERY,1,5
+    8,OMASTAR,1,5
+    8,RELICANTH,1,5
+    8,STARMIE,1,5
+    2,DRAGONITE,1,5
+    2,MILOTIC,1,5
+#-------------------------------
+[025] # 해저2
+Cave,5
+    8,BARBARACLE,1,5
+    8,CLOYSTER,1,5
+    8,DRAGALGE,1,5
+    8,EELEKTROSS,1,5
+    8,GRAPPLOCT,1,5
+    8,KABUTOPS,1,5
+    8,LANTURN,1,5
+    8,OCTILLERY,1,5
+    8,OMASTAR,1,5
+    8,RELICANTH,1,5
+    8,STARMIE,1,5
+    2,LAPRAS,1,5
+    2,MILOTIC,1,5
+#-------------------------------
+[026] # 사막1
+Land,4
+    8,BRAMBLEGHAST,1,5
+    8,CAMERUPT,1,5
+    8,CLAYDOL,1,5
+    8,FLYGON,1,5
+    8,SANDACONDA,1,5
+    8,SIGILYPH,1,5
+    8,SPINDA,1,5
+    8,TYRANTRUM,1,5
+    2,GARCHOMP,1,5
+    2,VOLCARONA,1,5
+#-------------------------------
+[027] # 사막1
+Land,4
+    8,BRAMBLEGHAST,1,5
+    8,CLAYDOL,1,5
+    8,FLYGON,1,5
+    8,KROOKODILE,1,5
+    8,SCRAFTY,1,5
+    8,SIGILYPH,1,5
+    8,SPINDA,1,5
+    8,TYRANTRUM,1,5
+    2,SKELEDIRGE,1,5
+    2,VOLCARONA,1,5
+#-------------------------------
+[028] # 사막2
+Land,4
+    8,CACTURNE,1,5
+    8,COFAGRIGUS,1,5
+    8,HELIOLISK,1,5
+    8,HIPPOWDON,1,5
+    8,MARACTUS,1,5
+    8,MUDSDALE,1,5
+    8,RABSCA,1,5
+    8,SOLROCK,1,5
+    2,SKELEDIRGE,1,5
+    2,VOLCARONA,1,5
+#-------------------------------
+[029] # 사막2
+Land,4
+    8,CACTURNE,1,5
+    8,COFAGRIGUS,1,5
+    8,DARMANITAN,1,5
+    8,HELIOLISK,1,5
+    8,MARACTUS,1,5
+    8,RABSCA,1,5
+    8,SANDACONDA,1,5
+    8,SOLROCK,1,5
+    2,GARCHOMP,1,5
+    2,SKELEDIRGE,1,5
+#-------------------------------
+[030] # 화산
+Cave,5
+    8,ARCANINE,1,5
+    8,HEATMOR,1,5
+    8,MAGCARGO,1,5
+    8,PYROAR,1,5
+    8,RAPIDASH,1,5
+    8,SALAZZLE,1,5
+    8,TALONFLAME,1,5
+    8,TORKOAL,1,5
+    2,ARMAROUGE,1,5
+    2,TYPHLOSION,1,5
+#-------------------------------
+[031] # 화산
+Cave,5
+    8,MAGCARGO,1,5
+    8,MAROWAK_1,1,5
+    8,PYROAR,1,5
+    8,RAPIDASH,1,5
+    8,SALAZZLE,1,5
+    8,SIMISEAR,1,5
+    8,TALONFLAME,1,5
+    8,TORKOAL,1,5
+    2,ARMAROUGE,1,5
+    2,TYPHLOSION,1,5
+#-------------------------------
+[032] # 화산2
+Cave,5
+    8,ARCANINE_1,1,5
+    8,CENTISKORCH,1,5
+    8,COALOSSAL,1,5
+    8,HOUNDOOM,1,5
+    8,MAGCARGO,1,5
+    8,TURTONATOR,1,5
+    8,WEEZING,1,5
+    2,CHARIZARD,1,5
+    2,INCINEROAR,1,5
+    2,MAGMAR,1,5
+    2,MAGMORTAR,1,5
+#-------------------------------
+[033] # 화산2
+Cave,5
+    8,ARCANINE_1,1,5
+    8,CENTISKORCH,1,5
+    8,HOUNDOOM,1,5
+    8,MAGCARGO,1,5
+    8,SIMISEAR,1,5
+    8,TURTONATOR,1,5
+    8,WEEZING,1,5
+    4,MAGMAR,1,5
+    4,MAGMORTAR,1,5
+    2,CHARIZARD,1,5
+    2,INCINEROAR,1,5
+#-------------------------------
+[034] # 동굴1
+Cave,5
+    12,CROBAT,1,5
+    12,GOLEM,1,5
+    8,DUGTRIO_1,1,5
+    8,EXPLOUD,1,5
+    8,FERROTHORN,1,5
+    8,MALAMAR,1,5
+    8,ORTHWORM,1,5
+    8,PROBOPASS,1,5
+    8,RAMPARDOS,1,5
+    2,AERODACTYL,1,5
+    2,LYCANROC,1,5
+#-------------------------------
+[035] # 동굴1
+Cave,5
+    12,CROBAT,1,5
+    12,GIGALITH,1,5
+    8,AGGRON,1,5
+    8,DRUDDIGON,1,5
+    8,GARGANACL,1,5
+    8,GOLEM_1,1,5
+    8,NOIVERN,1,5
+    8,PROBOPASS,1,5
+    8,WOBBUFFET,1,5
+    4,TYROGUE,1,5
+    2,GLIMMET,1,5
+#-------------------------------
+[036] # 동굴2
+Cave,5
+    12,DUGTRIO,1,5
+    12,SANDSLASH,1,5
+    8,BASTIODON,1,5
+    8,CARBINK,1,5
+    8,COPPERAJAH,1,5
+    8,CRADILY,1,5
+    8,HARIYAMA,1,5
+    8,MAWILE,1,5
+    8,SWOOBAT,1,5
+    2,GLIMMORA,1,5
+    2,HYDREIGON,1,5
+    2,SHUCKLE,1,5
+#-------------------------------
+[037] # 동굴2
+Cave,5
+    12,DUGTRIO,1,5
+    12,SANDSLASH,1,5
+    8,CRUSTLE,1,5
+    8,DIGGERSBY,1,5
+    8,EXCADRILL,1,5
+    8,LYCANROC,1,5
+    8,SAWK,1,5
+    8,THROH,1,5
+    2,HAXORUS,1,5
+    2,HYDREIGON,1,5
+    2,ONIX,1,5
+    2,STEELIX,1,5
+    2,TYRANITAR,1,5
+#-------------------------------
+[038] # 공장
+Cave,5
+    12,RATICATE,1,5
+    8,GALVANTULA,1,5
+    8,MAGNEZONE,1,5
+    8,MAROWAK,1,5
+    8,MORPEKO,1,5
+    8,MUK,1,5
+    4,ELECTABUZZ,1,5
+    4,ELECTIVIRE,1,5
+    4,MACHAMP,1,5
+    4,MACHOKE,1,5
+    2,PORYGON,1,5
+    1,ARCHALUDON,1,5
+    1,DURALUDON,1,5
+#-------------------------------
+[039] # 공장
+Cave,5
+    12,RATICATE,1,5
+    8,CINCCINO,1,5
+    8,GALVANTULA,1,5
+    8,KLEFKI,1,5
+    8,MAGNEZONE,1,5
+    8,MAROWAK,1,5
+    8,MUK,1,5
+    4,ELECTABUZZ,1,5
+    4,ELECTIVIRE,1,5
+    2,PORYGON,1,5
+    1,ARCHALUDON,1,5
+    1,DURALUDON,1,5
+#-------------------------------
+[040] # 공장2
+Cave,5
+    8,CONKELDURR,1,5
+    8,ELECTRODE,1,5
+    8,GARBODOR,1,5
+    8,KLINKLANG,1,5
+    8,MANECTRIC,1,5
+    8,MAUSHOLD,1,5
+    8,MUK_1,1,5
+    8,REVAVROOM,1,5
+    8,STUNFISK_1,1,5
+    8,THIEVUL,1,5
+    8,WEEZING_1,1,5
+    2,ROTOM,1,5
+#-------------------------------
+[041] # 공장2
+Cave,5
+    8,CONKELDURR,1,5
+    8,ELECTRODE,1,5
+    8,GARBODOR,1,5
+    8,KLINKLANG,1,5
+    8,MANECTRIC,1,5
+    8,MAUSHOLD,1,5
+    8,MUK_1,1,5
+    8,REVAVROOM,1,5
+    8,STUNFISK_1,1,5
+    8,THIEVUL,1,5
+    8,WEEZING_1,1,5
+    2,ROTOM_1,1,5
+    1,ROTOM,1,5
+    1,ROTOM_2,1,5
+    1,ROTOM_3,1,5
+    1,ROTOM_5,1,5
+#-------------------------------
+[042] # 묘지1
+Cave,5
+    8,BANETTE,1,5
+    8,CHANDELURE,1,5
+    8,HOUNDSTONE,1,5
+    8,MISMAGIUS,1,5
+    8,POLTEAGEIST,1,5
+    8,SABLEYE,1,5
+    4,DUSCLOPS,1,5
+    4,DUSKNOIR,1,5
+    2,GENGAR,1,5
+    2,GHOLDENGO,1,5
+    2,ZOROARK_1,1,5
+#-------------------------------
+[043] # 묘지1
+Cave,5
+    8,BANETTE,1,5
+    8,CHANDELURE,1,5
+    8,HOUNDSTONE,1,5
+    8,MISMAGIUS,1,5
+    8,POLTEAGEIST,1,5
+    8,SABLEYE,1,5
+    4,DUSCLOPS,1,5
+    4,DUSKNOIR,1,5
+    2,AEGISLASH,1,5
+    2,SPIRITOMB,1,5
+    2,TYPHLOSION_1,1,5
+#-------------------------------
+[044] # 묘지2
+Land,21
+    12,ARIADOS,1,5
+    12,OBSTAGOON,1,5
+    8,DRIFBLIM,1,5
+    8,GOURGEIST,1,5
+    8,HONCHKROW,1,5
+    8,LIEPARD,1,5
+    8,PERSIAN_1,1,5
+    8,RUNERIGUS,1,5
+    8,SINISTCHA,1,5
+    2,CERULEDGE,1,5
+    2,DRAGAPULT,1,5
+    2,MIMIKYU,1,5
+#-------------------------------
+[045] # 묘지2
+Land,21
+    12,ARIADOS,1,5
+    12,OBSTAGOON,1,5
+    8,DRIFBLIM,1,5
+    8,GOURGEIST,1,5
+    8,HONCHKROW,1,5
+    8,LIEPARD,1,5
+    8,PERSIAN_1,1,5
+    8,RUNERIGUS,1,5
+    8,SINISTCHA,1,5
+    2,CERULEDGE,1,5
+    2,DRAGAPULT,1,5
+    2,MIMIKYU,1,5
+#-------------------------------
+[046] # 정원1
+Land,21
+    8,ALCREMIE,1,5
+    8,AUDINO,1,5
+    8,CLEFABLE,1,5
+    8,ELDEGOSS,1,5
+    8,GRANBULL,1,5
+    8,TSAREENA,1,5
+    6,FLORGES_1,1,5
+    3,FLORGES,1,5
+    3,FLORGES_3,1,5
+    2,MEOWSCARADA,1,5
+    2,ORICORIO_1,1,5
+    2,RAICHU_1,1,5
+    1,ORICORIO,1,5
+    1,ORICORIO_3,1,5
+#-------------------------------
+[047] # 정원1
+Land,21
+    12,TOUCANNON,1,5
+    8,AROMATISSE,1,5
+    8,BELLOSSOM,1,5
+    8,COMFEY,1,5
+    8,DELCATTY,1,5
+    8,LURANTIS,1,5
+    8,MINIOR,1,5
+    8,SUNFLORA,1,5
+    2,EEVEE,1,5
+    1,GALLADE,1,5
+    1,GARDEVOIR,1,5
+#-------------------------------
+[048] # 정원2
+Land,21
+    8,DEDENNE,1,5
+    8,INDEEDEE,1,5
+    8,PURUGLY,1,5
+    8,ROSERADE,1,5
+    8,SLURPUFF,1,5
+    8,WHIMSICOTT,1,5
+    8,WIGGLYTUFF,1,5
+    2,LYCANROC_1,1,5
+    2,MEGANIUM,1,5
+#-------------------------------
+[049] # 정원2
+Land,21
+    8,BEWEAR,1,5
+    8,CHERRIM,1,5
+    8,JUMPLUFF,1,5
+    8,LOPUNNY,1,5
+    8,RIBOMBEE,1,5
+    2,DELPHOX,1,5
+    2,HATTERENE,1,5
+    2,LILLIGANT,1,5
+    2,LILLIGANT_1,1,5
+    2,TOGEKISS,1,5
+#-------------------------------
+[050] # 타이가
+Land,21
+    8,CRABOMINABLE,1,5
+    8,DARMANITAN_2,1,5
+    8,DELIBIRD,1,5
+    8,EISCUE,1,5
+    8,JYNX,1,5
+    8,SAWSBUCK_3,1,5
+    8,VANILLUXE,1,5
+    4,MAMOSWINE,1,5
+    4,PILOSWINE,1,5
+    2,FROSMOTH,1,5
+    2,NINETALES_1,1,5
+#-------------------------------
+[051] # 타이가
+Land,21
+    8,CRABOMINABLE,1,5
+    8,DARMANITAN_2,1,5
+    8,DELIBIRD,1,5
+    8,EISCUE,1,5
+    8,JYNX,1,5
+    8,SAWSBUCK_3,1,5
+    8,VANILLUXE,1,5
+    4,MAMOSWINE,1,5
+    4,PILOSWINE,1,5
+    2,FROSMOTH,1,5
+    2,NINETALES_1,1,5
+#-------------------------------
+[052] # 타이가2
+Land,21
+    8,ABOMASNOW,1,5
+    8,BEARTIC,1,5
+    8,CETITAN,1,5
+    8,CRYOGONAL,1,5
+    8,PERRSERKER,1,5
+    8,WEAVILE,1,5
+    4,ARCTOZOLT,1,5
+    4,DRACOZOLT,1,5
+    2,BAXCALIBUR,1,5
+#-------------------------------
+[053] # 타이가2
+Land,21
+    8,ABOMASNOW,1,5
+    8,ARCTOZOLT,1,5
+    8,BEARTIC,1,5
+    8,CETITAN,1,5
+    8,CRYOGONAL,1,5
+    8,DRACOZOLT,1,5
+    8,PERRSERKER,1,5
+    8,WEAVILE,1,5
+    2,BAXCALIBUR,1,5
+#-------------------------------
+[054] # 얼음동굴
+Cave,5
+    8,AURORUS,1,5
+    8,DEWGONG,1,5
+    8,MRRIME,1,5
+    8,SANDSLASH_1,1,5
+    8,WALREIN,1,5
+    4,ARCTOVISH,1,5
+    4,DRACOVISH,1,5
+    4,FROSLASS,1,5
+    4,GLALIE,1,5
+    2,AVALUGG,1,5
+    2,AVALUGG_1,1,5
+#-------------------------------
+[055] # 얼음동굴
+Cave,5
+    8,AURORUS,1,5
+    8,DEWGONG,1,5
+    8,MRRIME,1,5
+    8,SANDSLASH_1,1,5
+    8,WALREIN,1,5
+    4,ARCTOVISH,1,5
+    4,DRACOVISH,1,5
+    4,FROSLASS,1,5
+    4,GLALIE,1,5
+    2,AVALUGG,1,5
+    2,AVALUGG_1,1,5
+#-------------------------------
+[056] # 늪지1
+Land,21
+    8,CASTFORM,1,5
+    8,LICKILICKY,1,5
+    8,NIDOQUEEN,1,5
+    8,ORBEETLE,1,5
+    8,SKUNTANK,1,5
+    8,VIKAVOLT,1,5
+    8,WHISCASH,1,5
+    2,SWAMPERT,1,5
+#-------------------------------
+[057] # 늪지1
+Land,21
+    8,AMOONGUSS,1,5
+    8,CLODSIRE,1,5
+    8,DRAPION,1,5
+    8,NIDOKING,1,5
+    8,SEISMITOAD,1,5
+    8,TROPIUS,1,5
+    8,YANMEGA,1,5
+    1,GOODRA,1,5
+    1,GOODRA_1,1,5
+#-------------------------------
+[058] # 늪지2
+Land,21
+    8,CHATOT,1,5
+    8,ILLUMISE,1,5
+    8,SEVIPER,1,5
+    8,STUNFISK,1,5
+    8,TOXICROAK,1,5
+    8,VOLBEAT,1,5
+    8,ZANGOOSE,1,5
+    2,TOXTRICITY,1,5
+#-------------------------------
+[059] # 늪지2
+Land,21
+    8,ACCELGOR,1,5
+    8,CARNIVINE,1,5
+    8,ESCAVALIER,1,5
+    8,GRAFAIAI,1,5
+    8,KECLEON,1,5
+    8,QUAGSIRE,1,5
+    8,SWALOT,1,5
+    4,GASTRODON,1,5
+    4,GASTRODON_1,1,5
+#-------------------------------
+[060] # 산1
+Land,21
+    12,PIDGEOT,1,5
+    8,FALINKS,1,5
+    8,HAWLUCHA,1,5
+    8,MIENSHAO,1,5
+    8,PASSIMIAN,1,5
+    8,SKARMORY,1,5
+    8,SUDOWOODO,1,5
+    2,CHESNAUGHT,1,5
+    2,KOMMOO,1,5
+    2,SNEASLER,1,5
+#-------------------------------
+[061] # 산1
+Land,21
+    12,FEAROW,1,5
+    8,ALTARIA,1,5
+    8,AMBIPOM,1,5
+    8,ARCHEOPS,1,5
+    8,DUDUNSPARCE,1,5
+    8,EMOLGA,1,5
+    2,BRAVIARY,1,5
+    2,BRAVIARY_1,1,5
+    2,INFERNAPE,1,5
+    2,KINGAMBIT,1,5
+#-------------------------------
+[062] # 산2
+Land,21
+    12,SQUAWKABILLY,1,5
+    8,ABSOL,1,5
+    8,BOMBIRDIER,1,5
+    8,CORVIKNIGHT,1,5
+    8,DONPHAN,1,5
+    8,KLAWF,1,5
+    8,MANDIBUZZ,1,5
+    4,ANNIHILAPE,1,5
+    4,PRIMEAPE,1,5
+    2,LUCARIO,1,5
+    2,SALAMENCE,1,5
+    2,TINKATON,1,5
+#-------------------------------
+[063] # 산2
+Land,21
+    12,SWELLOW,1,5
+    8,DODRIO,1,5
+    8,DUBWOOL,1,5
+    8,GLISCOR,1,5
+    8,GOGOAT,1,5
+    8,PAWMOT,1,5
+    8,STARAPTOR,1,5
+    8,WYRDEER,1,5
+    2,EMBOAR,1,5
+    1,URSALUNA,1,5
+    1,URSARING,1,5
+#-------------------------------
+[074] # 유적
+Cave,5
+    12,BRONZONG,1,5
+    8,BEHEEYEM,1,5
+    8,GOLURK,1,5
+    8,LUNATONE,1,5
+    8,MEDICHAM,1,5
+    8,MRMIME,1,5
+    8,MUSHARNA,1,5
+    8,REUNICLUS,1,5
+    2,ESPATHRA,1,5
+    2,ZOROARK,1,5
+#-------------------------------
+[075] # 유적
+Cave,5
+    8,CHIMECHO,1,5
+    8,GOTHITELLE,1,5
+    8,GRUMPIG,1,5
+    8,MEOWSTIC,1,5
+    8,STONJOURNER,1,5
+    8,XATU,1,5
+    2,ALAKAZAM,1,5
+    2,KADABRA,1,5
+    2,METAGROSS,1,5
+    2,UNOWN_1,1,5
+    1,UNOWN,1,5
+    1,UNOWN_11,1,5
+    1,UNOWN_12,1,5
+    1,UNOWN_13,1,5
+    1,UNOWN_14,1,5
+    1,UNOWN_15,1,5
+    1,UNOWN_16,1,5
+    1,UNOWN_17,1,5
+    1,UNOWN_18,1,5
+    1,UNOWN_19,1,5
+    1,UNOWN_2,1,5
+    1,UNOWN_20,1,5
+    1,UNOWN_21,1,5
+    1,UNOWN_22,1,5
+    1,UNOWN_23,1,5
+    1,UNOWN_24,1,5
+    1,UNOWN_25,1,5
+    1,UNOWN_26,1,5
+    1,UNOWN_27,1,5
+    1,UNOWN_3,1,5
+    1,UNOWN_4,1,5
+    1,UNOWN_5,1,5
+    1,UNOWN_6,1,5
+    1,UNOWN_7,1,5
+    1,UNOWN_8,1,5
+    1,UNOWN_9,1,5

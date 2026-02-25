@@ -1,0 +1,6 @@
+Name       = Generation 9 Pack
+Version    = 3.3.1
+Essentials = 21.1
+Requires   = v21.1 Hotfixes, 1.0.9
+Credits    = Caruban
+Website    = https://www.eeveeexpo.com/threads/5817/

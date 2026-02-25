@@ -1,0 +1,8 @@
+Name       = Wonder Trade
+Version    = 1.0
+Essentials = 20
+Essentials = 20.1
+Essentials = 21
+Essentials = 21.1
+Credits    = Dr.Doom76
+Website    = https://reliccastle.com/resources/1428/

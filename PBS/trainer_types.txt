@@ -1,0 +1,2260 @@
+﻿# See the documentation on the wiki to learn how to edit this file.
+#-------------------------------
+[POKEMONTRAINER_Red]
+Name = Pokémon Trainer
+Gender = Male
+BaseMoney = 32
+#-------------------------------
+[POKEMONTRAINER_Leaf]
+Name = Pokémon Trainer
+Gender = Female
+BaseMoney = 32
+#-------------------------------
+[POKEMONTRAINER_Brendan]
+Name = Pokémon Trainer
+Gender = Male
+BaseMoney = 32
+#-------------------------------
+[POKEMONTRAINER_May]
+Name = Pokémon Trainer
+Gender = Female
+BaseMoney = 32
+#-------------------------------
+[LEADER_Green]
+Name = 체육관 관장
+Gender = Male
+BaseMoney = 100
+BattleBGM = Battle Gym Leader
+VictoryBGM = Battle victory leader
+#-------------------------------
+[CHAMPION_Green]
+Name = 챔피언
+Gender = Male
+BaseMoney = 100
+BattleBGM = GREEN Battle
+VictoryBGM = Battle victory leader
+#-------------------------------
+[AROMALADY]
+Name = Aroma Lady
+Gender = Female
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[AROMALADY2]
+Name = Aroma Lady
+Gender = Female
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[AROMALADY3]
+Name = Aroma Lady
+Gender = Female
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[BEAUTY]
+Name = Beauty
+Gender = Female
+BaseMoney = 56
+SkillLevel = 100
+#-------------------------------
+[BEAUTY2]
+Name = Beauty
+Gender = Female
+BaseMoney = 56
+SkillLevel = 100
+#-------------------------------
+[BIKER]
+Name = Biker
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[BIRDKEEPER]
+Name = Bird Keeper
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[BUGCATCHER]
+Name = Bug Catcher
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[BURGLAR]
+Name = Burglar
+Gender = Male
+BaseMoney = 88
+SkillLevel = 100
+#-------------------------------
+[CHANNELER]
+Name = Channeler
+Gender = Female
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[CUEBALL]
+Name = Cue Ball
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[ENGINEER]
+Name = Engineer
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[FISHERMAN]
+Name = Fisherman
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[GAMBLER]
+Name = Gambler
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[GENTLEMAN]
+Name = Gentleman
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[HIKER]
+Name = Hiker
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[FIREMAN]
+Name = 불놀이꾼
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[JUGGLER]
+Name = Juggler
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[JUGGLER2]
+Name = Juggler
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[LADY]
+Name = Lady
+Gender = Female
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[LADY2]
+Name = Lady
+Gender = Female
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[PAINTER]
+Name = Painter
+Gender = Female
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[POKEMANIAC]
+Name = Poké Maniac
+Gender = Male
+BaseMoney = 64
+SkillLevel = 100
+#-------------------------------
+[POKEMONBREEDER]
+Name = Pokémon Breeder
+Gender = Female
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[PROFESSOR]
+Name = 연구자
+Gender = Male
+BaseMoney = 100
+#-------------------------------
+[ROCKER]
+Name = Rocker
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[RUINMANIAC]
+Name = Ruin Maniac
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[RUINMANIAC2]
+Name = Ruin Maniac
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[SAILOR]
+Name = Sailor
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[SCIENTIST]
+Name = Scientist
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[SUPERNERD]
+Name = Super Nerd
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[TAMER]
+Name = Tamer
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[BLACKBELT]
+Name = Black Belt
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[BLACKBELT2]
+Name = Black Belt
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[BLACKBELT3]
+Name = Black Belt
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[CRUSHGIRL]
+Name = 배틀걸
+Gender = Female
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[CAMPER]
+Name = Camper
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[CLOWN]
+Name = 광대
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[CLOWN2]
+Name = 광대
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[PICNICKER]
+Name = Picnicker
+Gender = Female
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[PICNICKER2]
+Name = Picnicker
+Gender = Female
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[PICNICKER3]
+Name = Picnicker
+Gender = Female
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[COOLTRAINER_M]
+Name = 엘리트 트레이너
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[COOLTRAINER_F]
+Name = 엘리트 트레이너
+Gender = Female
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[YOUNGSTER]
+Name = Youngster
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[YOUNGSTER2]
+Name = Youngster
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[YOUNGSTER3]
+Name = Youngster
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[SCHOOLKID]
+Name = 학원끝난아이
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[LASS]
+Name = Lass
+Gender = Female
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[LASS2]
+Name = Lass
+Gender = Female
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[PARASOL]
+Name = 파라솔아가씨
+Gender = Female
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[POKEMONRANGER_M]
+Name = Pokémon Ranger
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[POKEMONRANGER_F]
+Name = Pokémon Ranger
+Gender = Female
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[RANGER_M]
+Name = Pokémon Ranger
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[RANGER_F]
+Name = Pokémon Ranger
+Gender = Female
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[ACETRAINER_F]
+Name = 엘리트 트레이너
+Gender = Female
+BaseMoney = 32
+SkillLevel = 75
+#-------------------------------
+[ACETRAINER_M]
+Name = 엘리트 트레이너
+Gender = Male
+BaseMoney = 32
+SkillLevel = 75
+#-------------------------------
+[ACETRAINER2_F]
+Name = 엘리트 트레이너
+Gender = Female
+BaseMoney = 32
+SkillLevel = 75
+#-------------------------------
+[ACETRAINER2_M]
+Name = 엘리트 트레이너
+Gender = Male
+BaseMoney = 32
+SkillLevel = 75
+#-------------------------------
+[HEX]
+Name = 오컬트매니아
+Gender = Female
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[PSYCHIC_M]
+Name = Psychic
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[PSYCHIC_F]
+Name = Psychic
+Gender = Female
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[WORKER]
+Name = 작업원
+Gender = Female
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[SWIMMER_M]
+Name = Swimmer
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[SWIMMER_F]
+Name = Swimmer
+Gender = Female
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[SWIMMER2_M]
+Name = Swimmer
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[SWIMMER2_F]
+Name = Swimmer
+Gender = Female
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[TUBER_M]
+Name = Tuber
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[TUBER_F]
+Name = Tuber
+Gender = Female
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[TUBER2_M]
+Name = Tuber
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[TUBER2_F]
+Name = Tuber
+Gender = Female
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[COOLCOUPLE]
+Name = Cool Couple
+Gender = Unknown
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[CRUSHKIN]
+Name = Crush Kin
+Gender = Unknown
+BaseMoney = 30
+SkillLevel = 100
+#-------------------------------
+[SISANDBRO]
+Name = Sis and Bro
+Gender = Unknown
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[TWINS]
+Name = Twins
+Gender = Unknown
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[TWINS2]
+Name = Twins
+Gender = Unknown
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[YOUNGCOUPLE]
+Name = 러브러브커플
+Gender = Unknown
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[TEAMROCKET_M]
+Name = Team Rocket
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+BattleBGM = HGSS Rocket
+#-------------------------------
+[TEAMROCKET_F]
+Name = Team Rocket
+Gender = Female
+BaseMoney = 32
+SkillLevel = 100
+BattleBGM = HGSS Rocket
+#-------------------------------
+[ROCKETBOSS]
+Name = Rocket Boss
+Gender = Male
+BaseMoney = 100
+#-------------------------------
+[LEADER_Brock]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = Battle Gym Leader
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Misty]
+Name = Gym Leader
+Gender = Female
+BaseMoney = 100
+BattleBGM = Battle Gym Leader
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Surge]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = Battle Gym Leader
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Erika]
+Name = Gym Leader
+Gender = Female
+BaseMoney = 100
+BattleBGM = Battle Gym Leader
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Janine]
+Name = Gym Leader
+Gender = Female
+BaseMoney = 100
+BattleBGM = Battle Gym Leader
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Koga]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = Battle Gym Leader
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Sabrina]
+Name = Gym Leader
+Gender = Female
+BaseMoney = 100
+BattleBGM = Battle Gym Leader
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Blaine]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = Battle Gym Leader
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Giovanni]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = Battle Gym Leader
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Bruno]
+Name = Elite Four
+Gender = Male
+BaseMoney = 100
+BattleBGM = Battle Elite
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Will]
+Name = Elite Four
+Gender = Male
+BaseMoney = 100
+BattleBGM = Battle Elite
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Whitney]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = Battle Elite
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Karen]
+Name = Elite Four
+Gender = Female
+BaseMoney = 100
+BattleBGM = Battle Elite
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Will2]
+Name = Elite Four
+Gender = Male
+BaseMoney = 100
+BattleBGM = Battle Elite
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Whitney2]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = Battle Elite
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Karen2]
+Name = Elite Four
+Gender = Female
+BaseMoney = 100
+BattleBGM = Battle Elite
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Agatha]
+Name = Elite Four
+Gender = Female
+BaseMoney = 100
+BattleBGM = Battle Elite
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Lance]
+Name = Elite Four
+Gender = Male
+BaseMoney = 100
+BattleBGM = Battle Elite
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Lorelei]
+Name = Elite Four
+Gender = Male
+BaseMoney = 100
+BattleBGM = Battle Elite
+VictoryBGM = Battle victory leader
+#-------------------------------
+[CHAMPION]
+Name = Champion
+Gender = Male
+BaseMoney = 100
+BattleBGM = Battle Champion
+VictoryBGM = Battle victory leader
+#-------------------------------
+[RICHBOY]
+Name = 도련님
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+#-------------------------------
+[ILLA]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 32
+SkillLevel = 100
+BattleBGM = Illa
+VictoryBGM = Battle victory leader
+#-------------------------------
+[ILLA2]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 32
+SkillLevel = 100
+BattleBGM = Illa
+VictoryBGM = Battle victory leader
+#-------------------------------
+[NEON_Illa]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = Illa
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Nessa]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = SWSH Battle
+VictoryBGM = SWSH Victory
+#-------------------------------
+[LEADER_Allister]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = SWSH Battle
+VictoryBGM = SWSH Victory
+#-------------------------------
+[GRUNT]
+Name = 수상한 트레이너
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+BattleBGM = XY FLARE
+#-------------------------------
+[GRUNTF]
+Name = 수상한 트레이너
+Gender = Female
+BaseMoney = 32
+SkillLevel = 100
+BattleBGM = XY FLARE
+#-------------------------------
+[GRUNTS]
+Name = 수상한 트레이너들
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+BattleBGM = XY FLARE
+#-------------------------------
+[GRUNTO]
+Name = 회사원
+Gender = Male
+BaseMoney = 32
+SkillLevel = 100
+BattleBGM = XY FLARE
+#-------------------------------
+[NEON_Benji]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 80
+SkillLevel = 100
+BattleBGM = NEON
+VictoryBGM = Battle victory leader
+#-------------------------------
+[NEON_Heily]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 80
+SkillLevel = 100
+BattleBGM = NEON
+VictoryBGM = Battle victory leader
+#-------------------------------
+[BENJI]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 80
+SkillLevel = 100
+BattleBGM = NEON
+VictoryBGM = Battle victory leader
+#-------------------------------
+[HEILY]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 80
+SkillLevel = 100
+BattleBGM = NEON
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Kabu]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = SWSH Battle
+VictoryBGM = SWSH Victory
+#-------------------------------
+[CHAMPION_Mustard]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 80
+SkillLevel = 100
+BattleBGM = Mustard Battle
+VictoryBGM = SWSH Victory
+#-------------------------------
+[LEADER_Opal]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = SWSH Battle
+VictoryBGM = SWSH Victory
+#-------------------------------
+[LEADER_Flinn]
+Name = 체육관 관장
+Gender = Male
+BaseMoney = 100
+BattleBGM = Battle Gym Leader
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Bea]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = SWSH Battle
+VictoryBGM = SWSH Victory
+#-------------------------------
+[LEADER_Klara]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = Klara Battle
+VictoryBGM = SWSH Victory
+#-------------------------------
+[LEADER_Avery]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = Avery Battle
+VictoryBGM = SWSH Victory
+#-------------------------------
+[LEADER_Melon]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 80
+SkillLevel = 100
+BattleBGM = SWSH Battle
+VictoryBGM = SWSH Victory
+#-------------------------------
+[LEADER_Goldie]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = SWSH Battle
+VictoryBGM = SWSH Victory
+#-------------------------------
+[LEADER_Gladion]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = Gladion Battle
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_GLADIO]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = Gladion Battle
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Korrina]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = XY Gym Battle
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LUCIEN]
+Name = 네오엔 CEO
+Gender = Male
+BaseMoney = 100
+BattleBGM = Lucien
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Milo]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = SWSH Battle
+VictoryBGM = SWSH Victory
+#-------------------------------
+[LEADER_Hau]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = HAU Battle
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Fiers]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = SWSH Battle
+VictoryBGM = SWSH Victory
+#-------------------------------
+[LEADER_Marnie]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = SWSH Battle
+VictoryBGM = SWSH Victory
+#-------------------------------
+[LEADER_Nemona]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = Nemona
+VictoryBGM = Battle victory leader
+#-------------------------------
+[STREAMER_Snowparty]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = SM Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[STREAMER_Sejun]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = XY Gym Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[STREAMER_YGN]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = HGSS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[STREAMER_ETS]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = ORAS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Ilima]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = SM Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Jasmine]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = HGSS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Chuck]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = HGSS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Kiawe]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = SM Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Morty]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = HGSS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Mao]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = SM Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Jahong]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = HGSS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Bugsy]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = HGSS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Pryce]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = HGSS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Hala]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = SM Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Mamane]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = SM Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Falkner]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = HGSS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Olivia]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = SM Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Kahili]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = SM Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Clair]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = HGSS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Apollo]
+Name = 로켓단 간부
+Gender = Male
+BaseMoney = 100
+BattleBGM = HGSS Rocket
+#-------------------------------
+[LEADER_Athena]
+Name = 로켓단 간부
+Gender = Female
+BaseMoney = 100
+BattleBGM = HGSS Rocket
+#-------------------------------
+[LEADER_Silver]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = HGSS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Acerola]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = SM Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Malayne]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = SM Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Lana]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = SM Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[CHAMPION_Cynthia]
+Name = 챔피언
+Gender = Female
+BaseMoney = 100
+BattleBGM = Cynthia Battle
+VictoryBGM = Battle victory leader
+#-------------------------------
+[CHAMPION_Cyrus]
+Name = 갤럭시단 보스
+Gender = Male
+BaseMoney = 100
+BattleBGM = CYRUS
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[CHAMPION_Gold]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = Battle Champion
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[CHAMPION_Red]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = Battle Champion
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[CHAMPION_Ash]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = Battle Champion
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_WALLY]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = WALLY Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[THORTON]
+Name = 프런티어 브레인
+Gender = Male
+BaseMoney = 100
+BattleBGM = FRONTIER
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[NOLAND]
+Name = 프런티어 브레인
+Gender = Male
+BaseMoney = 100
+BattleBGM = FRONTIER
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LILLIE]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = SM Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[EUSINE]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = HGSS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[MARLEY]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = DP Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[CHERYL]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = DP Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[MIRA]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = DP Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_SANA]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = XY Rival
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_TREVOR]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = XY Rival
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_TIERNO]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = XY Rival
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Brock2]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = Battle Gym Leader
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Misty2]
+Name = Gym Leader
+Gender = Female
+BaseMoney = 100
+BattleBGM = Battle Gym Leader
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Surge2]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = Battle Gym Leader
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Erika2]
+Name = Gym Leader
+Gender = Female
+BaseMoney = 100
+BattleBGM = Battle Gym Leader
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Janine2]
+Name = Gym Leader
+Gender = Female
+BaseMoney = 100
+BattleBGM = Battle Gym Leader
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Sabrina2]
+Name = Gym Leader
+Gender = Female
+BaseMoney = 100
+BattleBGM = Battle Gym Leader
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Flinn2]
+Name = Gym Leader
+Gender = Female
+BaseMoney = 100
+BattleBGM = Battle Gym Leader
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_Jasmine2]
+Name = Gym Leader
+Gender = Female
+BaseMoney = 100
+BattleBGM = HGSS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Chuck2]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = HGSS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Morty2]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = HGSS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Jahong2]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = HGSS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Bugsy2]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = HGSS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Falkner2]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = HGSS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Clair2]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = HGSS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Roxane]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = ORAS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Brawly]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = ORAS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Wattson]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = ORAS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Flannery]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = ORAS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Winoa]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = ORAS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Tate]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = ORAS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Liza]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = ORAS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_ROARK]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = DP Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_GARDENIA]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = DP Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_MAYLENE]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = DP Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_FANTINA]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = DP Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_BYRON]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = DP Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_CANDICE]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = DP Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_WAKE]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = DP Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_BIANCA]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = BW Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_LISIA]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = ORAS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_LENORA]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = BW Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_BURGH]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = BW Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_ELESA]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = BW Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_SKYLA]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = BW Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_BRYCEN]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = BW Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_ROXIE]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = BW Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_PEPPER]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = PEPPER
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_MORAN]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = MORAN
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_VIOLA]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = XY Gym Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_GRANT]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = XY Gym Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_OLYMPIA]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = XY Gym Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_RAMOS]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = XY Gym Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_KORRINA]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = XY Gym Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_VALERIE]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = XY Gym Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_WULFRIC]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = XY Gym Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Ilima2]
+Name = 캡틴
+Gender = Male
+BaseMoney = 100
+BattleBGM = SM Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_MINA]
+Name = 캡틴
+Gender = Male
+BaseMoney = 100
+BattleBGM = SM Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Kiawe2]
+Name = 캡틴
+Gender = Male
+BaseMoney = 100
+BattleBGM = SM Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Mao2]
+Name = 캡틴
+Gender = Female
+BaseMoney = 100
+BattleBGM = SM Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Hala2]
+Name = 캡틴
+Gender = Male
+BaseMoney = 100
+BattleBGM = SM Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Mamane2]
+Name = 캡틴
+Gender = Male
+BaseMoney = 100
+BattleBGM = SM Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Olivia2]
+Name = 캡틴
+Gender = Female
+BaseMoney = 100
+BattleBGM = SM Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Kahili2]
+Name = 캡틴
+Gender = Female
+BaseMoney = 100
+BattleBGM = SM Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Acerola2]
+Name = 캡틴
+Gender = Female
+BaseMoney = 100
+BattleBGM = SM Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Malayne2]
+Name = 캡틴
+Gender = Male
+BaseMoney = 100
+BattleBGM = SM Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Lana2]
+Name = 캡틴
+Gender = Female
+BaseMoney = 100
+BattleBGM = SM Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Nessa2]
+Name = Gym Leader
+Gender = Female
+BaseMoney = 100
+BattleBGM = SWSH Battle
+VictoryBGM = SWSH Victory
+#-------------------------------
+[LEADER_Allister2]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = SWSH Battle
+VictoryBGM = SWSH Victory
+#-------------------------------
+[LEADER_Kabu2]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = SWSH Battle
+VictoryBGM = SWSH Victory
+#-------------------------------
+[LEADER_Opal2]
+Name = Gym Leader
+Gender = Female
+BaseMoney = 100
+BattleBGM = SWSH Battle
+VictoryBGM = SWSH Victory
+#-------------------------------
+[LEADER_Bea2]
+Name = Gym Leader
+Gender = Female
+BaseMoney = 100
+BattleBGM = SWSH Battle
+VictoryBGM = SWSH Victory
+#-------------------------------
+[LEADER_Klara2]
+Name = Gym Leader
+Gender = Female
+BaseMoney = 100
+BattleBGM = Klara Battle
+VictoryBGM = SWSH Victory
+#-------------------------------
+[LEADER_Avery2]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = Avery Battle
+VictoryBGM = SWSH Victory
+#-------------------------------
+[LEADER_Melon2]
+Name = Gym Leader
+Gender = Female
+BaseMoney = 100
+BattleBGM = SWSH Battle
+VictoryBGM = SWSH Victory
+#-------------------------------
+[LEADER_Goldie2]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = SWSH Battle
+VictoryBGM = SWSH Victory
+#-------------------------------
+[LEADER_Fiers2]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = SWSH Battle
+VictoryBGM = SWSH Victory
+#-------------------------------
+[LEADER_Marnie2]
+Name = Gym Leader
+Gender = Female
+BaseMoney = 100
+BattleBGM = SWSH Battle
+VictoryBGM = SWSH Victory
+#-------------------------------
+[LEADER_Milo2]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = SWSH Battle
+VictoryBGM = SWSH Victory
+#-------------------------------
+[LEADER_BEDE]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = SWSH Battle
+VictoryBGM = SWSH Victory
+#-------------------------------
+[LEADER_KATY]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = SV Battle
+VictoryBGM = SV Victory
+#-------------------------------
+[LEADER_BRASSIUS]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = SV Battle
+VictoryBGM = SV Victory
+#-------------------------------
+[LEADER_IONO]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = SV Battle
+VictoryBGM = SV Victory
+#-------------------------------
+[LEADER_KOFU]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = SV Battle
+VictoryBGM = SV Victory
+#-------------------------------
+[LEADER_RYME]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = SV Battle
+VictoryBGM = SV Victory
+#-------------------------------
+[LEADER_TULIP]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = SV Battle
+VictoryBGM = SV Victory
+#-------------------------------
+[LEADER_GRUSHA]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = sv Battle
+VictoryBGM = sv Victory
+#-------------------------------
+[LEADER_Silver2]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = HGSS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Norman]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = ORAS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_Juan]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = ORAS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_DRAKE]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = ORAS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_GLACIA]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = ORAS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_SIDNEY]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = ORAS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_PHOEBE]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = ORAS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_ZINNIA]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = ORAS Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_ANABEL]
+Name = 프론티어 브레인
+Gender = Male
+BaseMoney = 100
+BattleBGM = FRONTIER
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_VOLKNER]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = DP Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_BARRY]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = DP Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_LUCIAN]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = DP Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_BERTHA]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = DP Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_FLINT]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = DP Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_AARON]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = DP Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_RILEY]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = DP Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_CHEREN]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = BW Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_HUGH]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = BW Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_CHILI]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = BW Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_CRESS]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = BW Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_CILAN]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = BW Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_CORLESS]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = BW Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_MARSHAL]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = BW Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_CAITLIN]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = BW Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_SHAUNTAL]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = BW Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_GRIMSLY]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = BW Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_DRAYDEN]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = BW Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_BENGA]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = BW Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_HAU]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = HAU Battle
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LEADER_CLEMENT]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = XY Gym Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[EMMA]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = XY Gym Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[KUKUI]
+Name = 캡틴
+Gender = Female
+BaseMoney = 100
+BattleBGM = SM Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_HOP]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = SWSH Battle
+VictoryBGM = SWSH Victory
+#-------------------------------
+[LEADER_RAIHAN]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = SWSH Battle
+VictoryBGM = SWSH Victory
+#-------------------------------
+[LEADER_POPPY]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = SV Battle
+VictoryBGM = SV Victory
+#-------------------------------
+[LEADER_RIKA]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = SV Battle
+VictoryBGM = SV Victory
+#-------------------------------
+[LEADER_HASSEL]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = SV Battle
+VictoryBGM = SV Victory
+#-------------------------------
+[LEADER_LARRY]
+Name = Gym Leader
+Gender = Male
+BaseMoney = 100
+BattleBGM = SV Battle
+VictoryBGM = SV Victory
+#-------------------------------
+[RED]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = Battle Champion
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEAF]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = GREEN Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[GREEN]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = GREEN Battle
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[CHAMPION_Lance]
+Name = 챔피언
+Gender = Male
+BaseMoney = 100
+BattleBGM = Battle Champion
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[ASH]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = Battle Champion
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[GOLD]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = Battle Champion
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LYRA]
+Name = 포켓몬 트레이너
+Gender = Male
+BaseMoney = 100
+BattleBGM = Battle Champion
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[DAWN]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = Cynthia Battle
+VictoryBGM = Battle victory leader
+#-------------------------------
+[LUCAS]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = Cynthia Battle
+VictoryBGM = Battle victory leader
+#-------------------------------
+[RUBY]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = HOEN Champion
+VictoryBGM = Battle victory leader
+#-------------------------------
+[MAY]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = HOEN Champion
+VictoryBGM = Battle victory leader
+#-------------------------------
+[CHAMPION_Wallace]
+Name = 챔피언
+Gender = Female
+BaseMoney = 100
+BattleBGM = HOEN Champion
+VictoryBGM = Battle victory leader
+#-------------------------------
+[CHAMPION_Steven]
+Name = 챔피언
+Gender = Female
+BaseMoney = 100
+BattleBGM = HOEN Champion
+VictoryBGM = Battle victory leader
+#-------------------------------
+[HILBERT]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = BW Champion
+VictoryBGM = Battle victory leader
+#-------------------------------
+[HILDA]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = BW Champion
+VictoryBGM = Battle victory leader
+#-------------------------------
+[NNN]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = BW Champion
+VictoryBGM = Battle victory leader
+#-------------------------------
+[CHAMPION_Alder]
+Name = 챔피언
+Gender = Female
+BaseMoney = 100
+BattleBGM = BW Champion
+VictoryBGM = Battle victory leader
+#-------------------------------
+[CHAMPION_Iris]
+Name = 챔피언
+Gender = Female
+BaseMoney = 100
+BattleBGM = BW2 Champion
+VictoryBGM = Battle victory leader
+#-------------------------------
+[NATE]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = BW2 Champion
+VictoryBGM = Battle victory leader
+#-------------------------------
+[ROSA]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = BW2 Champion
+VictoryBGM = Battle victory leader
+#-------------------------------
+[CALEM]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = XY Champion
+VictoryBGM = Battle victory leader
+#-------------------------------
+[SERENA]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = XY Champion
+VictoryBGM = Battle victory leader
+#-------------------------------
+[CHAMPION_Diantha]
+Name = 챔피언
+Gender = Female
+BaseMoney = 100
+BattleBGM = XY Champion
+VictoryBGM = Battle victory leader
+#-------------------------------
+[ELIO]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = SM Champion
+VictoryBGM = Battle victory leader
+#-------------------------------
+[SELENE]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = SM Champion
+VictoryBGM = Battle victory leader
+#-------------------------------
+[VICTOR]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = SWSH Champion
+VictoryBGM = Battle victory leader
+#-------------------------------
+[GLORIA]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = SWSH Champion
+VictoryBGM = Battle victory leader
+#-------------------------------
+[CHAMPION_Leon]
+Name = 챔피언
+Gender = Female
+BaseMoney = 100
+BattleBGM = SWSH Champion
+VictoryBGM = Battle victory leader
+#-------------------------------
+[MUSTARD]
+Name = 챔피언
+Gender = Male
+BaseMoney = 100
+BattleBGM = Mustard Battle
+VictoryBGM = SWSH Victory
+#-------------------------------
+[FLORIAN]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = SV Champion
+VictoryBGM = Battle victory leader
+#-------------------------------
+[JULIANA]
+Name = 포켓몬 트레이너
+Gender = Female
+BaseMoney = 100
+BattleBGM = SV Champion
+VictoryBGM = Battle victory leader
+#-------------------------------
+[CHAMPION_Geeta]
+Name = 챔피언
+Gender = Female
+BaseMoney = 100
+BattleBGM = SV Champion
+VictoryBGM = Battle victory leader
+#-------------------------------
+[GEETA]
+Name = 챔피언
+Gender = Female
+BaseMoney = 100
+BattleBGM = SV Champion
+VictoryBGM = Battle victory leader
+#-------------------------------
+[PALMER]
+Name = 프론티어 브레인
+Gender = Male
+BaseMoney = 100
+BattleBGM = FRONTIER
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_JEVIN]
+Name = 사천왕
+Gender = Male
+BaseMoney = 100
+BattleBGM = SV Champion
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_TARO]
+Name = 사천왕
+Gender = Male
+BaseMoney = 100
+BattleBGM = SV Champion
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[LEADER_NERINE]
+Name = 사천왕
+Gender = Male
+BaseMoney = 100
+BattleBGM = SV Champion
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[FARHAN]
+Name = 타워 매니저
+Gender = Male
+BaseMoney = 150
+SkillLevel = 100
+BattleBGM = tower manager
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[ELODIE]
+Name = 타워 매니저
+Gender = Female
+BaseMoney = 150
+SkillLevel = 100
+BattleBGM = tower manager
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[VEGA]
+Name = 타워 매니저
+Gender = Male
+BaseMoney = 150
+SkillLevel = 100
+BattleBGM = tower manager
+VictoryBGM = Battle victory Leader
+#-------------------------------
+[ESMERALDA]
+Name = 타워 매니저
+Gender = Female
+BaseMoney = 150
+SkillLevel = 100
+BattleBGM = tower manager
+VictoryBGM = Battle victory Leader

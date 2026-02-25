@@ -1,0 +1,9 @@
+Name       = Charms Compilation
+Version    = 1.4.3
+Essentials = 21.1
+Optional   = Bag Screen w/int. Party, 2.5.0
+Optional   = [DBK] Z-Power, 1.0.1
+Optional   = Lin's Friend Safari, 1.1.1
+Optional   = Lin's BP System, 1.0.2
+Credits    = LinKazamine, Dr.Doom76, TechSkylander1518, wrigty12, Lucidious89
+Website    = https://reliccastle.com/resources/1389/

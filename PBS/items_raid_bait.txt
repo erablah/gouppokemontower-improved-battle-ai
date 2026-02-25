@@ -1,0 +1,12 @@
+﻿# See the documentation on the wiki to learn how to edit this file.
+#-------------------------------
+[RAIDBAIT]
+Name = 포켓몬 미끼
+NamePlural = 포켓몬 미끼
+PortionName = 포켓몬 미끼
+PortionNamePlural = 포켓몬 미끼
+Pocket = 1
+Price = 10000
+SellPrice = 0
+Flags = Fling_10
+Description = 레이드 에리어에서 레이드 포켓몬을 유인하게 해줄 수 있는 미끼가 든 상자.

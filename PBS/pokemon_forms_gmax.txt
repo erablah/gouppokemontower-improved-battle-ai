@@ -1,0 +1,290 @@
+﻿# See the documentation on the wiki to learn how to edit this file.
+#-------------------------------
+[VENUSAUR,2]
+FormName = Gigantamax
+Height = 24.0
+Pokedex = 2개의 굵은 덩굴을 휘둘러서 싸운다. 10층 빌딩을 가볍게 넘어뜨릴 정도로 파워풀하다.
+Generation = 8
+GmaxMove = GMAXVINELASH
+RaidRanks = 4,5
+RaidStyle = Max
+#-------------------------------
+[CHARIZARD,3]
+FormName = Gigantamax
+Height = 28.0
+Pokedex = 거다이맥스의 파워에 의해 거대한 불꽃의 날개를 가진 거대한 리자몽의 모습이 만들어졌다.
+Generation = 8
+GmaxMove = GMAXWILDFIRE
+RaidRanks = 4,5
+RaidStyle = Max
+#-------------------------------
+[BLASTOISE,2]
+FormName = Gigantamax
+Height = 25.0
+Pokedex = 정밀하게 사격하지는 못한다. 31개의 대포에서 포탄을 연달아 쏘아대는 스타일로 공격한다.
+Generation = 8
+GmaxMove = GMAXCANNONADE
+RaidRanks = 4,5
+RaidStyle = Max
+#-------------------------------
+[BUTTERFREE,1]
+FormName = Gigantamax
+Height = 17.0
+Pokedex = 10톤 트럭도 날려버리는 회오리에 소용돌이치게 하여 맹독의 인분으로 숨통을 끊는다.
+Generation = 8
+GmaxMove = GMAXBEFUDDLE
+RaidRanks = 4,5
+RaidStyle = Max
+#-------------------------------
+[PIKACHU,17]
+FormName = Gigantamax
+Height = 21.0
+Pokedex = 팽창한 거다이맥스의 파워에 의해 몸이 부풀어서 꼬리가 하늘까지 닿게 되었다.
+Generation = 8
+GmaxMove = GMAXVOLTCRASH
+RaidRanks = 3
+RaidStyle = Max
+#-------------------------------
+[MEOWTH,3]
+FormName = Gigantamax
+Height = 33.0
+Pokedex = 이마의 큰 금화에 나타난 무늬는 다이맥스의 비밀을 밝혀낼 열쇠로 여겨지고 있다.
+Generation = 8
+GmaxMove = GMAXGOLDRUSH
+RaidRanks = 3
+RaidStyle = Max
+#-------------------------------
+[MACHAMP,1]
+FormName = Gigantamax
+Height = 25.0
+Pokedex = 거다이맥스의 파워가 팔에 넘쳐흘러 폭탄의 파괴력을 가진 펀치를 날린다.
+Generation = 8
+GmaxMove = GMAXCHISTRIKE
+RaidRanks = 4,5
+RaidStyle = Max
+#-------------------------------
+[GENGAR,2]
+FormName = Gigantamax
+Height = 20.0
+Pokedex = 저주의 에너지로 넘치고 있다. 거대한 입의 저편은 저세상과 이어져 있다고 한다.
+Generation = 8
+GmaxMove = GMAXTERROR
+RaidRanks = 4,5
+RaidStyle = Max
+#-------------------------------
+[KINGLER,1]
+FormName = Gigantamax
+Height = 19.0
+Pokedex = 거다이맥스의 파워에 의해 거대해진 왼쪽 집게는 무엇이든 산산이 부숴버린다.
+Generation = 8
+GmaxMove = GMAXFOAMBURST
+RaidRanks = 4,5
+RaidStyle = Max
+#-------------------------------
+[LAPRAS,1]
+FormName = Gigantamax
+Height = 24.0
+Pokedex = 등껍질에는 5000명 이상의 사람을 태울수 있다. 흔들림도 없고 편안하다.
+Generation = 8
+GmaxMove = GMAXRESONANCE
+RaidStyle = Max
+#-------------------------------
+[EEVEE,2]
+FormName = Gigantamax
+Height = 18.0
+Pokedex = 거다이맥스의 파워로 더욱 복슬복슬해진 목 주변의 솜털로 상대를 감싸서 사로잡는다.
+Generation = 8
+GmaxMove = GMAXCUDDLE
+RaidRanks = 3
+RaidStyle = Max
+#-------------------------------
+[SNORLAX,1]
+FormName = Gigantamax
+Height = 35.0
+Pokedex = 거다이맥스의 파워로 먹다가 배에 흘린 씨앗이나 붙어 있던 돌멩이까지도 거대해졌다.
+Generation = 8
+GmaxMove = GMAXREPLENISH
+RaidStyle = Max
+#-------------------------------
+[GARBODOR,1]
+FormName = Gigantamax
+Height = 21.0
+Pokedex = 거다이맥스의 파워에 의해 진해진 독가스가 버려진 장난감의 형태로 굳었다.
+Generation = 8
+GmaxMove = GMAXMALODOR
+RaidRanks = 4,5
+RaidStyle = Max
+#-------------------------------
+[MELMETAL,1]
+FormName = Gigantamax
+Height = 25.0
+Pokedex = 먼 지방의 신화에 남아 있는 외눈 거인은 멜메탈이 거다이맥스한 모습이었다.
+Generation = 8
+GmaxMove = GMAXMELTDOWN
+RaidStyle = Max
+#-------------------------------
+[RILLABOOM,1]
+FormName = Gigantamax
+Height = 28.0
+Pokedex = 고릴타는 숲의 드럼과 하나가 되어 가라르 전 지역을 뒤흔드는 드럼 비트를 만들어 낸다.
+GmaxMove = GMAXDRUMSOLO
+RaidRanks = 4,5
+RaidStyle = Max
+#-------------------------------
+[CINDERACE,1]
+FormName = Gigantamax
+Height = 27.0
+Pokedex = 에이스번의 타오르는 투지가 담긴 거대 화염볼은 상대를 놓치지 않고 불살라버린다.
+GmaxMove = GMAXFIREBALL
+RaidRanks = 4,5
+RaidStyle = Max
+#-------------------------------
+[INTELEON,1]
+FormName = Gigantamax
+Height = 40.0
+Pokedex = 물대포의 속도는 마하7이다. 머리의 볏으로 바람과 기운을 감지하면서 조준을 맞춘다.
+GmaxMove = GMAXHYDROSNIPE
+RaidRanks = 4,5
+RaidStyle = Max
+#-------------------------------
+[CORVIKNIGHT,1]
+FormName = Gigantamax
+Height = 14.0
+Pokedex = 거다이맥스의 파워로 날갯짓하면 허리케인을 능가하는 강풍이 모든 것을 날려버린다.
+GmaxMove = GMAXWINDRAGE
+RaidRanks = 4,5
+RaidStyle = Max
+#-------------------------------
+[ORBEETLE,1]
+FormName = Gigantamax
+Height = 14.0
+Pokedex = 뇌를 중심으로 거대화했다. 압도적인 지능과 방대한 사이코 에너지를 지니고 있다.
+GmaxMove = GMAXGRAVITAS
+RaidRanks = 4,5
+RaidStyle = Max
+#-------------------------------
+[DREDNAW,1]
+FormName = Gigantamax
+Height = 24.0
+Pokedex = 거다이맥스의 파워에 의해 뒷발로 일어서게 됐다. 상대를 짓누른 뒤 큰 턱으로 마무리한다.
+GmaxMove = GMAXSTONESURGE
+RaidRanks = 4,5
+RaidStyle = Max
+#-------------------------------
+[COALOSSAL,1]
+FormName = Gigantamax
+Height = 42.0
+Pokedex = 몸체는 거대한 화덕이다. 거다이맥스의 파워에 의해 2000도의 불꽃이 활활 타오른다.
+GmaxMove = GMAXVOLCALITH
+RaidRanks = 4,5
+RaidStyle = Max
+#-------------------------------
+[FLAPPLE,1]
+FormName = Gigantamax
+Height = 24.0
+Pokedex = 거다이맥스의 파워에 의해 당도가 높아진 결과 거대한 사과의 모습으로 변모했다.
+GmaxMove = GMAXTARTNESS
+RaidRanks = 4,5
+RaidStyle = Max
+#-------------------------------
+[APPLETUN,1]
+FormName = Gigantamax
+Height = 24.0
+Pokedex = 체내의 꿀을 대량으로 분사해서 뒤집어쓰게 한 다음 끈적끈적한 점액 속에서 질식하게 한다.
+GmaxMove = GMAXSWEETNESS
+RaidRanks = 4,5
+RaidStyle = Max
+#-------------------------------
+[SANDACONDA,1]
+FormName = Gigantamax
+Height = 22.0
+Pokedex = 모래주머니도 매우 거대해졌다. 몸 주변에 소용돌이치는 모래는 100만 톤을 넘는다.
+GmaxMove = GMAXSANDBLAST
+RaidRanks = 4,5
+RaidStyle = Max
+#-------------------------------
+[TOXTRICITY,2]
+FormName = Gigantamax
+Height = 24.0
+Pokedex = 남아도는 전력이 무기다. 비축된 전기의 양은 번개 구름을 능가할 정도다.
+GmaxMove = GMAXSTUNSHOCK
+RaidRanks = 4,5
+RaidStyle = Max
+#-------------------------------
+[TOXTRICITY,3]
+PokedexForm = 2
+Abilities = PUNKROCK,MINUS
+Moves = 0,SPARK,1,LEER,1,GROWL,1,ACID,1,THUNDERSHOCK,1,FLAIL,1,ACIDSPRAY,1,BELCH,1,NOBLEROAR,1,NUZZLE,1,TEARFULLOOK,4,CHARGE,8,SHOCKWAVE,12,SCARYFACE,16,TAUNT,24,SCREECH,28,SWAGGER,32,TOXIC,36,DISCHARGE,40,POISONJAB,44,OVERDRIVE,48,BOOMBURST,52,MAGNETICFLUX
+GmaxMove = GMAXSTUNSHOCK
+UngmaxForm = 1
+#-------------------------------
+[CENTISKORCH,1]
+FormName = Gigantamax
+Height = 75.0
+Pokedex = 거다이맥스의 파워에 의해 체온이 섭씨 1000도를 넘어 열파동으로 상대를 불태워버린다.
+GmaxMove = GMAXCENTIFERNO
+RaidRanks = 4,5
+RaidStyle = Max
+#-------------------------------
+[HATTERENE,1]
+FormName = Gigantamax
+Height = 26.0
+Pokedex = 50km 떨어져 있는 생물의 기분을 감지한다. 적의를 느끼면 바로 공격한다.
+GmaxMove = GMAXSMITE
+RaidRanks = 4,5
+RaidStyle = Max
+#-------------------------------
+[GRIMMSNARL,1]
+FormName = Gigantamax
+Height = 32.0
+Pokedex = 다리털을 변형시켜서 날리는 드릴킥은 가라르의 대지에 큰 구멍을 내버린다.
+GmaxMove = GMAXSNOOZE
+RaidRanks = 4,5
+RaidStyle = Max
+#-------------------------------
+[ALCREMIE,63]
+FormName = Gigantamax
+Height = 30.0
+Pokedex = 무한히 넘쳐흐르는 크림으로 된 몸은 받는 충격이 강할수록 단단하게 굳어진다.
+GmaxMove = GMAXFINALE
+RaidRanks = 4,5
+RaidStyle = Max
+#-------------------------------
+[COPPERAJAH,1]
+FormName = Gigantamax
+Height = 23.0
+Pokedex = 콧속에 가득 찬 에너지를 분사하면 산이 날아가고 지형이 바뀐다.
+GmaxMove = GMAXSTEELSURGE
+RaidStyle = Max
+#-------------------------------
+[DURALUDON,1]
+FormName = Gigantamax
+Height = 43.0
+Pokedex = 마천루처럼 거대해졌다. 넘쳐나는 에너지에 몸의 일부가 발광하고 있다.
+GmaxMove = GMAXDEPLETION
+RaidRanks = 4,5
+RaidStyle = Max
+#-------------------------------
+[ETERNATUS,1]
+FormName = Eternamax
+BaseStats = 255,115,250,130,125,250
+Height = 100.0
+Shape = Serpentine
+Pokedex = 거대해진 코어에서 무한한 파워가 방출되기 때문에 주위 시공을 일그러뜨린다.
+#-------------------------------
+[URSHIFU,2]
+FormName = Gigantamax Single Strike Style
+Height = 29.0
+Pokedex = 분노의 화신이라 불린다. 무시무시한 형상과 우렁찬 소리로 세상의 악한 기운을 물리친다고 한다.
+GmaxMove = GMAXONEBLOW
+RaidStyle = Max
+#-------------------------------
+[URSHIFU,3]
+FormName = Gigantamax Rapid Strike Style
+Types = FIGHTING,WATER
+Moves = 0,SURGINGSTRIKES,1,FOCUSENERGY,1,ENDURE,1,ROCKSMASH,1,AQUAJET,1,LEER,12,AERIALACE,16,SCARYFACE,20,HEADBUTT,24,BRICKBREAK,28,DETECT,32,BULKUP,36,IRONHEAD,40,DYNAMICPUNCH,44,COUNTER,48,CLOSECOMBAT,52,FOCUSPUNCH
+Height = 26.0
+Pokedex = 외발로 선 채로 꿈쩍하지 않고 거다이맥스 파워를 폭발시킬 때를 가만히 기다리고 있다.
+GmaxMove = GMAXRAPIDFLOW
+UngmaxForm = 1
+RaidStyle = Max

@@ -1,0 +1,8 @@
+Name       = Monotype Challenge v21.1 port
+Version    = 1.0
+Essentials = 21.1
+Requires   = v21.1 Hotfixes, 1.0.9
+Conflicts  = v20 Hotfixes
+Conflicts  = v20.1 Hotfixes
+Conflicts  = v21 Hotfixes
+Credits    = TechSkylander1518, WillowLee(v21.1)

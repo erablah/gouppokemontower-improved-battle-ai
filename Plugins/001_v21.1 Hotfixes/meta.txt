@@ -1,0 +1,10 @@
+Name       = v21.1 Hotfixes
+Version    = 1.0.9
+Essentials = 21.1
+Conflicts  = v19 Hotfixes
+Conflicts  = v19.1 Updates
+Conflicts  = v20 Hotfixes
+Conflicts  = v20.1 Hotfixes
+Conflicts  = v21 Hotfixes
+Credits    = Maruno
+Website    = https://github.com/Maruno17/pokemon-essentials

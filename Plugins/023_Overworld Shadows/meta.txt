@@ -1,0 +1,6 @@
+Name       = Overworld Shadows
+Version    = 1.0.1
+Essentials = 21.1
+Requires   = Luka's Scripting Utilities, 4.0.2
+Credits    = Luka S.J., Marin
+Website    = https://luka-sj.com/res/owsh

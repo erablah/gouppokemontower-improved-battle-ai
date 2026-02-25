@@ -1,0 +1,100 @@
+﻿# See the documentation on the wiki to learn how to edit this file.
+#-------------------------------
+[CORRUPTCHARM]
+Name = Corrupt Charm
+NamePlural = Corrupt Charms
+Pocket = 10
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A charm with a corrupt aura said to close Pokémon's hearts.
+#-------------------------------
+[EASYCHARM]
+Name = Easy Charm
+NamePlural = Easy Charms
+Pocket = 10
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A charm with a warm aura said to lower Pokemon's levels.
+#-------------------------------
+[EFFORTCHARM]
+Name = 노력의 부적
+NamePlural = 노력의 부적
+Pocket = 10
+Price = 300
+FieldUse = Direct
+Flags = KeyItem
+Description = 지니고 있으면 포켓몬의 노력치가 더 빨리 오르는 부적.
+#-------------------------------
+[FRIENDSHIPCHARM]
+Name = Friendship Charm
+NamePlural = Friendship Charms
+Pocket = 10
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A calming charm said to increase the friendship of Pokémon.
+#-------------------------------
+[GENECHARM]
+Name = Gene Charm
+NamePlural = Gene Charms
+Pocket = 10
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A charm said to increase the change of finding Wild Pokémon with better genes.
+#-------------------------------
+[HARDCHARM]
+Name = Hard Charm
+NamePlural = Hard Charms
+Pocket = 10
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A charm with an electric aura said to raise Pokemon's levels.
+#-------------------------------
+[HERITAGECHARM]
+Name = Heritage Charm
+NamePlural = Heritage Charms
+Pocket = 10
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A chiming charm said to increase the chance of finding Wild Pokémon with an Egg Move.
+#-------------------------------
+[HIDDENCHARM]
+Name = Hidden Charm
+NamePlural = Hidden Charms
+Pocket = 10
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A charm said to increase the chance of finding Wild Pokémon with a Hidden Ability.
+#-------------------------------
+[POINTSCHARM]
+Name = Points Charm
+NamePlural = Points Charms
+Pocket = 10
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A charm said to double Battle Points gained.
+#-------------------------------
+[PURECHARM]
+Name = Pure Charm
+NamePlural = Pure Charms
+Pocket = 10
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A charm with a pure aura said to help open Pokémon's hearts.
+#-------------------------------
+[STEPCHARM]
+Name = Step Charm
+NamePlural = Step Charms
+Pocket = 10
+Price = 0
+FieldUse = Direct
+Flags = KeyItem
+Description = A warm charm said to decrease the amount of steps needed to hatch an egg.

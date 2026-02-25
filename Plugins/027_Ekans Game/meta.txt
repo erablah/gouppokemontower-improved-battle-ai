@@ -1,0 +1,4 @@
+Name       = Ekans Game
+Version    = 1.0.0
+Credits    = Swdfm
+Website    = NONE

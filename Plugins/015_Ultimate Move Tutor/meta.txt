@@ -1,0 +1,5 @@
+Name       = Ultimate Move Tutor
+Version    = 1.5
+Essentials = 21.1
+Essentials = 20.1
+Credits    = Grogro

@@ -1,0 +1,65 @@
+﻿# See the documentation on the wiki to learn how to edit this file.
+#-------------------------------
+[PIKACHU,8]
+FormName = Original Cap
+EggGroups = Undiscovered
+Pokedex = 이 피카츄의 모자에는 여러 지방을 여행한 추억으로 가득하다.
+Generation = 7
+Flags = SOSForm_0,CannotDynamax,CannotTerastallize
+Evolutions = RAICHU,None,
+#-------------------------------
+[PIKACHU,9]
+FormName = Hoenn Cap
+EggGroups = Undiscovered
+Pokedex = 이 피카츄의 모자에는 호연 지방을 여행한 추억으로 가득하다.
+Generation = 7
+Flags = SOSForm_0,CannotDynamax,CannotTerastallize
+Evolutions = RAICHU,None,
+#-------------------------------
+[PIKACHU,10]
+FormName = Sinnoh Cap
+EggGroups = Undiscovered
+Pokedex = 이 피카츄의 모자에는 신오 지방을 여행한 추억으로 가득하다.
+Generation = 7
+Flags = SOSForm_0,CannotDynamax,CannotTerastallize
+Evolutions = RAICHU,None,
+#-------------------------------
+[PIKACHU,11]
+FormName = Unova Cap
+EggGroups = Undiscovered
+Pokedex = 이 피카츄의 모자에는 하나 지방을 여행한 추억으로 가득하다.
+Generation = 7
+Flags = SOSForm_0,CannotDynamax,CannotTerastallize
+Evolutions = RAICHU,None,
+#-------------------------------
+[PIKACHU,12]
+FormName = Kalos Cap
+EggGroups = Undiscovered
+Pokedex = 이 피카츄의 모자에는 하나 지방을 여행한 추억으로 가득하다.
+Generation = 7
+Flags = SOSForm_0,CannotDynamax,CannotTerastallize
+Evolutions = RAICHU,None,
+#-------------------------------
+[PIKACHU,13]
+FormName = Alola Cap
+EggGroups = Undiscovered
+Pokedex = 이 피카츄의 모자에는 알로라 지방을 여행한 추억으로 가득하다.
+Generation = 7
+Flags = SOSForm_0,CannotDynamax,CannotTerastallize
+Evolutions = RAICHU,None,
+#-------------------------------
+[PIKACHU,14]
+FormName = Partner Cap
+EggGroups = Undiscovered
+Pokedex = 이 피카츄의 모자에는 운명적인 만남의 기억으로 가득하다.
+Generation = 8
+Flags = SOSForm_0,CannotDynamax,CannotTerastallize
+Evolutions = RAICHU,None,
+#-------------------------------
+[PIKACHU,15]
+FormName = World Cap
+EggGroups = Undiscovered
+Pokedex = 이 피카츄의 모자에는 전세계를 여행한 추억으로 가득하다.
+Generation = 8
+Flags = SOSForm_0,CannotDynamax,CannotTerastallize
+Evolutions = RAICHU,None,

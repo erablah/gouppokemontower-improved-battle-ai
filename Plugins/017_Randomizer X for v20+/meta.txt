@@ -1,0 +1,9 @@
+Name       = Randomizer X for v20+
+Version    = 1.0.1-hotfix
+Essentials = 20
+Essentials = 20.1
+Essentials = 21
+Essentials = 21.1
+Conflicts  = Elite Battle: DX
+Credits    = Luka S.J., A.I.R
+Website    = https://luka-sj.com/res/rndx
