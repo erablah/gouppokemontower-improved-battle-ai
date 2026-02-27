@@ -1,3837 +1,770 @@
-DEBUG: [랜덤 파티] 트레이너 엘리트 트레이너 test의 팀은 6마리이므로 랜덤 파티가 적용되지 않았습니다.
+[AI] DEBUG: [랜덤 파티] 트레이너 엘리트 트레이너 test의 팀은 6마리이므로 랜덤 파티가 적용되지 않았습니다.
 
 ================================================================
 
-[Started battle] Single trainer battle (1 trainer(s) vs. 1 trainer(s))
+[Started battle] Double trainer battle (1 trainer(s) vs. 1 trainer(s))
 "\j[엘리트 트레이너 test,이,가] 승부를 걸어왔다!"
-"\j[엘리트 트레이너 test,은,는] \j[버섯모,을,를] 내보냈다!"
-"가랏! 메타그로스!"
-[Round order] 메타그로스 (0), 상대 버섯모 (1)
+"\j[엘리트 트레이너 test,은,는] \j[패리퍼,과,와] \j[가이오가,을,를] 내보냈다!"
+"가랏! 한카리아스! 그란돈!"
+[Round order] 상대 가이오가 (3), 한카리아스 (0), 그란돈 (2), 상대 패리퍼 (1)
+"상대 가이오가의 원시회귀!
+원래의 모습으로 돌아갔다!"
+[Ability triggered] 상대 가이오가's 시작의바다
+"강한 비가 내리기 시작했다!"
+"그란돈의 원시회귀!
+원래의 모습으로 돌아갔다!"
+[Ability triggered] 그란돈's 끝의대지
+"햇살이 아주 강해졌다!"
 
 ===== Round 1 =====
 
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: METAGROSS
-[테스트] 타입: PSYCHIC
-[테스트] hasTera? true
-[AI] 버섯모 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: #<GameData::Item:0x0000015198ff2d88>
-[테스트] 종족: BRELOOM
-[테스트] 타입: FIGHTING
-[테스트] hasTera? false
-[AI] 버섯모 (1) is considering using 버섯포자 against 메타그로스 (0)...
+[AI] 패리퍼 (1) couldn't find any usable items
+[AI] 패리퍼 (1) is considering using 열탕...
+     -1099: move will fail
+[AI] 패리퍼 (1) is considering using 폭풍 against 한카리아스 (0)...
      + 30: function code modifier (against target)
-     + 10: 10. General Status Move Boost.
-[AI] 버섯모 (1) is considering using 칼춤...
-     + 12: raising the user's 공격 by 2
-     + 12: function code modifier (generic)
-     - 50: GLOBAL NERF: Setup moves are inherently risky.
-     - 50: Setup blocked: No damaging move can do >40% of target HP.
-     + 10: 10. General Status Move Boost.
-[AI] 버섯모 (1) is considering using 씨기관총 against 메타그로스 (0)...
-     +  4: damaging move (predicted damage 32 = 17% of target's HP)
-     -100: Penalize useless move: very low predicted damage (17.1%).
-[AI] 버섯모 (1) is considering using 마하펀치 against 메타그로스 (0)...
-     +  6: damaging move (predicted damage 51 = 27% of target's HP)
-     - 20: Penalize weak move: consider switching (27.3%).
-[AI] Move choices for 버섯모 (1) with threshold: 122: 
-   * 100.0% to use 버섯포자 (target 0): score 140
-   *   0.0% to use 칼춤: score 22
-   *   0.0% to use 씨기관총 (target 0): score 4
-   *   0.0% to use 마하펀치 (target 0): score 86
-   => will use 버섯포자 (target 0)
+     - 12: accuracy (predicted 50%)
+[AI] [damage_moves] computing 패리퍼 (1) → 한카리아스 (0) (turn 0)
+[AI]   열탕: 1 dmg (0.5% totalhp / 0.5% curhp)
+[AI]   폭풍: 63 dmg (34.4% totalhp / 34.4% curhp)
+[AI]   유턴: 18 dmg (9.8% totalhp / 9.8% curhp)
+     +  8: damaging move (predicted damage 63 = 34% of target's HP)
+     - 20: Penalize weak move: consider switching (34.4%).
+[AI] [damage_moves] computing 한카리아스 (0) → 패리퍼 (1) (turn 0)
+[AI] [known_foe_moves] Hiding 스톤에지 from 한카리아스 (0) (never acted)
+[AI]   지진: 0 dmg (0.0% totalhp / 0.0% curhp)
+[AI] [damage_moves] computing 그란돈 (2) → 패리퍼 (1) (turn 0)
+[AI]   지진: 0 dmg (0.0% totalhp / 0.0% curhp)
+[AI]   히트스탬프: 92 dmg (55.4% totalhp / 55.4% curhp)
+[AI]   단애의칼: 0 dmg (0.0% totalhp / 0.0% curhp)
+[AI]   솔라빔: 91 dmg (54.8% totalhp / 54.8% curhp)
+[AI] 패리퍼 (1) is considering using 폭풍 against 그란돈 (2)...
+     + 30: function code modifier (against target)
+     - 12: accuracy (predicted 50%)
+[AI] [damage_moves] computing 패리퍼 (1) → 그란돈 (2) (turn 0)
+[AI]   열탕: 1 dmg (0.5% totalhp / 0.5% curhp)
+[AI]   폭풍: 80 dmg (38.6% totalhp / 38.6% curhp)
+[AI]   유턴: 6 dmg (2.9% totalhp / 2.9% curhp)
+     +  9: damaging move (predicted damage 80 = 38% of target's HP)
+     - 20: Penalize weak move: consider switching (38.6%).
+[AI] 패리퍼 (1) is considering using 유턴 against 한카리아스 (0)...
+     +  2: damaging move (predicted damage 18 = 9% of target's HP)
+     +  5: 6. Slow Pivot preference.
+     + 10: 6. Active Pivot move boost.
+[AI] 패리퍼 (1) is considering using 유턴 against 그란돈 (2)...
+     +  5: 6. Slow Pivot preference.
+     + 10: 6. Active Pivot move boost.
+[AI] 패리퍼 (1) is considering using 날개쉬기...
+     -1099: move will fail
+[AI] Move choices for 패리퍼 (1) with threshold: 99: 
+[AI]    *   0.0% to use 열탕: score -999
+[AI]    *  14.3% to use 폭풍 (target 0): score 106
+[AI]    *  16.3% to use 폭풍 (target 2): score 107
+[AI]    *  36.7% to use 유턴 (target 0): score 117
+[AI]    *  32.7% to use 유턴 (target 2): score 115
+[AI]    *   0.0% to use 날개쉬기: score -999
+[AI] => will use 폭풍 (target 2)
 
-[Round order] 메타그로스 (0), 상대 버섯모 (1)
+[AI] 가이오가 (3) couldn't find any usable items
+[AI] 가이오가 (3) is considering using 번개 against 한카리아스 (0)...
+     move will not affect 한카리아스 (0)
+     -1099: move will fail
+[AI] 가이오가 (3) is considering using 번개 against 그란돈 (2)...
+     move will not affect 그란돈 (2)
+     -1099: move will fail
+[AI] 가이오가 (3) is considering using 냉동빔 against 한카리아스 (0)...
+[AI] [damage_moves] computing 가이오가 (3) → 한카리아스 (0) (turn 0)
+[AI]   번개: 1 dmg (0.5% totalhp / 0.5% curhp)
+[AI]   냉동빔: 260 dmg (142.1% totalhp / 142.1% curhp)
+[AI]   열탕: 1 dmg (0.5% totalhp / 0.5% curhp)
+[AI]   파도타기: 1 dmg (0.5% totalhp / 0.5% curhp)
+     + 30: damaging move (predicted damage 260 = 142% of target's HP)
+     + 50: predicted to KO the target
+[AI] [damage_moves] computing 한카리아스 (0) → 가이오가 (3) (turn 0)
+[AI]   지진: 83 dmg (47.4% totalhp / 47.4% curhp)
+[AI] [damage_moves] computing 그란돈 (2) → 가이오가 (3) (turn 0)
+[AI]   지진: 117 dmg (66.9% totalhp / 66.9% curhp)
+[AI]   히트스탬프: 71 dmg (40.6% totalhp / 40.6% curhp)
+[AI]   단애의칼: 140 dmg (80.0% totalhp / 80.0% curhp)
+[AI]   솔라빔: 80 dmg (45.7% totalhp / 45.7% curhp)
+[AI] 가이오가 (3) is considering using 냉동빔 against 그란돈 (2)...
+[AI] [damage_moves] computing 가이오가 (3) → 그란돈 (2) (turn 0)
+[AI]   번개: 1 dmg (0.5% totalhp / 0.5% curhp)
+[AI]   냉동빔: 81 dmg (39.1% totalhp / 39.1% curhp)
+[AI]   열탕: 1 dmg (0.5% totalhp / 0.5% curhp)
+[AI]   파도타기: 1 dmg (0.5% totalhp / 0.5% curhp)
+     +  9: damaging move (predicted damage 81 = 39% of target's HP)
+     - 20: Penalize weak move: consider switching (39.1%).
+[AI] 가이오가 (3) is considering using 열탕...
+     -1099: move will fail
+[AI] 가이오가 (3) is considering using 파도타기...
+     -1099: move will fail
+[AI] Move choices for 가이오가 (3) with threshold: 162: 
+[AI]    *   0.0% to use 번개 (target 0): score -999
+[AI]    *   0.0% to use 번개 (target 2): score -999
+[AI]    * 100.0% to use 냉동빔 (target 0): score 180
+[AI]    *   0.0% to use 냉동빔 (target 2): score 89
+[AI]    *   0.0% to use 열탕: score -999
+[AI]    *   0.0% to use 파도타기: score -999
+[AI] => will use 냉동빔 (target 0)
 
-[Use move] 메타그로스 (0) used 사이코키네시스
-"메타그로스의 사이코키네시스!"
-[HP change] 상대 버섯모 lost 104 HP (135 -> 31)
+[Round order] 상대 가이오가 (3), 한카리아스 (0), 그란돈 (2), 상대 패리퍼 (1)
+
+[Use move] 상대 가이오가 (3) used 냉동빔
+"상대 가이오가의 냉동빔!"
+[HP change] 한카리아스 lost 182 HP (183 -> 1)
 "효과가 굉장했다!"
-[Use move] 상대 버섯모 (1) used 버섯포자
-"상대 버섯모의 버섯포자!"
-"\j[메타그로스,은,는] 잠에 들었다!"
-[Status change] 메타그로스's sleep count is 3
+"\j[한카리아스,은,는] 기합의띠로 버텨냈다!"
+[Item consumed] 한카리아스 consumed its held 기합의띠
+[Use move] 한카리아스 (0) used 스텔스록
+"한카리아스의 스텔스록!"
+"상대편 주위로 뾰족한 돌이 떠다닌다!"
+[Use move] 그란돈 (2) used 솔라빔
+"그란돈의 솔라빔!"
+"\j[그란돈,은,는] 햇빛을 흡수했다!"
+[HP change] 상대 가이오가 lost 70 HP (175 -> 105)
+"효과가 굉장했다!"
+[Use move] 상대 패리퍼 (1) used 폭풍
+"상대 패리퍼의 폭풍!"
+[Move failed] Failed pbAccuracyCheck
+"상대 패리퍼의 기술이 빗나갔다!"
 
 [End of round 1]
+"태양이 강하다."
 
 ===== Round 2 =====
 
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: METAGROSS
-[테스트] 타입: PSYCHIC
-[테스트] hasTera? true
-[AI] 버섯모 (1) is considering using item 회복약 on party 버섯모 (party index 0)...
-     + 35: healing 버섯모 (1) by 134 HP (31 -> 135) (30 over heal)
-     + 43: 버섯모 (1)'s held item 기합의띠 prefers max HP
-     - 40: useless because 버섯모 (1) has no condition to heal
+[AI] 패리퍼 (1) is considering using item 회복약 on party 가이오가 (party index 1)...
+     - 40: useless because 가이오가's HP isn't worth healing
+     - 40: useless because 가이오가 (3) has no condition to heal
      -  8: prefers not to use item because it's last in stock
-     - 60: ITEM AI: Prefer switching over item (bad matchup).
+     -120: ITEM AI: HP is healthy (>60%), healing discouraged.
+[AI] [damage_moves] computing 한카리아스 (0) → 패리퍼 (1) (turn 1)
+[AI]   지진: 0 dmg (0.0% totalhp / 0.0% curhp)
+[AI]   스톤에지: 98 dmg (59.0% totalhp / 59.0% curhp)
+[AI] [damage_moves] computing 그란돈 (2) → 패리퍼 (1) (turn 1)
+[AI]   지진: 0 dmg (0.0% totalhp / 0.0% curhp)
+[AI]   히트스탬프: 92 dmg (55.4% totalhp / 55.4% curhp)
+[AI]   단애의칼: 0 dmg (0.0% totalhp / 0.0% curhp)
+[AI]   솔라빔: 91 dmg (54.8% totalhp / 54.8% curhp)
+     - 80: ITEM AI: No lethal threat next turn, healing discouraged.
      - 40: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 버섯모 (1) doesn't want to use any items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: #<GameData::Item:0x0000015198ff2d88>
-[테스트] 종족: BRELOOM
-[테스트] 타입: FIGHTING
-[테스트] hasTera? false
-[AI] 버섯모 (1) is considering using 버섯포자 against 메타그로스 (0)...
-     move will not affect 메타그로스 (0)
-     - 80: move will fail
-[AI] 버섯모 (1) is considering using 칼춤...
-     + 12: raising the user's 공격 by 2
-     + 12: function code modifier (generic)
-     - 50: GLOBAL NERF: Setup moves are inherently risky.
-     -100: Setup blocked: HP <= 30%.
-     + 10: 10. General Status Move Boost.
-[AI] 버섯모 (1) is considering using 씨기관총 against 메타그로스 (0)...
-     +  4: damaging move (predicted damage 32 = 17% of target's HP)
-     -100: Penalize useless move: very low predicted damage (17.1%).
-[AI] 버섯모 (1) is considering using 마하펀치 against 메타그로스 (0)...
-     +  8: user at low HP and move has priority over faster target
-     +  6: damaging move (predicted damage 51 = 27% of target's HP)
-     - 20: Penalize weak move: consider switching (27.3%).
-[AI] 버섯모 (1) wants to switch due to terrible moves
-[AI] 버섯모 (1) is being forced to switch out
-b.battler.lastMoveUsed: PSYCHIC
-어흥염 predicted_damage: 1
-pokemon 어흥염 has switch score 129
-b.battler.lastMoveUsed: PSYCHIC
-망나뇽 predicted_damage: 53
-pokemon 망나뇽 has switch score 56
-b.battler.lastMoveUsed: PSYCHIC
-비조도 predicted_damage: 126
-pokemon 비조도 has switch score 17
-b.battler.lastMoveUsed: PSYCHIC
-요가램 predicted_damage: 51
-pokemon 요가램 has switch score 29
-   => will switch with 어흥염
-
-[Round order] 메타그로스 (0), 상대 버섯모 (1)
-
-"\j[엘리트 트레이너 test,이,가] \j[버섯모,을,를] 넣었다!"
-"\j[엘리트 트레이너 test,은,는] \j[어흥염,을,를] 내보냈다!"
-[Ability triggered] 상대 어흥염's 위협
-[Ability triggered] 메타그로스's 클리어바디
-"메타그로스의 능력치는 떨어지지 않는다!"
-[Use move] 메타그로스 (0) used 사이코키네시스
-"\j[메타그로스,은,는] 깊이 자고 있다."
-[Status continues] 메타그로스's sleep count is 2
-[Move failed] 메타그로스 is asleep
-
-[End of round 2]
-
-===== Round 3 =====
-
-[AI] 어흥염 (1) is considering using item 회복약 on party 버섯모 (party index 0)...
-     + 35: healing 어흥염 (1) by 134 HP (31 -> 135) (30 over heal)
-     + 43: 어흥염 (1)'s held item 기합의띠 prefers max HP
-     - 40: useless because 어흥염 (1) has no condition to heal
+[AI] 패리퍼 (1) is considering using item 풀회복약 on party 가이오가 (party index 1)...
+     - 40: useless because 가이오가's HP isn't worth healing
      -  8: prefers not to use item because it's last in stock
      -120: ITEM AI: HP is healthy (>60%), healing discouraged.
      - 80: ITEM AI: No lethal threat next turn, healing discouraged.
      - 40: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 어흥염 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: #<GameData::Item:0x0000015198fe9738>
-[테스트] 종족: INCINEROAR
-[테스트] 타입: DARK
-[테스트] hasTera? false
-[AI] 어흥염 (1) is considering using DD래리어트 against 메타그로스 (0)...
-     + 15: damaging move (predicted damage 117 = 62% of target's HP)
-[AI] 어흥염 (1) is considering using 막말내뱉기 against 메타그로스 (0)...
-     move will not affect 메타그로스 (0)
-     - 80: move will fail
-[AI] 어흥염 (1) is considering using 플레어드라이브 against 메타그로스 (0)...
-     -  6: function code modifier (against target)
-     + 21: damaging move (predicted damage 162 = 86% of target's HP)
-[AI] 어흥염 (1) is considering using 유턴 against 메타그로스 (0)...
-     +  4: damaging move (predicted damage 32 = 17% of target's HP)
+[AI] 패리퍼 (1) couldn't find any usable items
+[AI] 패리퍼 (1) is considering using 열탕...
+     -1099: move will fail
+[AI] 패리퍼 (1) is considering using 폭풍 against 한카리아스 (0)...
+     + 10: function code modifier (against target)
+     - 12: accuracy (predicted 50%)
+[AI] [damage_moves] computing 패리퍼 (1) → 한카리아스 (0) (turn 1)
+[AI]   열탕: 1 dmg (0.5% totalhp / 100.0% curhp)
+[AI]   폭풍: 63 dmg (34.4% totalhp / 6300.0% curhp)
+[AI]   유턴: 18 dmg (9.8% totalhp / 1800.0% curhp)
+     + 30: damaging move (predicted damage 63 = 6300% of target's HP)
+     + 50: predicted to KO the target
+[AI] 패리퍼 (1) is considering using 폭풍 against 그란돈 (2)...
+     + 30: function code modifier (against target)
+     - 12: accuracy (predicted 50%)
+[AI] [damage_moves] computing 패리퍼 (1) → 그란돈 (2) (turn 1)
+[AI]   열탕: 1 dmg (0.5% totalhp / 0.5% curhp)
+[AI]   폭풍: 80 dmg (38.6% totalhp / 38.6% curhp)
+[AI]   유턴: 6 dmg (2.9% totalhp / 2.9% curhp)
+     +  9: damaging move (predicted damage 80 = 38% of target's HP)
+     - 20: Penalize weak move: consider switching (38.6%).
+[AI] 패리퍼 (1) is considering using 유턴 against 한카리아스 (0)...
+     + 30: damaging move (predicted damage 18 = 1800% of target's HP)
+     + 50: predicted to KO the target
      +  5: 6. Slow Pivot preference.
      + 10: 6. Active Pivot move boost.
-     -100: Penalize useless move: very low predicted damage (17.1%).
-[AI] Move choices for 어흥염 (1) with threshold: 97: 
-   *  50.0% to use DD래리어트 (target 0): score 115
-   *   0.0% to use 막말내뱉기 (target 0): score 20
-   *  50.0% to use 플레어드라이브 (target 0): score 115
-   *   0.0% to use 유턴 (target 0): score 19
-   => will use DD래리어트 (target 0)
-
-[Round order] 메타그로스 (0), 상대 어흥염 (1)
-
-"메타그로스, 돌아와!"
-"네 차례야, 밀로틱!"
-[Use move] 상대 어흥염 (1) used DD래리어트
-"상대 어흥염의 DD래리어트!"
-[HP change] 밀로틱 lost 95 HP (202 -> 107)
-
-[End of round 3]
-
-===== Round 4 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: MILOTIC
-[테스트] 타입: WATER
-[테스트] hasTera? true
-[AI] 어흥염 (1) is considering using item 회복약 on party 버섯모 (party index 0)...
-     + 35: healing 어흥염 (1) by 134 HP (31 -> 135) (30 over heal)
-     + 43: 어흥염 (1)'s held item 기합의띠 prefers max HP
-     - 40: useless because 어흥염 (1) has no condition to heal
-     -  8: prefers not to use item because it's last in stock
-     -120: ITEM AI: HP is healthy (>60%), healing discouraged.
-     - 80: ITEM AI: No lethal threat next turn, healing discouraged.
-     - 60: ITEM AI: Prefer switching over item (bad matchup).
-     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 어흥염 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: #<GameData::Item:0x0000015198fe9738>
-[테스트] 종족: INCINEROAR
-[테스트] 타입: DARK
-[테스트] hasTera? false
-[AI] 어흥염 (1) is considering using DD래리어트 against 밀로틱 (0)...
-     + 22: damaging move (predicted damage 96 = 89% of target's HP)
-checking foe damage 파도타기 126 = 63%
-[AI] 어흥염 (1) is considering using 막말내뱉기 against 밀로틱 (0)...
-     lowering the target's 공격 isn't worthwhile
-     +  6: lowering the target's 특수공격 by 1
-     + 17: function code modifier (against target)
-     + 10: 10. General Status Move Boost.
-checking foe damage 파도타기 126 = 63%
-[AI] 어흥염 (1) is considering using 플레어드라이브 against 밀로틱 (0)...
-     -  8: function code modifier (against target)
-     + 15: damaging move (predicted damage 68 = 63% of target's HP)
-     - 20: Penalize weak move: consider switching (33.7%).
-checking foe damage 파도타기 126 = 63%
-[AI] 어흥염 (1) is considering using 유턴 against 밀로틱 (0)...
-     + 12: damaging move (predicted damage 53 = 49% of target's HP)
+     - 10: function code modifier (generic)
+[AI] 패리퍼 (1) is considering using 유턴 against 그란돈 (2)...
      +  5: 6. Slow Pivot preference.
      + 10: 6. Active Pivot move boost.
-     - 20: Penalize weak move: consider switching (26.2%).
-checking foe damage 파도타기 126 = 63%
-[AI] Move choices for 어흥염 (1) with threshold: 109: 
-   *  41.9% to use DD래리어트 (target 0): score 122
-   *  58.1% to use 막말내뱉기 (target 0): score 127
-   *   0.0% to use 플레어드라이브 (target 0): score 87
-   *   0.0% to use 유턴 (target 0): score 107
-   => will use DD래리어트 (target 0)
+     - 10: function code modifier (generic)
+[AI] 패리퍼 (1) is considering using 날개쉬기...
+     -1099: move will fail
+[AI] Move choices for 패리퍼 (1) with threshold: 167: 
+[AI]    *   0.0% to use 열탕: score -999
+[AI]    *  37.9% to use 폭풍 (target 0): score 178
+[AI]    *   0.0% to use 폭풍 (target 2): score 107
+[AI]    *  62.1% to use 유턴 (target 0): score 185
+[AI]    *   0.0% to use 유턴 (target 2): score 105
+[AI]    *   0.0% to use 날개쉬기: score -999
+[AI] => will use 폭풍 (target 0)
 
-[Round order] 밀로틱 (0), 상대 어흥염 (1)
-
-[Use move] 밀로틱 (0) used 파도타기
-"밀로틱의 파도타기!"
-[HP change] 상대 어흥염 lost 107 HP (200 -> 93)
-"효과가 굉장했다!"
-[Use move] 상대 어흥염 (1) used DD래리어트
-"상대 어흥염의 DD래리어트!"
-[HP change] 밀로틱 lost 92 HP (107 -> 15)
-
-[End of round 4]
-[HP change] 상대 어흥염 gained 12 HP (93 -> 105)
-"상대 어흥염은 먹다남은음식으로 약간의 HP를 회복했다!"
-
-===== Round 5 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: MILOTIC
-[테스트] 타입: WATER
-[테스트] hasTera? true
-[AI] 어흥염 (1) is considering using item 회복약 on party 버섯모 (party index 0)...
-     + 35: healing 어흥염 (1) by 134 HP (31 -> 135) (30 over heal)
-     + 43: 어흥염 (1)'s held item 기합의띠 prefers max HP
-     - 40: useless because 어흥염 (1) has no condition to heal
+[AI] 가이오가 (3) is considering using item 회복약 on party 가이오가 (party index 1)...
+     - 40: useless because 가이오가's HP isn't worth healing
+     - 40: useless because 가이오가 (3) has no condition to heal
      -  8: prefers not to use item because it's last in stock
-     - 60: ITEM AI: Prefer switching over item (bad matchup).
+[AI] [damage_moves] computing 한카리아스 (0) → 가이오가 (3) (turn 1)
+[AI]   지진: 83 dmg (47.4% totalhp / 79.0% curhp)
+[AI]   스톤에지: 74 dmg (42.3% totalhp / 70.5% curhp)
+[AI] [damage_moves] computing 그란돈 (2) → 가이오가 (3) (turn 1)
+[AI]   지진: 117 dmg (66.9% totalhp / 111.4% curhp)
+[AI]   히트스탬프: 71 dmg (40.6% totalhp / 67.6% curhp)
+[AI]   단애의칼: 140 dmg (80.0% totalhp / 133.3% curhp)
+[AI]   솔라빔: 80 dmg (45.7% totalhp / 76.2% curhp)
+[AI] [item_ai] lethal threat: 그란돈 (2) 지진 117 >= 105 curhp
      - 40: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 어흥염 (1) is considering using item 회복약 on party 어흥염 (party index 1)...
-     + 13: healing 어흥염 (1) by 199 HP (105 -> 200) (104 over heal)
-     - 40: useless because 어흥염 (1) has no condition to heal
+[AI] 가이오가 (3) is considering using item 풀회복약 on party 가이오가 (party index 1)...
+     - 40: useless because 가이오가's HP isn't worth healing
      -  8: prefers not to use item because it's last in stock
-     - 60: ITEM AI: Prefer switching over item (bad matchup).
+[AI] [item_ai] lethal threat: 그란돈 (2) 지진 117 >= 105 curhp
      - 40: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 어흥염 (1) doesn't want to use any items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: #<GameData::Item:0x0000015198fe9738>
-[테스트] 종족: INCINEROAR
-[테스트] 타입: DARK
-[테스트] hasTera? false
-[AI] 어흥염 (1) is considering using DD래리어트 against 밀로틱 (0)...
-     + 30: damaging move (predicted damage 96 = 640% of target's HP)
-     + 40: predicted to KO the target
-checking foe damage 파도타기 126 = 120%
-evade KO switch chance is 73%
-     -100: Penalize move: user is slower than a foe who can KO. (Speed ratio: 1.15, Chance: 73%)
-[AI] 어흥염 (1) is considering using 막말내뱉기 against 밀로틱 (0)...
-     lowering the target's 공격 isn't worthwhile
-     +  6: lowering the target's 특수공격 by 1
-     + 10: 10. General Status Move Boost.
-checking foe damage 파도타기 126 = 120%
-evade KO switch chance is 73%
-     -100: Penalize move: user is slower than a foe who can KO. (Speed ratio: 1.15, Chance: 73%)
-[AI] 어흥염 (1) is considering using 플레어드라이브 against 밀로틱 (0)...
-     - 11: function code modifier (against target)
-     + 30: damaging move (predicted damage 68 = 453% of target's HP)
-     + 40: predicted to KO the target
-checking foe damage 파도타기 126 = 120%
-evade KO switch chance is 73%
-     -100: Penalize move: user is slower than a foe who can KO. (Speed ratio: 1.15, Chance: 73%)
-[AI] 어흥염 (1) is considering using 유턴 against 밀로틱 (0)...
-     + 30: damaging move (predicted damage 53 = 353% of target's HP)
-     + 40: predicted to KO the target
-     +  5: 6. Slow Pivot preference.
-     + 10: 6. Active Pivot move boost.
-     - 15: function code modifier (generic)
-checking foe damage 파도타기 126 = 120%
-evade KO switch chance is 73%
-[AI] Move choices for 어흥염 (1) with threshold: 152: 
-   *   0.0% to use DD래리어트 (target 0): score 70
-   *   0.0% to use 막말내뱉기 (target 0): score 10
-   *   0.0% to use 플레어드라이브 (target 0): score 59
-   * 100.0% to use 유턴 (target 0): score 170
-   => will use 유턴 (target 0)
+[AI] 가이오가 (3) couldn't find any usable items
+[AI] 가이오가 (3) is considering using 번개 against 한카리아스 (0)...
+     move will not affect 한카리아스 (0)
+     -1099: move will fail
+[AI] 가이오가 (3) is considering using 번개 against 그란돈 (2)...
+     move will not affect 그란돈 (2)
+     -1099: move will fail
+[AI] 가이오가 (3) is considering using 냉동빔 against 한카리아스 (0)...
+[AI] [damage_moves] computing 가이오가 (3) → 한카리아스 (0) (turn 1)
+[AI]   번개: 1 dmg (0.5% totalhp / 100.0% curhp)
+[AI]   냉동빔: 260 dmg (142.1% totalhp / 26000.0% curhp)
+[AI]   열탕: 1 dmg (0.5% totalhp / 100.0% curhp)
+[AI]   파도타기: 1 dmg (0.5% totalhp / 100.0% curhp)
+     + 30: damaging move (predicted damage 260 = 26000% of target's HP)
+     + 50: predicted to KO the target
+[AI] [evade_ko] 그란돈 (2) 지진: 117 >= 99 (95% of 105 curhp)
+[AI] 가이오가 (3) is considering using 냉동빔 against 그란돈 (2)...
+[AI] [damage_moves] computing 가이오가 (3) → 그란돈 (2) (turn 1)
+[AI]   번개: 1 dmg (0.5% totalhp / 0.5% curhp)
+[AI]   냉동빔: 81 dmg (39.1% totalhp / 39.1% curhp)
+[AI]   열탕: 1 dmg (0.5% totalhp / 0.5% curhp)
+[AI]   파도타기: 1 dmg (0.5% totalhp / 0.5% curhp)
+     +  9: damaging move (predicted damage 81 = 39% of target's HP)
+     - 20: Penalize weak move: consider switching (39.1%).
+[AI] [evade_ko] 그란돈 (2) 지진: 117 >= 99 (95% of 105 curhp)
+[AI] 가이오가 (3) is considering using 열탕...
+     -1099: move will fail
+[AI] 가이오가 (3) is considering using 파도타기...
+     -1099: move will fail
+[AI] Move choices for 가이오가 (3) with threshold: 162: 
+[AI]    *   0.0% to use 번개 (target 0): score -999
+[AI]    *   0.0% to use 번개 (target 2): score -999
+[AI]    * 100.0% to use 냉동빔 (target 0): score 180
+[AI]    *   0.0% to use 냉동빔 (target 2): score 89
+[AI]    *   0.0% to use 열탕: score -999
+[AI]    *   0.0% to use 파도타기: score -999
+[AI] => will use 냉동빔 (target 0)
 
-[Round order] 밀로틱 (0), 상대 어흥염 (1)
+[Round order] 상대 가이오가 (3), 한카리아스 (0), 그란돈 (2), 상대 패리퍼 (1)
 
-[Use move] 밀로틱 (0) used 파도타기
-"밀로틱의 파도타기!"
-[HP change] 상대 어흥염 lost 105 HP (105 -> 0)
-"효과가 굉장했다!"
-"\j[상대 어흥염,은,는] 쓰러졌다!"
-"\j[메타그로스,이,가] 4639의 경험치를 얻었다!"
-"\j[밀로틱,이,가] 4639의 경험치를 얻었다!"
+"잘했어, 한카리아스! 돌아와!"
+"힘내, 불카모스!"
+[Use move] 상대 가이오가 (3) used 냉동빔
+"상대 가이오가의 냉동빔!"
+[HP change] 불카모스 lost 42 HP (160 -> 118)
+"급소에 맞았다!"
+"효과가 별로인 것 같다..."
+[Use move] 그란돈 (2) used 단애의칼
+"그란돈의 단애의칼!"
+[Target immune] 상대 패리퍼's type immunity
+"상대 패리퍼에겐 소용이 없는 것 같다..."
+[HP change] 상대 가이오가 lost 105 HP (105 -> 0)
+"\j[상대 가이오가,은,는] 쓰러졌다!"
+"\j[한카리아스,이,가] 5864의 많은 경험치를 얻었다!"
+"\j[그란돈,이,가] 5864의 많은 경험치를 얻었다!"
+"\j[불카모스,이,가] 5864의 많은 경험치를 얻었다!"
 "다른 포켓몬들도 학습장치를 통해 경험치를 얻었다!"
+[Use move] 상대 패리퍼 (1) used 폭풍
+"상대 패리퍼의 폭풍!"
+[HP change] 불카모스 lost 100 HP (118 -> 18)
+"효과가 굉장했다!"
 
-[End of round 5]
-b.battler.lastMoveUsed: SURF
-버섯모 predicted_damage: 30
-pokemon 버섯모 has switch score 29
-b.battler.lastMoveUsed: SURF
-망나뇽 predicted_damage: 28
-pokemon 망나뇽 has switch score 87
-b.battler.lastMoveUsed: SURF
-비조도 predicted_damage: 66
-pokemon 비조도 has switch score 41
-b.battler.lastMoveUsed: SURF
-요가램 predicted_damage: 54
-pokemon 요가램 has switch score 41
-"\j[엘리트 트레이너 test,은,는] \j[망나뇽,을,를] 내보냈다!"
+[End of round 2]
+"태양이 강하다."
+     -  6: 킹드라: entry hazard damage 18.75
+[AI] move_id: EARTHQUAKE
+[AI] move_id: STONEEDGE
+     + 13: 킹드라: foe cannot 2HKO, +31.833333333333336% < 50%
+[AI] move_id: EARTHQUAKE
+[AI] move_id: HEATCRASH
+[AI] move_id: PRECIPICEBLADES
+[AI] move_id: SOLARBEAM
+     - 27: 킹드라: foe can OHKO (101.83333333333333% >= 100%)
+[AI] 킹드라 predicted_damage for 하이드로펌프: 1
+[AI] 킹드라 predicted_damage for 하이드로펌프: 1
+[AI] 킹드라 predicted_damage for 용의파동: 48
+[AI] 킹드라 predicted_damage for 용의파동: 68
+[AI] 킹드라 predicted_damage for 냉동빔: 17
+[AI] 킹드라 predicted_damage for 냉동빔: 47
+[AI] 킹드라 predicted_damage for 파도타기: 1
+[AI] 킹드라 predicted_damage for 파도타기: 1
+     +  8: 킹드라: outspeeds 그란돈 (2) (137 vs 110).
+     + 11: 킹드라: tanks 불카모스 (0)'s best move better (22 vs 83 on current).
+     +  1: 킹드라: tanks 그란돈 (2)'s best move better (134 vs 140 on current).
+[AI] pokemon 킹드라 has switch score 92
+     -  3: 너트령: entry hazard damage 11.3125
+[AI] move_id: EARTHQUAKE
+[AI] move_id: STONEEDGE
+     + 17: 너트령: foe cannot 2HKO, +13.984806629834253% < 50%
+[AI] move_id: EARTHQUAKE
+[AI] move_id: HEATCRASH
+[AI] move_id: PRECIPICEBLADES
+[AI] move_id: SOLARBEAM
+     - 23: 너트령: foe can OHKO (389.12292817679554% >= 100%)
+[AI] 너트령 predicted_damage for 탁쳐서떨구기: 59
+[AI] 너트령 predicted_damage for 탁쳐서떨구기: 20
+     + 12: 너트령: tanks 불카모스 (0)'s best move better (14 vs 83 on current).
+     +  6: 너트령: tanks 그란돈 (2)'s best move better (87 vs 140 on current).
+[AI] pokemon 너트령 has switch score 96
+     - 12: 썬더: entry hazard damage 49.0
+[AI] move_id: EARTHQUAKE
+[AI] move_id: STONEEDGE
+     - 23: 썬더: foe can 2HKO (57.6530612244898% >= 50%)
+[AI] move_id: EARTHQUAKE
+[AI] move_id: HEATCRASH
+[AI] move_id: PRECIPICEBLADES
+[AI] move_id: SOLARBEAM
+     - 63: 썬더: foe can OHKO (174.48979591836735% >= 100%)
+[AI] 썬더 predicted_damage for 10만볼트: 57
+[AI] 썬더 predicted_damage for 10만볼트: 1
+[AI] 썬더 predicted_damage for 폭풍: 138
+[AI] 썬더 predicted_damage for 폭풍: 98
+     +  8: 썬더: outspeeds 그란돈 (2) (159 vs 110).
+     + 15: 썬더: tanks 불카모스 (0)'s best move better (0 vs 83 on current).
+     + 15: 썬더: tanks 그란돈 (2)'s best move better (0 vs 140 on current).
+[AI] pokemon 썬더 has switch score 75
+     -  6: 할비롱: entry hazard damage 23.125
+[AI] move_id: EARTHQUAKE
+[AI] move_id: STONEEDGE
+     + 14: 할비롱: foe cannot 2HKO, +29.7972972972973% < 50%
+[AI] move_id: EARTHQUAKE
+[AI] move_id: HEATCRASH
+[AI] move_id: PRECIPICEBLADES
+[AI] move_id: SOLARBEAM
+     - 22: 할비롱: foe can 2HKO (91.41891891891892% >= 50%)
+[AI] 할비롱 predicted_damage for 파도타기: 1
+[AI] 할비롱 predicted_damage for 파도타기: 1
+[AI] 할비롱 predicted_damage for 번개: 54
+[AI] 할비롱 predicted_damage for 번개: 1
+[AI] 할비롱 predicted_damage for 폭풍: 108
+[AI] 할비롱 predicted_damage for 폭풍: 76
+[AI] 할비롱 predicted_damage for 하이퍼보이스: 50
+[AI] 할비롱 predicted_damage for 하이퍼보이스: 71
+     + 11: 할비롱: tanks 불카모스 (0)'s best move better (24 vs 83 on current).
+[AI] pokemon 할비롱 has switch score 92
+"\j[엘리트 트레이너 test,은,는] \j[너트령,을,를] 내보냈다!"
+[HP change] 상대 너트령 lost 11 HP (181 -> 170)
+"상대 너트령에게 뾰족한 바위가 박혔다!"
 
-===== Round 6 =====
+===== Round 3 =====
 
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: MILOTIC
-[테스트] 타입: WATER
-[테스트] hasTera? true
-[AI] 망나뇽 (1) is considering using item 회복약 on party 버섯모 (party index 0)...
-     + 35: healing 망나뇽 (1) by 134 HP (31 -> 135) (30 over heal)
-     + 43: 망나뇽 (1)'s held item 기합의띠 prefers max HP
-     - 40: useless because 망나뇽 (1) has no condition to heal
+[AI] 패리퍼 (1) is considering using item 회복약 on party 너트령 (party index 3)...
+     - 40: useless because 너트령's HP isn't worth healing
+     - 40: useless because 너트령 (3) has no condition to heal
+     -  8: prefers not to use item because it's last in stock
+     -120: ITEM AI: HP is healthy (>60%), healing discouraged.
+[AI] [damage_moves] computing 불카모스 (0) → 패리퍼 (1) (turn 2)
+[AI] [known_foe_moves] Hiding 기가드레인 from 불카모스 (0) (never acted)
+[AI]   불대문자: 96 dmg (57.8% totalhp / 57.8% curhp)
+[AI]   벌레의야단법석: 53 dmg (31.9% totalhp / 31.9% curhp)
+[AI] [damage_moves] computing 그란돈 (2) → 패리퍼 (1) (turn 2)
+[AI]   지진: 0 dmg (0.0% totalhp / 0.0% curhp)
+[AI]   히트스탬프: 92 dmg (55.4% totalhp / 55.4% curhp)
+[AI]   단애의칼: 0 dmg (0.0% totalhp / 0.0% curhp)
+[AI]   솔라빔: 91 dmg (54.8% totalhp / 54.8% curhp)
+     - 80: ITEM AI: No lethal threat next turn, healing discouraged.
+     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
+[AI] 패리퍼 (1) is considering using item 풀회복약 on party 너트령 (party index 3)...
+     - 40: useless because 너트령's HP isn't worth healing
      -  8: prefers not to use item because it's last in stock
      -120: ITEM AI: HP is healthy (>60%), healing discouraged.
      - 80: ITEM AI: No lethal threat next turn, healing discouraged.
      - 40: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 망나뇽 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: #<GameData::Item:0x00000151990a65e0>
-[테스트] 종족: DRAGONITE
-[테스트] 타입: NORMAL
-[테스트] hasTera? true
-[AI] 망나뇽 (1) is considering Terastallizing into the 노말-type...
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: MILOTIC
-[테스트] 타입: WATER
-[테스트] hasTera? true
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: MILOTIC
-[테스트] 타입: WATER
-[테스트] hasTera? true
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: MILOTIC
-[테스트] 타입: WATER
-[테스트] hasTera? true
-     +  5: offensive advantage
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: MILOTIC
-[테스트] 타입: WATER
-[테스트] hasTera? true
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: MILOTIC
-[테스트] 타입: WATER
-[테스트] hasTera? true
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: MILOTIC
-[테스트] 타입: WATER
-[테스트] hasTera? true
-[AI] 망나뇽 (1) is comparing Terastal score with party member 버섯모 (score: 5)...
-[AI] 망나뇽 (1) is comparing Terastal score with party member 비조도 (score: 5)...
-[AI] 망나뇽 (1) will not Terastallize
-[AI] 망나뇽 (1) is considering using 용의춤...
-     raising the user's 스피드 isn't worthwhile
-     +  6: raising the user's 공격 by 1
-     +  6: function code modifier (generic)
-     - 50: GLOBAL NERF: Setup moves are inherently risky.
-     + 40: Safe setup: all strict conditions satisfied.
-     + 10: 10. General Status Move Boost.
-checking foe damage 파도타기 28 = 14%
-[AI] 망나뇽 (1) is considering using 날개쉬기...
-     - 80: move will fail
-[AI] 망나뇽 (1) is considering using 신속 against 밀로틱 (0)...
-     + 30: damaging move (predicted damage 70 = 466% of target's HP)
-     + 40: predicted to KO the target
-[AI] 망나뇽 (1) is considering using 지진...
-     + 30: damaging move (predicted damage 88 = 586% of target's HP)
-     + 40: predicted to KO the target
-checking foe damage 파도타기 28 = 14%
-[AI] Move choices for 망나뇽 (1) with threshold: 152: 
-   *   0.0% to use 용의춤: score 106
-   *   0.0% to use 날개쉬기: score 20
-   *  50.0% to use 신속 (target 0): score 170
-   *  50.0% to use 지진: score 170
-   => will use 신속 (target 0)
+[AI] 패리퍼 (1) couldn't find any usable items
+[AI] 패리퍼 (1) is considering using 열탕...
+     -1099: move will fail
+[AI] 패리퍼 (1) is considering using 폭풍 against 불카모스 (0)...
+     + 12: function code modifier (against target)
+     - 12: accuracy (predicted 50%)
+[AI] [damage_moves] computing 패리퍼 (1) → 불카모스 (0) (turn 2)
+[AI]   열탕: 1 dmg (0.6% totalhp / 5.6% curhp)
+[AI]   폭풍: 111 dmg (69.4% totalhp / 616.7% curhp)
+[AI]   유턴: 12 dmg (7.5% totalhp / 66.7% curhp)
+     + 30: damaging move (predicted damage 111 = 616% of target's HP)
+     + 50: predicted to KO the target
+     -  8: can trigger the target's ability
+[AI] 패리퍼 (1) is considering using 폭풍 against 그란돈 (2)...
+     + 30: function code modifier (against target)
+     - 12: accuracy (predicted 50%)
+[AI] [damage_moves] computing 패리퍼 (1) → 그란돈 (2) (turn 2)
+[AI]   열탕: 1 dmg (0.5% totalhp / 0.5% curhp)
+[AI]   폭풍: 80 dmg (38.6% totalhp / 38.6% curhp)
+[AI]   유턴: 6 dmg (2.9% totalhp / 2.9% curhp)
+     +  9: damaging move (predicted damage 80 = 38% of target's HP)
+     - 20: Penalize weak move: consider switching (38.6%).
+[AI] 패리퍼 (1) is considering using 유턴 against 불카모스 (0)...
+     + 16: damaging move (predicted damage 12 = 66% of target's HP)
+     -  8: can trigger the target's ability
+     +  5: 6. Slow Pivot preference.
+     + 10: 6. Active Pivot move boost.
+     - 10: function code modifier (generic)
+[AI] 패리퍼 (1) is considering using 유턴 against 그란돈 (2)...
+     +  5: 6. Slow Pivot preference.
+     + 10: 6. Active Pivot move boost.
+     - 10: function code modifier (generic)
+[AI] 패리퍼 (1) is considering using 날개쉬기...
+     -1099: move will fail
+[AI] Move choices for 패리퍼 (1) with threshold: 154: 
+[AI]    *   0.0% to use 열탕: score -999
+[AI]    * 100.0% to use 폭풍 (target 0): score 172
+[AI]    *   0.0% to use 폭풍 (target 2): score 107
+[AI]    *   0.0% to use 유턴 (target 0): score 113
+[AI]    *   0.0% to use 유턴 (target 2): score 105
+[AI]    *   0.0% to use 날개쉬기: score -999
+[AI] => will use 폭풍 (target 0)
 
-[Round order] 상대 망나뇽 (1), 밀로틱 (0)
-
-[Use move] 상대 망나뇽 (1) used 신속
-"상대 망나뇽의 신속!"
-[HP change] 밀로틱 lost 15 HP (15 -> 0)
-"\j[밀로틱,은,는] 쓰러졌다!"
-
-[End of round 6]
-"네 차례야, 한카리아스!"
-
-===== Round 7 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: GARCHOMP
-[테스트] 타입: DRAGON
-[테스트] hasTera? true
-[AI] 망나뇽 (1) is considering using item 회복약 on party 버섯모 (party index 0)...
-     + 35: healing 망나뇽 (1) by 134 HP (31 -> 135) (30 over heal)
-     + 43: 망나뇽 (1)'s held item 기합의띠 prefers max HP
-     - 40: useless because 망나뇽 (1) has no condition to heal
+[AI] 너트령 (3) is considering using item 회복약 on party 너트령 (party index 3)...
+     - 40: useless because 너트령's HP isn't worth healing
+     - 40: useless because 너트령 (3) has no condition to heal
      -  8: prefers not to use item because it's last in stock
      -120: ITEM AI: HP is healthy (>60%), healing discouraged.
-     - 80: ITEM AI: No lethal threat next turn, healing discouraged.
+[AI] [damage_moves] computing 불카모스 (0) → 너트령 (3) (turn 2)
+[AI]   불대문자: 513 dmg (283.4% totalhp / 301.8% curhp)
+[AI]   벌레의야단법석: 71 dmg (39.2% totalhp / 41.8% curhp)
+[AI] [item_ai] lethal threat: 불카모스 (0) 불대문자 513 >= 170 curhp
+[AI] [damage_moves] computing 그란돈 (2) → 너트령 (3) (turn 2)
+[AI]   지진: 73 dmg (40.3% totalhp / 42.9% curhp)
+[AI]   히트스탬프: 693 dmg (382.9% totalhp / 407.6% curhp)
+[AI]   단애의칼: 87 dmg (48.1% totalhp / 51.2% curhp)
+[AI]   솔라빔: 15 dmg (8.3% totalhp / 8.8% curhp)
+[AI] [item_ai] lethal threat: 그란돈 (2) 히트스탬프 693 >= 170 curhp
+     - 60: ITEM AI: Prefer switching over item (bad matchup).
      - 40: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 망나뇽 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: #<GameData::Item:0x00000151990a65e0>
-[테스트] 종족: DRAGONITE
-[테스트] 타입: NORMAL
-[테스트] hasTera? true
-[AI] 망나뇽 (1) is considering Terastallizing into the 노말-type...
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: GARCHOMP
-[테스트] 타입: DRAGON
-[테스트] hasTera? true
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: GARCHOMP
-[테스트] 타입: DRAGON
-[테스트] hasTera? true
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: GARCHOMP
-[테스트] 타입: DRAGON
-[테스트] hasTera? true
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: GARCHOMP
-[테스트] 타입: DRAGON
-[테스트] hasTera? true
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: GARCHOMP
-[테스트] 타입: DRAGON
-[테스트] hasTera? true
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: GARCHOMP
-[테스트] 타입: DRAGON
-[테스트] hasTera? true
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: GARCHOMP
-[테스트] 타입: DRAGON
-[테스트] hasTera? true
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: GARCHOMP
-[테스트] 타입: DRAGON
-[테스트] hasTera? true
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: GARCHOMP
-[테스트] 타입: DRAGON
-[테스트] hasTera? true
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: GARCHOMP
-[테스트] 타입: DRAGON
-[테스트] hasTera? true
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: GARCHOMP
-[테스트] 타입: DRAGON
-[테스트] hasTera? true
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: GARCHOMP
-[테스트] 타입: DRAGON
-[테스트] hasTera? true
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: GARCHOMP
-[테스트] 타입: DRAGON
-[테스트] hasTera? true
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: GARCHOMP
-[테스트] 타입: DRAGON
-[테스트] hasTera? true
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: GARCHOMP
-[테스트] 타입: DRAGON
-[테스트] hasTera? true
-[AI] 망나뇽 (1) is comparing Terastal score with party member 버섯모 (score: 5)...
-[AI] 망나뇽 (1) is comparing Terastal score with party member 비조도 (score: 5)...
-[AI] 망나뇽 (1) will not Terastallize
-[AI] 망나뇽 (1) is considering using 용의춤...
-     +  6: raising the user's 공격 by 1
-     +  7: raising the user's 스피드 by 1
-     + 13: function code modifier (generic)
-     - 50: GLOBAL NERF: Setup moves are inherently risky.
-     - 50: Setup blocked: No damaging move can do >40% of target HP.
-     + 10: 10. General Status Move Boost.
-checking foe damage 물기 48 = 24%
-checking foe damage 베어가르기 56 = 28%
-checking foe damage 드래곤클로 192 = 97%
-evade KO switch chance is 100%
-     -100: Penalize move: user is slower than a foe who can KO. (Speed ratio: 1.4, Chance: 100%)
-[AI] 망나뇽 (1) is considering using 날개쉬기...
-     - 80: move will fail
-[AI] 망나뇽 (1) is considering using 신속 against 한카리아스 (0)...
-     +  7: damaging move (predicted damage 55 = 28% of target's HP)
-     - 20: Penalize weak move: consider switching (28.2%).
-[AI] 망나뇽 (1) is considering using 지진...
-     +  8: damaging move (predicted damage 68 = 34% of target's HP)
-     - 20: Penalize weak move: consider switching (34.9%).
-checking foe damage 물기 48 = 24%
-checking foe damage 베어가르기 56 = 28%
-checking foe damage 드래곤클로 192 = 97%
-evade KO switch chance is 100%
-     -100: Penalize move: user is slower than a foe who can KO. (Speed ratio: 1.4, Chance: 100%)
-[AI] 망나뇽 (1) wants to switch due to terrible moves
-[AI] 망나뇽 (1) is being forced to switch out
-pokemon 버섯모 has switch score 114
-pokemon 비조도 has switch score 152
-pokemon 요가램 has switch score 138
-   => will switch with 비조도
-
-[Round order] 한카리아스 (0), 상대 망나뇽 (1)
-
-"\j[엘리트 트레이너 test,이,가] \j[망나뇽,을,를] 넣었다!"
-"\j[엘리트 트레이너 test,은,는] \j[비조도,을,를] 내보냈다!"
-[Use move] 한카리아스 (0) used 드래곤클로
-"한카리아스의 드래곤클로!"
-[HP change] 상대 비조도 lost 113 HP (141 -> 28)
-
-[End of round 7]
-
-===== Round 8 =====
-
-DEBUG: [랜덤 파티] 트레이너 엘리트 트레이너 test의 팀은 6마리이므로 랜덤 파티가 적용되지 않았습니다.
-
-================================================================
-
-[Started battle] Single trainer battle (1 trainer(s) vs. 1 trainer(s))
-"\j[엘리트 트레이너 test,이,가] 승부를 걸어왔다!"
-"\j[엘리트 트레이너 test,은,는] \j[버섯모,을,를] 내보냈다!"
-"가랏! 메타그로스!"
-[Round order] 메타그로스 (0), 상대 버섯모 (1)
-
-===== Round 1 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: METAGROSS
-[테스트] 타입: PSYCHIC
-[테스트] hasTera? true
-[AI] 버섯모 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: #<GameData::Item:0x0000019128836908>
-[테스트] 종족: BRELOOM
-[테스트] 타입: FIGHTING
-[테스트] hasTera? false
-[AI] 버섯모 (1) is considering using 버섯포자 against 메타그로스 (0)...
-     + 30: function code modifier (against target)
-     + 10: 10. General Status Move Boost.
-[AI] 버섯모 (1) is considering using 칼춤...
-     + 12: raising the user's 공격 by 2
-     + 12: function code modifier (generic)
-     - 50: GLOBAL NERF: Setup moves are inherently risky.
-
-**Exception: undefined method `predicted_damage' for #<Battle::AI>
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:59:in `block (3 levels) in <main>'
-Section205:19:in `block in each_foe_battler'
-Section205:17:in `each'
-Section205:17:in `each_with_index'
-Section205:17:in `each_foe_battler'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:57:in `block (2 levels) in <main>'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:50:in `each'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:50:in `block in <main>'
-Section198:122:in `block in apply_general_move_score_modifiers'
-Section035:129:in `block in each'
-Section035:129:in `each_pair'
-Section035:129:in `each'
-Section198:121:in `apply_general_move_score_modifiers'
-Section202:280:in `pbGetMoveScore'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:512:in `block (2 levels) in pbGetMoveScores'
-Section012:6:in `logonerr'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:512:in `block in pbGetMoveScores'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `each'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `each_with_index'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `pbGetMoveScores'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:463:in `pbDefaultChooseEnemyCommand'
-Section155:215:in `block in pbCommandPhaseLoop'
-Section155:203:in `loop'
-Section155:203:in `pbCommandPhaseLoop'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:381:in `pbCommandPhase'
-Section148:336:in `block (2 levels) in pbBattleLoop'
-Section012:6:in `logonerr'
-Section148:336:in `block in pbBattleLoop'
-Section148:324:in `loop'
-Section148:324:in `pbBattleLoop'
-[Generation 9 Pack] 010_[001] Battle_[003] Weather and Status.rb:98:in `pbStartBattleCore'
-Section148:271:in `pbStartBattle'
-Section256:521:in `block (2 levels) in start_core'
-Section257:55:in `pbSceneStandby'
-Section256:521:in `block in start_core'
-Section257:126:in `pbBattleAnimation'
-Section256:520:in `start_core'
-Section256:486:in `start'
-Section386:376:in `block in <main>'
-Section036:121:in `call'
-Section385:138:in `block in pbDebugMenu'
-Section385:100:in `loop'
-Section385:100:in `pbDebugMenu'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:111:in `pbDebugMenu'
-Section293:323:in `block (2 levels) in <main>'
-Section079:575:in `pbFadeOutIn'
-Section293:322:in `block in <main>'
-[Voltseon's Pause Menu] 003_003_VoltseonMenu_Menu.rb:54:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:222:in `block in update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `loop'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:297:in `pbStartPokemonMenu'
-[[MUI] Enhanced Pokemon UI] 003_[002] Legacy Data.rb:323:in `pbStartPokemonMenu'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:288:in `call_menu'
-Section032:207:in `update'
-Section400:299:in `update'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:178:in `update'
-[Sun Script] 001_Main.rb:26:in `update'
-Section032:238:in `block in main'
-Section032:235:in `loop'
-Section032:235:in `main'
-[Sun Script] 001_Main.rb:20:in `main'
-Section412:35:in `mainFunctionDebug'
-Section412:18:in `block in mainFunction'
-Section014:80:in `pbCriticalCode'
-Section412:18:in `mainFunction'
-Section412:45:in `block in <main>'
-Section412:44:in `loop'
-Section412:44:in `<main>'
--e:in `eval'
-
-
-[AI] 버섯모 (1) is considering using 씨기관총 against 메타그로스 (0)...
-     +  4: damaging move (predicted damage 32 = 17% of target's HP)
-     -100: Penalize useless move: very low predicted damage (17.1%).
-[AI] 버섯모 (1) is considering using 마하펀치 against 메타그로스 (0)...
-     +  6: damaging move (predicted damage 51 = 27% of target's HP)
-     - 20: Penalize weak move: consider switching (27.3%).
-[AI] Move choices for 버섯모 (1) with threshold: 122: 
-   * 100.0% to use 버섯포자 (target 0): score 140
-   *   0.0% to use 칼춤: score 100
-   *   0.0% to use 씨기관총 (target 0): score 4
-   *   0.0% to use 마하펀치 (target 0): score 86
-   => will use 버섯포자 (target 0)
-
-[Round order] 메타그로스 (0), 상대 버섯모 (1)
-
-[Use move] 메타그로스 (0) used 사이코키네시스
-"메타그로스의 사이코키네시스!"
-[HP change] 상대 버섯모 lost 102 HP (135 -> 33)
-"효과가 굉장했다!"
-DEBUG: [랜덤 파티] 트레이너 엘리트 트레이너 test의 팀은 6마리이므로 랜덤 파티가 적용되지 않았습니다.
-
-================================================================
-
-[Started battle] Single trainer battle (1 trainer(s) vs. 1 trainer(s))
-"\j[엘리트 트레이너 test,이,가] 승부를 걸어왔다!"
-"\j[엘리트 트레이너 test,은,는] \j[어흥염,을,를] 내보냈다!"
-"가랏! 메타그로스!"
-[Round order] 메타그로스 (0), 상대 어흥염 (1)
-[Ability triggered] 상대 어흥염's 위협
-[Ability triggered] 메타그로스's 클리어바디
-"메타그로스의 능력치는 떨어지지 않는다!"
-
-===== Round 1 =====
-
-DEBUG: [랜덤 파티] 트레이너 엘리트 트레이너 test의 팀은 6마리이므로 랜덤 파티가 적용되지 않았습니다.
-
-================================================================
-
-[Started battle] Single trainer battle (1 trainer(s) vs. 1 trainer(s))
-"\j[엘리트 트레이너 test,이,가] 승부를 걸어왔다!"
-"\j[엘리트 트레이너 test,은,는] \j[버섯모,을,를] 내보냈다!"
-"가랏! 메타그로스!"
-[Round order] 메타그로스 (0), 상대 버섯모 (1)
-
-===== Round 1 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: METAGROSS
-[테스트] 타입: PSYCHIC
-[테스트] hasTera? true
-[AI] 버섯모 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: #<GameData::Item:0x0000026cb7747d60>
-[테스트] 종족: BRELOOM
-[테스트] 타입: FIGHTING
-[테스트] hasTera? false
-[AI] 버섯모 (1) is considering using 버섯포자 against 메타그로스 (0)...
-     + 30: function code modifier (against target)
-     + 10: 10. General Status Move Boost.
-[AI] 버섯모 (1) is considering using 칼춤...
-     + 12: raising the user's 공격 by 2
-     + 12: function code modifier (generic)
-     - 50: GLOBAL NERF: Setup moves are inherently risky.
-
-**Exception: undefined method `allBattlers' for nil:NilClass
-[[DBK] Dynamax] 013_[012] Battle_Battler.rb:14:in `pbInitEffects'
-[[DBK] Raid Battles] 013_[002] Battle_[002] Battle - Raid Shield.rb:12:in `pbInitEffects'
-Section161:14:in `initialize'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:233:in `new'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:233:in `predicted_damage'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:59:in `block (3 levels) in <main>'
-Section205:19:in `block in each_foe_battler'
-Section205:17:in `each'
-Section205:17:in `each_with_index'
-Section205:17:in `each_foe_battler'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:57:in `block (2 levels) in <main>'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:50:in `each'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:50:in `block in <main>'
-Section198:122:in `block in apply_general_move_score_modifiers'
-Section035:129:in `block in each'
-Section035:129:in `each_pair'
-Section035:129:in `each'
-Section198:121:in `apply_general_move_score_modifiers'
-Section202:280:in `pbGetMoveScore'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:512:in `block (2 levels) in pbGetMoveScores'
-Section012:6:in `logonerr'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:512:in `block in pbGetMoveScores'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `each'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `each_with_index'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `pbGetMoveScores'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:463:in `pbDefaultChooseEnemyCommand'
-Section155:215:in `block in pbCommandPhaseLoop'
-Section155:203:in `loop'
-Section155:203:in `pbCommandPhaseLoop'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:381:in `pbCommandPhase'
-Section148:336:in `block (2 levels) in pbBattleLoop'
-Section012:6:in `logonerr'
-Section148:336:in `block in pbBattleLoop'
-Section148:324:in `loop'
-Section148:324:in `pbBattleLoop'
-[Generation 9 Pack] 010_[001] Battle_[003] Weather and Status.rb:98:in `pbStartBattleCore'
-Section148:271:in `pbStartBattle'
-Section256:521:in `block (2 levels) in start_core'
-Section257:55:in `pbSceneStandby'
-Section256:521:in `block in start_core'
-Section257:126:in `pbBattleAnimation'
-Section256:520:in `start_core'
-Section256:486:in `start'
-Section386:376:in `block in <main>'
-Section036:121:in `call'
-Section385:138:in `block in pbDebugMenu'
-Section385:100:in `loop'
-Section385:100:in `pbDebugMenu'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:111:in `pbDebugMenu'
-Section293:323:in `block (2 levels) in <main>'
-Section079:575:in `pbFadeOutIn'
-Section293:322:in `block in <main>'
-[Voltseon's Pause Menu] 003_003_VoltseonMenu_Menu.rb:54:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:222:in `block in update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `loop'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:297:in `pbStartPokemonMenu'
-[[MUI] Enhanced Pokemon UI] 003_[002] Legacy Data.rb:323:in `pbStartPokemonMenu'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:288:in `call_menu'
-Section032:207:in `update'
-Section400:299:in `update'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:178:in `update'
-[Sun Script] 001_Main.rb:26:in `update'
-Section032:238:in `block in main'
-Section032:235:in `loop'
-Section032:235:in `main'
-[Sun Script] 001_Main.rb:20:in `main'
-Section412:35:in `mainFunctionDebug'
-Section412:18:in `block in mainFunction'
-Section014:80:in `pbCriticalCode'
-Section412:18:in `mainFunction'
-Section412:45:in `block in <main>'
-Section412:44:in `loop'
-Section412:44:in `<main>'
--e:in `eval'
-
-
-[AI] 버섯모 (1) is considering using 씨기관총 against 메타그로스 (0)...
-     +  4: damaging move (predicted damage 32 = 17% of target's HP)
-     -100: Penalize useless move: very low predicted damage (17.1%).
-[AI] 버섯모 (1) is considering using 마하펀치 against 메타그로스 (0)...
-     +  6: damaging move (predicted damage 51 = 27% of target's HP)
-     - 20: Penalize weak move: consider switching (27.3%).
-[AI] Move choices for 버섯모 (1) with threshold: 122: 
-   * 100.0% to use 버섯포자 (target 0): score 140
-   *   0.0% to use 칼춤: score 100
-   *   0.0% to use 씨기관총 (target 0): score 4
-   *   0.0% to use 마하펀치 (target 0): score 86
-   => will use 버섯포자 (target 0)
-
-[Round order] 메타그로스 (0), 상대 버섯모 (1)
-
-[Use move] 메타그로스 (0) used 사이코키네시스
-"메타그로스의 사이코키네시스!"
-[HP change] 상대 버섯모 lost 110 HP (135 -> 25)
-"효과가 굉장했다!"
-[Stat change] 상대 버섯모's 특수방어 changed by -1 (0 -> -1)
-"상대 버섯모의 \j[특수방어,이,가] 떨어졌다!"
-[Use move] 상대 버섯모 (1) used 버섯포자
-"상대 버섯모의 버섯포자!"
-DEBUG: [랜덤 파티] 트레이너 엘리트 트레이너 test의 팀은 6마리이므로 랜덤 파티가 적용되지 않았습니다.
-
-================================================================
-
-[Started battle] Single trainer battle (1 trainer(s) vs. 1 trainer(s))
-"\j[엘리트 트레이너 test,이,가] 승부를 걸어왔다!"
-"\j[엘리트 트레이너 test,은,는] \j[어흥염,을,를] 내보냈다!"
-"가랏! 메타그로스!"
-[Round order] 메타그로스 (0), 상대 어흥염 (1)
-[Ability triggered] 상대 어흥염's 위협
-[Ability triggered] 메타그로스's 클리어바디
-"메타그로스의 능력치는 떨어지지 않는다!"
-
-===== Round 1 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: METAGROSS
-[테스트] 타입: PSYCHIC
-[테스트] hasTera? true
-[AI] 어흥염 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: #<GameData::Item:0x0000023d66b02110>
-[테스트] 종족: INCINEROAR
-[테스트] 타입: FIRE
-[테스트] hasTera? false
-[AI] 어흥염 (1) is considering using DD래리어트 against 메타그로스 (0)...
-     + 15: damaging move (predicted damage 117 = 62% of target's HP)
-
-**Exception: undefined method `allBattlers' for nil:NilClass
-[[DBK] Dynamax] 013_[012] Battle_Battler.rb:14:in `pbInitEffects'
-[[DBK] Raid Battles] 013_[002] Battle_[002] Battle - Raid Shield.rb:12:in `pbInitEffects'
-Section161:14:in `initialize'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:233:in `new'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:233:in `predicted_damage'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:338:in `block (3 levels) in <main>'
-Section207:296:in `block in check_for_move'
-Section160:457:in `block in eachMove'
-Section160:457:in `each'
-Section160:457:in `eachMove'
-Section207:294:in `check_for_move'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:332:in `block (2 levels) in <main>'
-Section205:19:in `block in each_foe_battler'
-Section205:17:in `each'
-Section205:17:in `each_with_index'
-Section205:17:in `each_foe_battler'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:328:in `block in <main>'
-Section198:122:in `block in apply_general_move_score_modifiers'
-Section035:129:in `block in each'
-Section035:129:in `each_pair'
-Section035:129:in `each'
-Section198:121:in `apply_general_move_score_modifiers'
-Section202:280:in `pbGetMoveScore'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:522:in `block (3 levels) in pbGetMoveScores'
-Section012:6:in `logonerr'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:522:in `block (2 levels) in pbGetMoveScores'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:517:in `each'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:517:in `block in pbGetMoveScores'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `each'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `each_with_index'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `pbGetMoveScores'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:463:in `pbDefaultChooseEnemyCommand'
-Section155:215:in `block in pbCommandPhaseLoop'
-Section155:203:in `loop'
-Section155:203:in `pbCommandPhaseLoop'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:381:in `pbCommandPhase'
-Section148:336:in `block (2 levels) in pbBattleLoop'
-Section012:6:in `logonerr'
-Section148:336:in `block in pbBattleLoop'
-Section148:324:in `loop'
-Section148:324:in `pbBattleLoop'
-[Generation 9 Pack] 010_[001] Battle_[003] Weather and Status.rb:98:in `pbStartBattleCore'
-Section148:271:in `pbStartBattle'
-Section256:521:in `block (2 levels) in start_core'
-Section257:55:in `pbSceneStandby'
-Section256:521:in `block in start_core'
-Section257:126:in `pbBattleAnimation'
-Section256:520:in `start_core'
-Section256:486:in `start'
-Section386:376:in `block in <main>'
-Section036:121:in `call'
-Section385:138:in `block in pbDebugMenu'
-Section385:100:in `loop'
-Section385:100:in `pbDebugMenu'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:111:in `pbDebugMenu'
-Section293:323:in `block (2 levels) in <main>'
-Section079:575:in `pbFadeOutIn'
-Section293:322:in `block in <main>'
-[Voltseon's Pause Menu] 003_003_VoltseonMenu_Menu.rb:54:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:222:in `block in update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `loop'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:297:in `pbStartPokemonMenu'
-[[MUI] Enhanced Pokemon UI] 003_[002] Legacy Data.rb:323:in `pbStartPokemonMenu'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:288:in `call_menu'
-Section032:207:in `update'
-Section400:299:in `update'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:178:in `update'
-[Sun Script] 001_Main.rb:26:in `update'
-Section032:238:in `block in main'
-Section032:235:in `loop'
-Section032:235:in `main'
-[Sun Script] 001_Main.rb:20:in `main'
-Section412:35:in `mainFunctionDebug'
-Section412:18:in `block in mainFunction'
-Section014:80:in `pbCriticalCode'
-Section412:18:in `mainFunction'
-Section412:45:in `block in <main>'
-Section412:44:in `loop'
-Section412:44:in `<main>'
--e:in `eval'
-
-
-DEBUG: [랜덤 파티] 트레이너 엘리트 트레이너 test의 팀은 6마리이므로 랜덤 파티가 적용되지 않았습니다.
-
-================================================================
-
-[Started battle] Single trainer battle (1 trainer(s) vs. 1 trainer(s))
-"\j[엘리트 트레이너 test,이,가] 승부를 걸어왔다!"
-"\j[엘리트 트레이너 test,은,는] \j[버섯모,을,를] 내보냈다!"
-"가랏! 메타그로스!"
-[Round order] 메타그로스 (0), 상대 버섯모 (1)
-
-===== Round 1 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: METAGROSS
-[테스트] 타입: PSYCHIC
-[테스트] hasTera? true
-[AI] 버섯모 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: #<GameData::Item:0x0000029286f69af8>
-[테스트] 종족: BRELOOM
-[테스트] 타입: FIGHTING
-[테스트] hasTera? false
-[AI] 버섯모 (1) is considering using 버섯포자 against 메타그로스 (0)...
-     + 30: function code modifier (against target)
-     + 10: 10. General Status Move Boost.
-[AI] 버섯모 (1) is considering using 칼춤...
-     + 12: raising the user's 공격 by 2
-     + 12: function code modifier (generic)
-     - 50: GLOBAL NERF: Setup moves are inherently risky.
-
-**Exception: undefined method `allBattlers' for nil:NilClass
-[[DBK] Dynamax] 013_[012] Battle_Battler.rb:14:in `pbInitEffects'
-[[DBK] Raid Battles] 013_[002] Battle_[002] Battle - Raid Shield.rb:12:in `pbInitEffects'
-Section161:14:in `initialize'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:233:in `new'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:233:in `predicted_damage'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:59:in `block (3 levels) in <main>'
-Section205:19:in `block in each_foe_battler'
-Section205:17:in `each'
-Section205:17:in `each_with_index'
-Section205:17:in `each_foe_battler'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:57:in `block (2 levels) in <main>'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:50:in `each'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:50:in `block in <main>'
-Section198:122:in `block in apply_general_move_score_modifiers'
-Section035:129:in `block in each'
-Section035:129:in `each_pair'
-Section035:129:in `each'
-Section198:121:in `apply_general_move_score_modifiers'
-Section202:280:in `pbGetMoveScore'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:512:in `block (2 levels) in pbGetMoveScores'
-Section012:6:in `logonerr'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:512:in `block in pbGetMoveScores'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `each'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `each_with_index'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `pbGetMoveScores'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:463:in `pbDefaultChooseEnemyCommand'
-Section155:215:in `block in pbCommandPhaseLoop'
-Section155:203:in `loop'
-Section155:203:in `pbCommandPhaseLoop'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:381:in `pbCommandPhase'
-Section148:336:in `block (2 levels) in pbBattleLoop'
-Section012:6:in `logonerr'
-Section148:336:in `block in pbBattleLoop'
-Section148:324:in `loop'
-Section148:324:in `pbBattleLoop'
-[Generation 9 Pack] 010_[001] Battle_[003] Weather and Status.rb:98:in `pbStartBattleCore'
-Section148:271:in `pbStartBattle'
-Section256:521:in `block (2 levels) in start_core'
-Section257:55:in `pbSceneStandby'
-Section256:521:in `block in start_core'
-Section257:126:in `pbBattleAnimation'
-Section256:520:in `start_core'
-Section256:486:in `start'
-Section386:376:in `block in <main>'
-Section036:121:in `call'
-Section385:138:in `block in pbDebugMenu'
-Section385:100:in `loop'
-Section385:100:in `pbDebugMenu'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:111:in `pbDebugMenu'
-Section293:323:in `block (2 levels) in <main>'
-Section079:575:in `pbFadeOutIn'
-Section293:322:in `block in <main>'
-[Voltseon's Pause Menu] 003_003_VoltseonMenu_Menu.rb:54:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:222:in `block in update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `loop'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:297:in `pbStartPokemonMenu'
-[[MUI] Enhanced Pokemon UI] 003_[002] Legacy Data.rb:323:in `pbStartPokemonMenu'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:288:in `call_menu'
-Section032:207:in `update'
-Section400:299:in `update'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:178:in `update'
-[Sun Script] 001_Main.rb:26:in `update'
-Section032:238:in `block in main'
-Section032:235:in `loop'
-Section032:235:in `main'
-[Sun Script] 001_Main.rb:20:in `main'
-Section412:35:in `mainFunctionDebug'
-Section412:18:in `block in mainFunction'
-Section014:80:in `pbCriticalCode'
-Section412:18:in `mainFunction'
-Section412:45:in `block in <main>'
-Section412:44:in `loop'
-Section412:44:in `<main>'
--e:in `eval'
-
-
-[AI] 버섯모 (1) is considering using 씨기관총 against 메타그로스 (0)...
-     +  4: damaging move (predicted damage 32 = 17% of target's HP)
-     -100: Penalize useless move: very low predicted damage (17.1%).
-[AI] 버섯모 (1) is considering using 마하펀치 against 메타그로스 (0)...
-     +  6: damaging move (predicted damage 51 = 27% of target's HP)
-     - 20: Penalize weak move: consider switching (27.3%).
-[AI] Move choices for 버섯모 (1) with threshold: 122: 
-   * 100.0% to use 버섯포자 (target 0): score 140
-   *   0.0% to use 칼춤: score 100
-   *   0.0% to use 씨기관총 (target 0): score 4
-   *   0.0% to use 마하펀치 (target 0): score 86
-   => will use 버섯포자 (target 0)
-
-[Round order] 메타그로스 (0), 상대 버섯모 (1)
-
-[Use move] 메타그로스 (0) used 사이코키네시스
-"메타그로스의 사이코키네시스!"
-[HP change] 상대 버섯모 lost 110 HP (135 -> 25)
-"효과가 굉장했다!"
-[Use move] 상대 버섯모 (1) used 버섯포자
-"상대 버섯모의 버섯포자!"
-"\j[메타그로스,은,는] 잠에 들었다!"
-[Status change] 메타그로스's sleep count is 3
-
-[End of round 1]
-
-===== Round 2 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: METAGROSS
-[테스트] 타입: PSYCHIC
-[테스트] hasTera? true
-[AI] 버섯모 (1) is considering using item 회복약 on party 버섯모 (party index 0)...
-     + 37: healing 버섯모 (1) by 134 HP (25 -> 135) (24 over heal)
-     + 45: 버섯모 (1)'s held item 기합의띠 prefers max HP
-     - 40: useless because 버섯모 (1) has no condition to heal
+[AI] 너트령 (3) is considering using item 풀회복약 on party 너트령 (party index 3)...
+     - 40: useless because 너트령's HP isn't worth healing
      -  8: prefers not to use item because it's last in stock
-
-**Exception: undefined method `allBattlers' for nil:NilClass
-[[DBK] Dynamax] 013_[012] Battle_Battler.rb:14:in `pbInitEffects'
-[[DBK] Raid Battles] 013_[002] Battle_[002] Battle - Raid Shield.rb:12:in `pbInitEffects'
-Section161:14:in `initialize'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:233:in `new'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:233:in `predicted_damage'
-[GO UP POKEMON TOWER] 005_AI_Improved_GeneralItemScore.rb:45:in `block (3 levels) in <main>'
-[GO UP POKEMON TOWER] 005_AI_Improved_GeneralItemScore.rb:39:in `each'
-[GO UP POKEMON TOWER] 005_AI_Improved_GeneralItemScore.rb:39:in `block (2 levels) in <main>'
-Section205:19:in `block in each_foe_battler'
-Section205:17:in `each'
-Section205:17:in `each_with_index'
-Section205:17:in `each_foe_battler'
-[GO UP POKEMON TOWER] 005_AI_Improved_GeneralItemScore.rb:38:in `block in <main>'
-[[DBK] Improved Item AI] 002_[001] Battle_AI.rb:340:in `block in apply_general_item_score_modifiers'
-Section035:129:in `block in each'
-Section035:129:in `each_pair'
-Section035:129:in `each'
-[[DBK] Improved Item AI] 002_[001] Battle_AI.rb:339:in `apply_general_item_score_modifiers'
-[[DBK] Improved Item AI] 002_[001] Battle_AI.rb:69:in `block (2 levels) in choose_item_to_use'
-Section147:403:in `block in eachInTeamFromBattlerIndex'
-Section147:403:in `each'
-Section147:403:in `each_with_index'
-Section147:403:in `eachInTeamFromBattlerIndex'
-[[DBK] Improved Item AI] 002_[001] Battle_AI.rb:49:in `block in choose_item_to_use'
-[[DBK] Improved Item AI] 002_[001] Battle_AI.rb:40:in `each'
-[[DBK] Improved Item AI] 002_[001] Battle_AI.rb:40:in `choose_item_to_use'
-Section200:88:in `pbChooseToUseItem'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:448:in `block in pbDefaultChooseEnemyCommand'
-Section012:6:in `logonerr'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:448:in `pbDefaultChooseEnemyCommand'
-Section155:215:in `block in pbCommandPhaseLoop'
-Section155:203:in `loop'
-Section155:203:in `pbCommandPhaseLoop'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:381:in `pbCommandPhase'
-Section148:336:in `block (2 levels) in pbBattleLoop'
-Section012:6:in `logonerr'
-Section148:336:in `block in pbBattleLoop'
-Section148:324:in `loop'
-Section148:324:in `pbBattleLoop'
-[Generation 9 Pack] 010_[001] Battle_[003] Weather and Status.rb:98:in `pbStartBattleCore'
-Section148:271:in `pbStartBattle'
-Section256:521:in `block (2 levels) in start_core'
-Section257:55:in `pbSceneStandby'
-Section256:521:in `block in start_core'
-Section257:126:in `pbBattleAnimation'
-Section256:520:in `start_core'
-Section256:486:in `start'
-Section386:376:in `block in <main>'
-Section036:121:in `call'
-Section385:138:in `block in pbDebugMenu'
-Section385:100:in `loop'
-Section385:100:in `pbDebugMenu'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:111:in `pbDebugMenu'
-Section293:323:in `block (2 levels) in <main>'
-Section079:575:in `pbFadeOutIn'
-Section293:322:in `block in <main>'
-[Voltseon's Pause Menu] 003_003_VoltseonMenu_Menu.rb:54:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:222:in `block in update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `loop'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:297:in `pbStartPokemonMenu'
-[[MUI] Enhanced Pokemon UI] 003_[002] Legacy Data.rb:323:in `pbStartPokemonMenu'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:288:in `call_menu'
-Section032:207:in `update'
-Section400:299:in `update'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:178:in `update'
-[Sun Script] 001_Main.rb:26:in `update'
-Section032:238:in `block in main'
-Section032:235:in `loop'
-Section032:235:in `main'
-[Sun Script] 001_Main.rb:20:in `main'
-Section412:35:in `mainFunctionDebug'
-Section412:18:in `block in mainFunction'
-Section014:80:in `pbCriticalCode'
-Section412:18:in `mainFunction'
-Section412:45:in `block in <main>'
-Section412:44:in `loop'
-Section412:44:in `<main>'
--e:in `eval'
-
-
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: #<GameData::Item:0x0000029286f69af8>
-[테스트] 종족: BRELOOM
-[테스트] 타입: FIGHTING
-[테스트] hasTera? false
-[AI] 버섯모 (1) is considering using 버섯포자 against 메타그로스 (0)...
-     move will not affect 메타그로스 (0)
-     - 80: move will fail
-[AI] 버섯모 (1) is considering using 칼춤...
-     + 12: raising the user's 공격 by 2
-     + 12: function code modifier (generic)
-     - 50: GLOBAL NERF: Setup moves are inherently risky.
-     -100: Setup blocked: HP <= 30%.
-     + 10: 10. General Status Move Boost.
-[AI] 버섯모 (1) is considering using 씨기관총 against 메타그로스 (0)...
-     +  4: damaging move (predicted damage 32 = 17% of target's HP)
-     -100: Penalize useless move: very low predicted damage (17.1%).
-[AI] 버섯모 (1) is considering using 마하펀치 against 메타그로스 (0)...
-     +  8: user at low HP and move has priority over faster target
-     +  6: damaging move (predicted damage 51 = 27% of target's HP)
-     - 20: Penalize weak move: consider switching (27.3%).
-[AI] 버섯모 (1) wants to switch due to terrible moves
-[AI] 버섯모 (1) is being forced to switch out
-
-**Exception: undefined method `score_replacement' for Battle::AI::Handlers:Module
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:193:in `rate_replacement_pokemon'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:178:in `block in choose_best_replacement_pokemon'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:177:in `each'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:177:in `each_with_index'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:177:in `choose_best_replacement_pokemon'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:129:in `pbChooseToSwitchOut'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:53:in `pbChooseMove'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:464:in `pbDefaultChooseEnemyCommand'
-Section155:215:in `block in pbCommandPhaseLoop'
-Section155:203:in `loop'
-Section155:203:in `pbCommandPhaseLoop'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:381:in `pbCommandPhase'
-Section148:336:in `block (2 levels) in pbBattleLoop'
-Section012:6:in `logonerr'
-Section148:336:in `block in pbBattleLoop'
-Section148:324:in `loop'
-Section148:324:in `pbBattleLoop'
-[Generation 9 Pack] 010_[001] Battle_[003] Weather and Status.rb:98:in `pbStartBattleCore'
-Section148:271:in `pbStartBattle'
-Section256:521:in `block (2 levels) in start_core'
-Section257:55:in `pbSceneStandby'
-Section256:521:in `block in start_core'
-Section257:126:in `pbBattleAnimation'
-Section256:520:in `start_core'
-Section256:486:in `start'
-Section386:376:in `block in <main>'
-Section036:121:in `call'
-Section385:138:in `block in pbDebugMenu'
-Section385:100:in `loop'
-Section385:100:in `pbDebugMenu'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:111:in `pbDebugMenu'
-Section293:323:in `block (2 levels) in <main>'
-Section079:575:in `pbFadeOutIn'
-Section293:322:in `block in <main>'
-[Voltseon's Pause Menu] 003_003_VoltseonMenu_Menu.rb:54:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:222:in `block in update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `loop'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:297:in `pbStartPokemonMenu'
-[[MUI] Enhanced Pokemon UI] 003_[002] Legacy Data.rb:323:in `pbStartPokemonMenu'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:288:in `call_menu'
-Section032:207:in `update'
-Section400:299:in `update'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:178:in `update'
-[Sun Script] 001_Main.rb:26:in `update'
-Section032:238:in `block in main'
-Section032:235:in `loop'
-Section032:235:in `main'
-[Sun Script] 001_Main.rb:20:in `main'
-Section412:35:in `mainFunctionDebug'
-Section412:18:in `block in mainFunction'
-Section014:80:in `pbCriticalCode'
-Section412:18:in `mainFunction'
-Section412:45:in `block in <main>'
-Section412:44:in `loop'
-Section412:44:in `<main>'
--e:in `eval'
-
-
-[Round order] 메타그로스 (0), 상대 버섯모 (1)
-
-[Use move] 메타그로스 (0) used 사이코키네시스
-"\j[메타그로스,은,는] 깊이 자고 있다."
-[Status continues] 메타그로스's sleep count is 2
-[Move failed] 메타그로스 is asleep
-
-[End of round 2]
-
-===== Round 3 =====
-
-DEBUG: [랜덤 파티] 트레이너 엘리트 트레이너 test의 팀은 6마리이므로 랜덤 파티가 적용되지 않았습니다.
-
-================================================================
-
-[Started battle] Single trainer battle (1 trainer(s) vs. 1 trainer(s))
-"\j[엘리트 트레이너 test,이,가] 승부를 걸어왔다!"
-"\j[엘리트 트레이너 test,은,는] \j[버섯모,을,를] 내보냈다!"
-"가랏! 메타그로스!"
-[Round order] 메타그로스 (0), 상대 버섯모 (1)
-
-===== Round 1 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: METAGROSS
-[테스트] 타입: PSYCHIC
-[테스트] hasTera? true
-[AI] 버섯모 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: #<GameData::Item:0x0000021ae7e36fd0>
-[테스트] 종족: BRELOOM
-[테스트] 타입: GRASS
-[테스트] hasTera? false
-[AI] 버섯모 (1) is considering using 버섯포자 against 메타그로스 (0)...
-     + 30: function code modifier (against target)
-     + 10: 10. General Status Move Boost.
-[AI] 버섯모 (1) is considering using 칼춤...
-     + 12: raising the user's 공격 by 2
-     + 12: function code modifier (generic)
-     - 50: GLOBAL NERF: Setup moves are inherently risky.
-
-**Exception: undefined method `allBattlers' for nil:NilClass
-[[DBK] Dynamax] 013_[012] Battle_Battler.rb:14:in `pbInitEffects'
-[[DBK] Raid Battles] 013_[002] Battle_[002] Battle - Raid Shield.rb:12:in `pbInitEffects'
-Section161:14:in `initialize'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:233:in `new'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:233:in `predicted_damage'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:59:in `block (3 levels) in <main>'
-Section205:19:in `block in each_foe_battler'
-Section205:17:in `each'
-Section205:17:in `each_with_index'
-Section205:17:in `each_foe_battler'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:57:in `block (2 levels) in <main>'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:50:in `each'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:50:in `block in <main>'
-Section198:122:in `block in apply_general_move_score_modifiers'
-Section035:129:in `block in each'
-Section035:129:in `each_pair'
-Section035:129:in `each'
-Section198:121:in `apply_general_move_score_modifiers'
-Section202:280:in `pbGetMoveScore'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:512:in `block (2 levels) in pbGetMoveScores'
-Section012:6:in `logonerr'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:512:in `block in pbGetMoveScores'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `each'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `each_with_index'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `pbGetMoveScores'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:463:in `pbDefaultChooseEnemyCommand'
-Section155:215:in `block in pbCommandPhaseLoop'
-Section155:203:in `loop'
-Section155:203:in `pbCommandPhaseLoop'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:381:in `pbCommandPhase'
-Section148:336:in `block (2 levels) in pbBattleLoop'
-Section012:6:in `logonerr'
-Section148:336:in `block in pbBattleLoop'
-Section148:324:in `loop'
-Section148:324:in `pbBattleLoop'
-[Generation 9 Pack] 010_[001] Battle_[003] Weather and Status.rb:98:in `pbStartBattleCore'
-Section148:271:in `pbStartBattle'
-Section256:521:in `block (2 levels) in start_core'
-Section257:55:in `pbSceneStandby'
-Section256:521:in `block in start_core'
-Section257:126:in `pbBattleAnimation'
-Section256:520:in `start_core'
-Section256:486:in `start'
-Section386:376:in `block in <main>'
-Section036:121:in `call'
-Section385:138:in `block in pbDebugMenu'
-Section385:100:in `loop'
-Section385:100:in `pbDebugMenu'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:111:in `pbDebugMenu'
-Section293:323:in `block (2 levels) in <main>'
-Section079:575:in `pbFadeOutIn'
-Section293:322:in `block in <main>'
-[Voltseon's Pause Menu] 003_003_VoltseonMenu_Menu.rb:54:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:222:in `block in update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `loop'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:297:in `pbStartPokemonMenu'
-[[MUI] Enhanced Pokemon UI] 003_[002] Legacy Data.rb:323:in `pbStartPokemonMenu'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:288:in `call_menu'
-Section032:207:in `update'
-Section400:299:in `update'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:178:in `update'
-[Sun Script] 001_Main.rb:26:in `update'
-Section032:238:in `block in main'
-Section032:235:in `loop'
-Section032:235:in `main'
-[Sun Script] 001_Main.rb:20:in `main'
-Section412:35:in `mainFunctionDebug'
-Section412:18:in `block in mainFunction'
-Section014:80:in `pbCriticalCode'
-Section412:18:in `mainFunction'
-Section412:45:in `block in <main>'
-Section412:44:in `loop'
-Section412:44:in `<main>'
--e:in `eval'
-
-
-[AI] 버섯모 (1) is considering using 씨기관총 against 메타그로스 (0)...
-     +  4: damaging move (predicted damage 32 = 17% of target's HP)
-     -100: Penalize useless move: very low predicted damage (17.1%).
-[AI] 버섯모 (1) is considering using 마하펀치 against 메타그로스 (0)...
-     +  6: damaging move (predicted damage 51 = 27% of target's HP)
-     - 20: Penalize weak move: consider switching (27.3%).
-[AI] Move choices for 버섯모 (1) with threshold: 122: 
-   * 100.0% to use 버섯포자 (target 0): score 140
-   *   0.0% to use 칼춤: score 100
-   *   0.0% to use 씨기관총 (target 0): score 4
-   *   0.0% to use 마하펀치 (target 0): score 86
-   => will use 버섯포자 (target 0)
-
-[Round order] 메타그로스 (0), 상대 버섯모 (1)
-
-[Use move] 메타그로스 (0) used 사이코키네시스
-"메타그로스의 사이코키네시스!"
-[HP change] 상대 버섯모 lost 106 HP (135 -> 29)
-"효과가 굉장했다!"
-[Use move] 상대 버섯모 (1) used 버섯포자
-"상대 버섯모의 버섯포자!"
-"\j[메타그로스,은,는] 잠에 들었다!"
-[Status change] 메타그로스's sleep count is 2
-
-[End of round 1]
-
-===== Round 2 =====
-
-DEBUG: [랜덤 파티] 트레이너 엘리트 트레이너 test의 팀은 6마리이므로 랜덤 파티가 적용되지 않았습니다.
-
-================================================================
-
-[Started battle] Single trainer battle (1 trainer(s) vs. 1 trainer(s))
-"\j[엘리트 트레이너 test,이,가] 승부를 걸어왔다!"
-"\j[엘리트 트레이너 test,은,는] \j[버섯모,을,를] 내보냈다!"
-"가랏! 메타그로스!"
-[Round order] 메타그로스 (0), 상대 버섯모 (1)
-
-===== Round 1 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: METAGROSS
-[테스트] 타입: PSYCHIC
-[테스트] hasTera? true
-[AI] 버섯모 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: #<GameData::Item:0x000001af33aa1e08>
-[테스트] 종족: BRELOOM
-[테스트] 타입: GRASS
-[테스트] hasTera? false
-[AI] 버섯모 (1) is considering using 버섯포자 against 메타그로스 (0)...
-     + 30: function code modifier (against target)
-     + 10: 10. General Status Move Boost.
-[AI] 버섯모 (1) is considering using 칼춤...
-     + 12: raising the user's 공격 by 2
-     + 12: function code modifier (generic)
-     - 50: GLOBAL NERF: Setup moves are inherently risky.
-
-**Exception: undefined method `allBattlers' for nil:NilClass
-[[DBK] Dynamax] 013_[012] Battle_Battler.rb:14:in `pbInitEffects'
-[[DBK] Raid Battles] 013_[002] Battle_[002] Battle - Raid Shield.rb:12:in `pbInitEffects'
-Section161:14:in `initialize'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:233:in `new'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:233:in `predicted_damage'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:59:in `block (3 levels) in <main>'
-Section205:19:in `block in each_foe_battler'
-Section205:17:in `each'
-Section205:17:in `each_with_index'
-Section205:17:in `each_foe_battler'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:57:in `block (2 levels) in <main>'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:50:in `each'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:50:in `block in <main>'
-Section198:122:in `block in apply_general_move_score_modifiers'
-Section035:129:in `block in each'
-Section035:129:in `each_pair'
-Section035:129:in `each'
-Section198:121:in `apply_general_move_score_modifiers'
-Section202:280:in `pbGetMoveScore'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:512:in `block (2 levels) in pbGetMoveScores'
-Section012:6:in `logonerr'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:512:in `block in pbGetMoveScores'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `each'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `each_with_index'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `pbGetMoveScores'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:463:in `pbDefaultChooseEnemyCommand'
-Section155:215:in `block in pbCommandPhaseLoop'
-Section155:203:in `loop'
-Section155:203:in `pbCommandPhaseLoop'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:381:in `pbCommandPhase'
-Section148:336:in `block (2 levels) in pbBattleLoop'
-Section012:6:in `logonerr'
-Section148:336:in `block in pbBattleLoop'
-Section148:324:in `loop'
-Section148:324:in `pbBattleLoop'
-[Generation 9 Pack] 010_[001] Battle_[003] Weather and Status.rb:98:in `pbStartBattleCore'
-Section148:271:in `pbStartBattle'
-Section256:521:in `block (2 levels) in start_core'
-Section257:55:in `pbSceneStandby'
-Section256:521:in `block in start_core'
-Section257:126:in `pbBattleAnimation'
-Section256:520:in `start_core'
-Section256:486:in `start'
-Section386:376:in `block in <main>'
-Section036:121:in `call'
-Section385:138:in `block in pbDebugMenu'
-Section385:100:in `loop'
-Section385:100:in `pbDebugMenu'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:111:in `pbDebugMenu'
-Section293:323:in `block (2 levels) in <main>'
-Section079:575:in `pbFadeOutIn'
-Section293:322:in `block in <main>'
-[Voltseon's Pause Menu] 003_003_VoltseonMenu_Menu.rb:54:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:222:in `block in update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `loop'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:297:in `pbStartPokemonMenu'
-[[MUI] Enhanced Pokemon UI] 003_[002] Legacy Data.rb:323:in `pbStartPokemonMenu'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:288:in `call_menu'
-Section032:207:in `update'
-Section400:299:in `update'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:178:in `update'
-[Sun Script] 001_Main.rb:26:in `update'
-Section032:238:in `block in main'
-Section032:235:in `loop'
-Section032:235:in `main'
-[Sun Script] 001_Main.rb:20:in `main'
-Section412:35:in `mainFunctionDebug'
-Section412:18:in `block in mainFunction'
-Section014:80:in `pbCriticalCode'
-Section412:18:in `mainFunction'
-Section412:45:in `block in <main>'
-Section412:44:in `loop'
-Section412:44:in `<main>'
--e:in `eval'
-
-
-[AI] 버섯모 (1) is considering using 씨기관총 against 메타그로스 (0)...
-     +  4: damaging move (predicted damage 32 = 17% of target's HP)
-     -100: Penalize useless move: very low predicted damage (17.1%).
-[AI] 버섯모 (1) is considering using 마하펀치 against 메타그로스 (0)...
-     +  6: damaging move (predicted damage 51 = 27% of target's HP)
-     - 20: Penalize weak move: consider switching (27.3%).
-[AI] Move choices for 버섯모 (1) with threshold: 122: 
-   * 100.0% to use 버섯포자 (target 0): score 140
-   *   0.0% to use 칼춤: score 100
-   *   0.0% to use 씨기관총 (target 0): score 4
-   *   0.0% to use 마하펀치 (target 0): score 86
-   => will use 버섯포자 (target 0)
-
-[Round order] 메타그로스 (0), 상대 버섯모 (1)
-
-[Use move] 메타그로스 (0) used 사이코키네시스
-"메타그로스의 사이코키네시스!"
-[HP change] 상대 버섯모 lost 101 HP (135 -> 34)
-"효과가 굉장했다!"
-[Stat change] 상대 버섯모's 특수방어 changed by -1 (0 -> -1)
-"상대 버섯모의 \j[특수방어,이,가] 떨어졌다!"
-[Use move] 상대 버섯모 (1) used 버섯포자
-"상대 버섯모의 버섯포자!"
-"\j[메타그로스,은,는] 잠에 들었다!"
-[Status change] 메타그로스's sleep count is 3
-
-[End of round 1]
-
-===== Round 2 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: METAGROSS
-[테스트] 타입: PSYCHIC
-[테스트] hasTera? true
-[AI] 버섯모 (1) is considering using item 회복약 on party 버섯모 (party index 0)...
-     + 28: healing 버섯모 (1) by 134 HP (34 -> 135) (33 over heal)
-     + 36: 버섯모 (1)'s held item 기합의띠 prefers max HP
-     - 40: useless because 버섯모 (1) has no condition to heal
-     -  8: prefers not to use item because it's last in stock
-
-**Exception: undefined method `allBattlers' for nil:NilClass
-[[DBK] Dynamax] 013_[012] Battle_Battler.rb:14:in `pbInitEffects'
-[[DBK] Raid Battles] 013_[002] Battle_[002] Battle - Raid Shield.rb:12:in `pbInitEffects'
-Section161:14:in `initialize'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:233:in `new'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:233:in `predicted_damage'
-[GO UP POKEMON TOWER] 005_AI_Improved_GeneralItemScore.rb:45:in `block (3 levels) in <main>'
-[GO UP POKEMON TOWER] 005_AI_Improved_GeneralItemScore.rb:39:in `each'
-[GO UP POKEMON TOWER] 005_AI_Improved_GeneralItemScore.rb:39:in `block (2 levels) in <main>'
-Section205:19:in `block in each_foe_battler'
-Section205:17:in `each'
-Section205:17:in `each_with_index'
-Section205:17:in `each_foe_battler'
-[GO UP POKEMON TOWER] 005_AI_Improved_GeneralItemScore.rb:38:in `block in <main>'
-[[DBK] Improved Item AI] 002_[001] Battle_AI.rb:340:in `block in apply_general_item_score_modifiers'
-Section035:129:in `block in each'
-Section035:129:in `each_pair'
-Section035:129:in `each'
-[[DBK] Improved Item AI] 002_[001] Battle_AI.rb:339:in `apply_general_item_score_modifiers'
-[[DBK] Improved Item AI] 002_[001] Battle_AI.rb:69:in `block (2 levels) in choose_item_to_use'
-Section147:403:in `block in eachInTeamFromBattlerIndex'
-Section147:403:in `each'
-Section147:403:in `each_with_index'
-Section147:403:in `eachInTeamFromBattlerIndex'
-[[DBK] Improved Item AI] 002_[001] Battle_AI.rb:49:in `block in choose_item_to_use'
-[[DBK] Improved Item AI] 002_[001] Battle_AI.rb:40:in `each'
-[[DBK] Improved Item AI] 002_[001] Battle_AI.rb:40:in `choose_item_to_use'
-Section200:88:in `pbChooseToUseItem'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:448:in `block in pbDefaultChooseEnemyCommand'
-Section012:6:in `logonerr'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:448:in `pbDefaultChooseEnemyCommand'
-Section155:215:in `block in pbCommandPhaseLoop'
-Section155:203:in `loop'
-Section155:203:in `pbCommandPhaseLoop'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:381:in `pbCommandPhase'
-Section148:336:in `block (2 levels) in pbBattleLoop'
-Section012:6:in `logonerr'
-Section148:336:in `block in pbBattleLoop'
-Section148:324:in `loop'
-Section148:324:in `pbBattleLoop'
-[Generation 9 Pack] 010_[001] Battle_[003] Weather and Status.rb:98:in `pbStartBattleCore'
-Section148:271:in `pbStartBattle'
-Section256:521:in `block (2 levels) in start_core'
-Section257:55:in `pbSceneStandby'
-Section256:521:in `block in start_core'
-Section257:126:in `pbBattleAnimation'
-Section256:520:in `start_core'
-Section256:486:in `start'
-Section386:376:in `block in <main>'
-Section036:121:in `call'
-Section385:138:in `block in pbDebugMenu'
-Section385:100:in `loop'
-Section385:100:in `pbDebugMenu'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:111:in `pbDebugMenu'
-Section293:323:in `block (2 levels) in <main>'
-Section079:575:in `pbFadeOutIn'
-Section293:322:in `block in <main>'
-[Voltseon's Pause Menu] 003_003_VoltseonMenu_Menu.rb:54:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:222:in `block in update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `loop'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:297:in `pbStartPokemonMenu'
-[[MUI] Enhanced Pokemon UI] 003_[002] Legacy Data.rb:323:in `pbStartPokemonMenu'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:288:in `call_menu'
-Section032:207:in `update'
-Section400:299:in `update'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:178:in `update'
-[Sun Script] 001_Main.rb:26:in `update'
-Section032:238:in `block in main'
-Section032:235:in `loop'
-Section032:235:in `main'
-[Sun Script] 001_Main.rb:20:in `main'
-Section412:35:in `mainFunctionDebug'
-Section412:18:in `block in mainFunction'
-Section014:80:in `pbCriticalCode'
-Section412:18:in `mainFunction'
-Section412:45:in `block in <main>'
-Section412:44:in `loop'
-Section412:44:in `<main>'
--e:in `eval'
-
-
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: #<GameData::Item:0x000001af33aa1e08>
-[테스트] 종족: BRELOOM
-[테스트] 타입: GRASS
-[테스트] hasTera? false
-[AI] 버섯모 (1) is considering using 버섯포자 against 메타그로스 (0)...
-     move will not affect 메타그로스 (0)
-     - 80: move will fail
-[AI] 버섯모 (1) is considering using 칼춤...
-     + 12: raising the user's 공격 by 2
-     + 12: function code modifier (generic)
-     - 50: GLOBAL NERF: Setup moves are inherently risky.
-     -100: Setup blocked: HP <= 30%.
-     + 10: 10. General Status Move Boost.
-[AI] 버섯모 (1) is considering using 씨기관총 against 메타그로스 (0)...
-     +  4: damaging move (predicted damage 32 = 17% of target's HP)
-     -100: Penalize useless move: very low predicted damage (17.1%).
-[AI] 버섯모 (1) is considering using 마하펀치 against 메타그로스 (0)...
-     +  8: user at low HP and move has priority over faster target
-     +  6: damaging move (predicted damage 51 = 27% of target's HP)
-     - 20: Penalize weak move: consider switching (27.3%).
-[AI] 버섯모 (1) wants to switch due to terrible moves
-[AI] 버섯모 (1) is being forced to switch out
-
-**Exception: undefined method `score_replacement' for Battle::AI::Handlers:Module
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:193:in `rate_replacement_pokemon'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:178:in `block in choose_best_replacement_pokemon'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:177:in `each'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:177:in `each_with_index'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:177:in `choose_best_replacement_pokemon'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:129:in `pbChooseToSwitchOut'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:53:in `pbChooseMove'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:464:in `pbDefaultChooseEnemyCommand'
-Section155:215:in `block in pbCommandPhaseLoop'
-Section155:203:in `loop'
-Section155:203:in `pbCommandPhaseLoop'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:381:in `pbCommandPhase'
-Section148:336:in `block (2 levels) in pbBattleLoop'
-Section012:6:in `logonerr'
-Section148:336:in `block in pbBattleLoop'
-Section148:324:in `loop'
-Section148:324:in `pbBattleLoop'
-[Generation 9 Pack] 010_[001] Battle_[003] Weather and Status.rb:98:in `pbStartBattleCore'
-Section148:271:in `pbStartBattle'
-Section256:521:in `block (2 levels) in start_core'
-Section257:55:in `pbSceneStandby'
-Section256:521:in `block in start_core'
-Section257:126:in `pbBattleAnimation'
-Section256:520:in `start_core'
-Section256:486:in `start'
-Section386:376:in `block in <main>'
-Section036:121:in `call'
-Section385:138:in `block in pbDebugMenu'
-Section385:100:in `loop'
-Section385:100:in `pbDebugMenu'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:111:in `pbDebugMenu'
-Section293:323:in `block (2 levels) in <main>'
-Section079:575:in `pbFadeOutIn'
-Section293:322:in `block in <main>'
-[Voltseon's Pause Menu] 003_003_VoltseonMenu_Menu.rb:54:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:222:in `block in update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `loop'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:297:in `pbStartPokemonMenu'
-[[MUI] Enhanced Pokemon UI] 003_[002] Legacy Data.rb:323:in `pbStartPokemonMenu'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:288:in `call_menu'
-Section032:207:in `update'
-Section400:299:in `update'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:178:in `update'
-[Sun Script] 001_Main.rb:26:in `update'
-Section032:238:in `block in main'
-Section032:235:in `loop'
-Section032:235:in `main'
-[Sun Script] 001_Main.rb:20:in `main'
-Section412:35:in `mainFunctionDebug'
-Section412:18:in `block in mainFunction'
-Section014:80:in `pbCriticalCode'
-Section412:18:in `mainFunction'
-Section412:45:in `block in <main>'
-Section412:44:in `loop'
-Section412:44:in `<main>'
--e:in `eval'
-
-
-[Round order] 메타그로스 (0), 상대 버섯모 (1)
-
-[Use move] 메타그로스 (0) used 사이코키네시스
-"\j[메타그로스,은,는] 깊이 자고 있다."
-[Status continues] 메타그로스's sleep count is 2
-[Move failed] 메타그로스 is asleep
-
-[End of round 2]
-
-===== Round 3 =====
-
-DEBUG: [랜덤 파티] 트레이너 엘리트 트레이너 test의 팀은 6마리이므로 랜덤 파티가 적용되지 않았습니다.
-
-================================================================
-
-[Started battle] Single trainer battle (1 trainer(s) vs. 1 trainer(s))
-"\j[엘리트 트레이너 test,이,가] 승부를 걸어왔다!"
-"\j[엘리트 트레이너 test,은,는] \j[어흥염,을,를] 내보냈다!"
-"가랏! 메타그로스!"
-[Round order] 메타그로스 (0), 상대 어흥염 (1)
-[Ability triggered] 상대 어흥염's 위협
-[Ability triggered] 메타그로스's 클리어바디
-"메타그로스의 능력치는 떨어지지 않는다!"
-
-===== Round 1 =====
-
-[AI] 어흥염 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: #<GameData::Item:0x0000019566da16d0>
-[테스트] 종족: INCINEROAR
-[테스트] 타입: DARK
-[테스트] hasTera? false
-[AI] 어흥염 (1) is considering using DD래리어트 against 메타그로스 (0)...
-     + 15: damaging move (predicted damage 117 = 62% of target's HP)
-
-**Exception: undefined method `allBattlers' for nil:NilClass
-[[DBK] Dynamax] 013_[012] Battle_Battler.rb:14:in `pbInitEffects'
-[[DBK] Raid Battles] 013_[002] Battle_[002] Battle - Raid Shield.rb:12:in `pbInitEffects'
-Section161:14:in `initialize'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:233:in `new'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:233:in `predicted_damage'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:338:in `block (3 levels) in <main>'
-Section207:296:in `block in check_for_move'
-Section160:457:in `block in eachMove'
-Section160:457:in `each'
-Section160:457:in `eachMove'
-Section207:294:in `check_for_move'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:332:in `block (2 levels) in <main>'
-Section205:19:in `block in each_foe_battler'
-Section205:17:in `each'
-Section205:17:in `each_with_index'
-Section205:17:in `each_foe_battler'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:328:in `block in <main>'
-Section198:122:in `block in apply_general_move_score_modifiers'
-Section035:129:in `block in each'
-Section035:129:in `each_pair'
-Section035:129:in `each'
-Section198:121:in `apply_general_move_score_modifiers'
-Section202:280:in `pbGetMoveScore'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:522:in `block (3 levels) in pbGetMoveScores'
-Section012:6:in `logonerr'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:522:in `block (2 levels) in pbGetMoveScores'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:517:in `each'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:517:in `block in pbGetMoveScores'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `each'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `each_with_index'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `pbGetMoveScores'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:463:in `pbDefaultChooseEnemyCommand'
-Section155:215:in `block in pbCommandPhaseLoop'
-Section155:203:in `loop'
-Section155:203:in `pbCommandPhaseLoop'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:381:in `pbCommandPhase'
-Section148:336:in `block (2 levels) in pbBattleLoop'
-Section012:6:in `logonerr'
-Section148:336:in `block in pbBattleLoop'
-Section148:324:in `loop'
-Section148:324:in `pbBattleLoop'
-[Generation 9 Pack] 010_[001] Battle_[003] Weather and Status.rb:98:in `pbStartBattleCore'
-Section148:271:in `pbStartBattle'
-Section256:521:in `block (2 levels) in start_core'
-Section257:55:in `pbSceneStandby'
-Section256:521:in `block in start_core'
-Section257:126:in `pbBattleAnimation'
-Section256:520:in `start_core'
-Section256:486:in `start'
-Section386:376:in `block in <main>'
-Section036:121:in `call'
-Section385:138:in `block in pbDebugMenu'
-Section385:100:in `loop'
-Section385:100:in `pbDebugMenu'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:111:in `pbDebugMenu'
-Section293:323:in `block (2 levels) in <main>'
-Section079:575:in `pbFadeOutIn'
-Section293:322:in `block in <main>'
-[Voltseon's Pause Menu] 003_003_VoltseonMenu_Menu.rb:54:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:222:in `block in update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `loop'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:297:in `pbStartPokemonMenu'
-[[MUI] Enhanced Pokemon UI] 003_[002] Legacy Data.rb:323:in `pbStartPokemonMenu'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:288:in `call_menu'
-Section032:207:in `update'
-Section400:299:in `update'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:178:in `update'
-[Sun Script] 001_Main.rb:26:in `update'
-Section032:238:in `block in main'
-Section032:235:in `loop'
-Section032:235:in `main'
-[Sun Script] 001_Main.rb:20:in `main'
-Section412:35:in `mainFunctionDebug'
-Section412:18:in `block in mainFunction'
-Section014:80:in `pbCriticalCode'
-Section412:18:in `mainFunction'
-Section412:45:in `block in <main>'
-Section412:44:in `loop'
-Section412:44:in `<main>'
--e:in `eval'
-
-
-[AI] 어흥염 (1) is considering using 막말내뱉기 against 메타그로스 (0)...
-     move will not affect 메타그로스 (0)
-     - 80: move will fail
-[AI] 어흥염 (1) is considering using 플레어드라이브 against 메타그로스 (0)...
-     +  4: function code modifier (against target)
-     + 21: damaging move (predicted damage 162 = 86% of target's HP)
-
-**Exception: undefined method `allBattlers' for nil:NilClass
-[[DBK] Dynamax] 013_[012] Battle_Battler.rb:14:in `pbInitEffects'
-[[DBK] Raid Battles] 013_[002] Battle_[002] Battle - Raid Shield.rb:12:in `pbInitEffects'
-Section161:14:in `initialize'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:233:in `new'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:233:in `predicted_damage'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:338:in `block (3 levels) in <main>'
-Section207:296:in `block in check_for_move'
-Section160:457:in `block in eachMove'
-Section160:457:in `each'
-Section160:457:in `eachMove'
-Section207:294:in `check_for_move'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:332:in `block (2 levels) in <main>'
-Section205:19:in `block in each_foe_battler'
-Section205:17:in `each'
-Section205:17:in `each_with_index'
-Section205:17:in `each_foe_battler'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:328:in `block in <main>'
-Section198:122:in `block in apply_general_move_score_modifiers'
-Section035:129:in `block in each'
-Section035:129:in `each_pair'
-Section035:129:in `each'
-Section198:121:in `apply_general_move_score_modifiers'
-Section202:280:in `pbGetMoveScore'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:522:in `block (3 levels) in pbGetMoveScores'
-Section012:6:in `logonerr'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:522:in `block (2 levels) in pbGetMoveScores'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:517:in `each'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:517:in `block in pbGetMoveScores'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `each'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `each_with_index'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `pbGetMoveScores'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:463:in `pbDefaultChooseEnemyCommand'
-Section155:215:in `block in pbCommandPhaseLoop'
-Section155:203:in `loop'
-Section155:203:in `pbCommandPhaseLoop'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:381:in `pbCommandPhase'
-Section148:336:in `block (2 levels) in pbBattleLoop'
-Section012:6:in `logonerr'
-Section148:336:in `block in pbBattleLoop'
-Section148:324:in `loop'
-Section148:324:in `pbBattleLoop'
-[Generation 9 Pack] 010_[001] Battle_[003] Weather and Status.rb:98:in `pbStartBattleCore'
-Section148:271:in `pbStartBattle'
-Section256:521:in `block (2 levels) in start_core'
-Section257:55:in `pbSceneStandby'
-Section256:521:in `block in start_core'
-Section257:126:in `pbBattleAnimation'
-Section256:520:in `start_core'
-Section256:486:in `start'
-Section386:376:in `block in <main>'
-Section036:121:in `call'
-Section385:138:in `block in pbDebugMenu'
-Section385:100:in `loop'
-Section385:100:in `pbDebugMenu'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:111:in `pbDebugMenu'
-Section293:323:in `block (2 levels) in <main>'
-Section079:575:in `pbFadeOutIn'
-Section293:322:in `block in <main>'
-[Voltseon's Pause Menu] 003_003_VoltseonMenu_Menu.rb:54:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:222:in `block in update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `loop'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:297:in `pbStartPokemonMenu'
-[[MUI] Enhanced Pokemon UI] 003_[002] Legacy Data.rb:323:in `pbStartPokemonMenu'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:288:in `call_menu'
-Section032:207:in `update'
-Section400:299:in `update'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:178:in `update'
-[Sun Script] 001_Main.rb:26:in `update'
-Section032:238:in `block in main'
-Section032:235:in `loop'
-Section032:235:in `main'
-[Sun Script] 001_Main.rb:20:in `main'
-Section412:35:in `mainFunctionDebug'
-Section412:18:in `block in mainFunction'
-Section014:80:in `pbCriticalCode'
-Section412:18:in `mainFunction'
-Section412:45:in `block in <main>'
-Section412:44:in `loop'
-Section412:44:in `<main>'
--e:in `eval'
-
-
-[AI] 어흥염 (1) is considering using 유턴 against 메타그로스 (0)...
-     +  4: damaging move (predicted damage 32 = 17% of target's HP)
-     +  5: 6. Slow Pivot preference.
-     + 10: 6. Active Pivot move boost.
-     -100: Penalize useless move: very low predicted damage (17.1%).
-
-**Exception: undefined method `allBattlers' for nil:NilClass
-[[DBK] Dynamax] 013_[012] Battle_Battler.rb:14:in `pbInitEffects'
-[[DBK] Raid Battles] 013_[002] Battle_[002] Battle - Raid Shield.rb:12:in `pbInitEffects'
-Section161:14:in `initialize'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:233:in `new'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:233:in `predicted_damage'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:338:in `block (3 levels) in <main>'
-Section207:296:in `block in check_for_move'
-Section160:457:in `block in eachMove'
-Section160:457:in `each'
-Section160:457:in `eachMove'
-Section207:294:in `check_for_move'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:332:in `block (2 levels) in <main>'
-Section205:19:in `block in each_foe_battler'
-Section205:17:in `each'
-Section205:17:in `each_with_index'
-Section205:17:in `each_foe_battler'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:328:in `block in <main>'
-Section198:122:in `block in apply_general_move_score_modifiers'
-Section035:129:in `block in each'
-Section035:129:in `each_pair'
-Section035:129:in `each'
-Section198:121:in `apply_general_move_score_modifiers'
-Section202:280:in `pbGetMoveScore'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:522:in `block (3 levels) in pbGetMoveScores'
-Section012:6:in `logonerr'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:522:in `block (2 levels) in pbGetMoveScores'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:517:in `each'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:517:in `block in pbGetMoveScores'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `each'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `each_with_index'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `pbGetMoveScores'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:463:in `pbDefaultChooseEnemyCommand'
-Section155:215:in `block in pbCommandPhaseLoop'
-Section155:203:in `loop'
-Section155:203:in `pbCommandPhaseLoop'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:381:in `pbCommandPhase'
-Section148:336:in `block (2 levels) in pbBattleLoop'
-Section012:6:in `logonerr'
-Section148:336:in `block in pbBattleLoop'
-Section148:324:in `loop'
-Section148:324:in `pbBattleLoop'
-[Generation 9 Pack] 010_[001] Battle_[003] Weather and Status.rb:98:in `pbStartBattleCore'
-Section148:271:in `pbStartBattle'
-Section256:521:in `block (2 levels) in start_core'
-Section257:55:in `pbSceneStandby'
-Section256:521:in `block in start_core'
-Section257:126:in `pbBattleAnimation'
-Section256:520:in `start_core'
-Section256:486:in `start'
-Section386:376:in `block in <main>'
-Section036:121:in `call'
-Section385:138:in `block in pbDebugMenu'
-Section385:100:in `loop'
-Section385:100:in `pbDebugMenu'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:111:in `pbDebugMenu'
-Section293:323:in `block (2 levels) in <main>'
-Section079:575:in `pbFadeOutIn'
-Section293:322:in `block in <main>'
-[Voltseon's Pause Menu] 003_003_VoltseonMenu_Menu.rb:54:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:222:in `block in update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `loop'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:297:in `pbStartPokemonMenu'
-[[MUI] Enhanced Pokemon UI] 003_[002] Legacy Data.rb:323:in `pbStartPokemonMenu'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:288:in `call_menu'
-Section032:207:in `update'
-Section400:299:in `update'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:178:in `update'
-[Sun Script] 001_Main.rb:26:in `update'
-Section032:238:in `block in main'
-Section032:235:in `loop'
-Section032:235:in `main'
-[Sun Script] 001_Main.rb:20:in `main'
-Section412:35:in `mainFunctionDebug'
-Section412:18:in `block in mainFunction'
-Section014:80:in `pbCriticalCode'
-Section412:18:in `mainFunction'
-Section412:45:in `block in <main>'
-Section412:44:in `loop'
-Section412:44:in `<main>'
--e:in `eval'
-
-
-[AI] Move choices for 어흥염 (1) with threshold: 82: 
-   *  33.3% to use DD래리어트 (target 0): score 100
-   *   0.0% to use 막말내뱉기 (target 0): score 20
-   *  33.3% to use 플레어드라이브 (target 0): score 100
-   *  33.3% to use 유턴 (target 0): score 100
-   => will use DD래리어트 (target 0)
-
-[Round order] 메타그로스 (0), 상대 어흥염 (1)
-
-"메타그로스, 교체야! 돌아와!"
-"네 차례야, 밀로틱!"
-[Use move] 상대 어흥염 (1) used DD래리어트
-"상대 어흥염의 DD래리어트!"
-[HP change] 밀로틱 lost 88 HP (202 -> 114)
-
-[End of round 1]
-
-===== Round 2 =====
-
-DEBUG: [랜덤 파티] 트레이너 엘리트 트레이너 test의 팀은 6마리이므로 랜덤 파티가 적용되지 않았습니다.
-
-================================================================
-
-[Started battle] Single trainer battle (1 trainer(s) vs. 1 trainer(s))
-"\j[엘리트 트레이너 test,이,가] 승부를 걸어왔다!"
-"\j[엘리트 트레이너 test,은,는] \j[버섯모,을,를] 내보냈다!"
-"가랏! 메타그로스!"
-[Round order] 메타그로스 (0), 상대 버섯모 (1)
-
-===== Round 1 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: METAGROSS
-[테스트] 타입: PSYCHIC
-[테스트] hasTera? true
-[AI] 버섯모 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: #<GameData::Item:0x0000028d9bbb3110>
-[테스트] 종족: BRELOOM
-[테스트] 타입: FIGHTING
-[테스트] hasTera? false
-[AI] 버섯모 (1) is considering using 버섯포자 against 메타그로스 (0)...
-     + 30: function code modifier (against target)
-     + 10: 10. General Status Move Boost.
-[AI] 버섯모 (1) is considering using 칼춤...
-     + 12: raising the user's 공격 by 2
-     + 12: function code modifier (generic)
-     - 50: GLOBAL NERF: Setup moves are inherently risky.
-
-**Exception: undefined method `power' for #<Battle::AI::AIMove>
-Section208:82:in `base_power'
-[[DBK] Terastallization] 009_[008] Battle_Move.rb:121:in `base_power'
-[Deluxe Battle Kit] 004_[000] Essentials Patches_[002] Damage Calc Refactor.rb:790:in `rough_damage'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:243:in `predicted_damage'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:59:in `block (3 levels) in <main>'
-Section205:19:in `block in each_foe_battler'
-Section205:17:in `each'
-Section205:17:in `each_with_index'
-Section205:17:in `each_foe_battler'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:57:in `block (2 levels) in <main>'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:50:in `each'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:50:in `block in <main>'
-Section198:122:in `block in apply_general_move_score_modifiers'
-Section035:129:in `block in each'
-Section035:129:in `each_pair'
-Section035:129:in `each'
-Section198:121:in `apply_general_move_score_modifiers'
-Section202:280:in `pbGetMoveScore'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:512:in `block (2 levels) in pbGetMoveScores'
-Section012:6:in `logonerr'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:512:in `block in pbGetMoveScores'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `each'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `each_with_index'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `pbGetMoveScores'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:463:in `pbDefaultChooseEnemyCommand'
-Section155:215:in `block in pbCommandPhaseLoop'
-Section155:203:in `loop'
-Section155:203:in `pbCommandPhaseLoop'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:381:in `pbCommandPhase'
-Section148:336:in `block (2 levels) in pbBattleLoop'
-Section012:6:in `logonerr'
-Section148:336:in `block in pbBattleLoop'
-Section148:324:in `loop'
-Section148:324:in `pbBattleLoop'
-[Generation 9 Pack] 010_[001] Battle_[003] Weather and Status.rb:98:in `pbStartBattleCore'
-Section148:271:in `pbStartBattle'
-Section256:521:in `block (2 levels) in start_core'
-Section257:55:in `pbSceneStandby'
-Section256:521:in `block in start_core'
-Section257:126:in `pbBattleAnimation'
-Section256:520:in `start_core'
-Section256:486:in `start'
-Section386:376:in `block in <main>'
-Section036:121:in `call'
-Section385:138:in `block in pbDebugMenu'
-Section385:100:in `loop'
-Section385:100:in `pbDebugMenu'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:111:in `pbDebugMenu'
-Section293:323:in `block (2 levels) in <main>'
-Section079:575:in `pbFadeOutIn'
-Section293:322:in `block in <main>'
-[Voltseon's Pause Menu] 003_003_VoltseonMenu_Menu.rb:54:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:222:in `block in update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `loop'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:297:in `pbStartPokemonMenu'
-[[MUI] Enhanced Pokemon UI] 003_[002] Legacy Data.rb:323:in `pbStartPokemonMenu'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:288:in `call_menu'
-Section032:207:in `update'
-Section400:299:in `update'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:178:in `update'
-[Sun Script] 001_Main.rb:26:in `update'
-Section032:238:in `block in main'
-Section032:235:in `loop'
-Section032:235:in `main'
-[Sun Script] 001_Main.rb:20:in `main'
-Section412:35:in `mainFunctionDebug'
-Section412:18:in `block in mainFunction'
-Section014:80:in `pbCriticalCode'
-Section412:18:in `mainFunction'
-Section412:45:in `block in <main>'
-Section412:44:in `loop'
-Section412:44:in `<main>'
--e:in `eval'
-
-
-[AI] 버섯모 (1) is considering using 씨기관총 against 메타그로스 (0)...
-     +  4: damaging move (predicted damage 32 = 17% of target's HP)
-     -100: Penalize useless move: very low predicted damage (17.1%).
-[AI] 버섯모 (1) is considering using 마하펀치 against 메타그로스 (0)...
-     +  6: damaging move (predicted damage 51 = 27% of target's HP)
-     - 20: Penalize weak move: consider switching (27.3%).
-[AI] Move choices for 버섯모 (1) with threshold: 122: 
-   * 100.0% to use 버섯포자 (target 0): score 140
-   *   0.0% to use 칼춤: score 100
-   *   0.0% to use 씨기관총 (target 0): score 4
-   *   0.0% to use 마하펀치 (target 0): score 86
-   => will use 버섯포자 (target 0)
-
-[Round order] 메타그로스 (0), 상대 버섯모 (1)
-
-[Use move] 메타그로스 (0) used 사이코키네시스
-"메타그로스의 사이코키네시스!"
-[HP change] 상대 버섯모 lost 116 HP (135 -> 19)
-DEBUG: [랜덤 파티] 트레이너 엘리트 트레이너 test의 팀은 6마리이므로 랜덤 파티가 적용되지 않았습니다.
-
-================================================================
-
-[Started battle] Single trainer battle (1 trainer(s) vs. 1 trainer(s))
-"\j[엘리트 트레이너 test,이,가] 승부를 걸어왔다!"
-"\j[엘리트 트레이너 test,은,는] \j[버섯모,을,를] 내보냈다!"
-"가랏! 메타그로스!"
-[Round order] 메타그로스 (0), 상대 버섯모 (1)
-
-===== Round 1 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: METAGROSS
-[테스트] 타입: PSYCHIC
-[테스트] hasTera? true
-[AI] 버섯모 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: #<GameData::Item:0x0000019b77d09bc0>
-[테스트] 종족: BRELOOM
-[테스트] 타입: GRASS
-[테스트] hasTera? false
-[AI] 버섯모 (1) is considering using 버섯포자 against 메타그로스 (0)...
-     + 30: function code modifier (against target)
-     + 10: 10. General Status Move Boost.
-[AI] 버섯모 (1) is considering using 칼춤...
-     + 12: raising the user's 공격 by 2
-     + 12: function code modifier (generic)
-     - 50: GLOBAL NERF: Setup moves are inherently risky.
-     - 50: Setup blocked: No damaging move can do >40% of target HP.
-     + 10: 10. General Status Move Boost.
-[AI] 버섯모 (1) is considering using 씨기관총 against 메타그로스 (0)...
-     +  4: damaging move (predicted damage 32 = 17% of target's HP)
-     -100: Penalize useless move: very low predicted damage (17.1%).
-[AI] 버섯모 (1) is considering using 마하펀치 against 메타그로스 (0)...
-     +  6: damaging move (predicted damage 51 = 27% of target's HP)
-     - 20: Penalize weak move: consider switching (27.3%).
-[AI] Move choices for 버섯모 (1) with threshold: 122: 
-   * 100.0% to use 버섯포자 (target 0): score 140
-   *   0.0% to use 칼춤: score 22
-   *   0.0% to use 씨기관총 (target 0): score 4
-   *   0.0% to use 마하펀치 (target 0): score 86
-   => will use 버섯포자 (target 0)
-
-[Round order] 메타그로스 (0), 상대 버섯모 (1)
-
-[Use move] 메타그로스 (0) used 사이코키네시스
-"메타그로스의 사이코키네시스!"
-[HP change] 상대 버섯모 lost 104 HP (135 -> 31)
-"효과가 굉장했다!"
-[Use move] 상대 버섯모 (1) used 버섯포자
-"상대 버섯모의 버섯포자!"
-"\j[메타그로스,은,는] 잠에 들었다!"
-[Status change] 메타그로스's sleep count is 2
-
-[End of round 1]
-
-===== Round 2 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: METAGROSS
-[테스트] 타입: PSYCHIC
-[테스트] hasTera? true
-[AI] 버섯모 (1) is considering using item 회복약 on party 버섯모 (party index 0)...
-     + 35: healing 버섯모 (1) by 134 HP (31 -> 135) (30 over heal)
-     + 43: 버섯모 (1)'s held item 기합의띠 prefers max HP
-     - 40: useless because 버섯모 (1) has no condition to heal
-     -  8: prefers not to use item because it's last in stock
-     - 80: ITEM AI: No lethal threat next turn, healing discouraged.
+     -120: ITEM AI: HP is healthy (>60%), healing discouraged.
+[AI] [item_ai] lethal threat: 불카모스 (0) 불대문자 513 >= 170 curhp
+[AI] [item_ai] lethal threat: 그란돈 (2) 히트스탬프 693 >= 170 curhp
+     - 60: ITEM AI: Prefer switching over item (bad matchup).
      - 40: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 메타그로스 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: METAGROSS
-[테스트] 타입: PSYCHIC
-[테스트] hasTera? false
-[AI] 메타그로스 (1) is considering using 불릿펀치...
-     - 80: move will fail
-[AI] 메타그로스 (1) is considering using 돌진...
-     - 80: move will fail
-[AI] 메타그로스 (1) is considering using 사이코키네시스...
-     - 80: move will fail
-[AI] 메타그로스 (1) is considering using 겁나는얼굴...
-     - 80: move will fail
-[AI] 메타그로스 (1) wants to switch due to terrible moves
-[AI] 메타그로스 (1) is being forced to switch out
-
-**Exception: undefined method `pbCalcType' for #<Pokemon::Move>
-Section208:33:in `rough_type'
-Section208:13:in `set_up'
-[GO UP POKEMON TOWER] 007_AI_Improved_ScoreReplacement.rb:71:in `block (3 levels) in <main>'
-Section205:19:in `block in each_foe_battler'
-Section205:17:in `each'
-Section205:17:in `each_with_index'
-Section205:17:in `each_foe_battler'
-[GO UP POKEMON TOWER] 007_AI_Improved_ScoreReplacement.rb:66:in `block (2 levels) in <main>'
-[GO UP POKEMON TOWER] 007_AI_Improved_ScoreReplacement.rb:64:in `each'
-[GO UP POKEMON TOWER] 007_AI_Improved_ScoreReplacement.rb:64:in `block in <main>'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:203:in `block in score_replacement'
-Section035:129:in `block in each'
-Section035:129:in `each_pair'
-Section035:129:in `each'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:202:in `score_replacement'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:193:in `rate_replacement_pokemon'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:178:in `block in choose_best_replacement_pokemon'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:177:in `each'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:177:in `each_with_index'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:177:in `choose_best_replacement_pokemon'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:129:in `pbChooseToSwitchOut'
-[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:53:in `pbChooseMove'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:464:in `pbDefaultChooseEnemyCommand'
-Section155:215:in `block in pbCommandPhaseLoop'
-Section155:203:in `loop'
-Section155:203:in `pbCommandPhaseLoop'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:381:in `pbCommandPhase'
-Section148:336:in `block (2 levels) in pbBattleLoop'
-Section012:6:in `logonerr'
-Section148:336:in `block in pbBattleLoop'
-Section148:324:in `loop'
-Section148:324:in `pbBattleLoop'
-[Generation 9 Pack] 010_[001] Battle_[003] Weather and Status.rb:98:in `pbStartBattleCore'
-Section148:271:in `pbStartBattle'
-Section256:521:in `block (2 levels) in start_core'
-Section257:55:in `pbSceneStandby'
-Section256:521:in `block in start_core'
-Section257:126:in `pbBattleAnimation'
-Section256:520:in `start_core'
-Section256:486:in `start'
-Section386:376:in `block in <main>'
-Section036:121:in `call'
-Section385:138:in `block in pbDebugMenu'
-Section385:100:in `loop'
-Section385:100:in `pbDebugMenu'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:111:in `pbDebugMenu'
-Section293:323:in `block (2 levels) in <main>'
-Section079:575:in `pbFadeOutIn'
-Section293:322:in `block in <main>'
-[Voltseon's Pause Menu] 003_003_VoltseonMenu_Menu.rb:54:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:222:in `block in update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `loop'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:297:in `pbStartPokemonMenu'
-[[MUI] Enhanced Pokemon UI] 003_[002] Legacy Data.rb:323:in `pbStartPokemonMenu'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:288:in `call_menu'
-Section032:207:in `update'
-Section400:299:in `update'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:178:in `update'
-[Sun Script] 001_Main.rb:26:in `update'
-Section032:238:in `block in main'
-Section032:235:in `loop'
-Section032:235:in `main'
-[Sun Script] 001_Main.rb:20:in `main'
-Section412:35:in `mainFunctionDebug'
-Section412:18:in `block in mainFunction'
-Section014:80:in `pbCriticalCode'
-Section412:18:in `mainFunction'
-Section412:45:in `block in <main>'
-Section412:44:in `loop'
-Section412:44:in `<main>'
--e:in `eval'
-
-
-[Round order] 메타그로스 (0), 상대 메타그로스 (1)
-
-[Use move] 메타그로스 (0) used 사이코키네시스
-"\j[메타그로스,은,는] 깊이 자고 있다."
-[Status continues] 메타그로스's sleep count is 1
-[Move failed] 메타그로스 is asleep
-
-[End of round 2]
-
-===== Round 3 =====
-
-DEBUG: [랜덤 파티] 트레이너 엘리트 트레이너 test의 팀은 6마리이므로 랜덤 파티가 적용되지 않았습니다.
-
-================================================================
-
-[Started battle] Single trainer battle (1 trainer(s) vs. 1 trainer(s))
-"\j[엘리트 트레이너 test,이,가] 승부를 걸어왔다!"
-"\j[엘리트 트레이너 test,은,는] \j[어흥염,을,를] 내보냈다!"
-"가랏! 메타그로스!"
-[Round order] 메타그로스 (0), 상대 어흥염 (1)
-[Ability triggered] 상대 어흥염's 위협
-[Ability triggered] 메타그로스's 클리어바디
-"메타그로스의 능력치는 떨어지지 않는다!"
-
-===== Round 1 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: METAGROSS
-[테스트] 타입: PSYCHIC
-[테스트] hasTera? true
-[AI] 어흥염 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: #<GameData::Item:0x0000023ad529db48>
-[테스트] 종족: INCINEROAR
-[테스트] 타입: FIRE
-[테스트] hasTera? false
-[AI] 어흥염 (1) is considering using DD래리어트 against 메타그로스 (0)...
-     + 15: damaging move (predicted damage 117 = 62% of target's HP)
-checking foe damage 불릿펀치 17 = 9%
-checking foe damage 돌진 24 = 12%
-checking foe damage 사이코키네시스 16 = 8%
-[AI] 메타그로스 (1) is considering using 막말내뱉기 against 메타그로스 (0)...
-     move will not affect 메타그로스 (0)
-     - 80: move will fail
-[AI] 메타그로스 (1) is considering using 플레어드라이브 against 메타그로스 (0)...
-     +  5: function code modifier (against target)
-     + 16: damaging move (predicted damage 124 = 66% of target's HP)
-checking foe damage 불릿펀치 17 = 9%
-checking foe damage 돌진 24 = 12%
-checking foe damage 사이코키네시스 16 = 8%
-[AI] 메타그로스 (1) is considering using 유턴 against 메타그로스 (0)...
-     +  4: damaging move (predicted damage 37 = 19% of target's HP)
-     +  5: 6. Slow Pivot preference.
-     + 10: 6. Active Pivot move boost.
-     -100: Penalize useless move: very low predicted damage (19.8%).
-checking foe damage 불릿펀치 17 = 9%
-checking foe damage 돌진 24 = 12%
-checking foe damage 사이코키네시스 16 = 8%
-[AI] Move choices for 메타그로스 (1) with threshold: 103: 
-   *  40.0% to use DD래리어트 (target 0): score 115
-   *   0.0% to use 막말내뱉기 (target 0): score 20
-   *  60.0% to use 플레어드라이브 (target 0): score 121
-   *   0.0% to use 유턴 (target 0): score 19
-   => will use 사이코키네시스 (target 0)
-
-[Round order] 메타그로스 (0), 상대 메타그로스 (1)
-
-"메타그로스, 교체야! 돌아와!"
-"네 차례야, 밀로틱!"
-[Use move] 상대 메타그로스 (1) used 사이코키네시스
-"상대 메타그로스의 사이코키네시스!"
-[HP change] 밀로틱 lost 43 HP (202 -> 159)
-
-[End of round 1]
-
-===== Round 2 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: MILOTIC
-[테스트] 타입: WATER
-[테스트] hasTera? true
-[AI] 메타그로스 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: METAGROSS
-[테스트] 타입: PSYCHIC
-[테스트] hasTera? false
-[AI] 메타그로스 (1) is considering using 불릿펀치 against 밀로틱 (0)...
-     +  4: damaging move (predicted damage 27 = 16% of target's HP)
-     -100: Penalize useless move: very low predicted damage (13.4%).
-checking foe damage 파도타기 23 = 14%
-[AI] 밀로틱 (1) is considering using 돌진 against 밀로틱 (0)...
-     -  1: function code modifier (against target)
-     -  3: accuracy (predicted 85%)
-     +  5: damaging move (predicted damage 37 = 23% of target's HP)
-     -100: Penalize useless move: very low predicted damage (18.3%).
-checking foe damage 파도타기 23 = 14%
-[AI] 밀로틱 (1) is considering using 사이코키네시스 against 밀로틱 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     + 11: function code modifier (against target)
-     +  4: damaging move (predicted damage 31 = 19% of target's HP)
-     -100: Penalize useless move: very low predicted damage (15.3%).
-checking foe damage 파도타기 23 = 14%
-[AI] 밀로틱 (1) is considering using 겁나는얼굴 against 밀로틱 (0)...
-     lowering the target's 스피드 isn't worthwhile
-     - 40: function code modifier (against target)
+[AI] 너트령 (3) couldn't find any usable items
+[AI] 너트령 (3) is considering using 씨뿌리기 against 불카모스 (0)...
+     + 25: function code modifier (against target)
      + 10: 10. General Status Move Boost.
-checking foe damage 파도타기 23 = 14%
-[AI] 밀로틱 (1) wants to switch due to terrible moves
-[AI] 밀로틱 (1) is being forced to switch out
-망나뇽 predicted_damage: 33
-망나뇽 predicted_damage: 41
-pokemon 망나뇽 has switch score 107
-비조도 predicted_damage: 49
-비조도 predicted_damage: 25
-비조도 predicted_damage: 29
-비조도 predicted_damage: 41
-pokemon 비조도 has switch score 112
-요가램 predicted_damage: 17
-요가램 predicted_damage: 33
-요가램 predicted_damage: 9
-요가램 predicted_damage: 16
-pokemon 요가램 has switch score 105
-마기라스 predicted_damage: 41
-마기라스 predicted_damage: 33
-마기라스 predicted_damage: 41
-pokemon 마기라스 has switch score 111
-   => will switch with 비조도
-
-[Round order] 밀로틱 (0), 상대 밀로틱 (1)
-
-"\j[엘리트 트레이너 test,이,가] \j[밀로틱,을,를] 넣었다!"
-"\j[엘리트 트레이너 test,은,는] \j[비조도,을,를] 내보냈다!"
-[Use move] 밀로틱 (0) used 파도타기
-"밀로틱의 파도타기!"
-[HP change] 상대 비조도 lost 57 HP (141 -> 84)
-
-[End of round 2]
-
-===== Round 3 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: MILOTIC
-[테스트] 타입: WATER
-[테스트] hasTera? true
-[AI] 비조도 (1) is considering using item 회복약 on party 비조도 (party index 2)...
-     - 40: useless because 비조도 (1)'s HP isn't worth healing
-     - 40: useless because 비조도 (1) has no condition to heal
-     -  8: prefers not to use item because it's last in stock
-     - 80: ITEM AI: No lethal threat next turn, healing discouraged.
-     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 밀로틱 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: MILOTIC
-[테스트] 타입: WATER
-[테스트] hasTera? false
-[AI] 밀로틱 (1) is considering using 신비의부적...
-     + 15: function code modifier (generic)
+[AI] [evade_ko] 불카모스 (0) 불대문자: 513 >= 161 (95% of 170 curhp)
+[AI] [evade_ko] 그란돈 (2) 히트스탬프: 693 >= 161 (95% of 170 curhp)
+[AI] evade KO penalty chance is 100%
+[AI] 너트령 (3) is considering using 씨뿌리기 against 그란돈 (2)...
+     + 25: function code modifier (against target)
      + 10: 10. General Status Move Boost.
-checking foe damage 파도타기 23 = 14%
-[AI] 밀로틱 (1) is considering using 파도타기...
-     +  3: damaging move (predicted damage 23 = 14% of target's HP)
-     -100: Penalize useless move: very low predicted damage (11.4%).
-checking foe damage 파도타기 23 = 14%
-[AI] 밀로틱 (1) is considering using 비바라기...
+[AI] [evade_ko] 불카모스 (0) 불대문자: 513 >= 161 (95% of 170 curhp)
+[AI] [evade_ko] 그란돈 (2) 히트스탬프: 693 >= 161 (95% of 170 curhp)
+[AI] evade KO penalty chance is 100%
+[AI] 너트령 (3) is considering using 탁쳐서떨구기 against 불카모스 (0)...
+[AI] [damage_moves] computing 너트령 (3) → 불카모스 (0) (turn 2)
+[AI]   탁쳐서떨구기: 59 dmg (36.9% totalhp / 327.8% curhp)
+     + 30: damaging move (predicted damage 59 = 327% of target's HP)
+     + 50: predicted to KO the target
+     -  8: can trigger the target's ability
+     + 10: Knock Off: removing target's item.
+[AI] [evade_ko] 불카모스 (0) 불대문자: 513 >= 161 (95% of 170 curhp)
+[AI] [evade_ko] 그란돈 (2) 히트스탬프: 693 >= 161 (95% of 170 curhp)
+[AI] evade KO penalty chance is 100%
+[AI] 너트령 (3) is considering using 탁쳐서떨구기 against 그란돈 (2)...
+[AI] [damage_moves] computing 너트령 (3) → 그란돈 (2) (turn 2)
+[AI]   탁쳐서떨구기: 20 dmg (9.7% totalhp / 9.7% curhp)
+     +  2: damaging move (predicted damage 20 = 9% of target's HP)
+     - 50: Penalize useless move: very low predicted damage (9.7%).
+     + 10: Knock Off: removing target's item.
+[AI] [evade_ko] 불카모스 (0) 불대문자: 513 >= 161 (95% of 170 curhp)
+[AI] [evade_ko] 그란돈 (2) 히트스탬프: 693 >= 161 (95% of 170 curhp)
+[AI] evade KO penalty chance is 100%
+[AI] 너트령 (3) is considering using 스텔스록...
+     + 30: function code modifier (generic)
      + 10: 10. General Status Move Boost.
-checking foe damage 파도타기 23 = 14%
-[AI] 밀로틱 (1) is considering using 똬리틀기...
-     raising the user's 공격 isn't worthwhile
-     raising the user's 방어 isn't worthwhile
-     raising the user's 명중률 isn't worthwhile
-     - 40: function code modifier (generic)
-     - 50: GLOBAL NERF: Setup moves are inherently risky.
-     - 50: Setup blocked: No damaging move can do >40% of target HP.
+[AI] [evade_ko] 불카모스 (0) 불대문자: 513 >= 161 (95% of 170 curhp)
+[AI] [evade_ko] 그란돈 (2) 히트스탬프: 693 >= 161 (95% of 170 curhp)
+[AI] evade KO penalty chance is 100%
+[AI] 너트령 (3) is considering using 압정뿌리기...
+     + 30: function code modifier (generic)
      + 10: 10. General Status Move Boost.
-checking foe damage 파도타기 23 = 14%
-[AI] Move choices for 밀로틱 (1) with threshold: 107: 
-   *  85.7% to use 신비의부적: score 125
-   *   0.0% to use 파도타기: score 3
-   *  14.3% to use 비바라기: score 110
-   *   0.0% to use 똬리틀기: score 0
-   => will use 신비의부적
+[AI] [evade_ko] 불카모스 (0) 불대문자: 513 >= 161 (95% of 170 curhp)
+[AI] [evade_ko] 그란돈 (2) 히트스탬프: 693 >= 161 (95% of 170 curhp)
+[AI] evade KO penalty chance is 100%
+[AI] Move choices for 너트령 (3) with threshold: 164: 
+[AI]    *   0.0% to use 씨뿌리기 (target 0): score 135
+[AI]    *   0.0% to use 씨뿌리기 (target 2): score 135
+[AI]    * 100.0% to use 탁쳐서떨구기 (target 0): score 182
+[AI]    *   0.0% to use 탁쳐서떨구기 (target 2): score 62
+[AI]    *   0.0% to use 스텔스록: score 140
+[AI]    *   0.0% to use 압정뿌리기: score 140
+[AI] => will use 탁쳐서떨구기 (target 0)
 
-[Round order] 밀로틱 (0), 상대 밀로틱 (1)
+[Round order] 불카모스 (0), 그란돈 (2), 상대 패리퍼 (1), 상대 너트령 (3)
 
-[Use move] 밀로틱 (0) used 파도타기
-"밀로틱의 파도타기!"
-[HP change] 상대 밀로틱 lost 20 HP (159 -> 139)
-"효과가 별로인 것 같다..."
-[Use move] 상대 밀로틱 (1) used 신비의부적
-"상대 밀로틱의 신비의부적!"
-"\j[상대편,은,는] 신비한 장막에 휩싸였다!"
+"그란돈, 돌아와!"
+"강력한 햇살이 사그러들었다!"
+"네 차례야, 아머까오!"
+[Use move] 불카모스 (0) used 불대문자
+"불카모스의 불대문자!"
+[HP change] 상대 너트령 lost 170 HP (170 -> 0)
+"효과가 굉장했다!"
+"\j[상대 너트령,은,는] 쓰러졌다!"
+"\j[그란돈,이,가] 2994의 많은 경험치를 얻었다!"
+"\j[아머까오,이,가] 2994의 많은 경험치를 얻었다!"
+"\j[불카모스,이,가] 2994의 많은 경험치를 얻었다!"
+"다른 포켓몬들도 학습장치를 통해 경험치를 얻었다!"
+[Use move] 상대 패리퍼 (1) used 폭풍
+"상대 패리퍼의 폭풍!"
+[Move failed] Failed pbAccuracyCheck
+"상대 패리퍼의 기술이 빗나갔다!"
 
 [End of round 3]
+     -  6: 킹드라: entry hazard damage 18.75
+[AI] move_id: FIREBLAST
+[AI] move_id: BUGBUZZ
+     - 22: 킹드라: foe can 2HKO (56.49999999999999% >= 50%)
+[AI] move_id: EARTHQUAKE
+[AI] move_id: HEATCRASH
+[AI] move_id: PRECIPICEBLADES
+[AI] move_id: SOLARBEAM
+     - 10: 킹드라: foe cannot 2HKO, +37.833333333333336% < 50%
+[AI] 킹드라 predicted_damage for 하이드로펌프: 123
+[AI] 킹드라 predicted_damage for 하이드로펌프: 90
+[AI] 킹드라 predicted_damage for 용의파동: 48
+[AI] 킹드라 predicted_damage for 용의파동: 35
+[AI] 킹드라 predicted_damage for 냉동빔: 17
+[AI] 킹드라 predicted_damage for 냉동빔: 49
+[AI] 킹드라 predicted_damage for 파도타기: 77
+[AI] 킹드라 predicted_damage for 파도타기: 55
+     +  8: 킹드라: outspeeds 아머까오 (2) (137 vs 87).
+     + 14: 킹드라: tanks 불카모스 (0)'s best move better (20 vs 513 on current).
+     + 15: 킹드라: tanks 아머까오 (2)'s best move better (5 vs 693 on current).
+[AI] pokemon 킹드라 has switch score 132
+     - 12: 썬더: entry hazard damage 49.0
+[AI] move_id: FIREBLAST
+[AI] move_id: BUGBUZZ
+     - 30: 썬더: foe can 2HKO (75.0% >= 50%)
+[AI] move_id: EARTHQUAKE
+[AI] move_id: HEATCRASH
+[AI] move_id: PRECIPICEBLADES
+[AI] move_id: SOLARBEAM
+     - 17: 썬더: foe cannot 2HKO, +34.69387755102041% < 50%
+[AI] 썬더 predicted_damage for 10만볼트: 57
+[AI] 썬더 predicted_damage for 10만볼트: 168
+[AI] 썬더 predicted_damage for 폭풍: 138
+[AI] 썬더 predicted_damage for 폭풍: 51
+     +  8: 썬더: outspeeds 아머까오 (2) (159 vs 87).
+     + 12: 썬더: tanks 불카모스 (0)'s best move better (98 vs 513 on current).
+     + 15: 썬더: tanks 아머까오 (2)'s best move better (19 vs 693 on current).
+[AI] pokemon 썬더 has switch score 121
+     -  6: 할비롱: entry hazard damage 23.125
+[AI] move_id: FIREBLAST
+[AI] move_id: BUGBUZZ
+     - 23: 할비롱: foe can 2HKO (58.98648648648649% >= 50%)
+[AI] move_id: EARTHQUAKE
+[AI] move_id: HEATCRASH
+[AI] move_id: PRECIPICEBLADES
+[AI] move_id: SOLARBEAM
+     - 10: 할비롱: foe cannot 2HKO, +34.66216216216216% < 50%
+[AI] 할비롱 predicted_damage for 파도타기: 66
+[AI] 할비롱 predicted_damage for 파도타기: 50
+[AI] 할비롱 predicted_damage for 번개: 54
+[AI] 할비롱 predicted_damage for 번개: 160
+[AI] 할비롱 predicted_damage for 폭풍: 108
+[AI] 할비롱 predicted_damage for 폭풍: 40
+[AI] 할비롱 predicted_damage for 하이퍼보이스: 50
+[AI] 할비롱 predicted_damage for 하이퍼보이스: 37
+     +  8: 할비롱: outspeeds 아머까오 (2) (88 vs 87).
+     + 13: 할비롱: tanks 불카모스 (0)'s best move better (53 vs 513 on current).
+     + 15: 할비롱: tanks 아머까오 (2)'s best move better (10 vs 693 on current).
+[AI] pokemon 할비롱 has switch score 135
+"\j[엘리트 트레이너 test,은,는] \j[할비롱,을,를] 내보냈다!"
+[HP change] 상대 할비롱 lost 23 HP (185 -> 162)
+"상대 할비롱에게 뾰족한 바위가 박혔다!"
 
 ===== Round 4 =====
 
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: MILOTIC
-[테스트] 타입: WATER
-[테스트] hasTera? true
-[AI] 밀로틱 (1) is considering using item 회복약 on party 비조도 (party index 2)...
-     - 40: useless because 밀로틱 (1)'s HP isn't worth healing
-     - 40: useless because 밀로틱 (1) has no condition to heal
+[AI] 패리퍼 (1) is considering using item 회복약 on party 할비롱 (party index 5)...
+     - 40: useless because 할비롱's HP isn't worth healing
+     - 40: useless because 할비롱 (3) has no condition to heal
+     -  8: prefers not to use item because it's last in stock
+     -120: ITEM AI: HP is healthy (>60%), healing discouraged.
+[AI] [damage_moves] computing 불카모스 (0) → 패리퍼 (1) (turn 3)
+[AI]   불대문자: 64 dmg (38.6% totalhp / 38.6% curhp)
+[AI]   벌레의야단법석: 53 dmg (31.9% totalhp / 31.9% curhp)
+[AI]   기가드레인: 59 dmg (35.5% totalhp / 35.5% curhp)
+[AI] [damage_moves] computing 아머까오 (2) → 패리퍼 (1) (turn 3)
+[AI] [known_foe_moves] Hiding 유턴 from 아머까오 (2) (never acted)
+[AI]   브레이브버드: 53 dmg (31.9% totalhp / 31.9% curhp)
+[AI]   바디프레스: 18 dmg (10.8% totalhp / 10.8% curhp)
+     - 80: ITEM AI: No lethal threat next turn, healing discouraged.
+     + 60: ITEM AI: Ace Pokémon preservation priority.
+[AI] 패리퍼 (1) is considering using item 풀회복약 on party 할비롱 (party index 5)...
+     - 40: useless because 할비롱's HP isn't worth healing
      -  8: prefers not to use item because it's last in stock
      -120: ITEM AI: HP is healthy (>60%), healing discouraged.
      - 80: ITEM AI: No lethal threat next turn, healing discouraged.
-     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 밀로틱 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: MILOTIC
-[테스트] 타입: WATER
-[테스트] hasTera? false
-[AI] 밀로틱 (1) is considering using 신비의부적...
-     - 80: move will fail
-[AI] 밀로틱 (1) is considering using 파도타기...
-     +  4: damaging move (predicted damage 23 = 16% of target's HP)
-     -100: Penalize useless move: very low predicted damage (11.4%).
-checking foe damage 파도타기 23 = 16%
-[AI] 밀로틱 (1) is considering using 비바라기...
-     + 10: 10. General Status Move Boost.
-checking foe damage 파도타기 23 = 16%
-[AI] 밀로틱 (1) is considering using 똬리틀기...
-     raising the user's 공격 isn't worthwhile
-     raising the user's 방어 isn't worthwhile
-     raising the user's 명중률 isn't worthwhile
-     - 40: function code modifier (generic)
-     - 50: GLOBAL NERF: Setup moves are inherently risky.
-     - 50: Setup blocked: No damaging move can do >40% of target HP.
-     + 10: 10. General Status Move Boost.
-checking foe damage 파도타기 23 = 16%
-[AI] Move choices for 밀로틱 (1) with threshold: 92: 
-   *   0.0% to use 신비의부적: score 20
-   *   0.0% to use 파도타기: score 4
-   * 100.0% to use 비바라기: score 110
-   *   0.0% to use 똬리틀기: score 0
-   => will use 비바라기
+     + 60: ITEM AI: Ace Pokémon preservation priority.
+[AI] 패리퍼 (1) couldn't find any usable items
+[AI] 패리퍼 (1) is considering using 열탕 against 불카모스 (0)...
+[AI] [damage_moves] computing 패리퍼 (1) → 불카모스 (0) (turn 3)
+[AI]   열탕: 84 dmg (52.5% totalhp / 466.7% curhp)
+[AI]   폭풍: 111 dmg (69.4% totalhp / 616.7% curhp)
+[AI]   유턴: 12 dmg (7.5% totalhp / 66.7% curhp)
+     + 30: damaging move (predicted damage 84 = 466% of target's HP)
+     + 50: predicted to KO the target
+     -  8: can trigger the target's ability
+[AI] 패리퍼 (1) is considering using 열탕 against 아머까오 (2)...
+     + 22: function code modifier (against target)
+[AI] [damage_moves] computing 패리퍼 (1) → 아머까오 (2) (turn 3)
+[AI]   열탕: 60 dmg (29.3% totalhp / 29.3% curhp)
+[AI]   폭풍: 41 dmg (20.0% totalhp / 20.0% curhp)
+[AI]   유턴: 4 dmg (2.0% totalhp / 2.0% curhp)
+     +  7: damaging move (predicted damage 60 = 29% of target's HP)
+     - 20: Penalize weak move: consider switching (29.3%).
+[AI] 패리퍼 (1) is considering using 폭풍 against 불카모스 (0)...
+     + 12: function code modifier (against target)
+     -  7: accuracy (predicted 70%)
+     + 30: damaging move (predicted damage 111 = 616% of target's HP)
+     + 50: predicted to KO the target
+     -  8: can trigger the target's ability
+[AI] 패리퍼 (1) is considering using 폭풍 against 아머까오 (2)...
+     + 30: function code modifier (against target)
+     -  7: accuracy (predicted 70%)
+     +  5: damaging move (predicted damage 41 = 20% of target's HP)
+     - 20: Penalize weak move: consider switching (20.0%).
+[AI] 패리퍼 (1) is considering using 유턴 against 불카모스 (0)...
+     + 16: damaging move (predicted damage 12 = 66% of target's HP)
+     -  8: can trigger the target's ability
+     +  5: 6. Slow Pivot preference.
+     + 10: 6. Active Pivot move boost.
+     - 10: function code modifier (generic)
+[AI] 패리퍼 (1) is considering using 유턴 against 아머까오 (2)...
+     +  5: 6. Slow Pivot preference.
+     + 10: 6. Active Pivot move boost.
+     - 10: function code modifier (generic)
+[AI] 패리퍼 (1) is considering using 날개쉬기...
+     -1099: move will fail
+[AI] Move choices for 패리퍼 (1) with threshold: 159: 
+[AI]    *  41.9% to use 열탕 (target 0): score 172
+[AI]    *   0.0% to use 열탕 (target 2): score 109
+[AI]    *  58.1% to use 폭풍 (target 0): score 177
+[AI]    *   0.0% to use 폭풍 (target 2): score 108
+[AI]    *   0.0% to use 유턴 (target 0): score 113
+[AI]    *   0.0% to use 유턴 (target 2): score 105
+[AI]    *   0.0% to use 날개쉬기: score -999
+[AI] => will use 폭풍 (target 0)
 
-[Round order] 밀로틱 (0), 상대 밀로틱 (1)
+[AI] 할비롱 (3) is considering using item 회복약 on party 할비롱 (party index 5)...
+     - 40: useless because 할비롱's HP isn't worth healing
+     - 40: useless because 할비롱 (3) has no condition to heal
+     -  8: prefers not to use item because it's last in stock
+     -120: ITEM AI: HP is healthy (>60%), healing discouraged.
+[AI] [damage_moves] computing 불카모스 (0) → 할비롱 (3) (turn 3)
+[AI]   불대문자: 53 dmg (28.6% totalhp / 32.7% curhp)
+[AI]   벌레의야단법석: 86 dmg (46.5% totalhp / 53.1% curhp)
+[AI]   기가드레인: 24 dmg (13.0% totalhp / 14.8% curhp)
+[AI] [damage_moves] computing 아머까오 (2) → 할비롱 (3) (turn 3)
+[AI]   브레이브버드: 83 dmg (44.9% totalhp / 51.2% curhp)
+[AI]   바디프레스: 110 dmg (59.5% totalhp / 67.9% curhp)
+     - 80: ITEM AI: No lethal threat next turn, healing discouraged.
+     + 60: ITEM AI: Ace Pokémon preservation priority.
+[AI] 할비롱 (3) is considering using item 풀회복약 on party 할비롱 (party index 5)...
+     - 40: useless because 할비롱's HP isn't worth healing
+     -  8: prefers not to use item because it's last in stock
+     -120: ITEM AI: HP is healthy (>60%), healing discouraged.
+     - 80: ITEM AI: No lethal threat next turn, healing discouraged.
+     + 60: ITEM AI: Ace Pokémon preservation priority.
+[AI] 할비롱 (3) couldn't find any usable items
+[AI] 할비롱 (3) will Mega Evolve
+[AI] 할비롱 (3) is considering using 파도타기...
+[AI] [damage_moves] computing 할비롱 (3) → 불카모스 (0) (turn 3)
+[AI]   파도타기: 66 dmg (41.3% totalhp / 366.7% curhp)
+[AI]   번개: 54 dmg (33.8% totalhp / 300.0% curhp)
+[AI]   폭풍: 108 dmg (67.5% totalhp / 600.0% curhp)
+[AI]   하이퍼보이스: 50 dmg (31.3% totalhp / 277.8% curhp)
+     + 30: damaging move (predicted damage 66 = 366% of target's HP)
+     + 50: predicted to KO the target
+     -  8: can trigger the target's ability
+[AI] [damage_moves] computing 할비롱 (3) → 패리퍼 (1) (turn 3)
+[AI]   파도타기: 29 dmg (17.5% totalhp / 17.5% curhp)
+[AI]   번개: 372 dmg (224.1% totalhp / 224.1% curhp)
+[AI]   폭풍: 93 dmg (56.0% totalhp / 56.0% curhp)
+[AI]   하이퍼보이스: 86 dmg (51.8% totalhp / 51.8% curhp)
+     +  4: damaging move (predicted damage 29 = 17% of target's HP)
+     - 50: Penalize useless move: very low predicted damage (17.5%).
+     + 77: score inverted (move targets ally but can target foe)
+[AI] [damage_moves] computing 할비롱 (3) → 아머까오 (2) (turn 3)
+[AI]   파도타기: 50 dmg (24.4% totalhp / 24.4% curhp)
+[AI]   번개: 160 dmg (78.0% totalhp / 78.0% curhp)
+[AI]   폭풍: 40 dmg (19.5% totalhp / 19.5% curhp)
+[AI]   하이퍼보이스: 37 dmg (18.0% totalhp / 18.0% curhp)
+     +  6: damaging move (predicted damage 50 = 24% of target's HP)
+     - 20: Penalize weak move: consider switching (24.4%).
+     + 20: affects multiple battlers
+[AI] 할비롱 (3) is considering using 번개 against 불카모스 (0)...
+     + 25: function code modifier (against target)
+     -  7: accuracy (predicted 70%)
+     + 30: damaging move (predicted damage 54 = 300% of target's HP)
+     + 50: predicted to KO the target
+     -  8: can trigger the target's ability
+[AI] 할비롱 (3) is considering using 번개 against 아머까오 (2)...
+     + 10: function code modifier (against target)
+     -  7: accuracy (predicted 70%)
+     + 19: damaging move (predicted damage 160 = 78% of target's HP)
+[AI] 할비롱 (3) is considering using 폭풍 against 불카모스 (0)...
+     + 12: function code modifier (against target)
+     -  7: accuracy (predicted 70%)
+     + 30: damaging move (predicted damage 108 = 600% of target's HP)
+     + 50: predicted to KO the target
+     -  8: can trigger the target's ability
+[AI] 할비롱 (3) is considering using 폭풍 against 아머까오 (2)...
+     + 30: function code modifier (against target)
+     -  7: accuracy (predicted 70%)
+     +  4: damaging move (predicted damage 40 = 19% of target's HP)
+     - 50: Penalize useless move: very low predicted damage (19.5%).
+[AI] 할비롱 (3) is considering using 하이퍼보이스...
+     + 30: damaging move (predicted damage 50 = 277% of target's HP)
+     + 50: predicted to KO the target
+     -  8: can trigger the target's ability
+     +  4: damaging move (predicted damage 37 = 18% of target's HP)
+     - 50: Penalize useless move: very low predicted damage (18.0%).
+     + 10: affects multiple battlers
+[AI] Move choices for 할비롱 (3) with threshold: 172: 
+[AI]    *   0.0% to use 파도타기: score 149
+[AI]    *  78.3% to use 번개 (target 0): score 190
+[AI]    *   0.0% to use 번개 (target 2): score 122
+[AI]    *  21.7% to use 폭풍 (target 0): score 177
+[AI]    *   0.0% to use 폭풍 (target 2): score 77
+[AI]    *   0.0% to use 하이퍼보이스: score 123
+[AI] => will use 번개 (target 0)
 
-[Use move] 밀로틱 (0) used 파도타기
-"밀로틱의 파도타기!"
-[HP change] 상대 밀로틱 lost 20 HP (139 -> 119)
-"효과가 별로인 것 같다..."
-[Use move] 상대 밀로틱 (1) used 비바라기
-"상대 밀로틱의 비바라기!"
+[Round order] 불카모스 (0), 상대 할비롱 (3), 아머까오 (2), 상대 패리퍼 (1)
+
+"상대 할비롱의 \j[할비롱나이트,이,가] 엘리트 트레이너 test의 메가링에 반응하고 있다!"
+"\j[상대 할비롱,은,는] 메가진화하여 \j[메가할비롱,이,가] 되었다!"
+[Ability triggered] 상대 할비롱's 잔비
 "비가 내리기 시작했다!"
+[Use move] 불카모스 (0) used 불대문자
+"불카모스의 불대문자!"
+[HP change] 상대 할비롱 lost 21 HP (162 -> 141)
+"효과가 별로인 것 같다..."
+[Use move] 상대 할비롱 (3) used 번개
+"상대 할비롱의 번개!"
+[HP change] 불카모스 lost 18 HP (18 -> 0)
+"\j[불카모스,은,는] 쓰러졌다!"
+[Use move] 아머까오 (2) used 브레이브버드
+"아머까오의 브레이브버드!"
+[HP change] 상대 할비롱 lost 65 HP (141 -> 76)
+[HP change] 아머까오 lost 22 HP (205 -> 183)
+"\j[아머까오,은,는] 반동으로 데미지를 입었다!"
+[Use move] 상대 패리퍼 (1) used 폭풍
+"상대 패리퍼의 폭풍!"
+[HP change] 아머까오 lost 38 HP (183 -> 145)
+"효과가 별로인 것 같다..."
 
 [End of round 4]
 "비가 계속 내리고 있다."
-
-===== Round 5 =====
-
-DEBUG: [랜덤 파티] 트레이너 엘리트 트레이너 test의 팀은 6마리이므로 랜덤 파티가 적용되지 않았습니다.
-
-================================================================
-
-[Started battle] Single trainer battle (1 trainer(s) vs. 1 trainer(s))
-"\j[엘리트 트레이너 test,이,가] 승부를 걸어왔다!"
-"\j[엘리트 트레이너 test,은,는] \j[어흥염,을,를] 내보냈다!"
-"가랏! 메타그로스!"
-[Round order] 메타그로스 (0), 상대 어흥염 (1)
-[Ability triggered] 상대 어흥염's 위협
-[Ability triggered] 메타그로스's 클리어바디
-"메타그로스의 능력치는 떨어지지 않는다!"
-
-===== Round 1 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: METAGROSS
-[테스트] 타입: PSYCHIC
-[테스트] hasTera? true
-[AI] 어흥염 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: #<GameData::Item:0x0000027eb7713418>
-[테스트] 종족: INCINEROAR
-[테스트] 타입: DARK
-[테스트] hasTera? false
-[AI] 어흥염 (1) is considering using DD래리어트 against 메타그로스 (0)...
-     + 15: damaging move (predicted damage 117 = 62% of target's HP)
-checking foe damage 불릿펀치 22 = 11%
-checking foe damage 돌진 63 = 31%
-checking foe damage 사이코키네시스 1 = 0%
-[AI] 어흥염 (1) is considering using 막말내뱉기 against 메타그로스 (0)...
-     move will not affect 메타그로스 (0)
-     - 80: move will fail
-[AI] 어흥염 (1) is considering using 플레어드라이브 against 메타그로스 (0)...
-     +  4: function code modifier (against target)
-     + 21: damaging move (predicted damage 162 = 86% of target's HP)
-checking foe damage 불릿펀치 22 = 11%
-checking foe damage 돌진 63 = 31%
-checking foe damage 사이코키네시스 1 = 0%
-[AI] 어흥염 (1) is considering using 유턴 against 메타그로스 (0)...
-     +  4: damaging move (predicted damage 32 = 17% of target's HP)
-     +  5: 6. Slow Pivot preference.
-     + 10: 6. Active Pivot move boost.
-     -100: Penalize useless move: very low predicted damage (17.1%).
-checking foe damage 불릿펀치 22 = 11%
-checking foe damage 돌진 63 = 31%
-checking foe damage 사이코키네시스 1 = 0%
-[AI] Move choices for 어흥염 (1) with threshold: 107: 
-   *  30.8% to use DD래리어트 (target 0): score 115
-   *   0.0% to use 막말내뱉기 (target 0): score 20
-   *  69.2% to use 플레어드라이브 (target 0): score 125
-   *   0.0% to use 유턴 (target 0): score 19
-   => will use 플레어드라이브 (target 0)
-
-[Round order] 메타그로스 (0), 상대 어흥염 (1)
-
-"메타그로스, 교체야! 돌아와!"
-"네 차례야, 밀로틱!"
-[Use move] 상대 어흥염 (1) used 플레어드라이브
-"상대 어흥염의 플레어드라이브!"
-[HP change] 밀로틱 lost 61 HP (202 -> 141)
-"효과가 별로인 것 같다..."
-[HP change] 상대 어흥염 lost 20 HP (200 -> 180)
-"\j[상대 어흥염,은,는] 반동으로 데미지를 입었다!"
-
-[End of round 1]
-[HP change] 상대 어흥염 gained 12 HP (180 -> 192)
-"상대 어흥염은 먹다남은음식으로 약간의 HP를 회복했다!"
-
-===== Round 2 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: MILOTIC
-[테스트] 타입: WATER
-[테스트] hasTera? true
-[AI] 어흥염 (1) is considering using item 회복약 on party 어흥염 (party index 0)...
-     - 40: useless because 어흥염 (1)'s HP isn't worth healing
-     - 40: useless because 어흥염 (1) has no condition to heal
-     -  8: prefers not to use item because it's last in stock
-     -120: ITEM AI: HP is healthy (>60%), healing discouraged.
-     - 80: ITEM AI: No lethal threat next turn, healing discouraged.
-     - 60: ITEM AI: Prefer switching over item (bad matchup).
-     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 어흥염 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: #<GameData::Item:0x0000027eb7713418>
-[테스트] 종족: INCINEROAR
-[테스트] 타입: DARK
-[테스트] hasTera? false
-[AI] 어흥염 (1) is considering using DD래리어트 against 밀로틱 (0)...
-     + 17: damaging move (predicted damage 96 = 68% of target's HP)
-checking foe damage 파도타기 126 = 65%
-[AI] 어흥염 (1) is considering using 막말내뱉기 against 밀로틱 (0)...
-     lowering the target's 공격 isn't worthwhile
-     +  6: lowering the target's 특수공격 by 1
-     + 18: function code modifier (against target)
-     + 10: 10. General Status Move Boost.
-checking foe damage 파도타기 126 = 65%
-[AI] 어흥염 (1) is considering using 플레어드라이브 against 밀로틱 (0)...
-     -  8: function code modifier (against target)
-     + 12: damaging move (predicted damage 68 = 48% of target's HP)
-     - 20: Penalize weak move: consider switching (33.7%).
-checking foe damage 파도타기 126 = 65%
-[AI] 어흥염 (1) is considering using 유턴 against 밀로틱 (0)...
-     +  9: damaging move (predicted damage 53 = 37% of target's HP)
-     +  5: 6. Slow Pivot preference.
-     + 10: 6. Active Pivot move boost.
-     - 20: Penalize weak move: consider switching (26.2%).
-     - 15: function code modifier (generic)
-checking foe damage 파도타기 126 = 65%
-[AI] Move choices for 어흥염 (1) with threshold: 110: 
-   *  28.0% to use DD래리어트 (target 0): score 117
-   *  72.0% to use 막말내뱉기 (target 0): score 128
-   *   0.0% to use 플레어드라이브 (target 0): score 84
-   *   0.0% to use 유턴 (target 0): score 89
-   => will use 막말내뱉기 (target 0)
-
-[Round order] 밀로틱 (0), 상대 어흥염 (1)
-
-[Use move] 밀로틱 (0) used 파도타기
-"밀로틱의 파도타기!"
-[HP change] 상대 어흥염 lost 117 HP (192 -> 75)
-"효과가 굉장했다!"
-[Use move] 상대 어흥염 (1) used 막말내뱉기
-"상대 어흥염의 막말내뱉기!"
-[Stat change] 밀로틱's 공격 changed by -1 (0 -> -1)
-"밀로틱의 \j[공격,이,가] 떨어졌다!"
-[Stat change] 밀로틱's 특수공격 changed by -1 (0 -> -1)
-"밀로틱의 \j[특수공격,이,가] 떨어졌다!"
-"\j[상대 어흥염,은,는] 엘리트 트레이너 test의 곁으로 돌아갔다!"
-foe.lastMoveUsed: SURF
-망나뇽 predicted_damage: 87
-망나뇽 predicted_damage: 60
-망나뇽 predicted_damage: 75
-pokemon 망나뇽 has switch score 25
-foe.lastMoveUsed: SURF
-비조도 predicted_damage: 87
-비조도 predicted_damage: 90
-비조도 predicted_damage: 45
-비조도 predicted_damage: 53
-비조도 predicted_damage: 75
-pokemon 비조도 has switch score 25
-foe.lastMoveUsed: SURF
-요가램 predicted_damage: 87
-요가램 predicted_damage: 31
-요가램 predicted_damage: 60
-요가램 predicted_damage: 16
-요가램 predicted_damage: 29
-pokemon 요가램 has switch score 12
-foe.lastMoveUsed: SURF
-마기라스 predicted_damage: 87
-마기라스 predicted_damage: 75
-마기라스 predicted_damage: 90
-마기라스 predicted_damage: 75
-pokemon 마기라스 has switch score 39
-"\j[엘리트 트레이너 test,은,는] \j[마기라스,을,를] 내보냈다!"
-[Ability triggered] 상대 마기라스's 모래날림
-"모래바람이 불기 시작했다!"
-
-[End of round 2]
-"모래바람이 불고 있다."
-"모래바람이 \j[밀로틱,을,를] 덮쳤다!"
-[HP change] 밀로틱 lost 12 HP (141 -> 129)
-
-===== Round 3 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: MILOTIC
-[테스트] 타입: WATER
-[테스트] hasTera? true
-[AI] 마기라스 (1) is considering using item 회복약 on party 어흥염 (party index 0)...
-     + 24: healing 마기라스 (1) by 199 HP (75 -> 200) (74 over heal)
-     - 40: useless because 마기라스 (1) has no condition to heal
-     -  8: prefers not to use item because it's last in stock
-     -120: ITEM AI: HP is healthy (>60%), healing discouraged.
-     - 80: ITEM AI: No lethal threat next turn, healing discouraged.
-     - 60: ITEM AI: Prefer switching over item (bad matchup).
-     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 마기라스 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: #<GameData::Item:0x0000027eb777fac8>
-[테스트] 종족: TYRANITAR
-[테스트] 타입: DARK
-[테스트] hasTera? false
-[AI] 마기라스 (1) is considering using 용의춤...
-     +  6: raising the user's 공격 by 1
-     +  7: raising the user's 스피드 by 1
-     + 13: function code modifier (generic)
-     - 50: GLOBAL NERF: Setup moves are inherently risky.
-     + 40: Safe setup: all strict conditions satisfied.
-     + 10: 10. General Status Move Boost.
-checking foe damage 파도타기 57 = 27%
-[AI] 마기라스 (1) is considering using 스톤에지 against 밀로틱 (0)...
-     -  5: accuracy (predicted 80%)
-     + 20: damaging move (predicted damage 105 = 81% of target's HP)
-checking foe damage 파도타기 57 = 27%
-[AI] 마기라스 (1) is considering using 깨물어부수기 against 밀로틱 (0)...
-     +  5: lowering the target's 방어 by 1
-     + 12: function code modifier (against target)
-     + 16: damaging move (predicted damage 84 = 65% of target's HP)
-checking foe damage 파도타기 57 = 27%
-[AI] 마기라스 (1) is considering using 지진...
-     + 13: damaging move (predicted damage 70 = 54% of target's HP)
-     - 20: Penalize weak move: consider switching (34.7%).
-checking foe damage 파도타기 57 = 27%
-[AI] Move choices for 마기라스 (1) with threshold: 110: 
-   *  11.5% to use 용의춤: score 113
-   *  19.2% to use 스톤에지 (target 0): score 115
-   *  69.2% to use 깨물어부수기 (target 0): score 128
-   *   0.0% to use 지진: score 93
-   => will use 스톤에지 (target 0)
-
-[Round order] 밀로틱 (0), 상대 마기라스 (1)
-
-[Use move] 밀로틱 (0) used 파도타기
-"밀로틱의 파도타기!"
-[HP change] 상대 마기라스 lost 54 HP (207 -> 153)
-"효과가 굉장했다!"
-[Use move] 상대 마기라스 (1) used 스톤에지
-"상대 마기라스의 스톤에지!"
-[HP change] 밀로틱 lost 92 HP (129 -> 37)
-
-[End of round 3]
-"모래바람이 불고 있다."
-"모래바람이 \j[밀로틱,을,를] 덮쳤다!"
-[HP change] 밀로틱 lost 12 HP (37 -> 25)
-
-===== Round 4 =====
-
-[AI] 마기라스 (1) is considering using item 회복약 on party 어흥염 (party index 0)...
-     + 24: healing 마기라스 (1) by 199 HP (75 -> 200) (74 over heal)
-     - 40: useless because 마기라스 (1) has no condition to heal
-     -  8: prefers not to use item because it's last in stock
-     -120: ITEM AI: HP is healthy (>60%), healing discouraged.
-     - 80: ITEM AI: No lethal threat next turn, healing discouraged.
-     - 60: ITEM AI: Prefer switching over item (bad matchup).
-     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 마기라스 (1) is considering using item 회복약 on party 마기라스 (party index 4)...
-     - 40: useless because 마기라스 (1)'s HP isn't worth healing
-     - 40: useless because 마기라스 (1) has no condition to heal
-     -  8: prefers not to use item because it's last in stock
-     -120: ITEM AI: HP is healthy (>60%), healing discouraged.
-     - 80: ITEM AI: No lethal threat next turn, healing discouraged.
-     - 60: ITEM AI: Prefer switching over item (bad matchup).
-     + 60: ITEM AI: Ace Pokémon preservation priority.
-[AI] 마기라스 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: #<GameData::Item:0x0000027eb777fac8>
-[테스트] 종족: TYRANITAR
-[테스트] 타입: DARK
-[테스트] hasTera? false
-[AI] 마기라스 (1) is considering using 용의춤...
-     +  6: raising the user's 공격 by 1
-     +  7: raising the user's 스피드 by 1
-     + 13: function code modifier (generic)
-     - 50: GLOBAL NERF: Setup moves are inherently risky.
-     + 40: Safe setup: all strict conditions satisfied.
-     + 10: 10. General Status Move Boost.
-checking foe damage 파도타기 57 = 37%
-[AI] 마기라스 (1) is considering using 스톤에지 against 밀로틱 (0)...
-     -  5: accuracy (predicted 80%)
-     + 30: damaging move (predicted damage 105 = 420% of target's HP)
-     + 40: predicted to KO the target
-checking foe damage 파도타기 57 = 37%
-[AI] 마기라스 (1) is considering using 깨물어부수기 against 밀로틱 (0)...
-     +  5: lowering the target's 방어 by 1
-     +  2: function code modifier (against target)
-     + 30: damaging move (predicted damage 84 = 336% of target's HP)
-     + 40: predicted to KO the target
-checking foe damage 파도타기 57 = 37%
-[AI] 마기라스 (1) is considering using 지진...
-     + 30: damaging move (predicted damage 70 = 280% of target's HP)
-     + 40: predicted to KO the target
-checking foe damage 파도타기 57 = 37%
-[AI] Move choices for 마기라스 (1) with threshold: 154: 
-   *   0.0% to use 용의춤: score 113
-   *  24.4% to use 스톤에지 (target 0): score 165
-   *  40.0% to use 깨물어부수기 (target 0): score 172
-   *  35.6% to use 지진: score 170
-   => will use 지진
-
-[Round order] 밀로틱 (0), 상대 마기라스 (1)
-
-"잘했어, 밀로틱! 돌아와!"
-"힘내, 한카리아스!"
-[Use move] 상대 마기라스 (1) used 지진
-"상대 마기라스의 지진!"
-[Move failed] Failed pbAccuracyCheck
-"\j[한카리아스,은,는] 공격을 피했다!"
-
-[End of round 4]
-"모래바람이 불고 있다."
-
-===== Round 5 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: GARCHOMP
-[테스트] 타입: DRAGON
-[테스트] hasTera? true
-[AI] 마기라스 (1) is considering using item 회복약 on party 어흥염 (party index 0)...
-     + 24: healing 마기라스 (1) by 199 HP (75 -> 200) (74 over heal)
-     - 40: useless because 마기라스 (1) has no condition to heal
-     -  8: prefers not to use item because it's last in stock
-     -120: ITEM AI: HP is healthy (>60%), healing discouraged.
-     - 60: ITEM AI: Prefer switching over item (bad matchup).
-     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 마기라스 (1) is considering using item 회복약 on party 마기라스 (party index 4)...
-     - 40: useless because 마기라스 (1)'s HP isn't worth healing
-     - 40: useless because 마기라스 (1) has no condition to heal
-     -  8: prefers not to use item because it's last in stock
-     -120: ITEM AI: HP is healthy (>60%), healing discouraged.
-     - 60: ITEM AI: Prefer switching over item (bad matchup).
-     + 60: ITEM AI: Ace Pokémon preservation priority.
-[AI] 마기라스 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: #<GameData::Item:0x0000027eb777fac8>
-[테스트] 종족: TYRANITAR
-[테스트] 타입: DARK
-[테스트] hasTera? false
-[AI] 마기라스 (1) is considering using 용의춤...
-     +  6: raising the user's 공격 by 1
-     +  4: raising the user's 스피드 by 1
-     + 10: function code modifier (generic)
-     - 50: GLOBAL NERF: Setup moves are inherently risky.
-     - 50: Setup blocked: No damaging move can do >40% of target HP.
-     + 10: 10. General Status Move Boost.
-checking foe damage 물기 18 = 11%
-checking foe damage 베어가르기 20 = 13%
-checking foe damage 드래곤클로 69 = 45%
-checking foe damage 지진 171 = 111%
-evade KO switch chance is 100%
-     -100: Penalize move: user is slower than a foe who can KO. (Speed ratio: 1.73, Chance: 100%)
-[AI] 마기라스 (1) is considering using 스톤에지 against 한카리아스 (0)...
-     -  9: accuracy (predicted 64%)
-     +  5: damaging move (predicted damage 41 = 21% of target's HP)
-     - 20: Penalize weak move: consider switching (21.0%).
-checking foe damage 물기 18 = 11%
-checking foe damage 베어가르기 20 = 13%
-checking foe damage 드래곤클로 69 = 45%
-checking foe damage 지진 171 = 111%
-evade KO switch chance is 100%
-     -100: Penalize move: user is slower than a foe who can KO. (Speed ratio: 1.73, Chance: 100%)
-[AI] 마기라스 (1) is considering using 깨물어부수기 against 한카리아스 (0)...
-     +  5: lowering the target's 방어 by 1
-     + 13: function code modifier (against target)
-     -  5: accuracy (predicted 80%)
-     +  8: damaging move (predicted damage 66 = 33% of target's HP)
-     - 20: Penalize weak move: consider switching (33.8%).
-checking foe damage 물기 18 = 11%
-checking foe damage 베어가르기 20 = 13%
-checking foe damage 드래곤클로 69 = 45%
-checking foe damage 지진 171 = 111%
-evade KO switch chance is 100%
-     -100: Penalize move: user is slower than a foe who can KO. (Speed ratio: 1.73, Chance: 100%)
-[AI] 마기라스 (1) is considering using 지진...
-     -  5: accuracy (predicted 80%)
-     +  6: damaging move (predicted damage 54 = 27% of target's HP)
-     - 20: Penalize weak move: consider switching (27.7%).
-checking foe damage 물기 18 = 11%
-checking foe damage 베어가르기 20 = 13%
-checking foe damage 드래곤클로 69 = 45%
-checking foe damage 지진 171 = 111%
-evade KO switch chance is 100%
-     -100: Penalize move: user is slower than a foe who can KO. (Speed ratio: 1.73, Chance: 100%)
-[AI] 마기라스 (1) wants to switch due to terrible moves
-[AI] 마기라스 (1) is being forced to switch out
-어흥염 predicted_damage: 69
-어흥염 predicted_damage: 33
-어흥염 predicted_damage: 38
-pokemon 어흥염 has switch score 112
-망나뇽 predicted_damage: 44
-망나뇽 predicted_damage: 54
-pokemon 망나뇽 has switch score 109
-비조도 predicted_damage: 65
-비조도 predicted_damage: 260
-비조도 predicted_damage: 38
-비조도 predicted_damage: 41
-pokemon 비조도 has switch score 139
-요가램 predicted_damage: 23
-요가램 predicted_damage: 44
-요가램 predicted_damage: 23
-요가램 predicted_damage: 164
-pokemon 요가램 has switch score 124
-   => will switch with 비조도
-
-[Round order] 한카리아스 (0), 상대 마기라스 (1)
-
-"\j[엘리트 트레이너 test,이,가] \j[마기라스,을,를] 넣었다!"
-"\j[엘리트 트레이너 test,은,는] \j[비조도,을,를] 내보냈다!"
-[Use move] 한카리아스 (0) used 지진
-"한카리아스의 지진!"
-[HP change] 상대 비조도 lost 127 HP (141 -> 14)
-
-[End of round 5]
-"모래바람이 불고 있다."
-"모래바람이 \j[상대 비조도,을,를] 덮쳤다!"
-[HP change] 상대 비조도 lost 8 HP (14 -> 6)
-
-===== Round 6 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: GARCHOMP
-[테스트] 타입: DRAGON
-[테스트] hasTera? true
-[AI] 비조도 (1) is considering using item 회복약 on party 어흥염 (party index 0)...
-     + 24: healing 비조도 (1) by 199 HP (75 -> 200) (74 over heal)
-     - 40: useless because 비조도 (1) has no condition to heal
-     -  8: prefers not to use item because it's last in stock
-     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 비조도 (1) is considering using item 회복약 on party 비조도 (party index 2)...
-     + 43: healing 비조도 (1) by 140 HP (6 -> 141) (5 over heal)
-     - 40: useless because 비조도 (1) has no condition to heal
-     -  8: prefers not to use item because it's last in stock
-     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 비조도 (1) is considering using item 회복약 on party 마기라스 (party index 4)...
-     - 40: useless because 비조도 (1)'s HP isn't worth healing
-     - 40: useless because 비조도 (1) has no condition to heal
-     -  8: prefers not to use item because it's last in stock
-     + 60: ITEM AI: Ace Pokémon preservation priority.
-[AI] Item choices for 비조도 (1):
-   *   0.0% to use 회복약 (party index 0): score 76
-   *   0.0% to use 회복약 (party index 2): score 95
-   * 100.0% to use 회복약 (party index 4): score 112
-   => will use 회복약 (party index 4)
-[AI] 비조도 (1) will use item 회복약
-
-[Round order] 상대 비조도 (1), 한카리아스 (0)
-
-"\j[엘리트 트레이너 test,은,는] 마기라스에게 \j[회복약,을,를] 사용했다."
-"마기라스의 HP가 회복되었다."
-[Use move] 한카리아스 (0) used 지진
-"한카리아스의 지진!"
-[HP change] 상대 비조도 lost 6 HP (6 -> 0)
-"\j[상대 비조도,은,는] 쓰러졌다!"
-"\j[한카리아스,이,가] 3134의 경험치를 얻었다!"
-"다른 포켓몬들도 학습장치를 통해 경험치를 얻었다!"
-
-[End of round 6]
-"모래바람이 그쳤다."
-foe.lastMoveUsed: EARTHQUAKE
-어흥염 predicted_damage: 140
-어흥염 predicted_damage: 59
-어흥염 predicted_damage: 42
-어흥염 predicted_damage: 49
-pokemon 어흥염 has switch score 13
-foe.lastMoveUsed: EARTHQUAKE
-망나뇽 predicted_damage: 140
-망나뇽 predicted_damage: 56
-망나뇽 predicted_damage: 69
-pokemon 망나뇽 has switch score 11
-foe.lastMoveUsed: EARTHQUAKE
-요가램 predicted_damage: 140
-요가램 predicted_damage: 29
-요가램 predicted_damage: 56
-요가램 predicted_damage: 29
-요가램 predicted_damage: 208
-pokemon 요가램 has switch score 29
-foe.lastMoveUsed: EARTHQUAKE
-마기라스 predicted_damage: 140
-마기라스 predicted_damage: 35
-마기라스 predicted_damage: 56
-마기라스 predicted_damage: 69
-pokemon 마기라스 has switch score 14
-"\j[엘리트 트레이너 test,은,는] \j[요가램,을,를] 내보냈다!"
-
-===== Round 7 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: GARCHOMP
-[테스트] 타입: DRAGON
-[테스트] hasTera? true
-[AI] 요가램 (1) couldn't find any usable items
-[AI] 요가램 (1) will Mega Evolve
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: #<GameData::Item:0x0000027eb771ba28>
-[테스트] 종족: MEDICHAM
-[테스트] 타입: FIGHTING
-[테스트] hasTera? false
-[AI] 요가램 (1) is considering using 속이기 against 한카리아스 (0)...
-     +  4: damaging move (predicted damage 32 = 16% of target's HP)
-     -100: Penalize useless move: very low predicted damage (16.4%).
-[AI] 요가램 (1) is considering using 사념의박치기 against 한카리아스 (0)...
-     + 12: damaging move (predicted damage 95 = 48% of target's HP)
-checking foe damage 물기 52 = 38%
-checking foe damage 베어가르기 61 = 45%
-checking foe damage 드래곤클로 104 = 77%
-checking foe damage 지진 129 = 95%
-evade KO switch chance is 100%
-     -100: Penalize move: user is slower than a foe who can KO. (Speed ratio: 1.54, Chance: 100%)
-[AI] 요가램 (1) is considering using 불릿펀치 against 한카리아스 (0)...
-     +  4: damaging move (predicted damage 32 = 16% of target's HP)
-     -100: Penalize useless move: very low predicted damage (16.4%).
-checking foe damage 물기 52 = 38%
-checking foe damage 베어가르기 61 = 45%
-checking foe damage 드래곤클로 104 = 77%
-checking foe damage 지진 129 = 95%
-evade KO switch chance is 100%
-     -100: Penalize move: user is slower than a foe who can KO. (Speed ratio: 1.54, Chance: 100%)
-[AI] 요가램 (1) is considering using 냉동펀치 against 한카리아스 (0)...
-     +  3: function code modifier (against target)
-     + 30: damaging move (predicted damage 236 = 121% of target's HP)
-     + 40: predicted to KO the target
-checking foe damage 물기 52 = 38%
-checking foe damage 베어가르기 61 = 45%
-checking foe damage 드래곤클로 104 = 77%
-checking foe damage 지진 129 = 95%
-evade KO switch chance is 100%
-     -100: Penalize move: user is slower than a foe who can KO. (Speed ratio: 1.54, Chance: 100%)
-[AI] 요가램 (1) wants to switch due to terrible moves
-[AI] 요가램 (1) is being forced to switch out
-foe.lastMoveUsed: EARTHQUAKE
-어흥염 predicted_damage: 129
-어흥염 predicted_damage: 67
-어흥염 predicted_damage: 47
-어흥염 predicted_damage: 55
-pokemon 어흥염 has switch score 15
-foe.lastMoveUsed: EARTHQUAKE
-망나뇽 predicted_damage: 129
-망나뇽 predicted_damage: 63
-망나뇽 predicted_damage: 78
-pokemon 망나뇽 has switch score 13
-foe.lastMoveUsed: EARTHQUAKE
-마기라스 predicted_damage: 129
-마기라스 predicted_damage: 39
-마기라스 predicted_damage: 63
-마기라스 predicted_damage: 78
-pokemon 마기라스 has switch score 16
-   => no good replacement Pokémon, will not switch after all
-[AI] 요가램 (1) won't switch after all
-[AI] Move choices for 요가램 (1) with threshold: 55: 
-   *   0.0% to use 속이기 (target 0): score 4
-   *   0.0% to use 사념의박치기 (target 0): score 12
-   *   0.0% to use 불릿펀치 (target 0): score 0
-   * 100.0% to use 냉동펀치 (target 0): score 73
-   => will use 냉동펀치 (target 0)
-
-[Round order] 한카리아스 (0), 상대 요가램 (1)
-
-"상대 요가램의 \j[요가램나이트,이,가] 엘리트 트레이너 test의 메가링에 반응하고 있다!"
-"\j[상대 요가램,은,는] 메가진화하여 \j[메가 요가램,이,가] 되었다!"
-[Use move] 한카리아스 (0) used 지진
-"한카리아스의 지진!"
-[HP change] 상대 요가램 lost 101 HP (135 -> 34)
-[Use move] 상대 요가램 (1) used 냉동펀치
-"상대 요가램의 냉동펀치!"
-[HP change] 한카리아스 lost 195 HP (195 -> 0)
-"효과가 굉장했다!"
-"\j[한카리아스,은,는] 쓰러졌다!"
-
-[End of round 7]
-"조금 남았어! 힘내, 가디안!"
-[Ability triggered] 가디안's 트레이스
-"\j[가디안,은,는] 상대 요가램의 \j[순수한힘,을,를] 트레이스했다!"
-
-===== Round 8 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: GARDEVOIR
-[테스트] 타입: FAIRY
-[테스트] hasTera? true
-[AI] 요가램 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: #<GameData::Item:0x0000027eb771ba28>
-[테스트] 종족: MEDICHAM
-[테스트] 타입: 
-[테스트] hasTera? false
-[AI] 요가램 (1) is considering using 속이기...
-     - 80: move will fail
-[AI] 요가램 (1) is considering using 사념의박치기 against 가디안 (0)...
-     + 16: damaging move (predicted damage 95 = 66% of target's HP)
-checking foe damage 사이코키네시스 80 = 235%
-evade KO switch chance is 50%
-[AI] 요가램 (1) is considering using 불릿펀치 against 가디안 (0)...
-     +  8: user at low HP and move has priority over faster target
-     + 22: damaging move (predicted damage 128 = 89% of target's HP)
-checking foe damage 사이코키네시스 80 = 235%
-evade KO switch chance is 50%
-[AI] 요가램 (1) is considering using 냉동펀치 against 가디안 (0)...
-     +  3: function code modifier (against target)
-     + 20: damaging move (predicted damage 120 = 83% of target's HP)
-checking foe damage 사이코키네시스 80 = 235%
-evade KO switch chance is 50%
-     -100: Penalize move: user is slower than a foe who can KO. (Speed ratio: 1.1, Chance: 50%)
-[AI] Move choices for 요가램 (1) with threshold: 112: 
-   *   0.0% to use 속이기: score 20
-   *  18.2% to use 사념의박치기 (target 0): score 116
-   *  81.8% to use 불릿펀치 (target 0): score 130
-   *   0.0% to use 냉동펀치 (target 0): score 23
-   => will use 불릿펀치 (target 0)
-
-[Round order] 상대 요가램 (1), 가디안 (0)
-
-[Use move] 상대 요가램 (1) used 불릿펀치
-"상대 요가램의 불릿펀치!"
-[HP change] 가디안 lost 124 HP (143 -> 19)
-"효과가 굉장했다!"
-[Use move] 가디안 (0) used 문포스
-"가디안의 문포스!"
-[HP change] 상대 요가램 lost 34 HP (34 -> 0)
-"효과가 굉장했다!"
-"\j[상대 요가램,은,는] 쓰러졌다!"
-"\j[가디안,이,가] 2521의 경험치를 얻었다!"
-"다른 포켓몬들도 학습장치를 통해 경험치를 얻었다!"
-
-[End of round 8]
-foe.lastMoveUsed: MOONBLAST
-어흥염 predicted_damage: 168
-어흥염 predicted_damage: 68
-어흥염 predicted_damage: 96
-어흥염 predicted_damage: 57
-pokemon 어흥염 has switch score 20
-foe.lastMoveUsed: MOONBLAST
-망나뇽 predicted_damage: 168
-망나뇽 predicted_damage: 64
-망나뇽 predicted_damage: 80
-pokemon 망나뇽 has switch score 14
-foe.lastMoveUsed: MOONBLAST
-마기라스 predicted_damage: 168
-마기라스 predicted_damage: 80
-마기라스 predicted_damage: 64
-마기라스 predicted_damage: 80
-pokemon 마기라스 has switch score 22
-"\j[엘리트 트레이너 test,은,는] \j[마기라스,을,를] 내보냈다!"
-[Ability triggered] 상대 마기라스's 모래날림
-"모래바람이 불기 시작했다!"
-
-===== Round 9 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: GARDEVOIR
-[테스트] 타입: FAIRY
-[테스트] hasTera? true
-[AI] 마기라스 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: #<GameData::Item:0x0000027eb777fac8>
-[테스트] 종족: TYRANITAR
-[테스트] 타입: DARK
-[테스트] hasTera? false
-[AI] 마기라스 (1) is considering using 용의춤...
-     +  6: raising the user's 공격 by 1
-     +  7: raising the user's 스피드 by 1
-     + 13: function code modifier (generic)
-     - 50: GLOBAL NERF: Setup moves are inherently risky.
-     + 40: Safe setup: all strict conditions satisfied.
-     + 10: 10. General Status Move Boost.
-checking foe damage 사이코키네시스 1 = 0%
-checking foe damage 문포스 141 = 68%
-[AI] 마기라스 (1) is considering using 스톤에지 against 가디안 (0)...
-     -  5: accuracy (predicted 80%)
-     + 30: damaging move (predicted damage 122 = 642% of target's HP)
-     + 40: predicted to KO the target
-checking foe damage 사이코키네시스 1 = 0%
-checking foe damage 문포스 141 = 68%
-[AI] 마기라스 (1) is considering using 깨물어부수기 against 가디안 (0)...
-     +  5: lowering the target's 방어 by 1
-     +  6: function code modifier (against target)
-     + 30: damaging move (predicted damage 98 = 515% of target's HP)
-     + 40: predicted to KO the target
-checking foe damage 사이코키네시스 1 = 0%
-checking foe damage 문포스 141 = 68%
-[AI] 마기라스 (1) is considering using 지진...
-     + 30: damaging move (predicted damage 81 = 426% of target's HP)
-     + 40: predicted to KO the target
-checking foe damage 사이코키네시스 1 = 0%
-checking foe damage 문포스 141 = 68%
-[AI] Move choices for 마기라스 (1) with threshold: 158: 
-   *   0.0% to use 용의춤: score 113
-   *  18.9% to use 스톤에지 (target 0): score 165
-   *  48.6% to use 깨물어부수기 (target 0): score 176
-   *  32.4% to use 지진: score 170
-   => will use 깨물어부수기 (target 0)
-
-[Round order] 가디안 (0), 상대 마기라스 (1)
-
-[Use move] 가디안 (0) used 문포스
-"가디안의 문포스!"
-[HP change] 상대 마기라스 lost 120 HP (207 -> 87)
-"효과가 굉장했다!"
-[HP change] 상대 마기라스 gained 51 HP (87 -> 138)
-"\j[상대 마기라스,은,는] \j[자뭉열매,으로,로] HP를 회복했다!"
-[Item consumed] 상대 마기라스 consumed its held 자뭉열매
-[Use move] 상대 마기라스 (1) used 깨물어부수기
-"상대 마기라스의 깨물어부수기!"
-[HP change] 가디안 lost 19 HP (19 -> 0)
-"\j[가디안,은,는] 쓰러졌다!"
-
-[End of round 9]
-"모래바람이 불고 있다."
-"힘내, 메타그로스!"
-
-===== Round 10 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: METAGROSS
-[테스트] 타입: PSYCHIC
-[테스트] hasTera? true
-[AI] 마기라스 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: TYRANITAR
-[테스트] 타입: DARK
-[테스트] hasTera? false
-[AI] 마기라스 (1) is considering using 용의춤...
-     +  6: raising the user's 공격 by 1
-     +  7: raising the user's 스피드 by 1
-     + 13: function code modifier (generic)
-     - 50: GLOBAL NERF: Setup moves are inherently risky.
-     + 40: Safe setup: all strict conditions satisfied.
-     + 10: 10. General Status Move Boost.
-checking foe damage 불릿펀치 66 = 47%
-checking foe damage 돌진 24 = 17%
-checking foe damage 사이코키네시스 1 = 0%
-[AI] 마기라스 (1) is considering using 스톤에지 against 메타그로스 (0)...
-     -  5: accuracy (predicted 80%)
-     +  4: damaging move (predicted damage 32 = 17% of target's HP)
-     -100: Penalize useless move: very low predicted damage (17.1%).
-     - 80: move will fail
-[AI] 마기라스 (1) is considering using 깨물어부수기 against 메타그로스 (0)...
-     lowering the target's 방어 isn't worthwhile
-     + 13: damaging move (predicted damage 102 = 54% of target's HP)
-checking foe damage 불릿펀치 66 = 47%
-checking foe damage 돌진 24 = 17%
-checking foe damage 사이코키네시스 1 = 0%
-[AI] 마기라스 (1) is considering using 지진...
-     + 11: damaging move (predicted damage 84 = 44% of target's HP)
-checking foe damage 불릿펀치 66 = 47%
-checking foe damage 돌진 24 = 17%
-checking foe damage 사이코키네시스 1 = 0%
-[AI] Move choices for 마기라스 (1) with threshold: 95: 
-   *  34.6% to use 용의춤: score 113
-   *   0.0% to use 스톤에지 (target 0): score 20
-   *  34.6% to use 깨물어부수기 (target 0): score 113
-   *  30.8% to use 지진: score 111
-   => will use 용의춤
-
-[Round order] 메타그로스 (0), 상대 마기라스 (1)
-
-[Use move] 메타그로스 (0) used 불릿펀치
-"메타그로스의 불릿펀치!"
-[HP change] 상대 마기라스 lost 65 HP (138 -> 73)
-"효과가 굉장했다!"
-[Use move] 상대 마기라스 (1) used 용의춤
-"상대 마기라스의 용의춤!"
-[Stat change] 상대 마기라스's 공격 changed by +1 (0 -> 1)
-"상대 마기라스의 \j[공격,이,가] 올랐다!"
-[Stat change] 상대 마기라스's 스피드 changed by +1 (0 -> 1)
-"상대 마기라스의 \j[스피드,이,가] 올랐다!"
-
-[End of round 10]
-"모래바람이 불고 있다."
-
-===== Round 11 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: METAGROSS
-[테스트] 타입: PSYCHIC
-[테스트] hasTera? true
-[AI] 마기라스 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: TYRANITAR
-[테스트] 타입: DARK
-[테스트] hasTera? false
-[AI] 마기라스 (1) is considering using 용의춤...
-     raising the user's 스피드 isn't worthwhile
-     +  4: raising the user's 공격 by 1
-     +  4: function code modifier (generic)
-     - 50: GLOBAL NERF: Setup moves are inherently risky.
-     -100: Setup blocked: total boost >= 2.
-     + 10: 10. General Status Move Boost.
-checking foe damage 불릿펀치 66 = 90%
-[AI] 마기라스 (1) is considering using 스톤에지 against 메타그로스 (0)...
-     -  5: accuracy (predicted 80%)
-     +  6: damaging move (predicted damage 47 = 25% of target's HP)
-     - 20: Penalize weak move: consider switching (25.1%).
-checking foe damage 불릿펀치 66 = 90%
-[AI] 마기라스 (1) is considering using 깨물어부수기 against 메타그로스 (0)...
-     lowering the target's 방어 isn't worthwhile
-     + 20: damaging move (predicted damage 150 = 80% of target's HP)
-checking foe damage 불릿펀치 66 = 90%
-[AI] 마기라스 (1) is considering using 지진...
-     + 16: damaging move (predicted damage 124 = 66% of target's HP)
-checking foe damage 불릿펀치 66 = 90%
-[AI] Move choices for 마기라스 (1) with threshold: 102: 
-   *   0.0% to use 용의춤: score 0
-   *   0.0% to use 스톤에지 (target 0): score 81
-   *  56.2% to use 깨물어부수기 (target 0): score 120
-   *  43.8% to use 지진: score 116
-   => will use 깨물어부수기 (target 0)
-
-[Round order] 메타그로스 (0), 상대 마기라스 (1)
-
-[Use move] 메타그로스 (0) used 불릿펀치
-"메타그로스의 불릿펀치!"
-[HP change] 상대 마기라스 lost 64 HP (73 -> 9)
-"효과가 굉장했다!"
-[Use move] 상대 마기라스 (1) used 깨물어부수기
-"상대 마기라스의 깨물어부수기!"
-[HP change] 메타그로스 lost 146 HP (187 -> 41)
-"효과가 굉장했다!"
-
-[End of round 11]
-"모래바람이 불고 있다."
-
-===== Round 12 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: METAGROSS
-[테스트] 타입: PSYCHIC
-[테스트] hasTera? true
-[AI] 마기라스 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: TYRANITAR
-[테스트] 타입: DARK
-[테스트] hasTera? false
-[AI] 마기라스 (1) is considering using 용의춤...
-     raising the user's 스피드 isn't worthwhile
-     +  4: raising the user's 공격 by 1
-     +  4: function code modifier (generic)
-     - 50: GLOBAL NERF: Setup moves are inherently risky.
-     -100: Setup blocked: HP <= 30%.
-     + 10: 10. General Status Move Boost.
-checking foe damage 불릿펀치 66 = 733%
-[AI] 마기라스 (1) is considering using 스톤에지 against 메타그로스 (0)...
-     -  5: accuracy (predicted 80%)
-     + 28: damaging move (predicted damage 47 = 114% of target's HP)
-     + 40: predicted to KO the target
-checking foe damage 불릿펀치 66 = 733%
-[AI] 마기라스 (1) is considering using 깨물어부수기 against 메타그로스 (0)...
-     lowering the target's 방어 isn't worthwhile
-     + 30: damaging move (predicted damage 150 = 365% of target's HP)
-     + 40: predicted to KO the target
-checking foe damage 불릿펀치 66 = 733%
-[AI] 마기라스 (1) is considering using 지진...
-     + 30: damaging move (predicted damage 124 = 302% of target's HP)
-     + 40: predicted to KO the target
-checking foe damage 불릿펀치 66 = 733%
-[AI] Move choices for 마기라스 (1) with threshold: 152: 
-   *   0.0% to use 용의춤: score 0
-   *  23.4% to use 스톤에지 (target 0): score 163
-   *  38.3% to use 깨물어부수기 (target 0): score 170
-   *  38.3% to use 지진: score 170
-   => will use 지진
-
-[Round order] 상대 마기라스 (1), 메타그로스 (0)
-
-[Use move] 상대 마기라스 (1) used 지진
-"상대 마기라스의 지진!"
-[HP change] 메타그로스 lost 41 HP (41 -> 0)
-"효과가 굉장했다!"
-"\j[메타그로스,은,는] 쓰러졌다!"
-
-[End of round 12]
-"모래바람이 불고 있다."
-"상대가 약해져 있어! 가랏, 밀로틱!"
-
-===== Round 13 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: MILOTIC
-[테스트] 타입: WATER
-[테스트] hasTera? true
-[AI] 마기라스 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: TYRANITAR
-[테스트] 타입: DARK
-[테스트] hasTera? false
-[AI] 마기라스 (1) is considering using 용의춤...
-     raising the user's 스피드 isn't worthwhile
-     +  4: raising the user's 공격 by 1
-     +  4: function code modifier (generic)
-     - 50: GLOBAL NERF: Setup moves are inherently risky.
-     -100: Setup blocked: HP <= 30%.
-     + 10: 10. General Status Move Boost.
-checking foe damage 파도타기 84 = 933%
-[AI] 마기라스 (1) is considering using 스톤에지 against 밀로틱 (0)...
-     -  5: accuracy (predicted 80%)
-     + 30: damaging move (predicted damage 156 = 624% of target's HP)
-     + 40: predicted to KO the target
-checking foe damage 파도타기 84 = 933%
-[AI] 마기라스 (1) is considering using 깨물어부수기 against 밀로틱 (0)...
-     +  5: lowering the target's 방어 by 1
-     -  6: function code modifier (against target)
-     + 30: damaging move (predicted damage 125 = 500% of target's HP)
-     + 40: predicted to KO the target
-checking foe damage 파도타기 84 = 933%
-[AI] 마기라스 (1) is considering using 지진...
-     + 30: damaging move (predicted damage 104 = 416% of target's HP)
-     + 40: predicted to KO the target
-checking foe damage 파도타기 84 = 933%
-[AI] Move choices for 마기라스 (1) with threshold: 152: 
-   *   0.0% to use 용의춤: score 0
-   *  30.2% to use 스톤에지 (target 0): score 165
-   *  27.9% to use 깨물어부수기 (target 0): score 164
-   *  41.9% to use 지진: score 170
-   => will use 지진
-
-[Round order] 상대 마기라스 (1), 밀로틱 (0)
-
-[Use move] 상대 마기라스 (1) used 지진
-"상대 마기라스의 지진!"
-[HP change] 밀로틱 lost 25 HP (25 -> 0)
-"\j[밀로틱,은,는] 쓰러졌다!"
-
-[End of round 13]
-"모래바람이 그쳤다."
-"상대가 약해져 있어! 가랏, 팬텀!"
-
-===== Round 14 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: GENGAR
-[테스트] 타입: GHOST
-[테스트] hasTera? true
-[AI] 마기라스 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: TYRANITAR
-[테스트] 타입: DARK
-[테스트] hasTera? false
-[AI] 마기라스 (1) is considering using 용의춤...
-     raising the user's 스피드 isn't worthwhile
-     +  4: raising the user's 공격 by 1
-     +  4: function code modifier (generic)
-     - 50: GLOBAL NERF: Setup moves are inherently risky.
-     -100: Setup blocked: HP <= 30%.
-     + 10: 10. General Status Move Boost.
-checking foe damage 나이트헤드 50 = 555%
-[AI] 마기라스 (1) is considering using 스톤에지 against 팬텀 (0)...
-     -  5: accuracy (predicted 80%)
-     + 30: damaging move (predicted damage 173 = 128% of target's HP)
-     + 40: predicted to KO the target
-     -  8: can trigger the target's ability
-checking foe damage 나이트헤드 50 = 555%
-[AI] 마기라스 (1) is considering using 깨물어부수기 against 팬텀 (0)...
-     +  5: lowering the target's 방어 by 1
-     +  5: function code modifier (against target)
-     + 30: damaging move (predicted damage 279 = 206% of target's HP)
-     + 40: predicted to KO the target
-     -  8: can trigger the target's ability
-checking foe damage 나이트헤드 50 = 555%
-[AI] 마기라스 (1) is considering using 지진...
-     + 30: damaging move (predicted damage 230 = 170% of target's HP)
-     + 40: predicted to KO the target
-     -  8: can trigger the target's ability
-checking foe damage 나이트헤드 50 = 555%
-[AI] Move choices for 마기라스 (1) with threshold: 149: 
-   *   0.0% to use 용의춤: score 0
-   *  20.5% to use 스톤에지 (target 0): score 157
-   *  46.2% to use 깨물어부수기 (target 0): score 167
-   *  33.3% to use 지진: score 162
-   => will use 스톤에지 (target 0)
-
-[Round order] 상대 마기라스 (1), 팬텀 (0)
-
-[Use move] 상대 마기라스 (1) used 스톤에지
-"상대 마기라스의 스톤에지!"
-[HP change] 팬텀 lost 135 HP (135 -> 0)
-"\j[팬텀,은,는] 쓰러졌다!"
-
-[End of round 14]
-"상대가 약해져 있어! 가랏, 앱솔!"
-[Ability triggered] 앱솔's 프레셔
-"\j[앱솔,은,는] 프레셔를 내뿜고 있다!"
-
-===== Round 15 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: ABSOL
-[테스트] 타입: DARK
-[테스트] hasTera? true
-[AI] 마기라스 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: TYRANITAR
-[테스트] 타입: DARK
-[테스트] hasTera? false
-[AI] 마기라스 (1) is considering using 용의춤...
-     raising the user's 스피드 isn't worthwhile
-     +  4: raising the user's 공격 by 1
-     +  4: function code modifier (generic)
-     - 50: GLOBAL NERF: Setup moves are inherently risky.
-     -100: Setup blocked: HP <= 30%.
-     + 10: 10. General Status Move Boost.
-checking foe damage 기습 25 = 277%
-[AI] 마기라스 (1) is considering using 스톤에지 against 앱솔 (0)...
-     -  5: accuracy (predicted 80%)
-     + 30: damaging move (predicted damage 173 = 123% of target's HP)
-     + 40: predicted to KO the target
-     + 10: prefer damaging moves (no foe party Pokémon left)
-checking foe damage 기습 25 = 277%
-[AI] 마기라스 (1) is considering using 깨물어부수기 against 앱솔 (0)...
-     +  5: lowering the target's 방어 by 1
-     +  5: function code modifier (against target)
-     + 12: damaging move (predicted damage 70 = 50% of target's HP)
-     + 10: prefer damaging moves (no foe party Pokémon left)
-checking foe damage 기습 25 = 277%
-[AI] 마기라스 (1) is considering using 지진...
-     + 20: damaging move (predicted damage 115 = 82% of target's HP)
-     + 10: prefer damaging moves (no foe party Pokémon left)
-checking foe damage 기습 25 = 277%
-[AI] Move choices for 마기라스 (1) with threshold: 157: 
-   *   0.0% to use 용의춤: score 0
-   * 100.0% to use 스톤에지 (target 0): score 175
-   *   0.0% to use 깨물어부수기 (target 0): score 127
-   *   0.0% to use 지진: score 130
-   => will use 스톤에지 (target 0)
-
-[Round order] 앱솔 (0), 상대 마기라스 (1)
-
-[Use move] 앱솔 (0) used 기습
-"앱솔의 기습!"
-[HP change] 상대 마기라스 lost 9 HP (9 -> 0)
-"효과가 별로인 것 같다..."
-"\j[상대 마기라스,은,는] 쓰러졌다!"
-"\j[앱솔,이,가] 5251의 경험치를 얻었다!"
-"\j[앱솔,은,는] Lv. 51이 되었다!"
-
-[End of round 15]
-foe.lastMoveUsed: SUCKERPUNCH
-어흥염 predicted_damage: 26
-어흥염 predicted_damage: 48
-어흥염 predicted_damage: 90
-어흥염 predicted_damage: 106
-pokemon 어흥염 has switch score 54
-foe.lastMoveUsed: SUCKERPUNCH
-망나뇽 predicted_damage: 26
-망나뇽 predicted_damage: 61
-망나뇽 predicted_damage: 76
-pokemon 망나뇽 has switch score 87
-"\j[엘리트 트레이너 test,은,는] \j[망나뇽,을,를] 내보냈다!"
-
-===== Round 16 =====
-
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: ABSOL
-[테스트] 타입: DARK
-[테스트] hasTera? true
-[AI] 망나뇽 (1) couldn't find any usable items
-[테스트] 소유자? false
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: #<GameData::Item:0x0000027eb77c4308>
-[테스트] 종족: DRAGONITE
-[테스트] 타입: NORMAL
-[테스트] hasTera? true
-[AI] 망나뇽 (1) is considering Terastallizing into the 노말-type...
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: ABSOL
-[테스트] 타입: DARK
-[테스트] hasTera? true
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: ABSOL
-[테스트] 타입: DARK
-[테스트] hasTera? true
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: ABSOL
-[테스트] 타입: DARK
-[테스트] hasTera? true
-     +  5: offensive advantage
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: ABSOL
-[테스트] 타입: DARK
-[테스트] hasTera? true
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: ABSOL
-[테스트] 타입: DARK
-[테스트] hasTera? true
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: ABSOL
-[테스트] 타입: DARK
-[테스트] hasTera? true
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: ABSOL
-[테스트] 타입: DARK
-[테스트] hasTera? true
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: ABSOL
-[테스트] 타입: DARK
-[테스트] hasTera? true
-[테스트] 소유자? true
-[테스트] 테라 충전 여부: true
-[테스트] 아이템: 
-[테스트] 종족: ABSOL
-[테스트] 타입: DARK
-[테스트] hasTera? true
-[AI] 망나뇽 (1) is comparing Terastal score with party member 어흥염 (score: 5)...
-[AI] 망나뇽 (1) will not Terastallize
-[AI] 망나뇽 (1) is considering using 용의춤...
-     raising the user's 스피드 isn't worthwhile
-     +  6: raising the user's 공격 by 1
-     +  6: function code modifier (generic)
-     - 50: GLOBAL NERF: Setup moves are inherently risky.
-     + 40: Safe setup: all strict conditions satisfied.
-     + 10: 10. General Status Move Boost.
-checking foe damage 기습 71 = 36%
-checking foe damage 미래예지 43 = 21%
-[AI] 망나뇽 (1) is considering using 날개쉬기...
-     - 80: move will fail
-[AI] 망나뇽 (1) is considering using 신속 against 앱솔 (0)...
-     + 13: damaging move (predicted damage 76 = 53% of target's HP)
-     + 10: prefer damaging moves (no foe party Pokémon left)
-[AI] 망나뇽 (1) is considering using 지진...
-     + 16: damaging move (predicted damage 95 = 66% of target's HP)
-     + 10: prefer damaging moves (no foe party Pokémon left)
-checking foe damage 기습 71 = 36%
-checking foe damage 미래예지 43 = 21%
-[AI] Move choices for 망나뇽 (1) with threshold: 108: 
-   *   0.0% to use 용의춤: score 106
-   *   0.0% to use 날개쉬기: score 20
-   *  45.5% to use 신속 (target 0): score 123
-   *  54.5% to use 지진: score 126
-   => will use 지진
-
-[Round order] 앱솔 (0), 상대 망나뇽 (1)
-
-[Use move] 앱솔 (0) used 기습
-"앱솔의 기습!"
-[HP change] 상대 망나뇽 lost 63 HP (197 -> 134)
-[Use move] 상대 망나뇽 (1) used 지진
-[Ability triggered] 앱솔's 프레셔
-"상대 망나뇽의 지진!"
-[HP change] 앱솔 lost 81 HP (143 -> 62)
-
-[End of round 16]
-
-===== Round 17 =====
-
+[HP change] 아머까오 gained 12 HP (145 -> 157)
+"아머까오는 먹다남은음식으로 약간의 HP를 회복했다!"

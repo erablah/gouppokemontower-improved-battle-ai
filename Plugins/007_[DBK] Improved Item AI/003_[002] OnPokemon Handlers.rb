@@ -10,7 +10,7 @@
 Battle::AI::Handlers::PokemonItemEffectScore.add(:POTION,
   proc { |item, score, pkmn, battler, move, ai, battle|
     old_score = score
-    logName = (battler) ? battler.name : pkmn.name
+    logName = (pkmn) ? pkmn.name : battler.name
     if pkmn.able? && pkmn.hp < pkmn.totalhp
       itemData = GameData::Item.get(item)
       opposes = battler && battler.opposes?(ai.trainer)

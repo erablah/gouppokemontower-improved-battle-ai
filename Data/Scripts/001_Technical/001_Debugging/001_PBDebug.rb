@@ -17,14 +17,14 @@ module PBDebug
   end
 
   def self.flush
-    if $DEBUG && $INTERNAL && @@log.length > 0
+    if $DEBUG && @@log.length > 0
       File.open("Data/debuglog.txt", "a+b") { |f| f.write(@@log.join) }
     end
     @@log.clear
   end
 
   def self.log(msg)
-    if $DEBUG && $INTERNAL
+    if $DEBUG
       echoln msg.gsub("%", "%%")
       @@log.push(msg + "\r\n")
       PBDebug.flush   # if @@log.length > 1024
@@ -32,7 +32,7 @@ module PBDebug
   end
 
   def self.log_header(msg)
-    if $DEBUG && $INTERNAL
+    if $DEBUG
       echoln Console.markup_style(msg.gsub("%", "%%"), text: :light_purple)
       @@log.push(msg + "\r\n")
       PBDebug.flush   # if @@log.length > 1024
@@ -40,7 +40,7 @@ module PBDebug
   end
 
   def self.log_message(msg)
-    if $DEBUG && $INTERNAL
+    if $DEBUG
       msg = "\"" + msg + "\""
       echoln Console.markup_style(msg.gsub("%", "%%"), text: :dark_gray)
       @@log.push(msg + "\r\n")
@@ -49,7 +49,7 @@ module PBDebug
   end
 
   def self.log_ai(msg)
-    if $DEBUG && $INTERNAL
+    if $DEBUG
       msg = "[AI] " + msg
       echoln msg.gsub("%", "%%")
       @@log.push(msg + "\r\n")
@@ -59,7 +59,7 @@ module PBDebug
 
   def self.log_score_change(amt, msg)
     return if amt == 0
-    if $DEBUG && $INTERNAL
+    if $DEBUG
       sign = (amt > 0) ? "+" : "-"
       amt_text = sprintf("%3d", amt.abs)
       msg = "     #{sign}#{amt_text}: #{msg}"
@@ -70,7 +70,7 @@ module PBDebug
   end
 
   def self.dump(msg)
-    if $DEBUG && $INTERNAL
+    if $DEBUG
       File.open("Data/dumplog.txt", "a+b") { |f| f.write("#{msg}\r\n") }
     end
   end

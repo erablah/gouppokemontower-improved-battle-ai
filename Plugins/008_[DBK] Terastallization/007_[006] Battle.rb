@@ -136,12 +136,6 @@ class Battle
   #-----------------------------------------------------------------------------
   def pbCanTerastallize?(idxBattler)
     battler = @battlers[idxBattler]
-    PBDebug.log("[테스트] 소유자? #{pbOwnedByPlayer?(idxBattler)}")
-    PBDebug.log("[테스트] 테라 충전 여부: #{$player.tera_charged?}")
-    PBDebug.log("[테스트] 아이템: #{battler.item || battler.pokemon&.item}")
-    PBDebug.log("[테스트] 종족: #{battler.pokemon&.species}")
-    PBDebug.log("[테스트] 타입: #{battler.tera_type}")
-    PBDebug.log("[테스트] hasTera? #{battler.hasTera?}")
     return false if $game_switches[Settings::NO_TERASTALLIZE]               # Don't Terastallize if switch enabled.
     return false if !battler.hasTera?                                       # Don't Terastallize if ineligible.
     return true if $DEBUG && Input.press?(Input::CTRL) && !battler.wild?    # Allows Terastallization with CTRL in Debug.

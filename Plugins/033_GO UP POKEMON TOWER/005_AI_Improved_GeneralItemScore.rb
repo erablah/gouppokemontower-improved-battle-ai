@@ -35,15 +35,11 @@ Battle::AI::Handlers::GeneralItemScore.add(
     # -------------------------------------------------------------------------
     lethal_next = false
 
-    ai.each_foe_battler(user_ai.side) do |b, i|
-      b.battler.moves.each do |m|
-        next unless m&.damagingMove?
-
-        move = Battle::AI::AIMove.new(ai)
-        move.set_up(m)
-        
-        dmg = move.predicted_damage(move: move, user: b, target: user_ai)
-        lethal_next = true if dmg >= battler.hp
+    ai.each_foe_battler(user_ai.side) do |b, _i|
+      lethal = ai.damage_moves(b, user_ai).values.find { |md| md[:dmg] >= battler.hp }
+      if lethal
+        PBDebug.log_ai("[item_ai] lethal threat: #{b.name} #{lethal[:move].name} #{lethal[:dmg]} >= #{battler.hp} curhp")
+        lethal_next = true
       end
     end
 

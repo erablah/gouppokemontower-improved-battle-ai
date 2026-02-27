@@ -64,7 +64,7 @@ class Battle::Battler
       end
       
       # 디버그 로그
-      PBDebug.log("[Permadeath] #{self.name} deleted (slot set to nil).")
+      PBDebug.log_ai("[Permadeath] #{self.name} deleted (slot set to nil).")
     end
   end
 end

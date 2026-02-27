@@ -19,6 +19,8 @@ EventHandlers.add(:on_trainer_load, :difficulty_pokemon_count_with_filter,
     
     # 1. 트레이너 필터링 로직 (제외 대상 확인)
     ttype = trainer.trainer_type.to_s rescue nil
+
+    # next if trainer.name.start_with?("test")
     
     # 제외 대상 트레이너 타입 접두사 및 특정 이름 리스트
     EXCLUDED_PREFIXES = ["LEADER_", "NEON_", "CHAMPION_"]

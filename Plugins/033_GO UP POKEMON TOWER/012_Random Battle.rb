@@ -30,10 +30,10 @@ EventHandlers.add(:on_trainer_load, :random_party_selection,
       trainer.party = selected_party
       
       # 디버그 로그 (선택 사항)
-      PBDebug.log("DEBUG: [랜덤 파티] 트레이너 #{trainer.full_name}의 팀이 #{full_party.length}마리에서 랜덤 #{max_size}마리로 변경되었습니다.")
+      PBDebug.log_ai("DEBUG: [랜덤 파티] 트레이너 #{trainer.full_name}의 팀이 #{full_party.length}마리에서 랜덤 #{max_size}마리로 변경되었습니다.")
     else
       # 6마리 이하인 경우, 로그만 남기고 아무것도 수정하지 않습니다.
-      PBDebug.log("DEBUG: [랜덤 파티] 트레이너 #{trainer.full_name}의 팀은 #{trainer.party.length}마리이므로 랜덤 파티가 적용되지 않았습니다.")
+      PBDebug.log_ai("DEBUG: [랜덤 파티] 트레이너 #{trainer.full_name}의 팀은 #{trainer.party.length}마리이므로 랜덤 파티가 적용되지 않았습니다.")
     end
   }
 )

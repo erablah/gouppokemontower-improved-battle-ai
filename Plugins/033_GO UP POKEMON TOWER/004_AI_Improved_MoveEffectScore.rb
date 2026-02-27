@@ -282,3 +282,243 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("FreezeTarget",
     next score
   }
 )
+
+#===============================================================================
+# [NEW] Taunt Override — 전술적 도발
+#===============================================================================
+Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("DisableTargetStatusMoves",
+  proc { |score, move, user, target, ai, battle|
+    next Battle::AI::MOVE_USELESS_SCORE if !target.check_for_move { |m| m.statusMove? }
+
+    # Already taunted
+    next Battle::AI::MOVE_USELESS_SCORE if target.effects[PBEffects::Taunt] > 0
+
+    # Mental Herb cures taunt
+    next Battle::AI::MOVE_USELESS_SCORE if target.has_active_item?(:MENTALHERB)
+
+    # Not worth on Choice-locked targets
+    if !target.effects[PBEffects::ChoiceBand]
+      if target.has_active_item?([:CHOICEBAND, :CHOICESPECS, :CHOICESCARF]) ||
+         target.has_active_ability?(:GORILLATACTICS)
+        next Battle::AI::MOVE_USELESS_SCORE
+      end
+    end
+
+    # Count status moves the target has
+    status_count = 0
+    has_setup = false
+    has_recovery = false
+    target.battler.eachMove do |m|
+      if m.statusMove? && (m.pp > 0 || m.total_pp == 0)
+        status_count += 1
+        has_setup = true if m.function_code.start_with?("RaiseUser")
+        healing_codes = [
+          "HealUserHalfOfTotalHP",
+          "HealUserHalfOfTotalHPLoseFlyingTypeThisTurn",
+          "HealUserDependingOnWeather"
+        ]
+        has_recovery = true if healing_codes.include?(m.function_code)
+      end
+    end
+
+    # Base score for each status move the target has
+    score += status_count * 3
+
+    # Prefer taunting setup mons
+    score += 10 if has_setup
+
+    # Prefer taunting recovery users
+    score += 8 if has_recovery
+
+    # Prefer if target has protection moves
+    if target.check_for_move { |m|
+         m.statusMove? && m.function_code.start_with?("Protect")
+       }
+      score += 5
+    end
+
+    PBDebug.log_score_change(score - 100, "Taunt: #{status_count} status moves#{has_setup ? ', has setup' : ''}#{has_recovery ? ', has recovery' : ''}.")
+    next score
+  }
+)
+
+#===============================================================================
+# [NEW] Yawn Override — 전술적 하품
+#===============================================================================
+Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("SleepTargetNextTurn",
+  proc { |score, move, user, target, ai, battle|
+    useless_score = Battle::AI::MOVE_USELESS_SCORE
+
+    # Already drowsy or asleep
+    next useless_score if target.effects[PBEffects::Yawn] > 0
+    next useless_score if target.status == :SLEEP
+
+    # Can't sleep
+    next useless_score if !target.battler.pbCanSleep?(user.battler, false, move.move)
+
+    # Immediate cure
+    next useless_score if target.has_active_item?([:CHESTOBERRY, :LUMBERRY])
+    next useless_score if target.faster_than?(user) &&
+                          target.has_active_ability?(:HYDRATION) &&
+                          [:Rain, :HeavyRain].include?(target.battler.effectiveWeather)
+
+    # Electric Terrain blocks sleep on grounded
+    if ai.trainer.high_skill?
+      next useless_score if user.battler.battle.field.terrain == :Electric &&
+                            target.battler.affectedByTerrain?
+    end
+
+    # Base preference — Yawn forces switches, which is inherently useful
+    score += 15
+    PBDebug.log_score_change(15, "Yawn: forces switch or sleeps target.")
+
+    # Prefer as pseudo-phaze when hazards are up
+    foe_side = target.pbOwnSide
+    hazard_value = 0
+    hazard_value += 8 if foe_side.effects[PBEffects::StealthRock]
+    hazard_value += 4 * foe_side.effects[PBEffects::Spikes]
+    hazard_value += 4 * foe_side.effects[PBEffects::ToxicSpikes]
+    hazard_value += 5 if foe_side.effects[PBEffects::StickyWeb]
+
+    if hazard_value > 0
+      score += hazard_value
+      PBDebug.log_score_change(hazard_value, "Yawn + hazard synergy.")
+    end
+
+    # Prefer against setup mons — forces them to switch or sleep
+    target_boosts = 0
+    GameData::Stat.each_battle do |s|
+      target_boosts += target.stages[s.id] if target.stages[s.id] > 0
+    end
+    if target_boosts >= 2
+      score += 10
+      PBDebug.log_score_change(10, "Yawn vs boosted foe (+#{target_boosts}).")
+    end
+
+    # Don't prefer if target can heal
+    score += AIEffectScoreHelper.get_target_heal_penalty(target, ai)
+
+    next score
+  }
+)
+
+#===============================================================================
+# [NEW] Haze / Clear Smog / Spectral Thief — 적 부스트 대응 부스트
+#===============================================================================
+Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("ResetTargetStatStages",
+  proc { |score, move, user, target, ai, battle|
+    target_boosts = 0
+    target_drops = 0
+    GameData::Stat.each_battle do |s|
+      target_boosts += target.stages[s.id] if target.stages[s.id] > 0
+      target_drops += target.stages[s.id].abs if target.stages[s.id] < 0
+    end
+
+    if target_boosts >= 2
+      bonus = 8 + (target_boosts * 5)
+      score += bonus
+      PBDebug.log_score_change(bonus, "Clear Smog vs boosted foe (+#{target_boosts}).")
+    end
+
+    # Penalize if target has more drops than boosts (we'd be helping them)
+    if target_drops > target_boosts
+      score -= 10
+      PBDebug.log_score_change(-10, "Clear Smog would reset target's negative stages.")
+    end
+
+    next score
+  }
+)
+
+Battle::AI::Handlers::MoveEffectScore.add("ResetAllBattlersStatStages",
+  proc { |score, move, user, ai, battle|
+    net_value = 0
+
+    ai.each_foe_battler(user.side) do |b, i|
+      GameData::Stat.each_battle do |s|
+        net_value += b.stages[s.id] if b.stages[s.id] > 0  # Foe boosts: good to reset
+      end
+    end
+
+    # Subtract user's own boosts (bad to reset)
+    user_boosts = 0
+    GameData::Stat.each_battle do |s|
+      user_boosts += user.stages[s.id] if user.stages[s.id] > 0
+    end
+    net_value -= user_boosts
+
+    if net_value >= 2
+      bonus = 5 + (net_value * 4)
+      score += bonus
+      PBDebug.log_score_change(bonus, "Haze: foe has +#{net_value} net boosts to clear.")
+    elsif net_value < 0
+      penalty = net_value * 5
+      score += penalty
+      PBDebug.log_score_change(penalty, "Haze would erase user's own boosts.")
+    end
+
+    next score
+  }
+)
+
+#===============================================================================
+# [NEW] Encore — score based on target's last used move
+#===============================================================================
+Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("DisableTargetUsingDifferentMove",
+  proc { |score, move, user, target, ai, battle|
+    # Already encored
+    next Battle::AI::MOVE_USELESS_SCORE if target.effects[PBEffects::Encore] > 0
+
+    # Mental Herb cures Encore immediately
+    next Battle::AI::MOVE_USELESS_SCORE if target.has_active_item?(:MENTALHERB)
+
+    # Target hasn't moved yet — Encore will fail
+    last_move_id = target.battler.lastMoveUsed
+    next Battle::AI::MOVE_USELESS_SCORE unless last_move_id
+
+    last_move_data = GameData::Move.try_get(last_move_id)
+    next score unless last_move_data
+
+    last_move_category = last_move_data.category   # 0=Physical, 1=Special, 2=Status
+    last_move_power    = last_move_data.power
+    last_move_type     = last_move_data.type
+
+    # Locking target into a status/setup move is very valuable
+    if last_move_category == 2
+      score += 20
+      PBDebug.log_score_change(20, "Encore: target's last move was a status move.")
+    else
+      # Check STAB
+      is_stab = target.has_type?(last_move_type)
+
+      if !is_stab && last_move_power <= 60
+        # Weak non-STAB attack — worth locking
+        score += 15
+        PBDebug.log_score_change(15, "Encore: target's last move is a weak non-STAB attack.")
+      elsif is_stab && last_move_power >= 80
+        # Strong STAB attack — don't lock target into this
+        score -= 10
+        PBDebug.log_score_change(-10, "Encore: target's last move is a strong STAB attack.")
+      end
+    end
+
+    next score
+  }
+)
+
+Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("UserStealTargetPositiveStatStages",
+  proc { |score, move, user, target, ai, battle|
+    target_boosts = 0
+    GameData::Stat.each_battle do |s|
+      target_boosts += target.stages[s.id] if target.stages[s.id] > 0
+    end
+
+    if target_boosts >= 2
+      bonus = 10 + (target_boosts * 5)
+      score += bonus
+      PBDebug.log_score_change(bonus, "Spectral Thief vs boosted foe (+#{target_boosts}).")
+    end
+
+    next score
+  }
+)

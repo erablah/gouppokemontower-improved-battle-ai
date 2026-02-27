@@ -10,93 +10,130 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
     battler = user.battler
     next score unless battler
 
-    hp_ratio = battler.hp.to_f / battler.totalhp
+    # -----------------------------------------------------------------------
+    # A. @statUp 파싱 — 어떤 스탯을 몇 단계 올리는지 확인
+    # -----------------------------------------------------------------------
+    stat_up = (move.respond_to?(:statUp) && move.statUp) ? move.statUp : nil
 
-    # 기본적으로 랭크업은 위험하다고 가정
+    # -----------------------------------------------------------------------
+    # B. 기본적으로 랭크업은 위험하다고 가정 (-50)
+    # -----------------------------------------------------------------------
     score -= 50
-    PBDebug.log_score_change(
-      -50,
-      "GLOBAL NERF: Setup moves are inherently risky."
-    )
+    PBDebug.log_score_change(-50, "GLOBAL NERF: Setup moves are inherently risky.")
 
-    # 1. HP 30% 이하 → 무조건 랭크업 금지
-    if hp_ratio <= 0.3
-      score -= 100
-      PBDebug.log_score_change(
-        -100,
-        "Setup blocked: HP <= 30%."
-      )
+    # -----------------------------------------------------------------------
+    # C. Free setup cancel: 유저에게 공격기가 없고 상대도 위협이 안 될 때
+    #    → -50 페널티를 상쇄 (+50)
+    # -----------------------------------------------------------------------
+
+    foe_threatens = false
+    ai.each_foe_battler(user.side) do |b, _i|
+      best_foe_dmg = ai.damage_moves(b, user).values.map { |md| md[:dmg] }.max || 0
+      pct = (100.0 * best_foe_dmg / [1, battler.totalhp].max).round(1)
+      PBDebug.log_ai("[smart_setup] foe #{b.name} best dmg vs user: #{best_foe_dmg} (#{pct}% totalhp, threshold 40%)")
+      if best_foe_dmg.to_f / battler.totalhp.to_f > 0.4
+        foe_threatens = true
+        break
+      end
+    end
+    unless foe_threatens
+      score += 50
+      PBDebug.log_score_change(50, "Free setup: foes can't threaten (>40%).")
+    end
+
+    # -----------------------------------------------------------------------
+    # D. 상대에게 유효타(>40%)가 없으면 랭크업 금지
+    # -----------------------------------------------------------------------
+    has_good_damage = false
+    ai.each_foe_battler(user.side) do |b, _i|
+      best = ai.damage_moves(user, b).values.map { |md| md[:dmg] }.max || 0
+      pct  = (100.0 * best / [1, b.battler.totalhp].max).round(1)
+      PBDebug.log_ai("[smart_setup] best dmg vs #{b.name}: #{best} (#{pct}% totalhp, threshold 40%)")
+      if best.to_f / b.battler.totalhp.to_f > 0.4
+        has_good_damage = true
+        break
+      end
+    end
+    if !has_good_damage
+      score -= 50
+      PBDebug.log_score_change(-50, "Setup blocked: No damaging move can do >40% of target HP.")
       next score
     end
 
-    # 2. 껍질깨기 절대 1회 제한
-    if move.id == :SHELLSMASH
-      # 껍질깨기의 핵심 상승 스탯 중 하나라도 +2 이상이면 사용 금지
-      if battler.stages[:ATTACK] >= 2 ||
-         battler.stages[:SPECIAL_ATTACK] >= 2 ||
-         battler.stages[:SPEED] >= 2
-        score = Battle::AI::MOVE_USELESS_SCORE
-        PBDebug.log_score_change(
-          score,
-          "Shell Smash blocked: boosts already applied."
-        )
-        next score
-      end
+    # -----------------------------------------------------------------------
+    # E. 공격 스탯 부스트 상한: 공격 스탯 중 하나라도 +3 이상이면 추가 랭크업 금지
+    # -----------------------------------------------------------------------
+    OFFENSIVE_STATS = [:ATTACK, :SPECIAL_ATTACK, :SPEED]
+    max_offensive_boost = 0
+    OFFENSIVE_STATS.each do |s|
+      stage = battler.stages[s]
+      max_offensive_boost = [max_offensive_boost, stage].max if stage > 0
+    end
+    if max_offensive_boost >= 3
+      score -= 100
+      PBDebug.log_score_change(-100, "Setup blocked: an offensive stat is already at +#{max_offensive_boost}.")
+      next score
     end
 
-    # 2-B. 상대에게 유효타(40% 초과)가 없으면 랭크업 금지
-    has_good_damage = false
-    has_any_damaging_move = false
-    battler.moves.each do |m|
-      next unless m.damagingMove?
-      has_any_damaging_move = true
-
-      simulated_move = Battle::AI::AIMove.new(ai)
-      simulated_move.set_up(m)
-      
-      ai.each_foe_battler(user.side) do |b, i|
-        # Simulate damage from 'user' to opponent 'b' using move 'm'
-        predicted_dmg = simulated_move.predicted_damage(move: move, user: user, target: b)
-        if predicted_dmg.to_f / b.battler.totalhp.to_f > 0.4
-          has_good_damage = true
-          break
+    # -----------------------------------------------------------------------
+    # F. 스탯 관련성 체크 (statUp이 있을 때만)
+    # -----------------------------------------------------------------------
+    if stat_up
+      raises_spd = false
+      (stat_up.length / 2).times do |i|
+        stat_id = stat_up[i * 2]
+        case stat_id
+        when :SPEED          then raises_spd = true
         end
       end
-      break if has_good_damage
-    end
-    
-    if has_any_damaging_move && !has_good_damage
-      score -= 50
-      PBDebug.log_score_change(
-        -50,
-        "Setup blocked: No damaging move can do >40% of target HP."
-      )
-      next score
+
+      # 스피드 브레이크포인트 체크
+      if raises_spd
+        user_speed = user.rough_stat(:SPEED)
+        max_foe_speed = 0
+        ai.each_foe_battler(user.side) do |b, _i|
+          max_foe_speed = [max_foe_speed, b.rough_stat(:SPEED)].max
+        end
+        spd_stages = 0
+        (stat_up.length / 2).times do |i|
+          spd_stages = stat_up[i * 2 + 1] if stat_up[i * 2] == :SPEED
+        end
+        # 부스트 후 예상 스피드 계산 (대략적: 1단계 = ×1.5, 2단계 = ×2.0 ...)
+        current_spd_stage = battler.stages[:SPEED]
+        new_stage = [current_spd_stage + spd_stages, 6].min
+        spd_mult = (2.0 + new_stage) / 2.0
+        base_speed = user_speed / ((2.0 + current_spd_stage) / 2.0)  # un-boost
+        boosted_speed = base_speed * spd_mult
+
+        if user_speed < max_foe_speed && boosted_speed >= max_foe_speed
+          score += 20
+          PBDebug.log_score_change(20, "Speed breakpoint: boost would outspeed foe (#{boosted_speed.to_i} >= #{max_foe_speed}).")
+        elsif user_speed >= max_foe_speed
+          score += 5
+          PBDebug.log_score_change(5, "Speed boost: already faster, slight bonus.")
+        end
+      end
     end
 
-    # 3. 목표 랭크(총합 기준) 도달 시 추가 랭크업 금지
-    IDEAL_TOTAL_BOOST = 2
-
-    total_positive_boosts = 0
-    GameData::Stat.each_battle do |s|
-      stage = battler.stages[s.id]
-      total_positive_boosts += stage if stage > 0
+    # -----------------------------------------------------------------------
+    # G. 최종 보너스: effective stages × 20
+    # -----------------------------------------------------------------------
+    if stat_up
+      effective_stages = 0
+      (stat_up.length / 2).times do |i|
+        stat_id = stat_up[i * 2]
+        stages  = stat_up[i * 2 + 1]
+        room    = 6 - battler.stages[stat_id]
+        effective_stages += [stages, room, 0].max
+      end
+      effective_stages = [effective_stages, 0].max
+      bonus = 20 * effective_stages
+    else
+      bonus = 40  # statUp을 읽을 수 없는 경우 기존 flat 보너스
     end
 
-    if total_positive_boosts >= IDEAL_TOTAL_BOOST
-      score -= 100
-      PBDebug.log_score_change(
-        -100,
-        "Setup blocked: total boost >= #{IDEAL_TOTAL_BOOST}."
-      )
-      next score
-    end
-
-    score += 40
-    PBDebug.log_score_change(
-      40,
-      "Safe setup: all strict conditions satisfied."
-    )
+    score += bonus
+    PBDebug.log_score_change(bonus, "Setup bonus: #{stat_up ? "#{effective_stages} effective stages × 20" : "flat (no statUp data)"}.")
 
     next score
   }
@@ -124,18 +161,29 @@ Battle::AI::Handlers::GeneralMoveScore.add(:boost_setup_synergy,
 )
 
 #===============================================================================
-# 9. 해저드/벽 중복 설치 방지
+# 9. 해저드/벽 중복 설치 방지 및 스파이크 스태킹 패널티
 #===============================================================================
-Battle::AI::Handlers::GeneralMoveScore.add(:prevent_redundant_setup,
+Battle::AI::Handlers::GeneralMoveScore.add(:prevent_redundant_effects,
   proc { |score, move, user, ai, battle|
     penalty = 0
     case ai.safe_function_code(move)
     when "AddStealthRocksToFoeSide"
       penalty = -200 if user.pbOpposingSide.effects[PBEffects::StealthRock]
     when "AddSpikesToFoeSide"
-      penalty = -200 if user.pbOpposingSide.effects[PBEffects::Spikes] >= 3
+      existing = user.pbOpposingSide.effects[PBEffects::Spikes]
+      if existing >= 3
+        penalty = -200
+      elsif existing >= 1
+        # Stacking penalty: -30 for 2nd layer, -60 for 3rd layer attempt
+        penalty = -(30 + (existing - 1) * 30)
+      end
     when "AddToxicSpikesToFoeSide"
-      penalty = -200 if user.pbOpposingSide.effects[PBEffects::ToxicSpikes] >= 2
+      existing = user.pbOpposingSide.effects[PBEffects::ToxicSpikes]
+      if existing >= 2
+        penalty = -200
+      elsif existing >= 1
+        penalty = -40  # 2nd layer of Toxic Spikes is significantly less useful
+      end
     when "AddStickyWebToFoeSide"
       penalty = -200 if user.pbOpposingSide.effects[PBEffects::StickyWeb]
     when "UserSideDamageReduction" # Reflect, Light Screen, Aurora Veil
@@ -151,7 +199,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:prevent_redundant_setup,
 
     if penalty != 0
       score += penalty
-      PBDebug.log_score_change(penalty, "9. Redundant setup prevention.")
+      PBDebug.log_score_change(penalty, "9. Hazard stack penalty / redundant setup prevention.")
     end
     next score
   }
@@ -173,54 +221,6 @@ Battle::AI::Handlers::GeneralMoveScore.add(:boost_general_status_moves,
   }
 )
 
-#===============================================================================
-# 18. 미부스트 Stored Power 사용 억제
-#===============================================================================
-Battle::AI::Handlers::GeneralMoveScore.add(:suppress_weak_stored_power,
-  proc { |score, move, user, ai, battle|
-    if ai.safe_function_code(move) == "PowerHigherWithUserPositiveStatStages"
-      total_boosts = 0
-      battler = user.battler
-      if battler
-        GameData::Stat.each_battle do |s|
-          total_boosts += battler.stages[s.id] if battler.stages[s.id] > 0
-        end
-      end
-
-      if total_boosts < 2
-        score -= 50
-        PBDebug.log_score_change(-50, "18. Stored Power without boosts.")
-      end
-    end
-    next score
-  }
-)
-
-#-------------------------------------------------------------------------------
-# [NEW] 비공격 행동 연속 반복 억제
-# - 교체/피벗/대타/벽 남용 방지
-#-------------------------------------------------------------------------------
-Battle::AI::Handlers::GeneralMoveScore.add(
-  :discourage_repetitive_non_attack,
-  proc { |score, move, user, ai, battle|
-    battler = user.battler
-    last_fc = battler && battler.lastMoveUsed ? ai.safe_function_code(battler.lastMoveUsed) : nil
-    next score unless last_fc
-
-    if !move.damagingMove? &&
-       ["RaiseUser",
-        "SwitchOutUserDamageTarget",
-        "SwitchOutUserStatusTarget",
-        "UserSideDamageReduction",
-        "Substitute"].any? { |key| last_fc.start_with?(key) }
-      score -= 40
-    end
-
-    PBDebug.log_ai("비공격 행동 반복 억제")
-
-    next score
-  }
-)
 
 #===============================================================================
 # [NEW] 전술적 대타출동 (SUBSTITUTE) 활용 AI
@@ -240,30 +240,12 @@ Battle::AI::Handlers::GeneralMoveScore.add(:tactical_substitute,
     hp_ratio = battler.hp.to_f / battler.totalhp
     next Battle::AI::MOVE_USELESS_SCORE if hp_ratio < 0.60
 
-    # 이번 턴에 공격하면 바로 KO 가능하면 대타 불필요
-    can_ko_target = false
-    user.battler.moves.each do |m|
-      next unless m.damagingMove?
-
-      simulated_move = Battle::AI::AIMove.new(ai)
-      simulated_move.set_up(m)
-      ai.each_foe_battler(user.side) do |b, i|
-        predicted_dmg = simulated_move.predicted_damage(move: move, user: user, target: b)
-        if predicted_dmg >= b.hp
-          can_ko_target = true
-          break
-        end
-      end
-      break if can_ko_target
-    end
-    next Battle::AI::MOVE_USELESS_SCORE if can_ko_target
-
     # -------------------------------------------------------------------------
     # B. 상대 압박 분석
     # -------------------------------------------------------------------------
     threatened = false
     ai.each_foe_battler(user.side) do |b, i|
-      b.battler.moves.each do |m|
+      ai.known_foe_moves(b).each do |m|
         next unless m.damagingMove?
         eff = Effectiveness.calculate(m.type, *ai.safe_types(battler))
         threatened = true if Effectiveness.super_effective?(eff)
@@ -313,9 +295,6 @@ Battle::AI::Handlers::GeneralMoveScore.add(:tactical_substitute,
 
 Battle::AI::Handlers::GeneralMoveScore.add(:evade_knockout,
   proc { |score, move, user, ai, battle|
-    # Skip if move has >= 2 priority (e.g. Extreme Speed)
-    next score if move.move.priority >= 2
-
     # Skip if user has Sturdy, Focus Sash, or an active Substitute
     has_substitute = user.effects[PBEffects::Substitute] > 0
     has_focus_sash = user.has_active_item?(:FOCUSSASH)
@@ -324,43 +303,301 @@ Battle::AI::Handlers::GeneralMoveScore.add(:evade_knockout,
 
     max_foe_speed = 0
     foe_can_ko = false
-    
-    ai.each_foe_battler(user.side) do |b, i|
-      next if !b.can_attack?
-      max_foe_speed = [max_foe_speed, b.rough_stat(:SPEED)].max
-      
-      if b.check_for_move { |m|
-          will_ko = false
-           if m.damagingMove?
-            simulated_move = Battle::AI::AIMove.new(ai)
-            simulated_move.set_up(m)
+    ko_entry = nil
 
-            predicted_dmg = simulated_move.predicted_damage(move: move, user: b, target: user)
-            PBDebug.log("checking foe damage #{m.name} #{predicted_dmg} = #{100 * predicted_dmg / [1, user.hp].max}%")
-            will_ko = (predicted_dmg >= user.hp * 0.9)
-           end
-           will_ko
-         }
+    ai.each_foe_battler(user.side) do |b, _i|
+      next unless b.can_attack?
+      max_foe_speed = [max_foe_speed, b.rough_stat(:SPEED)].max
+      relevant = ai.damage_moves(b, user).values.reject { |md| move.move.priority > md[:move].priority }
+      ko_entry = relevant.find { |md| md[:dmg] >= user.hp * 0.9 }
+      if ko_entry
+        PBDebug.log_ai("[evade_ko] #{b.name} #{ko_entry[:move].name}: #{ko_entry[:dmg]} >= #{(user.hp * 0.95).to_i} (95% of #{user.hp} curhp)")
         foe_can_ko = true
       end
     end
     
     user_speed = [user.rough_stat(:SPEED), 1].max
-
     if user_speed < max_foe_speed && foe_can_ko
       speed_ratio = max_foe_speed.to_f / user_speed.to_f
-      # speed chance should check for 1.2 instead of 1.5 
       chance = ((speed_ratio - 1.0) / 0.2 * 100).to_i.clamp(0, 100)
-      PBDebug.log("evade KO switch chance is #{chance}%")
+      PBDebug.log_ai("evade KO penalty chance is #{chance}%")
       
-      if ai.pbAIRandom(100) <= chance
+      if ai.pbAIRandom(100) >= chance
         score -= 100
         PBDebug.log_score_change(-100, "Penalize move: user is slower than a foe who can KO. (Speed ratio: #{speed_ratio.round(2)}, Chance: #{chance}%)")
       end
+    elsif ko_entry && foe_can_ko && ko_entry[:move].priority > move.move.priority
+      score -= 100
+      PBDebug.log_score_change(-100, "Penalize move: user is slower than a foe who can KO with priority move.")
     end
 
     next score
   }
 )
 
+#===============================================================================
+# [NEW] 랭크업 부스트: 상대가 행동 불가일 때
+#===============================================================================
+Battle::AI::Handlers::GeneralMoveScore.add(:boost_setup_when_foe_helpless,
+  proc { |score, move, user, ai, battle|
+    next score unless ai.trainer.high_skill?
+    next score unless move.statusMove?
+    next score unless ai.safe_function_code(move)&.start_with?("RaiseUser")
+
+    any_foe_can_act = false
+    ai.each_foe_battler(user.side) do |b, i|
+      if b.can_attack?
+        any_foe_can_act = true
+        break
+      end
+    end
+
+    unless any_foe_can_act
+      score += 10
+      PBDebug.log_score_change(10, "Setup boost: no foe can attack this turn.")
+    end
+
+    next score
+  }
+)
+
+#===============================================================================
+# [NEW] 회복기 활용 (Recover, Roost 등)
+#===============================================================================
+Battle::AI::Handlers::GeneralMoveScore.add(:smart_recovery,
+  proc { |score, move, user, ai, battle|
+    next score unless ai.trainer.high_skill?
+    healing_codes = [
+      "HealUserHalfOfTotalHP",
+      "HealUserHalfOfTotalHPLoseFlyingTypeThisTurn",
+      "HealUserDependingOnWeather",
+      "HealUserAndAlliesQuarterOfTotalHP"
+    ]
+    next score unless healing_codes.include?(ai.safe_function_code(move))
+
+    battler = user.battler
+    next score unless battler
+    hp_ratio = battler.hp.to_f / battler.totalhp
+
+    # Check if foe can 2HKO — recovery is futile
+    max_foe_dmg = 0
+    ai.each_foe_battler(user.side) do |b, _i|
+      dmg = ai.damage_moves(b, user).values.map { |md| md[:dmg] }.max || 0
+      max_foe_dmg = [max_foe_dmg, dmg].max
+    end
+    PBDebug.log_ai("[smart_recovery] max foe dmg = #{max_foe_dmg} (#{(100.0 * max_foe_dmg / [1, battler.totalhp].max).round(1)}% totalhp, threshold 55%)")
+
+    if max_foe_dmg >= battler.totalhp * 0.55
+      score -= 60
+      PBDebug.log_score_change(-60, "Recovery futile: foe can 2HKO (#{(100 * max_foe_dmg / battler.totalhp).to_i}% per hit).")
+      next score
+    end
+
+    # Good recovery range: 40~60% HP
+    if hp_ratio <= 0.60 && hp_ratio >= 0.40
+      bonus = (15 + (20 * (0.60 - hp_ratio) / 0.20)).to_i  # 15~35
+      score += bonus
+      PBDebug.log_score_change(bonus, "Smart recovery at #{(hp_ratio * 100).to_i}% HP.")
+    end
+
+    # Bonus if behind Substitute
+    if battler.effects[PBEffects::Substitute] > 0
+      score += 10
+      PBDebug.log_score_change(10, "Safe recovery behind Substitute.")
+    end
+
+    next score
+  }
+)
+
+#===============================================================================
+# [NEW] Protect/Detect 스톨링 활용
+#===============================================================================
+Battle::AI::Handlers::GeneralMoveScore.add(:smart_protect,
+  proc { |score, move, user, ai, battle|
+    next score unless ai.trainer.high_skill?
+    protect_codes = [
+      "ProtectUser",
+      "ProtectUserBanefulBunker",
+      "ProtectUserFromDamagingMovesKingsShield",
+      "ProtectUserFromTargetingMovesSpikyShield"
+    ]
+    next score unless protect_codes.include?(ai.safe_function_code(move))
+
+    battler = user.battler
+    next score unless battler
+
+    # Consecutive Protect will fail
+    if battler.effects[PBEffects::ProtectRate] > 1
+      score -= 100
+      PBDebug.log_score_change(-100, "Protect likely to fail (consecutive).")
+      next score
+    end
+
+    stall_value = 0
+
+    # Residual damage on foe
+    ai.each_foe_battler(user.side) do |b, i|
+      stall_value += 10 if b.status == :POISON && b.statusCount > 0  # Toxic
+      stall_value += 8  if b.status == :BURN
+      stall_value += 5  if b.status == :POISON && b.statusCount == 0
+    end
+
+    # Speed Boost synergy
+    stall_value += 12 if user.has_active_ability?(:SPEEDBOOST)
+
+    # Leftovers/Black Sludge recovery
+    stall_value += 5 if user.has_active_item?(:LEFTOVERS) || user.has_active_item?(:BLACKSLUDGE)
+
+    # Wish incoming (Wish is a position effect, not a battler effect)
+    position = battle.positions[battler.index]
+    stall_value += 10 if position && position.effects[PBEffects::Wish] > 0
+
+    if stall_value > 0
+      score += stall_value
+      PBDebug.log_score_change(stall_value, "Protect stall value.")
+    else
+      score -= 20
+      PBDebug.log_score_change(-20, "Protect has no stall value.")
+    end
+
+    next score
+  }
+)
+
+# #===============================================================================
+# # [NEW] 해저드 조기 설치 유도 (per-hazard tuning)
+# #===============================================================================
+# Battle::AI::Handlers::GeneralMoveScore.add(:prioritize_early_hazards,
+#   proc { |score, move, user, ai, battle|
+#     next score unless ai.trainer.high_skill?
+
+#     foe_reserves = battle.pbAbleNonActiveCount(user.idxOpposingSide)
+#     next score unless foe_reserves >= 2
+
+#     case ai.safe_function_code(move)
+#     when "AddStealthRocksToFoeSide"
+#       bonus = 3 + (foe_reserves * 3)   # +7 to +13
+#       bonus += 5 if user.turnCount < 2
+#       score += bonus
+#       PBDebug.log_score_change(bonus, "Hazard priority (SR): #{foe_reserves} foe reserves.")
+#     when "AddSpikesToFoeSide"
+#       # No early-game boost once any layer is already set
+#       next score if user.pbOpposingSide.effects[PBEffects::Spikes] >= 1
+#       bonus = 3 + (foe_reserves * 2)   
+#       bonus += 3 if user.turnCount < 2
+#       score += bonus
+#       PBDebug.log_score_change(bonus, "Hazard priority (Spikes): #{foe_reserves} foe reserves.")
+#     when "AddToxicSpikesToFoeSide"
+#       # No early-game boost once any layer is already set
+#       next score if user.pbOpposingSide.effects[PBEffects::ToxicSpikes] >= 1
+#       bonus = 3 + (foe_reserves * 3)  
+#       bonus += 3 if user.turnCount < 2
+#       score += bonus
+#       PBDebug.log_score_change(bonus, "Hazard priority (TSpikes): #{foe_reserves} foe reserves.")
+#     when "AddStickyWebToFoeSide"
+#       bonus = 3 + (foe_reserves * 3)  
+#       bonus += 3 if user.turnCount < 2
+#       score += bonus
+#       PBDebug.log_score_change(bonus, "Hazard priority (Web): #{foe_reserves} foe reserves.")
+#     end
+
+#     next score
+#   }
+# )
+
+#===============================================================================
+# [NEW] Smart Wish usage
+#===============================================================================
+Battle::AI::Handlers::GeneralMoveScore.add(:smart_wish,
+  proc { |score, move, user, ai, battle|
+    next score unless ai.trainer.high_skill?
+    next score unless ai.safe_function_code(move) == "HealUserPositionNextTurn"
+
+    battler = user.battler
+    next score unless battler
+
+    # Block if Wish is already active on this position
+    position = battle.positions[battler.index]
+    if position && position.effects[PBEffects::Wish] > 0
+      next Battle::AI::MOVE_USELESS_SCORE
+    end
+
+    hp_ratio = battler.hp.to_f / battler.totalhp
+
+    # Bonus based on HP ratio
+    if hp_ratio < 0.50
+      score += 25
+      PBDebug.log_score_change(25, "Wish: HP < 50% (#{(hp_ratio * 100).to_i}%).")
+    elsif hp_ratio < 0.80
+      score += 15
+      PBDebug.log_score_change(15, "Wish: HP 50-80% (#{(hp_ratio * 100).to_i}%).")
+    end
+
+    # Wish + pivot synergy
+    if user.check_for_move { |m| ai.safe_function_code(m)&.start_with?("SwitchOutUser") }
+      score += 10
+      PBDebug.log_score_change(10, "Wish: pivot move synergy.")
+    end
+
+    next score
+  }
+)
+
+#===============================================================================
+# [NEW] Smart Rest usage
+#===============================================================================
+Battle::AI::Handlers::GeneralMoveScore.add(:smart_rest,
+  proc { |score, move, user, ai, battle|
+    next score unless ai.trainer.high_skill?
+    next score unless ai.safe_function_code(move) == "HealUserFullAndSleep"
+
+    battler = user.battler
+    next score unless battler
+
+    hp_ratio = battler.hp.to_f / battler.totalhp
+
+    # Not worth using above 70% HP
+    next Battle::AI::MOVE_USELESS_SCORE if hp_ratio > 0.70
+
+    # Already asleep
+    next Battle::AI::MOVE_USELESS_SCORE if battler.status == :SLEEP
+
+    # Big bonus if user has Sleep Talk
+    if user.check_for_move { |m| m.usableWhenAsleep? }
+      score += 30
+      PBDebug.log_score_change(30, "Rest: has Sleep Talk combo.")
+    end
+
+    # Chesto/Lum Berry allows instant wake
+    if user.has_active_item?([:CHESTOBERRY, :LUMBERRY])
+      score += 20
+      PBDebug.log_score_change(20, "Rest: has Chesto/Lum Berry for instant wake.")
+    end
+
+    # Early Bird shortens sleep duration
+    if user.has_active_ability?(:EARLYBIRD)
+      score += 15
+      PBDebug.log_score_change(15, "Rest: Early Bird shortens sleep.")
+    end
+
+    # Penalize if foe can set up while user sleeps
+    foe_has_setup = false
+    ai.each_foe_battler(user.side) do |b, _i|
+      ai.known_foe_moves(b).each do |m|
+        if ai.safe_function_code(m)&.start_with?("RaiseUser")
+          foe_has_setup = true
+          break
+        end
+      end
+      break if foe_has_setup
+    end
+    if foe_has_setup
+      score -= 30
+      PBDebug.log_score_change(-30, "Rest: foe has setup potential while user sleeps.")
+    end
+
+    next score
+  }
+)
 

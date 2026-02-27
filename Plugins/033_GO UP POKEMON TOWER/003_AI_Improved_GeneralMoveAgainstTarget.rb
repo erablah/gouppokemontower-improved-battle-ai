@@ -8,7 +8,8 @@
 Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:predicted_damage,
   proc { |score, move, user, target, ai, battle|
     if move.damagingMove?
-      dmg = move.rough_damage
+      dmg = ai.damage_moves(user, target)[move.id]&.dig(:dmg) ||
+            move.predicted_damage(user: user, target: target)
       old_score = score
       if target.effects[PBEffects::Substitute] > 0
         target_hp = target.effects[PBEffects::Substitute]
@@ -19,7 +20,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:predicted_damage,
         PBDebug.log_score_change(score - old_score, "damaging move (predicted damage #{dmg} = #{100 * dmg / target.hp}% of target's HP)")
         if ai.trainer.has_skill_flag?("HPAware") && dmg > target.hp * 1.1   # Predicted to KO the target
           old_score = score
-          score += 40
+          score += 50
           PBDebug.log_score_change(score - old_score, "predicted to KO the target")
           if move.move.multiHitMove? && target.hp == target.totalhp &&
              (target.has_active_ability?(:STURDY) || target.has_active_item?(:FOCUSSASH))
@@ -80,13 +81,19 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:nerf_weak_debuffs,
 Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:penalize_useless_moves,
   proc { |score, move, user, target, ai, battle|
     if move.damagingMove?
-      pct_dmg = move.rough_damage.to_f / target.totalhp.to_f
-      will_ko = move.rough_damage.to_f >= target.hp.to_f
-      next if will_ko
+      # Skip penalty for damaging pivot moves (U-turn, Volt Switch, etc.)
+      pivot_codes = ["SwitchOutUserDamagingMove", "LowerTargetAtkSpAtk1SwitchOutUser"]
+      next score if pivot_codes.include?(ai.safe_function_code(move))
+
+      dmg     = ai.damage_moves(user, target)[move.id]&.dig(:dmg) ||
+                move.predicted_damage(user: user, target: target)
+      pct_dmg = dmg.to_f / target.totalhp.to_f
+      will_ko = dmg.to_f >= target.hp.to_f
+      next score if will_ko
 
       if pct_dmg < 0.20
-        score -= 100
-        PBDebug.log_score_change(-100, "Penalize useless move: very low predicted damage (#{(pct_dmg * 100).round(1)}%).")
+        score -= 50
+        PBDebug.log_score_change(-50, "Penalize useless move: very low predicted damage (#{(pct_dmg * 100).round(1)}%).")
       elsif pct_dmg < 0.40
         score -= 20
         PBDebug.log_score_change(-20, "Penalize weak move: consider switching (#{(pct_dmg * 100).round(1)}%).")
@@ -96,4 +103,83 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:penalize_useless_moves,
   }
 )
 
+#===============================================================================
+# [NEW] 강제교체 + 해저드 시너지
+#===============================================================================
+Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:phaze_with_hazards,
+  proc { |score, move, user, target, ai, battle|
+    next score unless ai.trainer.high_skill?
+    phaze_codes = [
+      "SwitchOutTargetStatusMove",
+      "SwitchOutTargetDamagingMove"
+    ]
+    next score unless phaze_codes.include?(ai.safe_function_code(move))
+
+    foe_side = target.pbOwnSide
+    hazard_value = 0
+    hazard_value += 10 if foe_side.effects[PBEffects::StealthRock]
+    hazard_value += 5 * foe_side.effects[PBEffects::Spikes]
+    hazard_value += 5 * foe_side.effects[PBEffects::ToxicSpikes]
+    hazard_value += 8 if foe_side.effects[PBEffects::StickyWeb]
+
+    if hazard_value > 0
+      score += hazard_value
+      PBDebug.log_score_change(hazard_value, "Phaze synergy with hazards.")
+    end
+
+    # Boost if target has set up
+    target_boosts = 0
+    GameData::Stat.each_battle do |s|
+      stage = target.stages[s.id]
+      target_boosts += stage if stage > 0
+    end
+    if target_boosts >= 2
+      score += 15
+      PBDebug.log_score_change(15, "Phaze to reset target's +#{target_boosts} boosts.")
+    end
+
+    next score
+  }
+)
+
+#===============================================================================
+# [NEW] Knock Off — bonus for removing target's item
+#===============================================================================
+Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:boost_knock_off,
+  proc { |score, move, user, target, ai, battle|
+    next score unless ai.safe_function_code(move) == "RemoveTargetItem"
+    next score unless target.item_active?
+    next score if target.has_active_ability?(:STICKYHOLD)
+
+    # Base bonus for item removal
+    score += 10
+    PBDebug.log_score_change(10, "Knock Off: removing target's item.")
+
+    # Extra bonus for high-value items
+    high_value_items = [
+      :LEFTOVERS, :EVIOLITE, :LIFEORB, :ASSAULTVEST, :ROCKYHELMET,
+    ]
+    if target.has_active_item?(high_value_items)
+      score += 5
+      PBDebug.log_score_change(5, "Knock Off: target has high-value item.")
+    end
+
+    next score
+  }
+)
+
+#===============================================================================
+# [NEW] Priority move bonus when user is slower
+#===============================================================================
+Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:boost_priority_when_slower,
+  proc { |score, move, user, target, ai, battle|
+    next score unless move.damagingMove?
+    next score unless move.move.priority > 0
+    next score if user.faster_than?(target)
+
+    score += 8
+    PBDebug.log_score_change(8, "Priority move bonus: user is slower than target.")
+    next score
+  }
+)
 
