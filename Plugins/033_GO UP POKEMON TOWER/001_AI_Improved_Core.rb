@@ -72,7 +72,8 @@ class Battle::AI
         badMoves = true if pbAIRandom(max_score) < 80
       end
       if badMoves
-        PBDebug.log_ai("#{@user.name} wants to switch due to terrible moves")
+        move_scores = choices.map { |c| "#{c[4].name}=#{c[1]}" }.join(", ")
+        PBDebug.log_ai("#{@user.name} wants to switch due to terrible moves [#{move_scores}]")
         if pbChooseToSwitchOut(true)
           @battle.pbUnregisterMegaEvolution(@user.index)
           return
@@ -87,7 +88,7 @@ class Battle::AI
       return
     end
 
-    threshold = max_score - (20 * move_score_threshold.to_f).floor
+    threshold = max_score - 20
     choices.each { |c| c[3] = [c[1] - threshold, 0].max }
     total_score = choices.sum { |c| c[3] }
     PBDebug.log_ai("Move choices for #{@user.name} with threshold: #{threshold}: ")
@@ -212,22 +213,21 @@ class Battle::AI
         PBDebug.log_ai("=> forced switch: sacking #{party[reserves[0][0]].name} (best score #{reserves[0][1]})")
         return reserves[0][0]
       end
-      # Voluntary switch: rate the current active Pokémon with the same system
-      # and compare — sack whichever is least valuable
-      active_pkmn = @battle.battlers[idxBattler].pokemon
-      active_score = rate_replacement_pokemon(idxBattler, active_pkmn, 100, terrible_moves)
-      PBDebug.log_ai("=> sack evaluation: active #{active_pkmn.name} score=#{active_score}, best reserve #{party[reserves[0][0]].name} score=#{reserves[0][1]}")
-      # Find the worst-scored reserve (the one we'd sack)
-      worst_reserve = reserves.last
-      if worst_reserve[1] < active_score
-        # A reserve is worse than the active mon and there is an alternative better than active mon — switch to sack it
-        PBDebug.log_ai("=> sacking reserve #{party[worst_reserve[0]].name} (score #{worst_reserve[1]} < active #{active_score})")
-        return worst_reserve[0]
-      else
+      # # Voluntary switch: rate the current active Pokémon with the same system
+      # # and compare — sack whichever is least valuable
+      # active_pkmn = @battle.battlers[idxBattler].pokemon
+      # active_score = rate_replacement_pokemon(idxBattler, active_pkmn, 100, terrible_moves)
+      # PBDebug.log_ai("=> sack evaluation: active #{active_pkmn.name} score=#{active_score}, best reserve #{party[reserves[0][0]].name} score=#{reserves[0][1]}")
+      # # Find the worst-scored reserve (the one we'd sack)
+      # worst_reserve = reserves.last
+      # if worst_reserve[1] < active_score
+      #   # A reserve is worse than the active mon and there is an alternative better than active mon — switch to sack it
+      #   PBDebug.log_ai("=> sacking reserve #{party[worst_reserve[0]].name} (score #{worst_reserve[1]} < active #{active_score})")
+      #   return worst_reserve[0]
+      # else
         # Active mon is the worst or equal — stay in, let it be the sack
         PBDebug.log_ai("=> staying in: #{active_pkmn.name} is the sack (score #{active_score})")
         return -1
-      end
     end
     # Return the party index of the best rated replacement Pokémon
     return reserves[0][0]

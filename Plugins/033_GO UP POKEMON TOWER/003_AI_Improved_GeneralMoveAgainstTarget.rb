@@ -12,13 +12,12 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:predicted_damage,
             move.predicted_damage(user: user, target: target)
       old_score = score
       if target.effects[PBEffects::Substitute] > 0
-        target_hp = target.effects[PBEffects::Substitute]
         score += ([15.0 * dmg / target.effects[PBEffects::Substitute], 20].min).to_i
         PBDebug.log_score_change(score - old_score, "damaging move (predicted damage #{dmg} = #{100 * dmg / target.hp}% of target's Substitute)")
       else
         score += ([25.0 * dmg / target.hp, 30].min).to_i
         PBDebug.log_score_change(score - old_score, "damaging move (predicted damage #{dmg} = #{100 * dmg / target.hp}% of target's HP)")
-        if ai.trainer.has_skill_flag?("HPAware") && dmg > target.hp * 1.1   # Predicted to KO the target
+        if ai.trainer.has_skill_flag?("HPAware") && dmg >= target.hp * 0.9   # Predicted to KO the target
           old_score = score
           score += 50
           PBDebug.log_score_change(score - old_score, "predicted to KO the target")
@@ -177,9 +176,18 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:boost_priority_when_slo
     next score unless move.move.priority > 0
     next score if user.faster_than?(target)
 
+    # FailsIfTargetActed moves (e.g. Sucker Punch) only go first if the foe
+    # actually uses an attacking move — skip the bonus 50% of the time since
+    # it's not guaranteed to beat the foe's speed.
+    if move.move.is_a?(Battle::Move::FailsIfTargetActed) && ai.pbAIRandom(100) < 50
+      PBDebug.log_ai("[boost_priority] skip FailsIfTargetActed priority bonus (uncertain)")
+      next score
+    end
+
     score += 8
     PBDebug.log_score_change(8, "Priority move bonus: user is slower than target.")
     next score
   }
 )
+
 

@@ -55,12 +55,13 @@ class Battle::AI::AIMove
   #---------------------------------------------------------------------------
   # Terastallization pre-evaluation: evaluate once per turn and cache
   #---------------------------------------------------------------------------
-  def should_simulate_tera?(idx)
-    return false unless idx == @ai.user.index
+  def should_simulate_tera?(idx, real_ai_user_idx = nil)
+    ai_user_idx = real_ai_user_idx || @ai.user.index
+    return false unless idx == ai_user_idx
     return false unless @ai.battle.respond_to?(:pbCanTerastallize?)
     return false unless @ai.battle.pbCanTerastallize?(idx)
     return false if @ai.battle.battlers[idx]&.tera?
-    key = [@ai.user.index, @ai.battle.turnCount]
+    key = [ai_user_idx, @ai.battle.turnCount]
     @ai.instance_variable_set(:@_tera_cache, {}) unless @ai.instance_variable_get(:@_tera_cache)
     cache = @ai.instance_variable_get(:@_tera_cache)
     return cache[key] if cache.key?(key)
@@ -70,7 +71,7 @@ class Battle::AI::AIMove
   #---------------------------------------------------------------------------
   # Mega Evolution / Terastallization simulation (AI's own battler only)
   #---------------------------------------------------------------------------
-  def maybe_simulate_transform(battler, idx, override_pokemon)
+  def maybe_simulate_transform(battler, idx, override_pokemon, real_ai_user_idx = nil)
     sim = { mega: false, tera: false }
     return sim if override_pokemon  # Skip in hypothetical matchups (ScoreReplacement)
 
@@ -86,7 +87,7 @@ class Battle::AI::AIMove
     end
 
     # Terastallization: use cached pre-evaluation
-    if should_simulate_tera?(idx)
+    if should_simulate_tera?(idx, real_ai_user_idx)
       sim[:prev_tera] = battler.pokemon.instance_variable_get(:@terastallized)
       sim[:prev_form] = battler.form
       battler.pokemon.instance_variable_set(:@terastallized, true)
@@ -200,10 +201,13 @@ class Battle::AI::AIMove
     sim[:intimidate] = simulate_intimidate(user_idx, target_idx, user_pokemon, target_pokemon)
 
     # Mega Evolution / Terastallization simulation
+    # Pass the original AI user index so Tera simulation works for both
+    # offensive (attacker) and defensive (defender) damage calculations.
+    real_ai_user_idx = sim[:prev_user].index
     sim[:eff_user]   = @ai.battle.battlers[user_idx]
     sim[:eff_target] = @ai.battle.battlers[target_idx]
-    sim[:user_sim]   = maybe_simulate_transform(sim[:eff_user], user_idx, user_pokemon)
-    sim[:target_sim] = maybe_simulate_transform(sim[:eff_target], target_idx, target_pokemon)
+    sim[:user_sim]   = maybe_simulate_transform(sim[:eff_user], user_idx, user_pokemon, real_ai_user_idx)
+    sim[:target_sim] = maybe_simulate_transform(sim[:eff_target], target_idx, target_pokemon, real_ai_user_idx)
 
     # Field weather/terrain override
     switch_in_pkmn = user_pokemon || target_pokemon

@@ -15,12 +15,13 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
     # -----------------------------------------------------------------------
     real_move = move.move
     stat_up = (real_move.respond_to?(:statUp) && real_move.statUp) ? real_move.statUp : nil
+    PBDebug.log_ai("[smart_setup] statUp: #{stat_up}")
 
     # -----------------------------------------------------------------------
     # B. Assume stat boosts are inherently risky (-50)
     # -----------------------------------------------------------------------
-    score -= 50
-    PBDebug.log_score_change(-50, "GLOBAL NERF: Setup moves are inherently risky.")
+    score -= 40
+    PBDebug.log_score_change(-40, "GLOBAL NERF: Setup moves are inherently risky.")
 
     # -----------------------------------------------------------------------
     # C. Free setup cancel: when foes can't threaten the user
@@ -49,16 +50,15 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
     ai.each_foe_battler(user.side) do |b, _i|
       best = ai.damage_moves(user, b).values.map { |md| md[:dmg] }.max || 0
       pct  = (100.0 * best / [1, b.battler.totalhp].max).round(1)
-      PBDebug.log_ai("[smart_setup] best dmg vs #{b.name}: #{best} (#{pct}% totalhp, threshold 40%)")
-      if best.to_f / b.battler.totalhp.to_f > 0.4
+      PBDebug.log_ai("[smart_setup] best dmg vs #{b.name}: #{best} (#{pct}% totalhp, threshold 30%)")
+      if best.to_f / b.battler.totalhp.to_f > 0.3
         has_good_damage = true
         break
       end
     end
     if !has_good_damage
       score -= 50
-      PBDebug.log_score_change(-50, "Setup blocked: No damaging move can do >40% of target HP.")
-      next score
+      PBDebug.log_score_change(-50, "Setup blocked: No damaging move can do >30% of target HP.")
     end
 
     # -----------------------------------------------------------------------
@@ -322,20 +322,22 @@ Battle::AI::Handlers::GeneralMoveScore.add(:evade_knockout,
     has_sturdy = user.has_active_ability?(:STURDY)
     next score if has_substitute || has_focus_sash || has_sturdy
 
-    max_foe_speed = 0
-    foe_can_ko = false
-    priority_ko = false
+    max_foe_speed   = 0
+    foe_can_ko      = false
+    priority_ko     = false
+    priority_ko_move = nil   # save the threatening priority move for later
 
     ai.each_foe_battler(user.side) do |b, _i|
       next unless b.can_attack?
       max_foe_speed = [max_foe_speed, b.rough_stat(:SPEED)].max
       relevant = ai.damage_moves(b, user).values.reject { |md| move.move.priority > md[:move].priority }
-      ko_moves = relevant.select { |md| md[:dmg] >= user.hp * 0.9 }
+      ko_moves = relevant.select { |md| md[:dmg] >= user.hp * 1.05 }
       ko_moves.each do |ko_entry|
-        PBDebug.log_ai("[evade_ko] #{b.name} #{ko_entry[:move].name}: #{ko_entry[:dmg]} >= #{(user.hp * 0.95).to_i} (95% of #{user.hp} curhp)")
+        PBDebug.log_ai("[evade_ko] #{b.name} #{ko_entry[:move].name}: #{ko_entry[:dmg]} >= #{user.hp} *")
         foe_can_ko = true
         if ko_entry[:move].priority > move.move.priority
-          priority_ko = true
+          priority_ko      = true
+          priority_ko_move = ko_entry[:move]
           PBDebug.log_ai("[evade_ko] #{b.name} has priority KO move: #{ko_entry[:move].name} (pri #{ko_entry[:move].priority} > #{move.move.priority})")
         end
       end
@@ -345,8 +347,11 @@ Battle::AI::Handlers::GeneralMoveScore.add(:evade_knockout,
 
     # Priority KO moves bypass speed — always penalize
     if priority_ko
-      if ko_entry(:move).is_a?(Battle::Move::FailsIfTargetActed) && ai.pbAIRandom(100) <= 25
-        PBDebug.log_ai("[evade_ko] skip sucker punch with 25% chance")
+      # FailsIfTargetActed moves (e.g. Sucker Punch) only work if we don't act
+      # first — there's a 25% chance we move first and they whiff, so skip
+      # the penalty in that case.
+      if priority_ko_move&.is_a?(Battle::Move::FailsIfTargetActed) && ai.pbAIRandom(100) < 25
+        PBDebug.log_ai("[evade_ko] skip sucker punch penalty (25% chance it will fail)")
         next score
       end
       score -= 100
@@ -365,6 +370,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:evade_knockout,
     next score
   }
 )
+
 
 #===============================================================================
 # [NEW] Setup boost: when all foes are unable to act

@@ -91,11 +91,9 @@ Battle::AI::Handlers::ShouldNotSwitch.add(:current_can_answer_boosted_foe,
     next true if user.has_active_ability?(:UNAWARE)
 
     # Pre-compute OHKO threat for both move-based and sash checks
-    foe_can_ohko        = false
     foe_ohko_and_faster = false
     ai.each_foe_battler(user.side) do |b, _i|
       if ai.damage_moves(b, user).values.any? { |md| md[:dmg] >= user.battler.hp }
-        foe_can_ohko = true
         faster = b.rough_stat(:SPEED) > user.rough_stat(:SPEED)
         foe_ohko_and_faster = true if faster
         PBDebug.log("[should_not_switch] #{b.name} can OHKO #{user.name}#{faster ? ' (faster)' : ' (slower)'}")
@@ -162,9 +160,11 @@ Battle::AI::Handlers::ShouldNotSwitch.add(:current_can_answer_boosted_foe,
       end
     end
 
-    # 9. Priority moves let the user act first regardless of speed/OHKO threat
+    # 9. Priority moves let the user act first regardless of speed/OHKO threat.
+    # Exclude FailsIfTargetActed moves (Sucker Punch, etc.) — they only work
+    # if the foe attacks, so they are not reliable as a reason to stay in.
     priority_dmg = ai.damage_moves(user, threatening_foe).values
-      .select { |md| md[:move].priority > 0 }
+      .select { |md| md[:move].priority > 0 && (!md[:move].is_a?(Battle::Move::FailsIfTargetActed) && ai.pbAiRandom(100) < 15) }
       .map { |md| md[:dmg] }.max || 0
     if priority_dmg >= threatening_foe.hp
       PBDebug.log_ai("[should_not_switch] #{user.name} can KO #{threatening_foe.name} with priority (#{priority_dmg} >= #{threatening_foe.hp} hp)")
