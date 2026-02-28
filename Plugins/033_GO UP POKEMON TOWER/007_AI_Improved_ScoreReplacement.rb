@@ -40,12 +40,16 @@ Battle::AI::Handlers::ScoreReplacement.add(:foe_predicted_damage,
   proc { |idxBattler, pkmn, score, terrible_moves, battle, ai|
     prev_score = score
     ai.each_foe_battler(ai.user.side) do |b, i|
+      # Check whether this foe has already acted this turn
+      foe_already_acted = b.battler.movedThisRound?
+
       # Collect all known damaging moves (filtered by fog of war)
       known_damaging = ai.known_foe_moves(b).select { |m| m&.damagingMove? }
       next if known_damaging.empty?
 
       # Evaluate worst-case damage across all known damaging moves
       worst_damage = 0
+      worst_move_priority = 0
       known_damaging.each do |m|
         PBDebug.log_ai("move_id: #{m.id}")
         sim_move = Battle::Move.from_pokemon_move(battle, Pokemon::Move.new(m.id))
@@ -53,24 +57,57 @@ Battle::AI::Handlers::ScoreReplacement.add(:foe_predicted_damage,
         move = Battle::AI::AIMove.new(ai)
         move.set_up(sim_move)
         predicted_damage = move.predicted_damage(user: b, target: target, target_pokemon: pkmn)
-        worst_damage = [worst_damage, predicted_damage].max
+        if predicted_damage > worst_damage
+          worst_damage = predicted_damage
+          worst_move_priority = sim_move.priority
+        end
       end
 
       worst_damage += ai.calculate_entry_hazard_damage(pkmn, idxBattler & 1)
-
       dmg_ratio = (worst_damage / pkmn.hp.to_f) * 100
 
       base_boost = 20
-      # Penalty or Boost scaling based on worst-case damage
-      base_penalty = terrible_moves ? 100 : 40
+      # If the foe hasn't acted yet, they can still attack the switch-in → higher penalty
+      # If the foe already acted, the switch-in is safe this turn → lower penalty
+      base_penalty = foe_already_acted ? 40 : 100
+
+      # Speed-aware penalty reduction (only when foe has already acted)
+      # Priority moves bypass speed — no reduction if foe's best move has priority
+      pkmn_faster = false
+      if foe_already_acted && worst_move_priority <= 0
+        foe_speed = b.rough_stat(:SPEED)
+        eff_speed = pkmn.speed
+        # Sticky Web: -1 Speed stage on switch-in for grounded Pokémon
+        if ai.user.pbOwnSide.effects[PBEffects::StickyWeb] &&
+           !pkmn.hasItem?(:HEAVYDUTYBOOTS) && !ai.pokemon_airborne?(pkmn)
+          eff_speed = (eff_speed * 2 / 3.0).to_i
+        end
+        pkmn_faster = eff_speed > foe_speed
+      end
+
       if dmg_ratio >= 100
-        # OHKO — full penalty
-        score -= base_penalty
-        PBDebug.log_score_change(score - prev_score, "#{pkmn.name}: foe can OHKO (#{dmg_ratio}% >= 100%)")
+        # OHKO — full penalty, reduced if pkmn is faster (gets to act first)
+        penalty = base_penalty
+        if foe_already_acted && pkmn_faster
+          penalty = (base_penalty * 0.6).to_i
+        end
+        score -= penalty
+        spd_tag = (foe_already_acted && pkmn_faster) ? ", but faster" : ""
+        spd_tag = ", priority" if worst_move_priority > 0
+        PBDebug.log_score_change(score - prev_score, "#{pkmn.name}: foe can OHKO (#{dmg_ratio}% >= 100%#{spd_tag})")
       elsif dmg_ratio >= 50
-        # 2HKO — reduced penalty
-        score -= (base_penalty * (dmg_ratio/100)).to_i
-        PBDebug.log_score_change(score - prev_score, "#{pkmn.name}: foe can 2HKO (#{dmg_ratio}% >= 50%)")
+        # 2HKO — reduced penalty; further reduced if foe already acted or faster
+        if !foe_already_acted
+          penalty = (base_penalty * (dmg_ratio / 100.0)).to_i
+        elsif pkmn_faster
+          penalty = (base_penalty * 0.5 * (dmg_ratio / 100.0)).to_i
+        else
+          penalty = (base_penalty * 0.75 * (dmg_ratio / 100.0)).to_i
+        end
+        score -= penalty
+        spd_tag = (foe_already_acted && pkmn_faster) ? ", faster" : ""
+        spd_tag = ", priority" if worst_move_priority > 0
+        PBDebug.log_score_change(score - prev_score, "#{pkmn.name}: foe can 2HKO (#{dmg_ratio}%#{spd_tag})")
       else
         score += (base_boost * (100 - dmg_ratio) / 100).to_i
         PBDebug.log_score_change(score - prev_score, "#{pkmn.name}: foe cannot 2HKO, +#{dmg_ratio}% < 50%")
@@ -84,6 +121,7 @@ Battle::AI::Handlers::ScoreReplacement.add(:user_predicted_damage,
   proc { |idxBattler, pkmn, score, terrible_moves, battle, ai|
     # Add predicted damage of best pkmn's moves to score (if there is an opposing active battler)
     max_predicted_damage = 0
+    max_foe_hp = 1
     pkmn.moves.each do |m|
       next if m.power == 0 || (m.pp == 0 && m.total_pp > 0)
       ai.each_foe_battler(ai.user.side) do |b, i|
@@ -95,11 +133,17 @@ Battle::AI::Handlers::ScoreReplacement.add(:user_predicted_damage,
         move.set_up(simulated_move)
         predicted_damage = move.predicted_damage(user: user, target: b, user_pokemon: pkmn)
         PBDebug.log_ai("#{pkmn.name} predicted_damage for #{m.name}: #{predicted_damage}")
-        
-        max_predicted_damage = [max_predicted_damage, predicted_damage].max  
+
+        if predicted_damage > max_predicted_damage
+          max_predicted_damage = predicted_damage
+          max_foe_hp = [b.hp, 1].max
+        end
       end
     end
-    next score += max_predicted_damage / 10
+    # Scale linearly up to +30, capped at 150% of foe's current HP
+    dmg_ratio = max_predicted_damage.to_f / max_foe_hp
+    bonus = (30 * [dmg_ratio / 1.5, 1.0].min).round
+    next score += bonus
   }
 )
 
@@ -131,11 +175,9 @@ Battle::AI::Handlers::ScoreReplacement.add(:perish_song_fading,
 #===============================================================================
 Battle::AI::Handlers::ScoreReplacement.add(:utility_switch_in,
   proc { |idxBattler, pkmn, score, terrible_moves, battle, ai|
-    prev_score = score
     # Check foe's current state
     foe_total_boosts = 0
     foe_has_screens = false
-    foe_has_substitute = false
     foe_has_status_moves = false
 
     ai.each_foe_battler(ai.user.side) do |b, i|
@@ -148,8 +190,6 @@ Battle::AI::Handlers::ScoreReplacement.add(:utility_switch_in,
       foe_has_screens = true if foe_side.effects[PBEffects::Reflect] > 0 ||
                                  foe_side.effects[PBEffects::LightScreen] > 0 ||
                                  foe_side.effects[PBEffects::AuroraVeil] > 0
-      # Check foe's substitute
-      foe_has_substitute = true if b.effects[PBEffects::Substitute] > 0
       # Check if foe relies on status moves
       status_count = 0
       ai.known_foe_moves(b).each { |m| status_count += 1 if m.statusMove? }
@@ -269,9 +309,15 @@ Battle::AI::Handlers::ScoreReplacement.add(:speed_advantage,
   proc { |idxBattler, pkmn, score, terrible_moves, battle, ai|
     ai.each_foe_battler(ai.user.side) do |b, _i|
       foe_speed = b.rough_stat(:SPEED)
-      if pkmn.speed > foe_speed
+      eff_speed = pkmn.speed
+      # Sticky Web: -1 Speed stage on switch-in for grounded Pokémon
+      if ai.user.pbOwnSide.effects[PBEffects::StickyWeb] &&
+         !pkmn.hasItem?(:HEAVYDUTYBOOTS) && !ai.pokemon_airborne?(pkmn)
+        eff_speed = (eff_speed * 2 / 3.0).to_i
+      end
+      if eff_speed > foe_speed
         score += 8
-        PBDebug.log_score_change(8, "#{pkmn.name}: outspeeds #{b.name} (#{pkmn.speed} vs #{foe_speed}).")
+        PBDebug.log_score_change(8, "#{pkmn.name}: outspeeds #{b.name} (#{eff_speed} vs #{foe_speed}).")
         break
       end
     end
@@ -285,6 +331,8 @@ Battle::AI::Handlers::ScoreReplacement.add(:speed_advantage,
 #===============================================================================
 Battle::AI::Handlers::ScoreReplacement.add(:tank_foe_best_move,
   proc { |idxBattler, pkmn, score, terrible_moves, battle, ai|
+    # Skip when current battler is fainted — no baseline to compare against
+    next score if ai.user.battler.fainted?
     ai.each_foe_battler(ai.user.side) do |b, _i|
       # Find the foe's strongest move against the current active battler
       best_vs_current = ai.damage_moves(b, ai.user).values.max_by { |md| md[:dmg] }
@@ -311,6 +359,43 @@ Battle::AI::Handlers::ScoreReplacement.add(:tank_foe_best_move,
             "#{pkmn.name}: tanks #{b.name}'s best move better " \
             "(#{replacement_dmg} vs #{current_dmg} on current).")
         end
+      end
+    end
+    next score
+  }
+)
+
+#===============================================================================
+# [NEW] Intimidate Switch-In: Boost for switching in a Pokémon with Intimidate
+# when the foe relies on physical attacks. Kept conservative to avoid
+# over-valuing Intimidate against mixed or special attackers.
+#===============================================================================
+Battle::AI::Handlers::ScoreReplacement.add(:intimidate_switch_in,
+  proc { |idxBattler, pkmn, score, terrible_moves, battle, ai|
+    next score unless pkmn.hasAbility?(:INTIMIDATE)
+    ai.each_foe_battler(ai.user.side) do |b, _i|
+      # Skip if foe is immune to Intimidate
+      next if b.battler.hasActiveAbility?(Battle::AI::AIMove::INTIMIDATE_IMMUNE)
+      next if battle.moldBreaker
+      # Skip if foe's Attack is already at -6
+      next if b.stages[:ATTACK] <= -6
+      # Count physical vs special damaging moves
+      phys_count = 0
+      spec_count = 0
+      ai.known_foe_moves(b).each do |m|
+        next unless m&.damagingMove?
+        phys_count += 1 if m.physicalMove?
+        spec_count += 1 if m.specialMove?
+      end
+      next if phys_count == 0
+      # Bonus scales with how physical the foe is (max +12 for pure physical)
+      phys_ratio = phys_count.to_f / (phys_count + spec_count)
+      bonus = (12 * phys_ratio).round
+      # Smaller bonus if foe already has lowered Attack
+      bonus = (bonus * 0.5).round if b.stages[:ATTACK] < 0
+      if bonus > 0
+        score += bonus
+        PBDebug.log_score_change(bonus, "#{pkmn.name}: Intimidate vs #{b.name} (#{phys_count} phys moves)")
       end
     end
     next score

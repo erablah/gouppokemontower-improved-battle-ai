@@ -8,9 +8,9 @@ Battle::AI::Handlers::ShouldSwitch.add(:high_damage_from_foe,
   }
 )
 
-# 베이스 엔진의 :battler_has_super_effective_move 비활성화
-# — 효과 발군 기술이 있다는 이유만으로 교체를 막으면
-#   상대 랭크업에 대한 교체 판단(:escape_boosted_foe)이 무시됨
+# Disable the base engine's :battler_has_super_effective_move handler
+# — blocking switches just because the battler has a super-effective move
+#   causes the switch decision for :escape_boosted_foe to be ignored
 Battle::AI::Handlers::ShouldNotSwitch.add(:battler_has_super_effective_move,
   proc { |battler, reserves, ai, battle|
     next false

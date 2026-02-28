@@ -36,7 +36,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:predicted_damage,
 )
 
 #===============================================================================
-# 6. 능동적 피벗 기술(U-turn, Volt Switch 등) 점수 상향
+# 6. Active pivot move boost (U-turn, Volt Switch, etc.)
 #===============================================================================
 Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:boost_pivot_moves,
   proc { |score, move, user, target, ai, battle|
@@ -62,7 +62,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:boost_pivot_moves,
 )
 
 #===============================================================================
-# 16. 단일 랭크 하락 기술 감점
+# 16. Penalize single-stage stat drop moves
 #===============================================================================
 Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:nerf_weak_debuffs,
   proc { |score, move, user, target, ai, battle|
@@ -76,7 +76,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:nerf_weak_debuffs,
 )
 
 #-------------------------------------------------------------------------------
-# [NEW] 쓸모없는 기술(저데미지) 감점
+# [NEW] Penalize useless moves (low damage)
 #-------------------------------------------------------------------------------
 Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:penalize_useless_moves,
   proc { |score, move, user, target, ai, battle|
@@ -104,7 +104,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:penalize_useless_moves,
 )
 
 #===============================================================================
-# [NEW] 강제교체 + 해저드 시너지
+# [NEW] Forced switch + hazard synergy
 #===============================================================================
 Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:phaze_with_hazards,
   proc { |score, move, user, target, ai, battle|

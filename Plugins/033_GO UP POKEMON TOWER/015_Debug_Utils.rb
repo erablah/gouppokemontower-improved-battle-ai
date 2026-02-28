@@ -1,5 +1,31 @@
 #===============================================================================
+# Debug Utilities
+#===============================================================================
+
+#-------------------------------------------------------------------------------
+# Override PBDebug.log_score_change to colorize score output in the console.
+#   Positive amounts → bright green
+#   Negative amounts → bright red
+# The plain-text line is still written to debuglog.txt unchanged.
+#-------------------------------------------------------------------------------
+module PBDebug
+  def self.log_score_change(amt, msg)
+    return if amt == 0
+    if $DEBUG
+      sign     = (amt > 0) ? "+" : "-"
+      amt_text = sprintf("%3d", amt.abs)
+      plain    = "     #{sign}#{amt_text}: #{msg}"
+      color    = (amt > 0) ? :light_green : :light_red
+      echoln Console.markup_style(plain.gsub("%", "%%"), text: color)
+      @@log.push(plain + "\r\n")
+      PBDebug.flush
+    end
+  end
+end
+
+#===============================================================================
 # ■ Test Trainers — Debug "Give demo party" Override
+
 #   Loads competitive test parties from trainers.txt (ACETRAINER2_F, test, 1~10)
 #   Auto-grants Mega Ring, Tera Orb, Dynamax Band, Z-Ring on party load.
 #===============================================================================

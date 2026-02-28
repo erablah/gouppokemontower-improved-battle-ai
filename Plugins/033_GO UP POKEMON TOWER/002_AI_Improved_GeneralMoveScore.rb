@@ -11,19 +11,20 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
     next score unless battler
 
     # -----------------------------------------------------------------------
-    # A. @statUp 파싱 — 어떤 스탯을 몇 단계 올리는지 확인
+    # A. Parse @statUp — determine which stats are raised and by how much
     # -----------------------------------------------------------------------
-    stat_up = (move.respond_to?(:statUp) && move.statUp) ? move.statUp : nil
+    real_move = move.move
+    stat_up = (real_move.respond_to?(:statUp) && real_move.statUp) ? real_move.statUp : nil
 
     # -----------------------------------------------------------------------
-    # B. 기본적으로 랭크업은 위험하다고 가정 (-50)
+    # B. Assume stat boosts are inherently risky (-50)
     # -----------------------------------------------------------------------
     score -= 50
     PBDebug.log_score_change(-50, "GLOBAL NERF: Setup moves are inherently risky.")
 
     # -----------------------------------------------------------------------
-    # C. Free setup cancel: 유저에게 공격기가 없고 상대도 위협이 안 될 때
-    #    → -50 페널티를 상쇄 (+50)
+    # C. Free setup cancel: when foes can't threaten the user
+    #    → cancel the -50 penalty (+50)
     # -----------------------------------------------------------------------
 
     foe_threatens = false
@@ -42,7 +43,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
     end
 
     # -----------------------------------------------------------------------
-    # D. 상대에게 유효타(>40%)가 없으면 랭크업 금지
+    # D. Block setup if no move can deal >40% to any foe
     # -----------------------------------------------------------------------
     has_good_damage = false
     ai.each_foe_battler(user.side) do |b, _i|
@@ -61,7 +62,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
     end
 
     # -----------------------------------------------------------------------
-    # E. 공격 스탯 부스트 상한: 공격 스탯 중 하나라도 +3 이상이면 추가 랭크업 금지
+    # E. Offensive stat boost cap: block further setup if any offensive stat is +3 or higher
     # -----------------------------------------------------------------------
     OFFENSIVE_STATS = [:ATTACK, :SPECIAL_ATTACK, :SPEED]
     max_offensive_boost = 0
@@ -76,7 +77,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
     end
 
     # -----------------------------------------------------------------------
-    # F. 스탯 관련성 체크 (statUp이 있을 때만)
+    # F. Stat relevance check (only when statUp data is available)
     # -----------------------------------------------------------------------
     if stat_up
       raises_spd = false
@@ -87,7 +88,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
         end
       end
 
-      # 스피드 브레이크포인트 체크
+      # Speed breakpoint check
       if raises_spd
         user_speed = user.rough_stat(:SPEED)
         max_foe_speed = 0
@@ -98,7 +99,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
         (stat_up.length / 2).times do |i|
           spd_stages = stat_up[i * 2 + 1] if stat_up[i * 2] == :SPEED
         end
-        # 부스트 후 예상 스피드 계산 (대략적: 1단계 = ×1.5, 2단계 = ×2.0 ...)
+        # Approximate boosted speed calculation (stage +1 = x1.5, +2 = x2.0, ...)
         current_spd_stage = battler.stages[:SPEED]
         new_stage = [current_spd_stage + spd_stages, 6].min
         spd_mult = (2.0 + new_stage) / 2.0
@@ -116,37 +117,57 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
     end
 
     # -----------------------------------------------------------------------
-    # G. 최종 보너스: effective stages × 20
+    # G. Final bonus based on stat relevance
+    #    - Attack/Sp.Atk: +20 per effective stage, but only if the user
+    #      has damaging moves in that category
+    #    - Defensive stats (Def/Sp.Def): +10 per effective stage
     # -----------------------------------------------------------------------
     if stat_up
-      effective_stages = 0
+      has_physical = battler.moves.compact.any? { |m| m.physicalMove? }
+      has_special  = battler.moves.compact.any? { |m| m.specialMove? }
+
+      bonus = 0
+      detail_parts = []
       (stat_up.length / 2).times do |i|
         stat_id = stat_up[i * 2]
         stages  = stat_up[i * 2 + 1]
         room    = 6 - battler.stages[stat_id]
-        effective_stages += [stages, room, 0].max
+        effective = [[stages, room].min, 0].max
+        next if effective == 0
+
+        case stat_id
+        when :ATTACK
+          if has_physical
+            bonus += 20 * effective
+            detail_parts << "Atk +#{effective}"
+          end
+        when :SPECIAL_ATTACK
+          if has_special
+            bonus += 20 * effective
+            detail_parts << "SpA +#{effective}"
+          end
+        when :DEFENSE, :SPECIAL_DEFENSE
+          bonus += 10 * effective
+          detail_parts << "#{stat_id == :DEFENSE ? "Def" : "SpD"} +#{effective}"
+        end
       end
-      effective_stages = [effective_stages, 0].max
-      bonus = 20 * effective_stages
-    else
-      bonus = 40  # statUp을 읽을 수 없는 경우 기존 flat 보너스
     end
 
     score += bonus
-    PBDebug.log_score_change(bonus, "Setup bonus: #{stat_up ? "#{effective_stages} effective stages × 20" : "flat (no statUp data)"}.")
+    PBDebug.log_score_change(bonus, "Setup bonus: #{detail_parts ? detail_parts.join(", ") : "flat (no statUp data)"}.")
 
     next score
   }
 )
 
 #===============================================================================
-# 2. 랭크업 연계 기술(Stored Power 등) 시너지
+# 2. Stat boost synergy with Stored Power, etc.
 #===============================================================================
 Battle::AI::Handlers::GeneralMoveScore.add(:boost_setup_synergy,
   proc { |score, move, user, ai, battle|
     next score if !move.statusMove?
 
-    # user는 AIBattler. battler는 실제 Battle::Battler
+    # user is AIBattler; battler is the actual Battle::Battler
     has_stored_power = user.check_for_move do |m|
       ["PowerHigherWithUserPositiveStatStages",
        "PowerIncreasedByTargetStatChanges"].include?(ai.safe_function_code(m))
@@ -161,7 +182,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:boost_setup_synergy,
 )
 
 #===============================================================================
-# 9. 해저드/벽 중복 설치 방지 및 스파이크 스태킹 패널티
+# 9. Prevent redundant hazard/screen setup and spike stacking penalty
 #===============================================================================
 Battle::AI::Handlers::GeneralMoveScore.add(:prevent_redundant_effects,
   proc { |score, move, user, ai, battle|
@@ -206,7 +227,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:prevent_redundant_effects,
 )
 
 #===============================================================================
-# 15. 일반 상태 이상 기술 기본 점수 상향
+# 15. General status move base score boost
 #===============================================================================
 Battle::AI::Handlers::GeneralMoveScore.add(:boost_general_status_moves,
   proc { |score, move, user, ai, battle|
@@ -223,25 +244,25 @@ Battle::AI::Handlers::GeneralMoveScore.add(:boost_general_status_moves,
 
 
 #===============================================================================
-# [NEW] 전술적 대타출동 (SUBSTITUTE) 활용 AI
+# [NEW] Tactical Substitute usage AI
 #===============================================================================
 Battle::AI::Handlers::GeneralMoveScore.add(:tactical_substitute,
   proc { |score, move, user, ai, battle|
-    # 대타출동 아니면 패스
+    # Skip if not Substitute
     next score unless move.id == :SUBSTITUTE
 
     battler = user.battler
     next score unless battler
 
-    # 이미 대타가 있으면 사용 안 함
+    # Don't use if Substitute is already active
     next Battle::AI::MOVE_USELESS_SCORE if battler.effects[PBEffects::Substitute] > 0
 
-    # HP가 충분하지 않으면 사용 안 함 (대략 60% 이상 필요)
+    # Don't use if HP is insufficient (need at least ~60%)
     hp_ratio = battler.hp.to_f / battler.totalhp
     next Battle::AI::MOVE_USELESS_SCORE if hp_ratio < 0.60
 
     # -------------------------------------------------------------------------
-    # B. 상대 압박 분석
+    # B. Foe threat analysis
     # -------------------------------------------------------------------------
     threatened = false
     ai.each_foe_battler(user.side) do |b, i|
@@ -253,33 +274,33 @@ Battle::AI::Handlers::GeneralMoveScore.add(:tactical_substitute,
       break if threatened
     end
 
-    # 약점 맞는 상황에서 대타는 오히려 손해
+    # Substitute is counterproductive when hit by super-effective moves
     next Battle::AI::MOVE_USELESS_SCORE if threatened
 
     # -------------------------------------------------------------------------
-    # C. 대타 이후 계획 판단
+    # C. Evaluate plans behind Substitute
     # -------------------------------------------------------------------------
 
     future_value = 0
 
-    # 1) 랭크업 기술이 있으면 대타 가치 상승
+    # 1) Substitute value increases if user has setup moves
     if user.check_for_move { |m| ai.safe_function_code(m)&.start_with?("RaiseUser") }
       future_value += 40
     end
 
-    # 2) 상태이상 기술이 있으면 가치 상승
+    # 2) Value increases if user has status moves
     if user.check_for_move { |m|
          ["SleepTarget", "PoisonTarget", "BurnTarget", "ParalyzeTarget"].include?(ai.safe_function_code(m))
        }
       future_value += 30
     end
 
-    # 3) 명중 불안정 기술 / 준비 턴이 필요한 기술
+    # 3) Inaccurate moves / moves requiring a charge turn
     if user.check_for_move { |m| m.accuracy < 100 }
       future_value += 15
     end
 
-    # 기본 가중치 (너무 높지 않게)
+    # Base weight (not too high)
     bonus = 40 + future_value
 
     score += bonus
@@ -303,32 +324,42 @@ Battle::AI::Handlers::GeneralMoveScore.add(:evade_knockout,
 
     max_foe_speed = 0
     foe_can_ko = false
-    ko_entry = nil
+    priority_ko = false
 
     ai.each_foe_battler(user.side) do |b, _i|
       next unless b.can_attack?
       max_foe_speed = [max_foe_speed, b.rough_stat(:SPEED)].max
       relevant = ai.damage_moves(b, user).values.reject { |md| move.move.priority > md[:move].priority }
-      ko_entry = relevant.find { |md| md[:dmg] >= user.hp * 0.9 }
-      if ko_entry
+      ko_moves = relevant.select { |md| md[:dmg] >= user.hp * 0.9 }
+      ko_moves.each do |ko_entry|
         PBDebug.log_ai("[evade_ko] #{b.name} #{ko_entry[:move].name}: #{ko_entry[:dmg]} >= #{(user.hp * 0.95).to_i} (95% of #{user.hp} curhp)")
         foe_can_ko = true
+        if ko_entry[:move].priority > move.move.priority
+          priority_ko = true
+          PBDebug.log_ai("[evade_ko] #{b.name} has priority KO move: #{ko_entry[:move].name} (pri #{ko_entry[:move].priority} > #{move.move.priority})")
+        end
       end
     end
-    
+
     user_speed = [user.rough_stat(:SPEED), 1].max
-    if user_speed < max_foe_speed && foe_can_ko
+
+    # Priority KO moves bypass speed — always penalize
+    if priority_ko
+      if ko_entry(:move).is_a?(Battle::Move::FailsIfTargetActed) && ai.pbAIRandom(100) <= 25
+        PBDebug.log_ai("[evade_ko] skip sucker punch with 25% chance")
+        next score
+      end
+      score -= 100
+      PBDebug.log_score_change(-100, "Penalize move: foe can KO with a higher-priority move.")
+    elsif user_speed < max_foe_speed && foe_can_ko
       speed_ratio = max_foe_speed.to_f / user_speed.to_f
       chance = ((speed_ratio - 1.0) / 0.2 * 100).to_i.clamp(0, 100)
       PBDebug.log_ai("evade KO penalty chance is #{chance}%")
-      
-      if ai.pbAIRandom(100) >= chance
+
+      if ai.pbAIRandom(100) < chance
         score -= 100
         PBDebug.log_score_change(-100, "Penalize move: user is slower than a foe who can KO. (Speed ratio: #{speed_ratio.round(2)}, Chance: #{chance}%)")
       end
-    elsif ko_entry && foe_can_ko && ko_entry[:move].priority > move.move.priority
-      score -= 100
-      PBDebug.log_score_change(-100, "Penalize move: user is slower than a foe who can KO with priority move.")
     end
 
     next score
@@ -336,7 +367,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:evade_knockout,
 )
 
 #===============================================================================
-# [NEW] 랭크업 부스트: 상대가 행동 불가일 때
+# [NEW] Setup boost: when all foes are unable to act
 #===============================================================================
 Battle::AI::Handlers::GeneralMoveScore.add(:boost_setup_when_foe_helpless,
   proc { |score, move, user, ai, battle|
@@ -362,7 +393,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:boost_setup_when_foe_helpless,
 )
 
 #===============================================================================
-# [NEW] 회복기 활용 (Recover, Roost 등)
+# [NEW] Smart recovery usage (Recover, Roost, etc.)
 #===============================================================================
 Battle::AI::Handlers::GeneralMoveScore.add(:smart_recovery,
   proc { |score, move, user, ai, battle|
@@ -411,7 +442,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_recovery,
 )
 
 #===============================================================================
-# [NEW] Protect/Detect 스톨링 활용
+# [NEW] Smart Protect/Detect stalling
 #===============================================================================
 Battle::AI::Handlers::GeneralMoveScore.add(:smart_protect,
   proc { |score, move, user, ai, battle|
@@ -466,7 +497,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_protect,
 )
 
 # #===============================================================================
-# # [NEW] 해저드 조기 설치 유도 (per-hazard tuning)
+# # [NEW] Early hazard setup priority (per-hazard tuning)
 # #===============================================================================
 # Battle::AI::Handlers::GeneralMoveScore.add(:prioritize_early_hazards,
 #   proc { |score, move, user, ai, battle|

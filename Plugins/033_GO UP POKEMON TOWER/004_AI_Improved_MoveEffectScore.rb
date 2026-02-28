@@ -284,7 +284,7 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("FreezeTarget",
 )
 
 #===============================================================================
-# [NEW] Taunt Override — 전술적 도발
+# [NEW] Taunt Override — Tactical Taunt
 #===============================================================================
 Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("DisableTargetStatusMoves",
   proc { |score, move, user, target, ai, battle|
@@ -343,7 +343,7 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("DisableTargetStatusMoves
 )
 
 #===============================================================================
-# [NEW] Yawn Override — 전술적 하품
+# [NEW] Yawn Override — Tactical Yawn
 #===============================================================================
 Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("SleepTargetNextTurn",
   proc { |score, move, user, target, ai, battle|
@@ -403,7 +403,7 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("SleepTargetNextTurn",
 )
 
 #===============================================================================
-# [NEW] Haze / Clear Smog / Spectral Thief — 적 부스트 대응 부스트
+# [NEW] Haze / Clear Smog / Spectral Thief — Counter foe stat boosts
 #===============================================================================
 Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("ResetTargetStatStages",
   proc { |score, move, user, target, ai, battle|

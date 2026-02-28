@@ -1,6 +1,6 @@
 #===============================================================================
 # [AI_Improved.rb] - Safe Move-Scoring AI for Pokémon Essentials v21.1
-# - Deluxe Battle Kit(DBK) / 더블 / 레이드 호환
+# - DBK / Doubles / Raid compatible
 #===============================================================================
 
 #-------------------------------------------------------------------------------
@@ -23,7 +23,7 @@ class Battle::AI
   MOVE_FAIL_SCORE = -999
 
   #---------------------------------------------------------------------------
-  # [Helper] 효과 배율을 float로 변환
+  # [Helper] Convert effectiveness multiplier to float
   #---------------------------------------------------------------------------
   def pbGetEffectivenessMult(effectiveness_id)
     return effectiveness_id.to_f / 100.0
@@ -38,6 +38,12 @@ class Battle::AI
     return [result, 0].max
   end
 
+  # override: only one tera available per team.
+  alias wants_to_terastallize_original wants_to_terastallize?
+  def wants_to_terastallize?
+        return @user.get_total_tera_score >= 0
+  end
+
   def safe_function_code(move)
     return nil if !move || !move.respond_to?(:function_code)
     return move.function_code
@@ -50,7 +56,7 @@ class Battle::AI
     return []
   end
 
-   # override stat raise generic 
+   # override stat raise generic
   def get_target_stat_raise_score_generic(score, target, stat_changes, desire_mult = 1)
     return score
   end
@@ -113,6 +119,8 @@ class Battle::AI
 
   #override pbChooseToSwitchOut
   def pbChooseToSwitchOut(terrible_moves = false)
+    # Clear damage cache — game state may have changed since move scoring
+    @_ai_dmg_cache = {}
     return false if !@battle.canSwitch   # Battle rule
     return false if @user.wild?
     return false if !@battle.pbCanSwitchOut?(@user.index)
@@ -167,10 +175,13 @@ class Battle::AI
   def choose_best_replacement_pokemon(idxBattler, forced_switch = false, terrible_moves = false)
     # forced_switch: Passed as true explicitly by the battle engine when a Pokémon faints or uses a pivoting move (e.g., U-turn, Parting Shot).
     # terrible_moves: Passed as true during the AI's action phase if its current moveset has no good options.
-    
+
+    # Clear damage cache — game state may have changed since move scoring
+    # (faints, pivots, stat changes, field effects, or different Pokémon at same index)
+    @_ai_dmg_cache = {}
+
     # Get all possible replacement Pokémon
     party = @battle.pbParty(idxBattler)
-    idxPartyStart, idxPartyEnd = @battle.pbTeamIndexRangeFromBattlerIndex(idxBattler)
     reserves = []
     party.each_with_index do |_pkmn, i|
       next if !@battle.pbCanSwitchIn?(idxBattler, i)
@@ -208,8 +219,7 @@ class Battle::AI
       PBDebug.log_ai("=> sack evaluation: active #{active_pkmn.name} score=#{active_score}, best reserve #{party[reserves[0][0]].name} score=#{reserves[0][1]}")
       # Find the worst-scored reserve (the one we'd sack)
       worst_reserve = reserves.last
-      best_reserve = reserves[0]
-      if worst_reserve[1] < active_score && best_reserve[1] > active_score
+      if worst_reserve[1] < active_score
         # A reserve is worse than the active mon and there is an alternative better than active mon — switch to sack it
         PBDebug.log_ai("=> sacking reserve #{party[worst_reserve[0]].name} (score #{worst_reserve[1]} < active #{active_score})")
         return worst_reserve[0]
@@ -308,7 +318,7 @@ module Battle::AI::Handlers
 end
 
 #===============================================================================
-# [CRITICAL FIX] AIBattler 호환성 패치 (NoMethodError 방지)
+# AIBattler compatibility patch (prevent NoMethodError)
 #===============================================================================
 class Battle::AI::AIBattler
   def unstoppableAbility?(ability_id)
@@ -319,133 +329,5 @@ class Battle::AI::AIBattler
   def isRaidBoss?
     return self.battler.isRaidBoss? if self.battler.respond_to?(:isRaidBoss?)
     return false
-  end
-end
-
-class Battle::AI::AIMove
-  PRIMAL_WEATHERS = [:HarshSun, :HeavyRain, :StrongWinds].freeze
-
-  alias rough_damage_original rough_damage
-
-  def rough_damage
-    case self.rough_type
-    when :WATER then return 1 if @ai.battle.pbWeather == :HarshSun
-    when :FIRE  then return 1 if @ai.battle.pbWeather == :HeavyRain
-    end
-    return rough_damage_original
-  end
-
-  def simulated_field_weather(switch_in_pkmn, current)
-    return current unless switch_in_pkmn
-    new_w = current
-    if switch_in_pkmn.isSpecies?(:KYOGRE) && switch_in_pkmn.hasItem?(:BLUEORB)
-      new_w = :HeavyRain
-    elsif switch_in_pkmn.isSpecies?(:GROUDON) && switch_in_pkmn.hasItem?(:REDORB)
-      new_w = :HarshSun
-    else
-      new_w = case switch_in_pkmn.ability_id
-      when :DROUGHT, :ORICHALCUMPULSE then :Sun
-      when :DRIZZLE                   then :Rain
-      when :SANDSTREAM                then :Sandstorm
-      when :SNOWWARNING               then :Hail
-      when :DESOLATELAND              then :HarshSun
-      when :PRIMORDIALSEA             then :HeavyRain
-      when :DELTASTREAM               then :StrongWinds
-      else return current
-      end
-    end
-    # StrongWinds cannot be replaced by HarshSun or HeavyRain
-    return current if current == :StrongWinds && new_w != :StrongWinds
-    # Primal weather can only be replaced by another primal weather
-    return current if PRIMAL_WEATHERS.include?(current) && !PRIMAL_WEATHERS.include?(new_w)
-    return new_w
-  end
-
-  def simulated_field_terrain(switch_in_pkmn, current)
-    return current unless switch_in_pkmn
-    case switch_in_pkmn.ability_id
-    when :ELECTRICSURGE, :HADRONENGINE then :Electric
-    when :GRASSYSURGE                  then :Grassy
-    when :MISTYSURGE                   then :Misty
-    when :PSYCHICSURGE                 then :Psychic
-    else current
-    end
-  end
-
-  def predicted_damage(user:, target:, user_pokemon: nil, target_pokemon: nil)
-    prev_user   = @ai.user
-    prev_target = @ai.target
-    user_idx    = user.index
-    target_idx  = target.index
-
-    prev_user_battler = nil
-    if user_pokemon
-      prev_user_battler = @ai.battle.battlers[user_idx]
-      temp = Battle::Battler.new(@ai.battle, user_idx)
-      temp.pbInitialize(user_pokemon, 0)
-      @ai.battle.battlers[user_idx] = temp
-    end
-
-    prev_target_battler = nil
-    if target_pokemon
-      prev_target_battler = @ai.battle.battlers[target_idx]
-      temp = Battle::Battler.new(@ai.battle, target_idx)
-      temp.pbInitialize(target_pokemon, 0)
-      @ai.battle.battlers[target_idx] = temp
-    end
-
-    @ai.instance_variable_set(:@user, user)
-    @ai.instance_variable_set(:@target, target)
-    user.refresh_battler
-    target.refresh_battler
-
-    switch_in_pkmn = user_pokemon || target_pokemon
-    orig_weather   = @ai.battle.field.weather
-    orig_terrain   = @ai.battle.field.terrain
-
-    begin
-      @ai.battle.field.instance_variable_set(:@weather, simulated_field_weather(switch_in_pkmn, orig_weather))
-      @ai.battle.field.instance_variable_set(:@terrain, simulated_field_terrain(switch_in_pkmn, orig_terrain))
-
-      calc_type          = self.rough_type
-      eff_user_battler   = @ai.battle.battlers[user_idx]
-      eff_target_battler = @ai.battle.battlers[target_idx]
-
-      # Psychic Terrain blocks priority moves from hitting grounded targets
-      if @move.priority > 0 && @ai.battle.field.terrain == :Psychic &&
-         eff_target_battler.affectedByTerrain?
-        return 0
-      end
-
-      # Ground immunity: airborne? covers Flying, Levitate, Air Balloon, Gravity,
-      # and on live battlers also MagnetRise, Telekinesis, SmackDown, Ingrain.
-      if calc_type == :GROUND && eff_target_battler.airborne? && !@move.hitsFlyingTargets?
-        return 0
-      end
-
-      # MoveImmunity abilities: Flash Fire, Volt Absorb, Water Absorb, Dry Skin,
-      # Lightning Rod, Motor Drive, Storm Drain, Sap Sipper, Soundproof, Bulletproof,
-      # Wonder Guard, Good as Gold, Wind Rider, Well-Baked Body, Earth Eater, etc.
-      if eff_target_battler.abilityActive? && !@ai.battle.moldBreaker
-        if Battle::AbilityEffects.triggerMoveImmunity(
-             eff_target_battler.ability, eff_user_battler, eff_target_battler,
-             @move, calc_type, @ai.battle, false)
-          return 0
-        end
-      end
-
-      return self.rough_damage
-    ensure
-      @ai.battle.field.instance_variable_set(:@weather, orig_weather)
-      @ai.battle.field.instance_variable_set(:@terrain, orig_terrain)
-      @ai.battle.battlers[user_idx]   = prev_user_battler   if prev_user_battler
-      @ai.battle.battlers[target_idx] = prev_target_battler if prev_target_battler
-      @ai.instance_variable_set(:@user, prev_user)
-      @ai.instance_variable_set(:@target, prev_target)
-      user.refresh_battler
-      target.refresh_battler
-      prev_user&.refresh_battler
-      prev_target&.refresh_battler
-    end
   end
 end
