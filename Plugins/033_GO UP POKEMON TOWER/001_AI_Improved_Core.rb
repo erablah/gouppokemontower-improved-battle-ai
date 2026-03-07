@@ -64,8 +64,7 @@ class Battle::AI
   #override choose move - remove turn count limit
   def pbChooseMove(choices)
     user_battler = @user.battler
-    max_score = 0
-    choices.each { |c| max_score = c[1] if max_score < c[1] }
+    max_score = choices.map { |c| c[1] }.max || 0
     if @trainer.high_skill? && @user.can_switch_lax?
       badMoves = false
       if max_score < MOVE_BASE_SCORE - 20

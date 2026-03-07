@@ -164,7 +164,7 @@ Battle::AI::Handlers::ShouldNotSwitch.add(:current_can_answer_boosted_foe,
     # Exclude FailsIfTargetActed moves (Sucker Punch, etc.) — they only work
     # if the foe attacks, so they are not reliable as a reason to stay in.
     priority_dmg = ai.damage_moves(user, threatening_foe).values
-      .select { |md| md[:move].priority > 0 && (!md[:move].is_a?(Battle::Move::FailsIfTargetActed) && ai.pbAiRandom(100) < 15) }
+      .select { |md| md[:move].priority > 0 && (!md[:move].is_a?(Battle::Move::FailsIfTargetActed) && ai.pbAIRandom(100) < 15) }
       .map { |md| md[:dmg] }.max || 0
     if priority_dmg >= threatening_foe.hp
       PBDebug.log_ai("[should_not_switch] #{user.name} can KO #{threatening_foe.name} with priority (#{priority_dmg} >= #{threatening_foe.hp} hp)")

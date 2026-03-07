@@ -163,6 +163,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
       end
     end
 
+    bonus ||= 0
     score += bonus
     PBDebug.log_score_change(bonus, "Setup bonus: #{detail_parts ? detail_parts.join(", ") : "flat (no statUp data)"}.")
 
