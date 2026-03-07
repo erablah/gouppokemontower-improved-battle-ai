@@ -314,17 +314,9 @@ class Battle::AI::AIMove
   end
 
   #---------------------------------------------------------------------------
-  # Apply multi-hit and Tera STAB damage corrections
+  # Apply Tera STAB damage corrections
   #---------------------------------------------------------------------------
   def apply_damage_corrections(dmg, eff_user, user_sim, calc_type)
-    # # Multi-hit move correction (including Skill Link, Loaded Dice)
-    # if @move.multiHitMove?
-    #   hits = expected_multi_hits(eff_user)
-    #   if hits > 1
-    #     PBDebug.log_ai("[predicted_damage] Multi-hit correction: #{hits} hits (#{@move.name})")
-    #     dmg = (dmg * hits).round
-    #   end
-    # end
     # Tera STAB correction (only when attacker is Tera-simulated)
     if user_sim[:tera]
       correction = tera_stab_correction(eff_user, calc_type)
@@ -374,3 +366,25 @@ class Battle::AI::AIMove
     return 1.0
   end
 end
+
+# Override MoveBasePower for 2-5 hit moves to account for Loaded Dice
+Battle::AI::Handlers::MoveBasePower.add("HitTwoToFiveTimes",
+  proc { |power, move, user, target, ai, battle|
+    next power * 5 if user.has_active_ability?(:SKILLLINK)
+    next power * 4 if user.has_active_item?(:LOADEDDICE)
+    next power * 31 / 10   # Average damage dealt
+  }
+)
+Battle::AI::Handlers::MoveBasePower.copy("HitTwoToFiveTimes",
+                                         "HitTwoToFiveTimesRaiseUserSpd1LowerUserDef1")
+
+Battle::AI::Handlers::MoveBasePower.add("HitTwoToFiveTimesOrThreeForAshGreninja",
+  proc { |power, move, user, target, ai, battle|
+    if user.battler.isSpecies?(:GRENINJA) && user.battler.form == 2
+      next move.move.pbBaseDamage(power, user.battler, target.battler) * move.move.pbNumHits(user.battler, [target.battler])
+    end
+    next power * 5 if user.has_active_ability?(:SKILLLINK)
+    next power * 4 if user.has_active_item?(:LOADEDDICE)
+    next power * 31 / 10   # Average damage dealt
+  }
+)

@@ -18,7 +18,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
     PBDebug.log_ai("[smart_setup] statUp: #{stat_up}")
 
     # -----------------------------------------------------------------------
-    # B. Assume stat boosts are inherently risky (-50)
+    # B. Assume stat boosts are inherently risky (-40)
     # -----------------------------------------------------------------------
     score -= 40
     PBDebug.log_score_change(-40, "GLOBAL NERF: Setup moves are inherently risky.")
@@ -29,14 +29,24 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
     # -----------------------------------------------------------------------
 
     foe_threatens = false
+    foe_can_ohko = false
     ai.each_foe_battler(user.side) do |b, _i|
       best_foe_dmg = ai.damage_moves(b, user).values.map { |md| md[:dmg] }.max || 0
       pct = (100.0 * best_foe_dmg / [1, battler.totalhp].max).round(1)
       PBDebug.log_ai("[smart_setup] foe #{b.name} best dmg vs user: #{best_foe_dmg} (#{pct}% totalhp, threshold 40%)")
-      if best_foe_dmg.to_f / battler.totalhp.to_f > 0.4
+      if best_foe_dmg >= battler.hp
+        foe_can_ohko = true
         foe_threatens = true
         break
       end
+      if best_foe_dmg.to_f / battler.totalhp.to_f > 0.4
+        foe_threatens = true
+      end
+    end
+    if foe_can_ohko
+      score -= 200
+      PBDebug.log_score_change(-200, "Setup blocked: foe can OHKO.")
+      next score
     end
     unless foe_threatens
       score += 50

@@ -71,10 +71,10 @@ Battle::AI::Handlers::ScoreReplacement.add(:foe_predicted_damage,
       # If the foe already acted, the switch-in is safe this turn → lower penalty
       base_penalty = foe_already_acted ? 40 : 100
 
-      # Speed-aware penalty reduction (only when foe has already acted)
+      # Speed-aware penalty reduction
       # Priority moves bypass speed — no reduction if foe's best move has priority
       pkmn_faster = false
-      if foe_already_acted && worst_move_priority <= 0
+      if worst_move_priority <= 0
         foe_speed = b.rough_stat(:SPEED)
         eff_speed = pkmn.speed
         # Sticky Web: -1 Speed stage on switch-in for grounded Pokémon
@@ -97,15 +97,19 @@ Battle::AI::Handlers::ScoreReplacement.add(:foe_predicted_damage,
         PBDebug.log_score_change(score - prev_score, "#{pkmn.name}: foe can OHKO (#{dmg_ratio}% >= 100%#{spd_tag})")
       elsif dmg_ratio >= 50
         # 2HKO — reduced penalty; further reduced if foe already acted or faster
-        if !foe_already_acted
-          penalty = (base_penalty * (dmg_ratio / 100.0)).to_i
-        elsif pkmn_faster
+        # If foe hasn't acted but pkmn is faster, the switch-in moves first next
+        # turn before the foe's second hit, so penalty is softened
+        if foe_already_acted && pkmn_faster
+          penalty = (base_penalty * 0.25 * (dmg_ratio / 100.0)).to_i
+        elsif foe_already_acted
           penalty = (base_penalty * 0.5 * (dmg_ratio / 100.0)).to_i
-        else
+        elsif pkmn_faster
           penalty = (base_penalty * 0.75 * (dmg_ratio / 100.0)).to_i
+        else
+          penalty = (base_penalty * (dmg_ratio / 100.0)).to_i
         end
         score -= penalty
-        spd_tag = (foe_already_acted && pkmn_faster) ? ", faster" : ""
+        spd_tag = pkmn_faster ? ", faster" : ""
         spd_tag = ", priority" if worst_move_priority > 0
         PBDebug.log_score_change(score - prev_score, "#{pkmn.name}: foe can 2HKO (#{dmg_ratio}%#{spd_tag})")
       else

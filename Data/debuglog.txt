@@ -4,775 +4,1559 @@
 
 [Started battle] Single trainer battle (1 trainer(s) vs. 1 trainer(s))
 "\j[엘리트 트레이너 test,이,가] 승부를 걸어왔다!"
-"\j[엘리트 트레이너 test,은,는] \j[오롱털,을,를] 내보냈다!"
+"\j[엘리트 트레이너 test,은,는] \j[번치코,을,를] 내보냈다!"
 "가랏! 나인테일!"
-[Round order] 나인테일 (0), 상대 오롱털 (1)
+[Round order] 나인테일 (0), 상대 번치코 (1)
 [Ability triggered] 나인테일's 눈퍼뜨리기
 "눈이 내리기 시작했다!"
 
 ===== Round 1 =====
 
-[AI] 오롱털 (1) couldn't find any usable items
-[AI] 오롱털 (1) is considering using 리플렉터...
-     +  5: function code modifier (generic)
+[AI] 번치코 (1) couldn't find any usable items
+[AI] 번치코 (1) is considering using 배턴터치...
      + 10: 10. General Status Move Boost.
-[AI] [damage_moves] computing 나인테일 (0) → 오롱털 (1) (turn 0)
-[AI]   프리즈드라이: 51 dmg (25.2% totalhp / 25.2% curhp)
-[AI]   문포스: 135 dmg (66.8% totalhp / 66.8% curhp)
-[AI] 오롱털 (1) is considering using 빛의장막...
-     + 23: function code modifier (generic)
+[AI] 번치코 (1) is considering using 플레어드라이브 against 나인테일 (0)...
+     -  8: function code modifier (against target)
+[AI] [damage_moves] computing 번치코 (1) → 나인테일 (0) (turn 0)
+[AI]   플레어드라이브: 195 dmg (108.3% totalhp / 108.3% curhp)
+     + 30: damaging move (predicted damage 195 = 108% of target's HP)
+     + 50: predicted to KO the target
+[AI] 번치코 (1) is considering using 칼춤...
+     + 12: raising the user's 공격 by 2
+     + 12: function code modifier (generic)
+[AI] [smart_setup] statUp: [:ATTACK, 2]
+     - 40: GLOBAL NERF: Setup moves are inherently risky.
+[AI] [damage_moves] computing 나인테일 (0) → 번치코 (1) (turn 0)
+[AI] [known_foe_moves] Hiding 오로라베일 from 나인테일 (0) (never acted)
+[AI]   프리즈드라이: 27 dmg (17.4% totalhp / 17.4% curhp)
+[AI]   문포스: 72 dmg (46.5% totalhp / 46.5% curhp)
+[AI] [smart_setup] foe 나인테일 (0) best dmg vs user: 72 (46.5% totalhp, threshold 40%)
+[AI] [smart_setup] best dmg vs 나인테일 (0): 195 (108.3% totalhp, threshold 30%)
+     + 40: Setup bonus: Atk +2.
      + 10: 10. General Status Move Boost.
-[AI] 오롱털 (1) is considering using 소울크래시 against 나인테일 (0)...
-     +  6: lowering the target's 특수공격 by 1
-     + 18: function code modifier (against target)
-[AI] [damage_moves] computing 오롱털 (1) → 나인테일 (0) (turn 0)
-[AI]   소울크래시: 51 dmg (28.3% totalhp / 28.3% curhp)
-     +  7: damaging move (predicted damage 51 = 28% of target's HP)
-     - 20: Penalize weak move: consider switching (28.3%).
-[AI] 오롱털 (1) is considering using 전기자석파 against 나인테일 (0)...
-     + 10: function code modifier (against target)
+[AI] 번치코 (1) is considering using 방어...
+     +  7: function code modifier (generic)
      + 10: 10. General Status Move Boost.
-[AI] Move choices for 오롱털 (1) with threshold: 113: 
-[AI]    *   6.9% to use 리플렉터: score 115
-[AI]    *  69.0% to use 빛의장막: score 133
-[AI]    *   0.0% to use 소울크래시 (target 0): score 105
-[AI]    *  24.1% to use 전기자석파 (target 0): score 120
-[AI] => will use 빛의장막
+     + 12: Protect stall value.
+[AI] Move choices for 번치코 (1) with threshold: 152: 
+[AI]    *   0.0% to use 배턴터치: score 110
+[AI]    * 100.0% to use 플레어드라이브 (target 0): score 172
+[AI]    *   0.0% to use 칼춤: score 122
+[AI]    *   0.0% to use 방어: score 129
+[AI] => will use 플레어드라이브 (target 0)
 
-[Round order] 상대 오롱털 (1), 나인테일 (0)
+[Round order] 나인테일 (0), 상대 번치코 (1)
 
-[Use move] 상대 오롱털 (1) used 빛의장막
-"상대 오롱털의 빛의장막!"
-"\j[빛의장막,이,가] 상대편의 특수방어를 올려줬다!"
-[Use move] 나인테일 (0) used 앙코르
-"나인테일의 앙코르!"
-"\j[상대 오롱털,은,는] 앙코르 상태에 들어갔다!"
-
-[End of round 1]
-
-===== Round 2 =====
-
-[AI] 오롱털 (1) couldn't find any usable items
-[AI] 오롱털 (1) cannot choose to use 리플렉터
-[AI] 오롱털 (1) is considering using 빛의장막...
-     -1099: move will fail
-[AI] 오롱털 (1) cannot choose to use 소울크래시
-[AI] 오롱털 (1) cannot choose to use 전기자석파
-[AI] 오롱털 (1) wants to switch due to terrible moves [빛의장막=-999]
-[AI] 오롱털 (1) is being forced to switch out
-[AI] move_id: FREEZEDRY
-[AI] move_id: MOONBLAST
-     + 15: 망나뇽: foe cannot 2HKO, +20.707070707070706% < 50%
-[AI] 망나뇽 predicted_damage for 신속: 48
-[AI] 망나뇽 predicted_damage for 지진: 59
-[AI] [damage_moves] computing 나인테일 (0) → 오롱털 (1) (turn 1)
-[AI]   프리즈드라이: 26 dmg (12.9% totalhp / 12.9% curhp)
-[AI]   문포스: 68 dmg (33.7% totalhp / 33.7% curhp)
-     +  9: 망나뇽: tanks 나인테일 (0)'s best move better (28 vs 68 on current).
-[AI] pokemon 망나뇽 has switch score 131
-[AI] move_id: FREEZEDRY
-[AI] move_id: MOONBLAST
-     - 50: 한카리아스: foe can 2HKO (50.81967213114754%)
-[AI] 한카리아스 predicted_damage for 지진: 87
-[AI] 한카리아스 predicted_damage for 역린: 1
-[AI] 한카리아스 predicted_damage for 스톤에지: 116
-     +  1: 한카리아스: tanks 나인테일 (0)'s best move better (62 vs 68 on current).
-[AI] pokemon 한카리아스 has switch score 64
-[AI] move_id: FREEZEDRY
-[AI] move_id: MOONBLAST
-     + 18: 불카모스: foe cannot 2HKO, +8.125% < 50%
-[AI] 불카모스 predicted_damage for 불대문자: 231
-[AI] 불카모스 predicted_damage for 벌레의야단법석: 47
-[AI] 불카모스 predicted_damage for 기가드레인: 53
-     + 12: 불카모스: tanks 나인테일 (0)'s best move better (13 vs 68 on current).
-[AI] pokemon 불카모스 has switch score 156
-[AI] move_id: FREEZEDRY
-[AI] move_id: MOONBLAST
-     + 15: 더시마사리: foe cannot 2HKO, +20.382165605095544% < 50%
-[AI] 더시마사리 predicted_damage for 열탕: 35
-     + 13: 더시마사리: tanks 나인테일 (0)'s best move better (10 vs 68 on current).
-[AI] pokemon 더시마사리 has switch score 132
-[AI] move_id: FREEZEDRY
-[AI] move_id: MOONBLAST
-     + 17: 핫삼: foe cannot 2HKO, +11.724137931034482% < 50%
-[AI] 핫삼 predicted_damage for 불릿펀치: 156
-[AI] 핫삼 predicted_damage for 유턴: 34
-[AI] 핫삼 predicted_damage for 탁쳐서떨구기: 31
-     + 11: 핫삼: tanks 나인테일 (0)'s best move better (17 vs 68 on current).
-[AI] pokemon 핫삼 has switch score 145
-[AI] => will switch with 불카모스
-
-[Round order] 나인테일 (0), 상대 오롱털 (1)
-
-"\j[엘리트 트레이너 test,이,가] \j[오롱털,을,를] 넣었다!"
-"\j[엘리트 트레이너 test,은,는] \j[불카모스,을,를] 내보냈다!"
 [Use move] 나인테일 (0) used 오로라베일
 "나인테일의 오로라베일!"
 "\j[오로라베일,이,가] 우리편의 물리 및 특수 공격에 대한 저항력을 강화했다!"
+[Use move] 상대 번치코 (1) used 플레어드라이브
+"상대 번치코의 플레어드라이브!"
+[HP change] 나인테일 lost 128 HP (180 -> 52)
+"효과가 굉장했다!"
+[HP change] 상대 번치코 lost 43 HP (155 -> 112)
+"\j[상대 번치코,은,는] 반동으로 데미지를 입었다!"
+
+[End of round 1]
+[Ability triggered] 상대 번치코's 가속
+[Stat change] 상대 번치코's 스피드 changed by +1 (0 -> 1)
+"상대 번치코의 \j[스피드,이,가] 올랐다!"
+
+===== Round 2 =====
+
+[AI] 번치코 (1) is considering using item 회복약 on party 번치코 (party index 0)...
+     - 40: useless because 번치코's HP isn't worth healing
+     - 40: useless because 번치코 (1) has no condition to heal
+     -  8: prefers not to use item because it's last in stock
+     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
+     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
+[AI] 번치코 (1) is considering using item 풀회복약 on party 번치코 (party index 0)...
+     - 40: useless because 번치코's HP isn't worth healing
+     -  8: prefers not to use item because it's last in stock
+     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
+     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
+[AI] 번치코 (1) couldn't find any usable items
+[AI] 번치코 (1) is considering using 배턴터치...
+     + 10: 10. General Status Move Boost.
+[AI] 번치코 (1) is considering using 플레어드라이브 against 나인테일 (0)...
+     -  5: function code modifier (against target)
+[AI] [damage_moves] computing 번치코 (1) → 나인테일 (0) (turn 1)
+[AI]   플레어드라이브: 98 dmg (54.4% totalhp / 188.5% curhp)
+     + 30: damaging move (predicted damage 98 = 188% of target's HP)
+     + 50: predicted to KO the target
+[AI] 번치코 (1) is considering using 칼춤...
+     + 12: raising the user's 공격 by 2
+     + 12: function code modifier (generic)
+[AI] [smart_setup] statUp: [:ATTACK, 2]
+     - 40: GLOBAL NERF: Setup moves are inherently risky.
+[AI] [damage_moves] computing 나인테일 (0) → 번치코 (1) (turn 1)
+[AI]   프리즈드라이: 27 dmg (17.4% totalhp / 24.1% curhp)
+[AI]   문포스: 72 dmg (46.5% totalhp / 64.3% curhp)
+[AI] [smart_setup] foe 나인테일 (0) best dmg vs user: 72 (46.5% totalhp, threshold 40%)
+[AI] [smart_setup] best dmg vs 나인테일 (0): 98 (54.4% totalhp, threshold 30%)
+     + 40: Setup bonus: Atk +2.
+     + 10: 10. General Status Move Boost.
+[AI] 번치코 (1) is considering using 방어...
+     +  7: function code modifier (generic)
+     + 10: 10. General Status Move Boost.
+     + 12: Protect stall value.
+[AI] Move choices for 번치코 (1) with threshold: 155: 
+[AI]    *   0.0% to use 배턴터치: score 110
+[AI]    * 100.0% to use 플레어드라이브 (target 0): score 175
+[AI]    *   0.0% to use 칼춤: score 122
+[AI]    *   0.0% to use 방어: score 129
+[AI] => will use 플레어드라이브 (target 0)
+
+[Round order] 상대 번치코 (1), 나인테일 (0)
+
+"좋아, 나인테일! 돌아와!"
+"힘내, 드닐레이브!"
+[Use move] 상대 번치코 (1) used 플레어드라이브
+"상대 번치코의 플레어드라이브!"
+[HP change] 드닐레이브 lost 55 HP (190 -> 135)
+[Ability triggered] 드닐레이브's 열교환
+[Stat change] 드닐레이브's 공격 changed by +1 (0 -> 1)
+"드닐레이브의 \j[공격,이,가] 올랐다!"
+[HP change] 상대 번치코 lost 18 HP (112 -> 94)
+"\j[상대 번치코,은,는] 반동으로 데미지를 입었다!"
 
 [End of round 2]
+[Ability triggered] 상대 번치코's 가속
+[Stat change] 상대 번치코's 스피드 changed by +1 (1 -> 2)
+"상대 번치코의 \j[스피드,이,가] 올랐다!"
 
 ===== Round 3 =====
 
-[AI] 불카모스 (1) couldn't find any usable items
-[AI] 불카모스 (1) is considering using 나비춤...
-     +  6: raising the user's 특수공격 by 1
-     +  5: raising the user's 특수방어 by 1
-     +  7: raising the user's 스피드 by 1
-     + 18: function code modifier (generic)
-[AI] [smart_setup] statUp: [:SPECIAL_ATTACK, 1, :SPECIAL_DEFENSE, 1, :SPEED, 1]
-     - 40: GLOBAL NERF: Setup moves are inherently risky.
-[AI] [damage_moves] computing 나인테일 (0) → 불카모스 (1) (turn 2)
-[AI]   프리즈드라이: 10 dmg (6.3% totalhp / 6.3% curhp)
-[AI]   문포스: 13 dmg (8.1% totalhp / 8.1% curhp)
-[AI] [smart_setup] foe 나인테일 (0) best dmg vs user: 13 (8.1% totalhp, threshold 40%)
-     + 50: Free setup: foes can't threaten (>40%).
-[AI] [damage_moves] computing 불카모스 (1) → 나인테일 (0) (turn 2)
-[AI]   불대문자: 116 dmg (64.4% totalhp / 64.4% curhp)
-[AI]   벌레의야단법석: 24 dmg (13.3% totalhp / 13.3% curhp)
-[AI]   기가드레인: 27 dmg (15.0% totalhp / 15.0% curhp)
-[AI] [smart_setup] best dmg vs 나인테일 (0): 116 (64.4% totalhp, threshold 30%)
-     + 20: Speed breakpoint: boost would outspeed foe (250 >= 177).
-     + 30: Setup bonus: SpA +1, SpD +1.
+[AI] 번치코 (1) is considering using item 회복약 on party 번치코 (party index 0)...
+     - 40: useless because 번치코's HP isn't worth healing
+     - 40: useless because 번치코 (1) has no condition to heal
+     -  8: prefers not to use item because it's last in stock
+     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
+     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
+[AI] 번치코 (1) is considering using item 풀회복약 on party 번치코 (party index 0)...
+     - 40: useless because 번치코's HP isn't worth healing
+     -  8: prefers not to use item because it's last in stock
+     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
+     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
+[AI] 번치코 (1) couldn't find any usable items
+[AI] 번치코 (1) is considering using 배턴터치...
+     + 15: function code modifier (generic)
      + 10: 10. General Status Move Boost.
-[AI] 불카모스 (1) is considering using 불대문자 against 나인테일 (0)...
-     +  2: function code modifier (against target)
-     -  3: accuracy (predicted 85%)
-     + 16: damaging move (predicted damage 116 = 64% of target's HP)
-[AI] 불카모스 (1) is considering using 벌레의야단법석 against 나인테일 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     + 17: function code modifier (against target)
-     +  3: damaging move (predicted damage 24 = 13% of target's HP)
-     - 50: Penalize useless move: very low predicted damage (13.3%).
-[AI] 불카모스 (1) is considering using 기가드레인 against 나인테일 (0)...
-     +  3: damaging move (predicted damage 27 = 15% of target's HP)
-     - 50: Penalize useless move: very low predicted damage (15.0%).
-[AI] Move choices for 불카모스 (1) with threshold: 168: 
-[AI]    * 100.0% to use 나비춤: score 188
-[AI]    *   0.0% to use 불대문자 (target 0): score 115
-[AI]    *   0.0% to use 벌레의야단법석 (target 0): score 70
-[AI]    *   0.0% to use 기가드레인 (target 0): score 53
-[AI] => will use 나비춤
+[AI] 번치코 (1) is considering using 플레어드라이브 against 드닐레이브 (0)...
+     -  3: function code modifier (against target)
+[AI] [damage_moves] computing 번치코 (1) → 드닐레이브 (0) (turn 2)
+[AI]   플레어드라이브: 42 dmg (22.1% totalhp / 31.1% curhp)
+     +  9: damaging move (predicted damage 42 = 31% of target's HP)
+     -  8: can trigger the target's ability
+     - 20: Penalize weak move: consider switching (22.1%).
+[AI] 번치코 (1) is considering using 칼춤...
+     + 12: raising the user's 공격 by 2
+     + 12: function code modifier (generic)
+[AI] [smart_setup] statUp: [:ATTACK, 2]
+     - 40: GLOBAL NERF: Setup moves are inherently risky.
+[AI] [damage_moves] computing 드닐레이브 (0) → 번치코 (1) (turn 2)
+[AI]   스케일샷: 240 dmg (154.8% totalhp / 255.3% curhp)
+[AI]   고드름침: 120 dmg (77.4% totalhp / 127.7% curhp)
+[AI]   얼음뭉치: 49 dmg (31.6% totalhp / 52.1% curhp)
+[AI] [smart_setup] foe 드닐레이브 (0) best dmg vs user: 240 (154.8% totalhp, threshold 40%)
+     -200: Setup blocked: foe can OHKO.
+     + 10: 10. General Status Move Boost.
+[AI] 번치코 (1) is considering using 방어...
+     +  7: function code modifier (generic)
+     + 10: 10. General Status Move Boost.
+     + 12: Protect stall value.
+[AI] Move choices for 번치코 (1) with threshold: 109: 
+[AI]    *  44.4% to use 배턴터치: score 125
+[AI]    *   0.0% to use 플레어드라이브 (target 0): score 78
+[AI]    *   0.0% to use 칼춤: score 0
+[AI]    *  55.6% to use 방어: score 129
+[AI] => will use 배턴터치
 
-[Round order] 나인테일 (0), 상대 불카모스 (1)
+[Round order] 상대 번치코 (1), 드닐레이브 (0)
 
-"나인테일, 돌아와!"
-"네 차례야, 랜드로스!"
-[Ability triggered] 랜드로스's 위협
-[Stat change] 상대 불카모스's 공격 changed by -1 (0 -> -1)
-"상대 불카모스의 \j[공격,이,가] 떨어졌다!"
-[Use move] 상대 불카모스 (1) used 나비춤
-"상대 불카모스의 나비춤!"
-[Stat change] 상대 불카모스's 특수공격 changed by +1 (0 -> 1)
-"상대 불카모스의 \j[특수공격,이,가] 올랐다!"
-[Stat change] 상대 불카모스's 특수방어 changed by +1 (0 -> 1)
-"상대 불카모스의 \j[특수방어,이,가] 올랐다!"
-[Stat change] 상대 불카모스's 스피드 changed by +1 (0 -> 1)
-"상대 불카모스의 \j[스피드,이,가] 올랐다!"
+[Use move] 상대 번치코 (1) used 배턴터치
+"상대 번치코의 배턴터치!"
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     - 94: 마기라스: foe can 2HKO (94.28571428571428%)
+[AI] 마기라스 predicted_damage for 스톤에지: 123
+[AI] 마기라스 predicted_damage for 깨물어부수기: 50
+[AI] 마기라스 predicted_damage for 지진: 41
+[AI] [damage_moves] computing 드닐레이브 (0) → 번치코 (1) (turn 2)
+[AI]   스케일샷: 240 dmg (154.8% totalhp / 255.3% curhp)
+[AI]   고드름침: 120 dmg (77.4% totalhp / 127.7% curhp)
+[AI]   얼음뭉치: 49 dmg (31.6% totalhp / 52.1% curhp)
+     +  5: 마기라스: tanks 드닐레이브 (0)'s best move better (165 vs 240 on current).
+[AI] pokemon 마기라스 has switch score 29
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     -100: 토게키스: foe can OHKO (194.76439790575915% >= 100%)
+[AI] 토게키스 predicted_damage for 에어슬래시: 34
+[AI] 토게키스 predicted_damage for 매지컬샤인: 72
+[AI] 토게키스 predicted_damage for 화염방사: 27
+     + 15: 토게키스: tanks 드닐레이브 (0)'s best move better (1 vs 240 on current).
+[AI] pokemon 토게키스 has switch score 26
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     -100: 초염몽: foe can OHKO (156.95364238410596% >= 100%)
+[AI] 초염몽 predicted_damage for 인파이트: 99
+[AI] 초염몽 predicted_damage for 플레어드라이브: 50
+[AI] 초염몽 predicted_damage for 유턴: 20
+[AI] 초염몽 predicted_damage for 풀묶기: 20
+     +  8: 초염몽: outspeeds 드닐레이브 (0) (176 vs 139).
+[AI] pokemon 초염몽 has switch score 23
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     - 60: 야도란: foe can 2HKO (60.89108910891089%)
+[AI] 야도란 predicted_damage for 열탕: 15
+[AI] 야도란 predicted_damage for 냉동빔: 23
+     +  7: 야도란: tanks 드닐레이브 (0)'s best move better (123 vs 240 on current).
+[AI] pokemon 야도란 has switch score 50
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     -100: 아쿠스타: foe can OHKO (152.59259259259258% >= 100%)
+[AI] 아쿠스타 predicted_damage for 아쿠아브레이크: 11
+[AI] 아쿠스타 predicted_damage for 트리플악셀: 21
+[AI] 아쿠스타 predicted_damage for 퀵턴: 8
+[AI] 아쿠스타 predicted_damage for 사념의박치기: 21
+     +  8: 아쿠스타: outspeeds 드닐레이브 (0) (183 vs 139).
+     +  2: 아쿠스타: tanks 드닐레이브 (0)'s best move better (206 vs 240 on current).
+[AI] pokemon 아쿠스타 has switch score 13
+[AI] => forced switch: sacking 야도란 (best score 50)
+"\j[엘리트 트레이너 test,은,는] \j[야도란,을,를] 내보냈다!"
+[Use move] 드닐레이브 (0) used 스케일샷
+"드닐레이브의 스케일샷!"
+[HP change] 상대 야도란 lost 29 HP (202 -> 173)
+[HP change] 상대 야도란 lost 33 HP (173 -> 140)
+[HP change] 상대 야도란 lost 28 HP (140 -> 112)
+[HP change] 상대 야도란 lost 28 HP (112 -> 84)
+[HP change] 상대 야도란 lost 30 HP (84 -> 54)
+"5번 맞았다!"
+[Stat change] 드닐레이브's 방어 changed by -1 (0 -> -1)
+"드닐레이브의 \j[방어,이,가] 떨어졌다!"
+[Stat change] 드닐레이브's 스피드 changed by +1 (0 -> 1)
+"드닐레이브의 \j[스피드,이,가] 올랐다!"
 
 [End of round 3]
+[HP change] 상대 야도란 gained 12 HP (54 -> 66)
+"상대 야도란은 먹다남은음식으로 약간의 HP를 회복했다!"
 
 ===== Round 4 =====
 
-[AI] 불카모스 (1) couldn't find any usable items
-[AI] 불카모스 (1) is considering using 나비춤...
-     raising the user's 특수방어 isn't worthwhile
-     raising the user's 스피드 isn't worthwhile
-     +  4: raising the user's 특수공격 by 1
-     +  4: function code modifier (generic)
-[AI] [smart_setup] statUp: [:SPECIAL_ATTACK, 1, :SPECIAL_DEFENSE, 1, :SPEED, 1]
-     - 40: GLOBAL NERF: Setup moves are inherently risky.
-[AI] [damage_moves] computing 랜드로스 (0) → 불카모스 (1) (turn 3)
-[AI] [known_foe_moves] Hiding 유턴 from 랜드로스 (0) (never acted)
-[AI]   지진: 132 dmg (82.5% totalhp / 82.5% curhp)
-[AI]   암석봉인: 212 dmg (132.5% totalhp / 132.5% curhp)
-[AI] [smart_setup] foe 랜드로스 (0) best dmg vs user: 212 (132.5% totalhp, threshold 40%)
-     - 80: Setup blocked: 랜드로스 (0) can KO (212 >= 160 HP) and hasn't acted.
-[AI] [damage_moves] computing 불카모스 (1) → 랜드로스 (0) (turn 3)
-[AI]   불대문자: 80 dmg (41.0% totalhp / 41.0% curhp)
-[AI]   벌레의야단법석: 33 dmg (16.9% totalhp / 16.9% curhp)
-[AI]   기가드레인: 37 dmg (19.0% totalhp / 19.0% curhp)
-[AI] [smart_setup] best dmg vs 랜드로스 (0): 80 (41.0% totalhp, threshold 30%)
-     +  5: Speed boost: already faster, slight bonus.
-     + 30: Setup bonus: SpA +1, SpD +1.
-     + 10: 10. General Status Move Boost.
-[AI] [evade_ko] 랜드로스 (0) 암석봉인: 212 >= 160 *
-[AI] 불카모스 (1) is considering using 불대문자 against 랜드로스 (0)...
-     + 18: function code modifier (against target)
-     -  3: accuracy (predicted 85%)
-     + 10: damaging move (predicted damage 80 = 41% of target's HP)
-     -  8: can trigger the target's item
-[AI] [evade_ko] 랜드로스 (0) 암석봉인: 212 >= 160 *
-[AI] 불카모스 (1) is considering using 벌레의야단법석 against 랜드로스 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     + 17: function code modifier (against target)
-     +  4: damaging move (predicted damage 33 = 16% of target's HP)
-     -  8: can trigger the target's item
-     - 50: Penalize useless move: very low predicted damage (16.9%).
-[AI] [evade_ko] 랜드로스 (0) 암석봉인: 212 >= 160 *
-[AI] 불카모스 (1) is considering using 기가드레인 against 랜드로스 (0)...
-     +  4: damaging move (predicted damage 37 = 18% of target's HP)
-     -  8: can trigger the target's item
-     - 50: Penalize useless move: very low predicted damage (19.0%).
-[AI] [evade_ko] 랜드로스 (0) 암석봉인: 212 >= 160 *
-[AI] Move choices for 불카모스 (1) with threshold: 97: 
-[AI]    *   0.0% to use 나비춤: score 29
-[AI]    * 100.0% to use 불대문자 (target 0): score 117
-[AI]    *   0.0% to use 벌레의야단법석 (target 0): score 63
-[AI]    *   0.0% to use 기가드레인 (target 0): score 46
-[AI] => will use 불대문자 (target 0)
+[AI] 야도란 (1) is considering using item 회복약 on party 번치코 (party index 0)...
+     - 40: useless because 번치코's HP isn't worth healing
+     - 40: useless because 야도란 (1) has no condition to heal
+     -  8: prefers not to use item because it's last in stock
+     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
+     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
+[AI] 야도란 (1) is considering using item 회복약 on party 야도란 (party index 4)...
+     + 26: healing 야도란 by 201 HP (66 -> 202) (65 over heal)
+     - 40: useless because 야도란 (1) has no condition to heal
+     - 10: prefers basic healing items
+     -  8: prefers not to use item because it's last in stock
+     + 30: ITEM AI: Ace Pokémon preservation priority.
+[AI] 야도란 (1) is considering using item 풀회복약 on party 번치코 (party index 0)...
+     - 40: useless because 번치코's HP isn't worth healing
+     -  8: prefers not to use item because it's last in stock
+     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
+     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
+[AI] 야도란 (1) is considering using item 풀회복약 on party 야도란 (party index 4)...
+     + 26: healing 야도란 by 201 HP (66 -> 202) (65 over heal)
+     -  8: prefers not to use item because it's last in stock
+     + 30: ITEM AI: Ace Pokémon preservation priority.
+[AI] Item choices for 야도란 (1):
+   *   0.0% to use 회복약 (party index 0): score -88
+   *  25.0% to use 회복약 (party index 4): score 138
+   *   0.0% to use 풀회복약 (party index 0): score -88
+   *  75.0% to use 풀회복약 (party index 4): score 148
+   => will use 풀회복약 (party index 4)
+[AI] 야도란 (1) will use item 풀회복약
 
-[Round order] 상대 불카모스 (1), 랜드로스 (0)
+[Round order] 드닐레이브 (0), 상대 야도란 (1)
 
-[Use move] 상대 불카모스 (1) used 불대문자
-"상대 불카모스의 불대문자!"
-[HP change] 랜드로스 lost 77 HP (195 -> 118)
-[Use move] 랜드로스 (0) used 암석봉인
-"랜드로스의 암석봉인!"
-[HP change] 상대 불카모스 lost 160 HP (160 -> 0)
-"효과가 굉장했다!"
-"\j[상대 불카모스,은,는] 쓰러졌다!"
-"\j[나인테일,이,가] 4814의 많은 경험치를 얻었다!"
-"\j[랜드로스,이,가] 4814의 많은 경험치를 얻었다!"
-"다른 포켓몬들도 학습장치를 통해 경험치를 얻었다!"
+"\j[엘리트 트레이너 test,은,는] 상대 야도란에게 \j[풀회복약,을,를] 사용했다."
+[HP change] 상대 야도란 gained 136 HP (66 -> 202)
+"상대 야도란의 HP가 회복되었다."
+[Use move] 드닐레이브 (0) used 스케일샷
+"드닐레이브의 스케일샷!"
+[HP change] 상대 야도란 lost 33 HP (202 -> 169)
+[HP change] 상대 야도란 lost 29 HP (169 -> 140)
+[HP change] 상대 야도란 lost 31 HP (140 -> 109)
+[HP change] 상대 야도란 lost 32 HP (109 -> 77)
+"4번 맞았다!"
+[Stat change] 드닐레이브's 방어 changed by -1 (-1 -> -2)
+"드닐레이브의 \j[방어,이,가] 떨어졌다!"
+[Stat change] 드닐레이브's 스피드 changed by +1 (1 -> 2)
+"드닐레이브의 \j[스피드,이,가] 올랐다!"
 
 [End of round 4]
-[AI] move_id: EARTHQUAKE
-[AI] move_id: ROCKTOMB
-     + 11: 오롱털: foe cannot 2HKO, +44.05940594059406% < 50%
-[AI] 오롱털 predicted_damage for 소울크래시: 29
-[AI] pokemon 오롱털 has switch score 116
-[AI] move_id: EARTHQUAKE
-[AI] move_id: ROCKTOMB
-     + 15: 망나뇽: foe cannot 2HKO, +20.2020202020202% < 50%
-[AI] 망나뇽 predicted_damage for 신속: 28
-[AI] 망나뇽 predicted_damage for 지진: 0
-     +  8: 망나뇽: outspeeds 랜드로스 (0) (116 vs 101).
-[AI] pokemon 망나뇽 has switch score 128
-[AI] move_id: EARTHQUAKE
-[AI] move_id: ROCKTOMB
-     - 10: 한카리아스: foe can 2HKO (53.551912568306015%, faster)
-[AI] 한카리아스 predicted_damage for 지진: 0
-[AI] 한카리아스 predicted_damage for 역린: 60
-[AI] 한카리아스 predicted_damage for 스톤에지: 34
-     +  8: 한카리아스: outspeeds 랜드로스 (0) (169 vs 101).
-[AI] pokemon 한카리아스 has switch score 108
-[AI] move_id: EARTHQUAKE
-[AI] move_id: ROCKTOMB
-     - 19: 더시마사리: foe can 2HKO (64.96815286624204%)
-[AI] 더시마사리 predicted_damage for 열탕: 32
-[AI] pokemon 더시마사리 has switch score 86
-[AI] move_id: EARTHQUAKE
-[AI] move_id: ROCKTOMB
-     - 12: 핫삼: foe can 2HKO (64.13793103448275%, faster)
-[AI] 핫삼 predicted_damage for 불릿펀치: 23
-[AI] 핫삼 predicted_damage for 유턴: 20
-[AI] 핫삼 predicted_damage for 탁쳐서떨구기: 36
-     +  8: 핫삼: outspeeds 랜드로스 (0) (117 vs 101).
-[AI] pokemon 핫삼 has switch score 102
-"\j[엘리트 트레이너 test,은,는] \j[망나뇽,을,를] 내보냈다!"
+[HP change] 상대 야도란 gained 12 HP (77 -> 89)
+"상대 야도란은 먹다남은음식으로 약간의 HP를 회복했다!"
 
 ===== Round 5 =====
 
-[AI] 망나뇽 (1) couldn't find any usable items
-[AI] 망나뇽 (1) is considering using 용의춤...
-     raising the user's 스피드 isn't worthwhile
-     +  6: raising the user's 공격 by 1
-     +  6: function code modifier (generic)
-[AI] [smart_setup] statUp: [:ATTACK, 1, :SPEED, 1]
-     - 40: GLOBAL NERF: Setup moves are inherently risky.
-[AI] [damage_moves] computing 랜드로스 (0) → 망나뇽 (1) (turn 4)
-[AI]   유턴: 12 dmg (6.1% totalhp / 6.1% curhp)
-[AI]   지진: 0 dmg (0.0% totalhp / 0.0% curhp)
-[AI]   암석봉인: 40 dmg (20.2% totalhp / 20.2% curhp)
-[AI] [smart_setup] foe 랜드로스 (0) best dmg vs user: 40 (20.2% totalhp, threshold 40%)
-     + 50: Free setup: foes can't threaten (>40%).
-[AI] [damage_moves] computing 망나뇽 (1) → 랜드로스 (0) (turn 4)
-[AI]   신속: 28 dmg (14.4% totalhp / 23.7% curhp)
-[AI]   지진: 0 dmg (0.0% totalhp / 0.0% curhp)
-[AI] [smart_setup] best dmg vs 랜드로스 (0): 28 (14.4% totalhp, threshold 30%)
-     - 50: Setup blocked: No damaging move can do >30% of target HP.
-     +  5: Speed boost: already faster, slight bonus.
-     + 20: Setup bonus: Atk +1.
+[AI] 야도란 (1) is considering using item 회복약 on party 번치코 (party index 0)...
+     - 40: useless because 번치코's HP isn't worth healing
+     - 40: useless because 야도란 (1) has no condition to heal
+     -  8: prefers not to use item because it's last in stock
+     - 60: prefers not to use items on successive turns
+     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
+     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
+[AI] 야도란 (1) is considering using item 회복약 on party 야도란 (party index 4)...
+     + 22: healing 야도란 by 201 HP (89 -> 202) (88 over heal)
+     - 40: useless because 야도란 (1) has no condition to heal
+     -  8: prefers not to use item because it's last in stock
+     - 60: prefers not to use items on successive turns
+     - 20: prefers not to use HP-restoring items repeatedly on the same Pokemon
+     + 30: ITEM AI: Ace Pokémon preservation priority.
+[AI] 야도란 (1) doesn't want to use any items
+[AI] 야도란 (1) is considering using 열탕 against 드닐레이브 (0)...
+[AI] [damage_moves] computing 야도란 (1) → 드닐레이브 (0) (turn 4)
+[AI]   열탕: 15 dmg (7.9% totalhp / 11.1% curhp)
+[AI]   냉동빔: 23 dmg (12.1% totalhp / 17.0% curhp)
+     +  3: damaging move (predicted damage 15 = 11% of target's HP)
+     -  8: can trigger the target's ability
+     - 50: Penalize useless move: very low predicted damage (7.9%).
+[AI] [damage_moves] computing 드닐레이브 (0) → 야도란 (1) (turn 4)
+[AI]   스케일샷: 123 dmg (60.9% totalhp / 138.2% curhp)
+[AI]   고드름침: 62 dmg (30.7% totalhp / 69.7% curhp)
+[AI]   얼음뭉치: 26 dmg (12.9% totalhp / 29.2% curhp)
+[AI] [evade_ko] 드닐레이브 (0) 스케일샷: 123 >= 89 *
+[AI] evade KO penalty chance is 100%
+     -100: Penalize move: user is slower than a foe who can KO. (Speed ratio: 2.78, Chance: 100%)
+[AI] 야도란 (1) is considering using 게으름피우기...
+     + 16: function code modifier (generic)
      + 10: 10. General Status Move Boost.
-[AI] 망나뇽 (1) is considering using 신속 against 랜드로스 (0)...
-     +  5: damaging move (predicted damage 28 = 23% of target's HP)
-     -  8: can trigger the target's item
-     - 50: Penalize useless move: very low predicted damage (14.4%).
-[AI] 망나뇽 (1) is considering using 지진...
-     move will not affect 랜드로스 (0)
-     -1099: move will fail
-[AI] 망나뇽 (1) is considering using 날개쉬기...
-     -1099: move will fail
-[AI] Move choices for 망나뇽 (1) with threshold: 81: 
-[AI]    * 100.0% to use 용의춤: score 101
-[AI]    *   0.0% to use 신속 (target 0): score 47
-[AI]    *   0.0% to use 지진: score -999
-[AI]    *   0.0% to use 날개쉬기: score -999
-[AI] => will use 용의춤
+[AI] [evade_ko] 드닐레이브 (0) 스케일샷: 123 >= 89 *
+[AI] evade KO penalty chance is 100%
+     -100: Penalize move: user is slower than a foe who can KO. (Speed ratio: 2.78, Chance: 100%)
+[AI] [smart_recovery] max foe dmg = 123 (60.9% totalhp, threshold 55%)
+     - 60: Recovery futile: foe can 2HKO (60% per hit).
+[AI] 야도란 (1) is considering using 냉동빔 against 드닐레이브 (0)...
+     +  5: damaging move (predicted damage 23 = 17% of target's HP)
+     -  8: can trigger the target's ability
+     - 50: Penalize useless move: very low predicted damage (12.1%).
+[AI] [evade_ko] 드닐레이브 (0) 스케일샷: 123 >= 89 *
+[AI] evade KO penalty chance is 100%
+     -100: Penalize move: user is slower than a foe who can KO. (Speed ratio: 2.78, Chance: 100%)
+[AI] 야도란 (1) is considering using 전기자석파 against 드닐레이브 (0)...
+     + 10: function code modifier (against target)
+     + 10: 10. General Status Move Boost.
+[AI] [evade_ko] 드닐레이브 (0) 스케일샷: 123 >= 89 *
+[AI] evade KO penalty chance is 100%
+     -100: Penalize move: user is slower than a foe who can KO. (Speed ratio: 2.78, Chance: 100%)
+[AI] 야도란 (1) wants to switch due to terrible moves [열탕=0, 게으름피우기=0, 냉동빔=0, 전기자석파=20]
+[AI] 야도란 (1) is being forced to switch out
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     -100: 번치코: foe can OHKO (255.31914893617022% >= 100%)
+[AI] 번치코 predicted_damage for 플레어드라이브: 83
+[AI] [damage_moves] computing 드닐레이브 (0) → 야도란 (1) (turn 4)
+[AI]   스케일샷: 123 dmg (60.9% totalhp / 138.2% curhp)
+[AI]   고드름침: 62 dmg (30.7% totalhp / 69.7% curhp)
+[AI]   얼음뭉치: 26 dmg (12.9% totalhp / 29.2% curhp)
+[AI] pokemon 번치코 has switch score 12
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     - 94: 마기라스: foe can 2HKO (94.28571428571428%)
+[AI] 마기라스 predicted_damage for 스톤에지: 243
+[AI] 마기라스 predicted_damage for 깨물어부수기: 98
+[AI] 마기라스 predicted_damage for 지진: 81
+[AI] pokemon 마기라스 has switch score 36
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     -100: 토게키스: foe can OHKO (194.76439790575915% >= 100%)
+[AI] 토게키스 predicted_damage for 에어슬래시: 34
+[AI] 토게키스 predicted_damage for 매지컬샤인: 72
+[AI] 토게키스 predicted_damage for 화염방사: 27
+     + 15: 토게키스: tanks 드닐레이브 (0)'s best move better (1 vs 123 on current).
+[AI] pokemon 토게키스 has switch score 26
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     -100: 초염몽: foe can OHKO (156.95364238410596% >= 100%)
+[AI] 초염몽 predicted_damage for 인파이트: 195
+[AI] 초염몽 predicted_damage for 플레어드라이브: 98
+[AI] 초염몽 predicted_damage for 유턴: 38
+[AI] 초염몽 predicted_damage for 풀묶기: 20
+[AI] pokemon 초염몽 has switch score 29
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     -100: 아쿠스타: foe can OHKO (152.59259259259258% >= 100%)
+[AI] 아쿠스타 predicted_damage for 아쿠아브레이크: 22
+[AI] 아쿠스타 predicted_damage for 트리플악셀: 41
+[AI] 아쿠스타 predicted_damage for 퀵턴: 15
+[AI] 아쿠스타 predicted_damage for 사념의박치기: 41
+[AI] pokemon 아쿠스타 has switch score 6
+[AI] => staying in: all reserves scored < 60, not switching
+[AI]    => no good replacement Pokémon, will not switch after all
+[AI] 야도란 (1) won't switch after all
+[AI] Move choices for 야도란 (1) with threshold: 0: 
+[AI]    *   0.0% to use 열탕 (target 0): score 0
+[AI]    *   0.0% to use 게으름피우기: score 0
+[AI]    *   0.0% to use 냉동빔 (target 0): score 0
+[AI]    * 100.0% to use 전기자석파 (target 0): score 20
+[AI] => will use 전기자석파 (target 0)
 
-[Round order] 상대 망나뇽 (1), 랜드로스 (0)
+[Round order] 드닐레이브 (0), 상대 야도란 (1)
 
-[Use move] 상대 망나뇽 (1) used 용의춤
-"상대 망나뇽의 용의춤!"
-[Stat change] 상대 망나뇽's 공격 changed by +1 (0 -> 1)
-"상대 망나뇽의 \j[공격,이,가] 올랐다!"
-[Stat change] 상대 망나뇽's 스피드 changed by +1 (0 -> 1)
-"상대 망나뇽의 \j[스피드,이,가] 올랐다!"
-[Use move] 랜드로스 (0) used 스텔스록
-"랜드로스의 스텔스록!"
-"상대편 주위로 뾰족한 돌이 떠다닌다!"
+[Use move] 드닐레이브 (0) used 칼춤
+"드닐레이브의 칼춤!"
+[Stat change] 드닐레이브's 공격 changed by +2 (1 -> 3)
+"드닐레이브의 \j[공격,이,가] 크게 올랐다!"
+[Use move] 상대 야도란 (1) used 전기자석파
+"상대 야도란의 전기자석파!"
+"\j[드닐레이브,은,는] 마비에 걸렸다!"
 
 [End of round 5]
 "눈이 그쳤다."
+[HP change] 상대 야도란 gained 12 HP (89 -> 101)
+"상대 야도란은 먹다남은음식으로 약간의 HP를 회복했다!"
 
 ===== Round 6 =====
 
-[AI] 망나뇽 (1) couldn't find any usable items
-[AI] 망나뇽 (1) is considering using 용의춤...
-     raising the user's 스피드 isn't worthwhile
-     +  4: raising the user's 공격 by 1
-     +  4: function code modifier (generic)
-[AI] [smart_setup] statUp: [:ATTACK, 1, :SPEED, 1]
-     - 40: GLOBAL NERF: Setup moves are inherently risky.
-[AI] [damage_moves] computing 랜드로스 (0) → 망나뇽 (1) (turn 5)
-[AI]   유턴: 12 dmg (6.1% totalhp / 6.1% curhp)
-[AI]   지진: 0 dmg (0.0% totalhp / 0.0% curhp)
-[AI]   암석봉인: 40 dmg (20.2% totalhp / 20.2% curhp)
-[AI] [smart_setup] foe 랜드로스 (0) best dmg vs user: 40 (20.2% totalhp, threshold 40%)
-     + 50: Free setup: foes can't threaten (>40%).
-[AI] [damage_moves] computing 망나뇽 (1) → 랜드로스 (0) (turn 5)
-[AI]   신속: 42 dmg (21.5% totalhp / 35.6% curhp)
-[AI]   지진: 0 dmg (0.0% totalhp / 0.0% curhp)
-[AI] [smart_setup] best dmg vs 랜드로스 (0): 42 (21.5% totalhp, threshold 30%)
-     - 50: Setup blocked: No damaging move can do >30% of target HP.
-     +  5: Speed boost: already faster, slight bonus.
-     + 20: Setup bonus: Atk +1.
-     + 10: 10. General Status Move Boost.
-[AI] 망나뇽 (1) is considering using 신속 against 랜드로스 (0)...
-     +  8: damaging move (predicted damage 42 = 35% of target's HP)
-     -  8: can trigger the target's item
-     - 20: Penalize weak move: consider switching (21.5%).
-[AI] 망나뇽 (1) is considering using 지진...
-     move will not affect 랜드로스 (0)
-     -1099: move will fail
-[AI] 망나뇽 (1) is considering using 날개쉬기...
-     -1099: move will fail
-[AI] 망나뇽 (1) wants to switch due to terrible moves [용의춤=99, 신속=80, 지진=-999, 날개쉬기=-999]
-[AI] 망나뇽 (1) is being forced to switch out
-     -  6: 오롱털: entry hazard damage 25.25
-[AI] move_id: UTURN
-[AI] move_id: EARTHQUAKE
-[AI] move_id: ROCKTOMB
-     - 56: 오롱털: foe can 2HKO (56.559405940594054%)
-[AI] 오롱털 predicted_damage for 소울크래시: 29
-[AI] [damage_moves] computing 랜드로스 (0) → 망나뇽 (1) (turn 5)
-[AI]   유턴: 12 dmg (6.1% totalhp / 6.1% curhp)
-[AI]   지진: 0 dmg (0.0% totalhp / 0.0% curhp)
-[AI]   암석봉인: 40 dmg (20.2% totalhp / 20.2% curhp)
-     +  1: 오롱털: tanks 랜드로스 (0)'s best move better (36 vs 40 on current).
-[AI] pokemon 오롱털 has switch score 43
-     -  3: 한카리아스: entry hazard damage 11.4375
-[AI] move_id: UTURN
-[AI] move_id: EARTHQUAKE
-[AI] move_id: ROCKTOMB
-     - 59: 한카리아스: foe can 2HKO (59.801912568306015%)
-[AI] 한카리아스 predicted_damage for 지진: 0
-[AI] 한카리아스 predicted_damage for 역린: 60
-[AI] 한카리아스 predicted_damage for 스톤에지: 34
-     +  8: 한카리아스: outspeeds 랜드로스 (0) (169 vs 101).
-     +  8: 한카리아스: tanks 랜드로스 (0)'s best move better (20 vs 40 on current).
-[AI] pokemon 한카리아스 has switch score 63
-     -  6: 더시마사리: entry hazard damage 19.625
-[AI] move_id: UTURN
-[AI] move_id: EARTHQUAKE
-[AI] move_id: ROCKTOMB
-     - 77: 더시마사리: foe can 2HKO (77.46815286624204%)
-[AI] 더시마사리 predicted_damage for 열탕: 32
-     +  7: 더시마사리: tanks 랜드로스 (0)'s best move better (21 vs 40 on current).
-[AI] pokemon 더시마사리 has switch score 28
-     -  6: 핫삼: entry hazard damage 18.125
-[AI] move_id: UTURN
-[AI] move_id: EARTHQUAKE
-[AI] move_id: ROCKTOMB
-     - 76: 핫삼: foe can 2HKO (76.63793103448275%)
-[AI] 핫삼 predicted_damage for 불릿펀치: 23
-[AI] 핫삼 predicted_damage for 유턴: 20
-[AI] 핫삼 predicted_damage for 탁쳐서떨구기: 36
-     +  8: 핫삼: outspeeds 랜드로스 (0) (117 vs 101).
-     +  1: 핫삼: tanks 랜드로스 (0)'s best move better (38 vs 40 on current).
-[AI] pokemon 핫삼 has switch score 32
-[AI] => will switch with 한카리아스
+[AI] 야도란 (1) is considering using item 회복약 on party 번치코 (party index 0)...
+     - 40: useless because 번치코's HP isn't worth healing
+     - 40: useless because 야도란 (1) has no condition to heal
+     -  8: prefers not to use item because it's last in stock
+     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
+     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
+[AI] 야도란 (1) is considering using item 회복약 on party 야도란 (party index 4)...
+     + 20: healing 야도란 by 201 HP (101 -> 202) (100 over heal)
+     - 40: useless because 야도란 (1) has no condition to heal
+     -  8: prefers not to use item because it's last in stock
+     + 30: ITEM AI: Ace Pokémon preservation priority.
+[AI] Item choices for 야도란 (1):
+   *   0.0% to use 회복약 (party index 0): score -88
+   * 100.0% to use 회복약 (party index 4): score 142
+   => will use 회복약 (party index 4)
+[AI] 야도란 (1) will use item 회복약
 
-[Round order] 상대 망나뇽 (1), 랜드로스 (0)
+[Round order] 드닐레이브 (0), 상대 야도란 (1)
 
-"\j[엘리트 트레이너 test,이,가] \j[망나뇽,을,를] 넣었다!"
-"\j[엘리트 트레이너 test,은,는] \j[한카리아스,을,를] 내보냈다!"
-[HP change] 상대 한카리아스 lost 11 HP (183 -> 172)
-"상대 한카리아스에게 뾰족한 바위가 박혔다!"
-[Use move] 랜드로스 (0) used 암석봉인
-"랜드로스의 암석봉인!"
-[HP change] 상대 한카리아스 lost 20 HP (172 -> 152)
-"효과가 별로인 것 같다..."
-[Stat change] 상대 한카리아스's 스피드 changed by -1 (0 -> -1)
-"상대 한카리아스의 \j[스피드,이,가] 떨어졌다!"
+"\j[엘리트 트레이너 test,은,는] 상대 야도란에게 \j[회복약,을,를] 사용했다."
+[Status change] 상대 야도란's status was cured
+[HP change] 상대 야도란 gained 101 HP (101 -> 202)
+"상대 야도란의 HP가 회복되었다."
+[Use move] 드닐레이브 (0) used 스케일샷
+"드닐레이브의 스케일샷!"
+[Move failed] Failed pbAccuracyCheck
+"드닐레이브의 기술이 빗나갔다!"
 
 [End of round 6]
 
 ===== Round 7 =====
 
-[AI] 한카리아스 (1) is considering using item 회복약 on party 한카리아스 (party index 2)...
-     - 40: useless because 한카리아스's HP isn't worth healing
-     - 40: useless because 한카리아스 (1) has no condition to heal
-     -  8: prefers not to use item because it's last in stock
-     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
-     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 한카리아스 (1) is considering using item 풀회복약 on party 한카리아스 (party index 2)...
-     - 40: useless because 한카리아스's HP isn't worth healing
-     -  8: prefers not to use item because it's last in stock
-     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
-     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 한카리아스 (1) couldn't find any usable items
-[AI] 한카리아스 (1) is considering Terastallizing into the 강철-type...
-[AI] 한카리아스 (1) will Terastallize
-[AI] 한카리아스 (1) is considering using 스텔스록...
-     + 30: function code modifier (generic)
-     + 10: 10. General Status Move Boost.
-[AI] [damage_moves] computing 랜드로스 (0) → 한카리아스 (1) (turn 6)
-[AI]   유턴: 46 dmg (25.1% totalhp / 30.3% curhp)
-[AI]   지진: 98 dmg (53.6% totalhp / 64.5% curhp)
-[AI]   암석봉인: 20 dmg (10.9% totalhp / 13.2% curhp)
-[AI] 한카리아스 (1) is considering using 지진...
-     move will not affect 랜드로스 (0)
+[AI] 야도란 (1) couldn't find any usable items
+[AI] 야도란 (1) is considering using 열탕 against 드닐레이브 (0)...
+[AI] [damage_moves] computing 야도란 (1) → 드닐레이브 (0) (turn 6)
+[AI]   열탕: 15 dmg (7.9% totalhp / 11.1% curhp)
+[AI]   냉동빔: 23 dmg (12.1% totalhp / 17.0% curhp)
+     +  3: damaging move (predicted damage 15 = 11% of target's HP)
+     -  8: can trigger the target's ability
+     - 50: Penalize useless move: very low predicted damage (7.9%).
+[AI] [damage_moves] computing 드닐레이브 (0) → 야도란 (1) (turn 6)
+[AI]   스케일샷: 203 dmg (100.5% totalhp / 100.5% curhp)
+[AI]   고드름침: 101 dmg (50.0% totalhp / 50.0% curhp)
+[AI]   얼음뭉치: 41 dmg (20.3% totalhp / 20.3% curhp)
+[AI] 야도란 (1) is considering using 게으름피우기...
      -1099: move will fail
-[AI] 한카리아스 (1) is considering using 역린 against 랜드로스 (0)...
-[AI] [damage_moves] computing 한카리아스 (1) → 랜드로스 (0) (turn 6)
-[AI]   지진: 0 dmg (0.0% totalhp / 0.0% curhp)
-[AI]   역린: 60 dmg (30.8% totalhp / 50.8% curhp)
-[AI]   스톤에지: 34 dmg (17.4% totalhp / 28.8% curhp)
-     + 12: damaging move (predicted damage 60 = 50% of target's HP)
-     -  8: can trigger the target's item
-     - 20: Penalize weak move: consider switching (30.8%).
-[AI] 한카리아스 (1) is considering using 스톤에지 against 랜드로스 (0)...
-     -  5: accuracy (predicted 80%)
-     +  7: damaging move (predicted damage 34 = 28% of target's HP)
-     -  8: can trigger the target's item
-     - 50: Penalize useless move: very low predicted damage (17.4%).
-[AI] Move choices for 한카리아스 (1) with threshold: 120: 
-[AI]    * 100.0% to use 스텔스록: score 140
-[AI]    *   0.0% to use 지진: score -999
-[AI]    *   0.0% to use 역린 (target 0): score 84
-[AI]    *   0.0% to use 스톤에지 (target 0): score 44
-[AI] => will use 스텔스록
+[AI] 야도란 (1) is considering using 냉동빔 against 드닐레이브 (0)...
+     +  5: damaging move (predicted damage 23 = 17% of target's HP)
+     -  8: can trigger the target's ability
+     - 50: Penalize useless move: very low predicted damage (12.1%).
+[AI] 야도란 (1) is considering using 전기자석파 against 드닐레이브 (0)...
+     move will not affect 드닐레이브 (0)
+     -1099: move will fail
+[AI] 야도란 (1) wants to switch due to terrible moves [열탕=45, 게으름피우기=-999, 냉동빔=47, 전기자석파=-999]
+[AI] 야도란 (1) is being forced to switch out
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     -100: 번치코: foe can OHKO (424.468085106383% >= 100%)
+[AI] 번치코 predicted_damage for 플레어드라이브: 123
+     +  8: 번치코: outspeeds 드닐레이브 (0) (145 vs 139).
+[AI] [damage_moves] computing 드닐레이브 (0) → 야도란 (1) (turn 6)
+[AI]   스케일샷: 203 dmg (100.5% totalhp / 100.5% curhp)
+[AI]   고드름침: 101 dmg (50.0% totalhp / 50.0% curhp)
+[AI]   얼음뭉치: 41 dmg (20.3% totalhp / 20.3% curhp)
+[AI] pokemon 번치코 has switch score 26
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     -100: 마기라스: foe can OHKO (157.14285714285714% >= 100%)
+[AI] 마기라스 predicted_damage for 스톤에지: 243
+[AI] 마기라스 predicted_damage for 깨물어부수기: 98
+[AI] 마기라스 predicted_damage for 지진: 81
+[AI] pokemon 마기라스 has switch score 30
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     -100: 토게키스: foe can OHKO (323.5602094240838% >= 100%)
+[AI] 토게키스 predicted_damage for 에어슬래시: 34
+[AI] 토게키스 predicted_damage for 매지컬샤인: 72
+[AI] 토게키스 predicted_damage for 화염방사: 27
+     + 15: 토게키스: tanks 드닐레이브 (0)'s best move better (1 vs 203 on current).
+[AI] pokemon 토게키스 has switch score 26
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     -100: 초염몽: foe can OHKO (261.5894039735099% >= 100%)
+[AI] 초염몽 predicted_damage for 인파이트: 291
+[AI] 초염몽 predicted_damage for 플레어드라이브: 145
+[AI] 초염몽 predicted_damage for 유턴: 57
+[AI] 초염몽 predicted_damage for 풀묶기: 20
+     +  8: 초염몽: outspeeds 드닐레이브 (0) (176 vs 139).
+[AI] pokemon 초염몽 has switch score 38
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     -100: 아쿠스타: foe can OHKO (253.33333333333331% >= 100%)
+[AI] 아쿠스타 predicted_damage for 아쿠아브레이크: 32
+[AI] 아쿠스타 predicted_damage for 트리플악셀: 61
+[AI] 아쿠스타 predicted_damage for 퀵턴: 23
+[AI] 아쿠스타 predicted_damage for 사념의박치기: 61
+     +  8: 아쿠스타: outspeeds 드닐레이브 (0) (183 vs 139).
+[AI] pokemon 아쿠스타 has switch score 17
+[AI] => staying in: all reserves scored < 60, not switching
+[AI]    => no good replacement Pokémon, will not switch after all
+[AI] 야도란 (1) won't switch after all
+[AI] Move choices for 야도란 (1) with threshold: 27: 
+[AI]    *  47.4% to use 열탕 (target 0): score 45
+[AI]    *   0.0% to use 게으름피우기: score -999
+[AI]    *  52.6% to use 냉동빔 (target 0): score 47
+[AI]    *   0.0% to use 전기자석파 (target 0): score -999
+[AI] => will use 냉동빔 (target 0)
 
-[Round order] 상대 한카리아스 (1), 랜드로스 (0)
+[Round order] 드닐레이브 (0), 상대 야도란 (1)
 
-"\j[상대 한카리아스,은,는] 강철타입으로 테라스탈하였다!"
-[Use move] 상대 한카리아스 (1) used 스텔스록
-"상대 한카리아스의 스텔스록!"
-"우리편 주위로 뾰족한 돌이 떠다닌다!"
-[Use move] 랜드로스 (0) used 지진
-"랜드로스의 지진!"
-[HP change] 상대 한카리아스 lost 152 HP (152 -> 0)
-"효과가 굉장했다!"
-"\j[상대 한카리아스,은,는] 쓰러졌다!"
-"\j[랜드로스,이,가] 5251의 많은 경험치를 얻었다!"
-"\j[랜드로스,은,는] Lv. 51이 되었다!"
+[Use move] 드닐레이브 (0) used 스케일샷
+"드닐레이브의 스케일샷!"
+[HP change] 상대 야도란 lost 51 HP (202 -> 151)
+[HP change] 상대 야도란 lost 51 HP (151 -> 100)
+[HP change] 상대 야도란 lost 50 HP (100 -> 50)
+[HP change] 상대 야도란 lost 50 HP (50 -> 0)
+"\j[상대 야도란,은,는] 쓰러졌다!"
+"4번 맞았다!"
+[Stat change] 드닐레이브's 방어 changed by -1 (-2 -> -3)
+"드닐레이브의 \j[방어,이,가] 떨어졌다!"
+[Stat change] 드닐레이브's 스피드 changed by +1 (2 -> 3)
+"드닐레이브의 \j[스피드,이,가] 올랐다!"
+"\j[드닐레이브,이,가] 3011의 많은 경험치를 얻었다!"
 "다른 포켓몬들도 학습장치를 통해 경험치를 얻었다!"
 
 [End of round 7]
-     -  6: 오롱털: entry hazard damage 25.25
-[AI] move_id: UTURN
-[AI] move_id: EARTHQUAKE
-[AI] move_id: ROCKTOMB
-     - 17: 오롱털: foe can 2HKO (57.05445544554455%)
-[AI] 오롱털 predicted_damage for 소울크래시: 29
-[AI] pokemon 오롱털 has switch score 81
-     - 12: 망나뇽: entry hazard damage 49.5
-[AI] move_id: UTURN
-[AI] move_id: EARTHQUAKE
-[AI] move_id: ROCKTOMB
-     + 10: 망나뇽: foe cannot 2HKO, +45.707070707070706% < 50%
-[AI] 망나뇽 predicted_damage for 신속: 28
-[AI] 망나뇽 predicted_damage for 지진: 0
-     +  8: 망나뇽: outspeeds 랜드로스 (0) (116 vs 103).
-[AI] pokemon 망나뇽 has switch score 110
-     -  6: 더시마사리: entry hazard damage 19.625
-[AI] move_id: UTURN
-[AI] move_id: EARTHQUAKE
-[AI] move_id: ROCKTOMB
-     - 23: 더시마사리: foe can 2HKO (79.37898089171973%)
-[AI] 더시마사리 predicted_damage for 열탕: 32
-[AI] pokemon 더시마사리 has switch score 75
-     -  6: 핫삼: entry hazard damage 18.125
-[AI] move_id: UTURN
-[AI] move_id: EARTHQUAKE
-[AI] move_id: ROCKTOMB
-     - 15: 핫삼: foe can 2HKO (78.01724137931035%, faster)
-[AI] 핫삼 predicted_damage for 불릿펀치: 23
-[AI] 핫삼 predicted_damage for 유턴: 19
-[AI] 핫삼 predicted_damage for 탁쳐서떨구기: 36
-     +  8: 핫삼: outspeeds 랜드로스 (0) (117 vs 103).
-[AI] pokemon 핫삼 has switch score 92
-"\j[엘리트 트레이너 test,은,는] \j[망나뇽,을,를] 내보냈다!"
-[HP change] 상대 망나뇽 lost 50 HP (198 -> 148)
-"상대 망나뇽에게 뾰족한 바위가 박혔다!"
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     - 40: 번치코: foe can OHKO (424.468085106383% >= 100%)
+[AI] 번치코 predicted_damage for 플레어드라이브: 156
+[AI] pokemon 번치코 has switch score 83
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     - 40: 마기라스: foe can OHKO (157.14285714285714% >= 100%)
+[AI] 마기라스 predicted_damage for 스톤에지: 309
+[AI] 마기라스 predicted_damage for 깨물어부수기: 124
+[AI] 마기라스 predicted_damage for 지진: 103
+[AI] pokemon 마기라스 has switch score 90
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     - 40: 토게키스: foe can OHKO (323.5602094240838% >= 100%)
+[AI] 토게키스 predicted_damage for 에어슬래시: 34
+[AI] 토게키스 predicted_damage for 매지컬샤인: 72
+[AI] 토게키스 predicted_damage for 화염방사: 27
+[AI] pokemon 토게키스 has switch score 71
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     - 24: 초염몽: foe can OHKO (261.5894039735099% >= 100%, but faster)
+[AI] 초염몽 predicted_damage for 인파이트: 369
+[AI] 초염몽 predicted_damage for 플레어드라이브: 184
+[AI] 초염몽 predicted_damage for 유턴: 72
+[AI] 초염몽 predicted_damage for 풀묶기: 20
+     +  8: 초염몽: outspeeds 드닐레이브 (0) (176 vs 174).
+[AI] pokemon 초염몽 has switch score 114
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     - 24: 아쿠스타: foe can OHKO (253.33333333333331% >= 100%, but faster)
+[AI] 아쿠스타 predicted_damage for 아쿠아브레이크: 41
+[AI] 아쿠스타 predicted_damage for 트리플악셀: 77
+[AI] 아쿠스타 predicted_damage for 퀵턴: 29
+[AI] 아쿠스타 predicted_damage for 사념의박치기: 77
+     +  8: 아쿠스타: outspeeds 드닐레이브 (0) (183 vs 174).
+[AI] pokemon 아쿠스타 has switch score 95
+"\j[엘리트 트레이너 test,은,는] \j[초염몽,을,를] 내보냈다!"
 
 ===== Round 8 =====
 
-[AI] 망나뇽 (1) is considering using item 회복약 on party 망나뇽 (party index 1)...
-     - 40: useless because 망나뇽's HP isn't worth healing
-     - 40: useless because 망나뇽 (1) has no condition to heal
-     -  8: prefers not to use item because it's last in stock
-     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
-     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 망나뇽 (1) is considering using item 풀회복약 on party 망나뇽 (party index 1)...
-     - 40: useless because 망나뇽's HP isn't worth healing
-     -  8: prefers not to use item because it's last in stock
-     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
-     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 망나뇽 (1) couldn't find any usable items
-[AI] 망나뇽 (1) is considering using 용의춤...
-     raising the user's 스피드 isn't worthwhile
-     +  6: raising the user's 공격 by 1
-     +  6: function code modifier (generic)
-[AI] [smart_setup] statUp: [:ATTACK, 1, :SPEED, 1]
-     - 40: GLOBAL NERF: Setup moves are inherently risky.
-[AI] [damage_moves] computing 랜드로스 (0) → 망나뇽 (1) (turn 7)
-[AI]   유턴: 24 dmg (12.1% totalhp / 16.2% curhp)
-[AI]   지진: 0 dmg (0.0% totalhp / 0.0% curhp)
-[AI]   암석봉인: 82 dmg (41.4% totalhp / 55.4% curhp)
-[AI] [smart_setup] foe 랜드로스 (0) best dmg vs user: 82 (41.4% totalhp, threshold 40%)
-[AI] [damage_moves] computing 망나뇽 (1) → 랜드로스 (0) (turn 7)
-[AI]   신속: 28 dmg (14.1% totalhp / 23.1% curhp)
-[AI]   지진: 0 dmg (0.0% totalhp / 0.0% curhp)
-[AI] [smart_setup] best dmg vs 랜드로스 (0): 28 (14.1% totalhp, threshold 30%)
-     - 50: Setup blocked: No damaging move can do >30% of target HP.
-     +  5: Speed boost: already faster, slight bonus.
-     + 20: Setup bonus: Atk +1.
-     + 10: 10. General Status Move Boost.
-[AI] 망나뇽 (1) is considering using 신속 against 랜드로스 (0)...
-     +  5: damaging move (predicted damage 28 = 23% of target's HP)
-     -  8: can trigger the target's item
-     - 50: Penalize useless move: very low predicted damage (14.1%).
-[AI] 망나뇽 (1) is considering using 지진...
-     move will not affect 랜드로스 (0)
-     -1099: move will fail
-[AI] 망나뇽 (1) is considering using 날개쉬기...
-     - 10: function code modifier (generic)
-     + 10: 10. General Status Move Boost.
-[AI] [smart_recovery] max foe dmg = 82 (41.4% totalhp, threshold 55%)
-[AI] Move choices for 망나뇽 (1) with threshold: 80: 
-[AI]    *   0.0% to use 용의춤: score 51
-[AI]    *   0.0% to use 신속 (target 0): score 47
-[AI]    *   0.0% to use 지진: score -999
-[AI]    * 100.0% to use 날개쉬기: score 100
-[AI] => will use 날개쉬기
+[AI] 초염몽 (1) couldn't find any usable items
+[AI] 초염몽 (1) is considering using 인파이트 against 드닐레이브 (0)...
+[AI] [damage_moves] computing 초염몽 (1) → 드닐레이브 (0) (turn 7)
+[AI]   인파이트: 369 dmg (194.2% totalhp / 273.3% curhp)
+[AI]   플레어드라이브: 184 dmg (96.8% totalhp / 136.3% curhp)
+[AI]   유턴: 72 dmg (37.9% totalhp / 53.3% curhp)
+[AI]   풀묶기: 20 dmg (10.5% totalhp / 14.8% curhp)
+     + 30: damaging move (predicted damage 369 = 273% of target's HP)
+     + 50: predicted to KO the target
+     -  8: can trigger the target's ability
+     lowering the user's 특수방어 isn't worthwhile
+     -  5: lowering the user's 방어 by 1
+     - 12: function code modifier (generic)
+[AI] [damage_moves] computing 드닐레이브 (0) → 초염몽 (1) (turn 7)
+[AI]   스케일샷: 395 dmg (261.6% totalhp / 261.6% curhp)
+[AI]   고드름침: 197 dmg (130.5% totalhp / 130.5% curhp)
+[AI]   얼음뭉치: 80 dmg (53.0% totalhp / 53.0% curhp)
+[AI] [evade_ko] 드닐레이브 (0) 스케일샷: 395 >= 151 *
+[AI] [evade_ko] 드닐레이브 (0) 고드름침: 197 >= 151 *
+[AI] 초염몽 (1) is considering using 플레어드라이브 against 드닐레이브 (0)...
+     - 10: function code modifier (against target)
+     + 30: damaging move (predicted damage 184 = 136% of target's HP)
+     + 50: predicted to KO the target
+     -  8: can trigger the target's ability
+[AI] [evade_ko] 드닐레이브 (0) 스케일샷: 395 >= 151 *
+[AI] [evade_ko] 드닐레이브 (0) 고드름침: 197 >= 151 *
+[AI] 초염몽 (1) is considering using 유턴 against 드닐레이브 (0)...
+     + 16: damaging move (predicted damage 72 = 53% of target's HP)
+     -  8: can trigger the target's ability
+     + 10: 6. Active Pivot move boost.
+[AI] [evade_ko] 드닐레이브 (0) 스케일샷: 395 >= 151 *
+[AI] [evade_ko] 드닐레이브 (0) 고드름침: 197 >= 151 *
+[AI] 초염몽 (1) is considering using 풀묶기 against 드닐레이브 (0)...
+     +  4: damaging move (predicted damage 20 = 14% of target's HP)
+     -  8: can trigger the target's ability
+     - 50: Penalize useless move: very low predicted damage (10.5%).
+[AI] [evade_ko] 드닐레이브 (0) 스케일샷: 395 >= 151 *
+[AI] [evade_ko] 드닐레이브 (0) 고드름침: 197 >= 151 *
+[AI] Move choices for 초염몽 (1) with threshold: 142: 
+[AI]    *  47.4% to use 인파이트 (target 0): score 160
+[AI]    *  52.6% to use 플레어드라이브 (target 0): score 162
+[AI]    *   0.0% to use 유턴 (target 0): score 118
+[AI]    *   0.0% to use 풀묶기 (target 0): score 46
+[AI] => will use 플레어드라이브 (target 0)
 
-[Round order] 상대 망나뇽 (1), 랜드로스 (0)
+[Round order] 상대 초염몽 (1), 드닐레이브 (0)
 
-[Use move] 상대 망나뇽 (1) used 날개쉬기
-"상대 망나뇽의 날개쉬기!"
-[HP change] 상대 망나뇽 gained 50 HP (148 -> 198)
-"상대 망나뇽의 HP가 회복되었다."
-[Use move] 랜드로스 (0) used 암석봉인
-"랜드로스의 암석봉인!"
-[HP change] 상대 망나뇽 lost 21 HP (198 -> 177)
-[Stat change] 상대 망나뇽's 스피드 changed by -1 (0 -> -1)
-"상대 망나뇽의 \j[스피드,이,가] 떨어졌다!"
+"드닐레이브, 잘했어! 돌아와!"
+"네 차례야, 로토무!"
+[Use move] 상대 초염몽 (1) used 플레어드라이브
+"상대 초염몽의 플레어드라이브!"
+[HP change] 로토무 lost 32 HP (157 -> 125)
+"효과가 별로인 것 같다..."
+[HP change] 상대 초염몽 lost 11 HP (151 -> 140)
+"\j[상대 초염몽,은,는] 반동으로 데미지를 입었다!"
+[Item triggered] 상대 초염몽's 생명의구슬 (recoil)
+[HP change] 상대 초염몽 lost 15 HP (140 -> 125)
+"상대 초염몽은 생명의구슬로 인해 HP를 조금 잃었다!"
 
 [End of round 8]
-[HP change] 상대 망나뇽 gained 12 HP (177 -> 189)
-"상대 망나뇽은 먹다남은음식으로 약간의 HP를 회복했다!"
-"상대편의 빛의장막이 사라졌다!"
+[HP change] 로토무 gained 9 HP (125 -> 134)
+"로토무는 먹다남은음식으로 약간의 HP를 회복했다!"
+"우리편의 오로라베일이 사라졌다!"
 
 ===== Round 9 =====
 
-[AI] 망나뇽 (1) is considering using item 회복약 on party 망나뇽 (party index 1)...
-     - 40: useless because 망나뇽's HP isn't worth healing
-     - 40: useless because 망나뇽 (1) has no condition to heal
-     -  8: prefers not to use item because it's last in stock
-     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
-     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 망나뇽 (1) is considering using item 풀회복약 on party 망나뇽 (party index 1)...
-     - 40: useless because 망나뇽's HP isn't worth healing
-     -  8: prefers not to use item because it's last in stock
-     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
-     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 망나뇽 (1) couldn't find any usable items
-[AI] 망나뇽 (1) is considering using 용의춤...
-     +  6: raising the user's 공격 by 1
-     +  7: raising the user's 스피드 by 1
-     + 13: function code modifier (generic)
-[AI] [smart_setup] statUp: [:ATTACK, 1, :SPEED, 1]
-     - 40: GLOBAL NERF: Setup moves are inherently risky.
-[AI] [damage_moves] computing 랜드로스 (0) → 망나뇽 (1) (turn 8)
-[AI]   유턴: 24 dmg (12.1% totalhp / 12.7% curhp)
-[AI]   지진: 0 dmg (0.0% totalhp / 0.0% curhp)
-[AI]   암석봉인: 82 dmg (41.4% totalhp / 43.4% curhp)
-[AI] [smart_setup] foe 랜드로스 (0) best dmg vs user: 82 (41.4% totalhp, threshold 40%)
-[AI] [damage_moves] computing 망나뇽 (1) → 랜드로스 (0) (turn 8)
-[AI]   신속: 28 dmg (14.1% totalhp / 23.1% curhp)
-[AI]   지진: 0 dmg (0.0% totalhp / 0.0% curhp)
-[AI] [smart_setup] best dmg vs 랜드로스 (0): 28 (14.1% totalhp, threshold 30%)
-     - 50: Setup blocked: No damaging move can do >30% of target HP.
-     + 20: Speed breakpoint: boost would outspeed foe (154 >= 103).
-     + 20: Setup bonus: Atk +1.
-     + 10: 10. General Status Move Boost.
-[AI] 망나뇽 (1) is considering using 신속 against 랜드로스 (0)...
-     +  5: damaging move (predicted damage 28 = 23% of target's HP)
-     -  8: can trigger the target's item
-     - 50: Penalize useless move: very low predicted damage (14.1%).
-     +  8: Priority move bonus: user is slower than target.
-[AI] 망나뇽 (1) is considering using 지진...
-     move will not affect 랜드로스 (0)
-     -1099: move will fail
-[AI] 망나뇽 (1) is considering using 날개쉬기...
-     - 10: function code modifier (generic)
-     + 10: 10. General Status Move Boost.
-[AI] [smart_recovery] max foe dmg = 82 (41.4% totalhp, threshold 55%)
-[AI] Move choices for 망나뇽 (1) with threshold: 80: 
-[AI]    *   0.0% to use 용의춤: score 73
-[AI]    *   0.0% to use 신속 (target 0): score 55
-[AI]    *   0.0% to use 지진: score -999
-[AI]    * 100.0% to use 날개쉬기: score 100
-[AI] => will use 날개쉬기
+[AI] 초염몽 (1) couldn't find any usable items
+[AI] 초염몽 (1) is considering using 인파이트 against 로토무 (0)...
+[AI] [damage_moves] computing 초염몽 (1) → 로토무 (0) (turn 8)
+[AI]   인파이트: 129 dmg (82.2% totalhp / 96.3% curhp)
+[AI]   플레어드라이브: 64 dmg (40.8% totalhp / 47.8% curhp)
+[AI]   유턴: 25 dmg (15.9% totalhp / 18.7% curhp)
+[AI]   풀묶기: 5 dmg (3.2% totalhp / 3.7% curhp)
+     + 28: damaging move (predicted damage 129 = 96% of target's HP)
+     + 50: predicted to KO the target
+     lowering the user's 방어 isn't worthwhile
+     -  5: lowering the user's 특수방어 by 1
+     -  9: function code modifier (generic)
+[AI] [damage_moves] computing 로토무 (0) → 초염몽 (1) (turn 8)
+[AI] [known_foe_moves] Hiding 하이드로펌프 from 로토무 (0) (never acted)
+[AI]   볼트체인지: 74 dmg (49.0% totalhp / 59.2% curhp)
+[AI]   10만볼트: 95 dmg (62.9% totalhp / 76.0% curhp)
+[AI] 초염몽 (1) is considering using 플레어드라이브 against 로토무 (0)...
+     -  4: function code modifier (against target)
+     + 14: damaging move (predicted damage 64 = 47% of target's HP)
+[AI] 초염몽 (1) is considering using 유턴 against 로토무 (0)...
+     +  5: damaging move (predicted damage 25 = 18% of target's HP)
+     + 10: 6. Active Pivot move boost.
+[AI] 초염몽 (1) is considering using 풀묶기 against 로토무 (0)...
+     +  1: damaging move (predicted damage 5 = 3% of target's HP)
+     - 50: Penalize useless move: very low predicted damage (3.2%).
+[AI] Move choices for 초염몽 (1) with threshold: 149: 
+[AI]    * 100.0% to use 인파이트 (target 0): score 169
+[AI]    *   0.0% to use 플레어드라이브 (target 0): score 110
+[AI]    *   0.0% to use 유턴 (target 0): score 115
+[AI]    *   0.0% to use 풀묶기 (target 0): score 51
+[AI] => will use 인파이트 (target 0)
 
-[Round order] 랜드로스 (0), 상대 망나뇽 (1)
+[Round order] 상대 초염몽 (1), 로토무 (0)
 
-[Use move] 랜드로스 (0) used 암석봉인
-"랜드로스의 암석봉인!"
-[HP change] 상대 망나뇽 lost 80 HP (189 -> 109)
-"효과가 굉장했다!"
-[Stat change] 상대 망나뇽's 스피드 changed by -1 (-1 -> -2)
-"상대 망나뇽의 \j[스피드,이,가] 떨어졌다!"
-[Use move] 상대 망나뇽 (1) used 날개쉬기
-"상대 망나뇽의 날개쉬기!"
-[HP change] 상대 망나뇽 gained 89 HP (109 -> 198)
-"상대 망나뇽의 HP가 회복되었다."
+[Use move] 상대 초염몽 (1) used 인파이트
+"상대 초염몽의 인파이트!"
+[HP change] 로토무 lost 127 HP (134 -> 7)
+[Stat change] 상대 초염몽's 방어 changed by -1 (0 -> -1)
+"상대 초염몽의 \j[방어,이,가] 떨어졌다!"
+[Stat change] 상대 초염몽's 특수방어 changed by -1 (0 -> -1)
+"상대 초염몽의 \j[특수방어,이,가] 떨어졌다!"
+[Item triggered] 상대 초염몽's 생명의구슬 (recoil)
+[HP change] 상대 초염몽 lost 15 HP (125 -> 110)
+"상대 초염몽은 생명의구슬로 인해 HP를 조금 잃었다!"
+[Use move] 로토무 (0) used 하이드로펌프
+"로토무의 하이드로펌프!"
+[Move failed] Failed pbAccuracyCheck
+"로토무의 기술이 빗나갔다!"
 
 [End of round 9]
-"우리편의 오로라베일이 사라졌다!"
+[HP change] 로토무 gained 9 HP (7 -> 16)
+"로토무는 먹다남은음식으로 약간의 HP를 회복했다!"
 
 ===== Round 10 =====
 
-[AI] 망나뇽 (1) couldn't find any usable items
-[AI] 망나뇽 (1) is considering using 용의춤...
-     +  6: raising the user's 공격 by 1
-     +  2: raising the user's 스피드 by 1
-     +  8: function code modifier (generic)
-[AI] [smart_setup] statUp: [:ATTACK, 1, :SPEED, 1]
-     - 40: GLOBAL NERF: Setup moves are inherently risky.
-[AI] [damage_moves] computing 랜드로스 (0) → 망나뇽 (1) (turn 9)
-[AI]   유턴: 12 dmg (6.1% totalhp / 6.1% curhp)
-[AI]   지진: 0 dmg (0.0% totalhp / 0.0% curhp)
-[AI]   암석봉인: 41 dmg (20.7% totalhp / 20.7% curhp)
-[AI] [smart_setup] foe 랜드로스 (0) best dmg vs user: 41 (20.7% totalhp, threshold 40%)
-     + 50: Free setup: foes can't threaten (>40%).
-[AI] [damage_moves] computing 망나뇽 (1) → 랜드로스 (0) (turn 9)
-[AI]   신속: 55 dmg (27.8% totalhp / 45.5% curhp)
-[AI]   지진: 0 dmg (0.0% totalhp / 0.0% curhp)
-[AI] [smart_setup] best dmg vs 랜드로스 (0): 55 (27.8% totalhp, threshold 30%)
-     - 50: Setup blocked: No damaging move can do >30% of target HP.
+[AI] 초염몽 (1) couldn't find any usable items
+[AI] 초염몽 (1) is considering using 인파이트 against 로토무 (0)...
+[AI] [damage_moves] computing 초염몽 (1) → 로토무 (0) (turn 9)
+[AI]   인파이트: 129 dmg (82.2% totalhp / 806.3% curhp)
+[AI]   플레어드라이브: 64 dmg (40.8% totalhp / 400.0% curhp)
+[AI]   유턴: 25 dmg (15.9% totalhp / 156.3% curhp)
+[AI]   풀묶기: 5 dmg (3.2% totalhp / 31.3% curhp)
+     + 30: damaging move (predicted damage 129 = 806% of target's HP)
+     + 50: predicted to KO the target
+     lowering the user's 방어 isn't worthwhile
+     -  3: lowering the user's 특수방어 by 1
+     -  6: function code modifier (generic)
+[AI] [damage_moves] computing 로토무 (0) → 초염몽 (1) (turn 9)
+[AI]   볼트체인지: 110 dmg (72.8% totalhp / 100.0% curhp)
+[AI]   하이드로펌프: 228 dmg (151.0% totalhp / 207.3% curhp)
+[AI]   10만볼트: 141 dmg (93.4% totalhp / 128.2% curhp)
+[AI] [evade_ko] 로토무 (0) 하이드로펌프: 228 >= 110 *
+[AI] [evade_ko] 로토무 (0) 10만볼트: 141 >= 110 *
+[AI] 초염몽 (1) is considering using 플레어드라이브 against 로토무 (0)...
+     -  4: function code modifier (against target)
+     + 30: damaging move (predicted damage 64 = 400% of target's HP)
+     + 50: predicted to KO the target
+[AI] [evade_ko] 로토무 (0) 하이드로펌프: 228 >= 110 *
+[AI] [evade_ko] 로토무 (0) 10만볼트: 141 >= 110 *
+[AI] 초염몽 (1) is considering using 유턴 against 로토무 (0)...
+     + 30: damaging move (predicted damage 25 = 156% of target's HP)
+     + 50: predicted to KO the target
+     + 10: 6. Active Pivot move boost.
+     + 10: function code modifier (generic)
+[AI] [evade_ko] 로토무 (0) 하이드로펌프: 228 >= 110 *
+[AI] [evade_ko] 로토무 (0) 10만볼트: 141 >= 110 *
+[AI] 초염몽 (1) is considering using 풀묶기 against 로토무 (0)...
+     +  9: damaging move (predicted damage 5 = 31% of target's HP)
+     - 50: Penalize useless move: very low predicted damage (3.2%).
+[AI] [evade_ko] 로토무 (0) 하이드로펌프: 228 >= 110 *
+[AI] [evade_ko] 로토무 (0) 10만볼트: 141 >= 110 *
+[AI] Move choices for 초염몽 (1) with threshold: 180: 
+[AI]    *   0.0% to use 인파이트 (target 0): score 173
+[AI]    *   0.0% to use 플레어드라이브 (target 0): score 176
+[AI]    * 100.0% to use 유턴 (target 0): score 200
+[AI]    *   0.0% to use 풀묶기 (target 0): score 59
+[AI] => will use 유턴 (target 0)
 
-**Exception: Infinity
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:141:in `to_i'
-[GO UP POKEMON TOWER] 002_AI_Improved_GeneralMoveScore.rb:141:in `block in <main>'
-Section198:122:in `block in apply_general_move_score_modifiers'
-Section035:129:in `block in each'
-Section035:129:in `each_pair'
-Section035:129:in `each'
-Section198:121:in `apply_general_move_score_modifiers'
-Section202:280:in `pbGetMoveScore'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:512:in `block (2 levels) in pbGetMoveScores'
-Section012:6:in `logonerr'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:512:in `block in pbGetMoveScores'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `each'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `each_with_index'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:481:in `pbGetMoveScores'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:463:in `pbDefaultChooseEnemyCommand'
-Section155:215:in `block in pbCommandPhaseLoop'
-Section155:203:in `loop'
-Section155:203:in `pbCommandPhaseLoop'
-[Deluxe Battle Kit] 005_[000] Essentials Patches_[003] Command Menu Refactor.rb:381:in `pbCommandPhase'
-Section148:336:in `block (2 levels) in pbBattleLoop'
-Section012:6:in `logonerr'
-Section148:336:in `block in pbBattleLoop'
-Section148:324:in `loop'
-Section148:324:in `pbBattleLoop'
-[Generation 9 Pack] 010_[001] Battle_[003] Weather and Status.rb:98:in `pbStartBattleCore'
-Section148:271:in `pbStartBattle'
-Section256:521:in `block (2 levels) in start_core'
-Section257:55:in `pbSceneStandby'
-Section256:521:in `block in start_core'
-Section257:126:in `pbBattleAnimation'
-Section256:520:in `start_core'
-Section256:486:in `start'
-Section386:376:in `block in <main>'
-Section036:121:in `call'
-Section385:138:in `block in pbDebugMenu'
-Section385:100:in `loop'
-Section385:100:in `pbDebugMenu'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:111:in `pbDebugMenu'
-Section293:323:in `block (2 levels) in <main>'
-Section079:575:in `pbFadeOutIn'
-Section293:322:in `block in <main>'
-[Voltseon's Pause Menu] 003_003_VoltseonMenu_Menu.rb:54:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:222:in `block in update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `loop'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `update'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:297:in `pbStartPokemonMenu'
-[[MUI] Enhanced Pokemon UI] 003_[002] Legacy Data.rb:323:in `pbStartPokemonMenu'
-[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:288:in `call_menu'
-Section032:207:in `update'
-Section400:299:in `update'
-[Following Pokemon EX] 015_Script Additions_Refresh.rb:178:in `update'
-[Sun Script] 001_Main.rb:26:in `update'
-Section032:238:in `block in main'
-Section032:235:in `loop'
-Section032:235:in `main'
-[Sun Script] 001_Main.rb:20:in `main'
-Section412:35:in `mainFunctionDebug'
-Section412:18:in `block in mainFunction'
-Section014:80:in `pbCriticalCode'
-Section412:18:in `mainFunction'
-Section412:45:in `block in <main>'
-Section412:44:in `loop'
-Section412:44:in `<main>'
--e:in `eval'
+[Round order] 상대 초염몽 (1), 로토무 (0)
 
-
-[AI] 망나뇽 (1) is considering using 신속 against 랜드로스 (0)...
-     + 11: damaging move (predicted damage 55 = 45% of target's HP)
-     -  8: can trigger the target's item
-     - 20: Penalize weak move: consider switching (27.8%).
-     +  8: Priority move bonus: user is slower than target.
-[AI] 망나뇽 (1) is considering using 지진...
-     move will not affect 랜드로스 (0)
-     -1099: move will fail
-[AI] 망나뇽 (1) is considering using 날개쉬기...
-     -1099: move will fail
-[AI] Move choices for 망나뇽 (1) with threshold: 80: 
-[AI]    *  64.5% to use 용의춤: score 100
-[AI]    *  35.5% to use 신속 (target 0): score 91
-[AI]    *   0.0% to use 지진: score -999
-[AI]    *   0.0% to use 날개쉬기: score -999
-[AI] => will use 용의춤
-
-[Round order] 랜드로스 (0), 상대 망나뇽 (1)
-
-[Use move] 랜드로스 (0) used 암석봉인
-"랜드로스의 암석봉인!"
-[HP change] 상대 망나뇽 lost 40 HP (198 -> 158)
-"효과가 굉장했다!"
-[Stat change] 상대 망나뇽's 스피드 changed by -1 (-2 -> -3)
-"상대 망나뇽의 \j[스피드,이,가] 떨어졌다!"
-[Use move] 상대 망나뇽 (1) used 용의춤
-"상대 망나뇽의 용의춤!"
-[Stat change] 상대 망나뇽's 공격 changed by +1 (0 -> 1)
-"상대 망나뇽의 \j[공격,이,가] 올랐다!"
-[Stat change] 상대 망나뇽's 스피드 changed by +1 (-3 -> -2)
-"상대 망나뇽의 \j[스피드,이,가] 올랐다!"
+[Use move] 상대 초염몽 (1) used 유턴
+"상대 초염몽의 유턴!"
+[HP change] 로토무 lost 16 HP (16 -> 0)
+"효과가 별로인 것 같다..."
+"\j[로토무,은,는] 쓰러졌다!"
+[Item triggered] 상대 초염몽's 생명의구슬 (recoil)
+[HP change] 상대 초염몽 lost 15 HP (110 -> 95)
+"상대 초염몽은 생명의구슬로 인해 HP를 조금 잃었다!"
+"\j[상대 초염몽,은,는] 엘리트 트레이너 test의 곁으로 돌아갔다!"
+[AI] pokemon 번치코 has switch score 100
+[AI] pokemon 마기라스 has switch score 100
+[AI] pokemon 토게키스 has switch score 100
+[AI] pokemon 아쿠스타 has switch score 100
+"\j[엘리트 트레이너 test,은,는] \j[마기라스,을,를] 내보냈다!"
+[Ability triggered] 상대 마기라스's 모래날림
+"모래바람이 불기 시작했다!"
 
 [End of round 10]
-[HP change] 상대 망나뇽 gained 12 HP (158 -> 170)
+"모래바람이 불고 있다."
+"네 차례야, 랜드로스!"
+[Ability triggered] 랜드로스's 위협
+[Stat change] 상대 마기라스's 공격 changed by -1 (0 -> -1)
+"상대 마기라스의 \j[공격,이,가] 떨어졌다!"
+
+===== Round 11 =====
+
+[AI] 마기라스 (1) couldn't find any usable items
+[AI] 마기라스 (1) is considering Terastallizing into the 악-type...
+     +  5: offensive advantage
+[AI] 마기라스 (1) will Terastallize
+[AI] 마기라스 (1) is considering using 스톤에지 against 랜드로스 (0)...
+     -  5: accuracy (predicted 80%)
+[AI] [damage_moves] computing 마기라스 (1) → 랜드로스 (0) (turn 10)
+[AI]   스톤에지: 77 dmg (39.5% totalhp / 39.5% curhp)
+[AI]   깨물어부수기: 62 dmg (31.8% totalhp / 31.8% curhp)
+[AI]   지진: 0 dmg (0.0% totalhp / 0.0% curhp)
+     + 11: damaging move (predicted damage 77 = 39% of target's HP)
+     -  8: can trigger the target's item
+     - 20: Penalize weak move: consider switching (39.5%).
+[AI] [damage_moves] computing 랜드로스 (0) → 마기라스 (1) (turn 10)
+[AI] [known_foe_moves] Hiding 유턴 from 랜드로스 (0) (never acted)
+[AI]   지진: 174 dmg (99.4% totalhp / 99.4% curhp)
+[AI]   암석봉인: 35 dmg (20.0% totalhp / 20.0% curhp)
+[AI] 마기라스 (1) is considering using 깨물어부수기 against 랜드로스 (0)...
+     +  5: lowering the target's 방어 by 1
+     + 17: function code modifier (against target)
+     +  9: damaging move (predicted damage 62 = 31% of target's HP)
+     -  8: can trigger the target's item
+     - 20: Penalize weak move: consider switching (31.8%).
+[AI] 마기라스 (1) is considering using 지진...
+     move will not affect 랜드로스 (0)
+     -1099: move will fail
+[AI] 마기라스 (1) is considering using 스텔스록...
+     + 30: function code modifier (generic)
+     + 10: 10. General Status Move Boost.
+[AI] Move choices for 마기라스 (1) with threshold: 120: 
+[AI]    *   0.0% to use 스톤에지 (target 0): score 78
+[AI]    *   0.0% to use 깨물어부수기 (target 0): score 98
+[AI]    *   0.0% to use 지진: score -999
+[AI]    * 100.0% to use 스텔스록: score 140
+[AI] => will use 스텔스록
+
+[Round order] 상대 마기라스 (1), 랜드로스 (0)
+
+"\j[상대 마기라스,은,는] 악타입으로 테라스탈하였다!"
+[Use move] 상대 마기라스 (1) used 스텔스록
+"상대 마기라스의 스텔스록!"
+"우리편 주위로 뾰족한 돌이 떠다닌다!"
+[Use move] 랜드로스 (0) used 스텔스록
+"랜드로스의 스텔스록!"
+"상대편 주위로 뾰족한 돌이 떠다닌다!"
+
+[End of round 11]
+"모래바람이 불고 있다."
+"모래바람이 \j[상대 마기라스,을,를] 덮쳤다!"
+[HP change] 상대 마기라스 lost 10 HP (175 -> 165)
+
+===== Round 12 =====
+
+[AI] 마기라스 (1) couldn't find any usable items
+[AI] 마기라스 (1) is considering using 스톤에지 against 랜드로스 (0)...
+     -  5: accuracy (predicted 80%)
+[AI] [damage_moves] computing 마기라스 (1) → 랜드로스 (0) (turn 11)
+[AI]   스톤에지: 77 dmg (39.5% totalhp / 39.5% curhp)
+[AI]   깨물어부수기: 82 dmg (42.1% totalhp / 42.1% curhp)
+[AI]   지진: 0 dmg (0.0% totalhp / 0.0% curhp)
+     + 11: damaging move (predicted damage 77 = 39% of target's HP)
+     -  8: can trigger the target's item
+     - 20: Penalize weak move: consider switching (39.5%).
+[AI] [damage_moves] computing 랜드로스 (0) → 마기라스 (1) (turn 11)
+[AI]   유턴: 82 dmg (46.9% totalhp / 49.7% curhp)
+[AI]   지진: 87 dmg (49.7% totalhp / 52.7% curhp)
+[AI]   암석봉인: 35 dmg (20.0% totalhp / 21.2% curhp)
+[AI] 마기라스 (1) is considering using 깨물어부수기 against 랜드로스 (0)...
+     +  5: lowering the target's 방어 by 1
+     + 16: function code modifier (against target)
+     + 12: damaging move (predicted damage 82 = 42% of target's HP)
+     -  8: can trigger the target's item
+[AI] 마기라스 (1) is considering using 지진...
+     move will not affect 랜드로스 (0)
+     -1099: move will fail
+[AI] 마기라스 (1) is considering using 스텔스록...
+     -1099: move will fail
+[AI] Move choices for 마기라스 (1) with threshold: 100: 
+[AI]    *   0.0% to use 스톤에지 (target 0): score 78
+[AI]    * 100.0% to use 깨물어부수기 (target 0): score 120
+[AI]    *   0.0% to use 지진: score -999
+[AI]    *   0.0% to use 스텔스록: score -999
+[AI] => will use 깨물어부수기 (target 0)
+
+[Round order] 상대 마기라스 (1), 랜드로스 (0)
+
+[Use move] 상대 마기라스 (1) used 깨물어부수기
+"상대 마기라스의 깨물어부수기!"
+[HP change] 랜드로스 lost 57 HP (195 -> 138)
+[HP change] 상대 마기라스 lost 29 HP (165 -> 136)
+"상대 마기라스는 울퉁불퉁멧으로 인해 데미지를 입었다!"
+[Use move] 랜드로스 (0) used 지진
+"랜드로스의 지진!"
+[HP change] 상대 마기라스 lost 77 HP (136 -> 59)
+
+[End of round 12]
+"모래바람이 불고 있다."
+"모래바람이 \j[상대 마기라스,을,를] 덮쳤다!"
+[HP change] 상대 마기라스 lost 10 HP (59 -> 49)
+
+===== Round 13 =====
+
+[AI] 마기라스 (1) couldn't find any usable items
+[AI] 마기라스 (1) is considering using 스톤에지 against 랜드로스 (0)...
+     -  5: accuracy (predicted 80%)
+[AI] [damage_moves] computing 마기라스 (1) → 랜드로스 (0) (turn 12)
+[AI]   스톤에지: 77 dmg (39.5% totalhp / 55.8% curhp)
+[AI]   깨물어부수기: 82 dmg (42.1% totalhp / 59.4% curhp)
+[AI]   지진: 0 dmg (0.0% totalhp / 0.0% curhp)
+     + 16: damaging move (predicted damage 77 = 55% of target's HP)
+     -  8: can trigger the target's item
+     - 20: Penalize weak move: consider switching (39.5%).
+[AI] [damage_moves] computing 랜드로스 (0) → 마기라스 (1) (turn 12)
+[AI]   유턴: 82 dmg (46.9% totalhp / 167.3% curhp)
+[AI]   지진: 87 dmg (49.7% totalhp / 177.6% curhp)
+[AI]   암석봉인: 35 dmg (20.0% totalhp / 71.4% curhp)
+[AI] [evade_ko] 랜드로스 (0) 유턴: 82 >= 49 *
+[AI] [evade_ko] 랜드로스 (0) 지진: 87 >= 49 *
+[AI] 마기라스 (1) is considering using 깨물어부수기 against 랜드로스 (0)...
+     +  5: lowering the target's 방어 by 1
+     +  4: function code modifier (against target)
+     + 17: damaging move (predicted damage 82 = 59% of target's HP)
+     -  8: can trigger the target's item
+[AI] [evade_ko] 랜드로스 (0) 유턴: 82 >= 49 *
+[AI] [evade_ko] 랜드로스 (0) 지진: 87 >= 49 *
+[AI] 마기라스 (1) is considering using 지진...
+     move will not affect 랜드로스 (0)
+     -1099: move will fail
+[AI] 마기라스 (1) is considering using 스텔스록...
+     -1099: move will fail
+[AI] Move choices for 마기라스 (1) with threshold: 93: 
+[AI]    *   0.0% to use 스톤에지 (target 0): score 83
+[AI]    * 100.0% to use 깨물어부수기 (target 0): score 113
+[AI]    *   0.0% to use 지진: score -999
+[AI]    *   0.0% to use 스텔스록: score -999
+[AI] => will use 깨물어부수기 (target 0)
+
+[Round order] 상대 마기라스 (1), 랜드로스 (0)
+
+[Use move] 상대 마기라스 (1) used 깨물어부수기
+"상대 마기라스의 깨물어부수기!"
+[HP change] 랜드로스 lost 54 HP (138 -> 84)
+[HP change] 상대 마기라스 lost 29 HP (49 -> 20)
+"상대 마기라스는 울퉁불퉁멧으로 인해 데미지를 입었다!"
+[Use move] 랜드로스 (0) used 지진
+"랜드로스의 지진!"
+[HP change] 상대 마기라스 lost 20 HP (20 -> 0)
+"\j[상대 마기라스,은,는] 쓰러졌다!"
+"\j[랜드로스,이,가] 5251의 많은 경험치를 얻었다!"
+"다른 포켓몬들도 학습장치를 통해 경험치를 얻었다!"
+
+[End of round 13]
+"모래바람이 불고 있다."
+     - 10: 번치코: entry hazard damage 19.375
+[AI] move_id: UTURN
+[AI] move_id: EARTHQUAKE
+[AI] move_id: ROCKTOMB
+     - 24: 번치코: foe can OHKO (285.50531914893617% >= 100%, but faster)
+[AI] 번치코 predicted_damage for 플레어드라이브: 114
+     +  8: 번치코: outspeeds 랜드로스 (0) (145 vs 101).
+[AI] pokemon 번치코 has switch score 100
+     - 12: 토게키스: entry hazard damage 47.75
+[AI] move_id: UTURN
+[AI] move_id: EARTHQUAKE
+[AI] move_id: ROCKTOMB
+     -  6: 토게키스: foe can 2HKO (66.8848167539267%, faster)
+[AI] 토게키스 predicted_damage for 에어슬래시: 56
+[AI] 토게키스 predicted_damage for 매지컬샤인: 59
+[AI] 토게키스 predicted_damage for 화염방사: 44
+     +  8: 토게키스: outspeeds 랜드로스 (0) (107 vs 101).
+[AI] pokemon 토게키스 has switch score 103
+     -  9: 초염몽: entry hazard damage 18.875
+[AI] move_id: UTURN
+[AI] move_id: EARTHQUAKE
+[AI] move_id: ROCKTOMB
+     - 24: 초염몽: foe can OHKO (278.8157894736842% >= 100%, but faster)
+[AI] 초염몽 predicted_damage for 인파이트: 67
+[AI] 초염몽 predicted_damage for 플레어드라이브: 135
+[AI] 초염몽 predicted_damage for 유턴: 27
+[AI] 초염몽 predicted_damage for 풀묶기: 46
+     +  8: 초염몽: outspeeds 랜드로스 (0) (176 vs 101).
+[AI] pokemon 초염몽 has switch score 104
+     -  6: 아쿠스타: entry hazard damage 16.875
+[AI] move_id: UTURN
+[AI] move_id: EARTHQUAKE
+[AI] move_id: ROCKTOMB
+     -  9: 아쿠스타: foe can 2HKO (91.75925925925927%, faster)
+[AI] 아쿠스타 predicted_damage for 아쿠아브레이크: 120
+[AI] 아쿠스타 predicted_damage for 트리플악셀: 224
+[AI] 아쿠스타 predicted_damage for 퀵턴: 87
+[AI] 아쿠스타 predicted_damage for 사념의박치기: 57
+     +  8: 아쿠스타: outspeeds 랜드로스 (0) (183 vs 101).
+[AI] pokemon 아쿠스타 has switch score 122
+"\j[엘리트 트레이너 test,은,는] \j[아쿠스타,을,를] 내보냈다!"
+[HP change] 상대 아쿠스타 lost 17 HP (135 -> 118)
+"상대 아쿠스타에게 뾰족한 바위가 박혔다!"
+
+===== Round 14 =====
+
+[AI] 아쿠스타 (1) couldn't find any usable items
+[AI] 아쿠스타 (1) will Mega Evolve
+[AI] 아쿠스타 (1) is considering using 아쿠아브레이크 against 랜드로스 (0)...
+     +  5: lowering the target's 방어 by 1
+     +  8: function code modifier (against target)
+[AI] [damage_moves] computing 아쿠스타 (1) → 랜드로스 (0) (turn 13)
+[AI] [predicted_damage] Mega Evolution simulation applied: 아쿠스타 (idx=1)
+[AI]   아쿠아브레이크: 285 dmg (146.2% totalhp / 339.3% curhp)
+[AI] [predicted_damage] Mega Evolution simulation applied: 아쿠스타 (idx=1)
+[AI]   트리플악셀: 532 dmg (272.8% totalhp / 633.3% curhp)
+[AI] [predicted_damage] Mega Evolution simulation applied: 아쿠스타 (idx=1)
+[AI]   퀵턴: 201 dmg (103.1% totalhp / 239.3% curhp)
+[AI] [predicted_damage] Mega Evolution simulation applied: 아쿠스타 (idx=1)
+[AI]   사념의박치기: 134 dmg (68.7% totalhp / 159.5% curhp)
+     + 30: damaging move (predicted damage 285 = 339% of target's HP)
+     + 50: predicted to KO the target
+     -  8: can trigger the target's item
+[AI] [damage_moves] computing 랜드로스 (0) → 아쿠스타 (1) (turn 13)
+[AI] [predicted_damage] Mega Evolution simulation applied: 아쿠스타 (idx=1)
+[AI]   유턴: 86 dmg (63.7% totalhp / 72.9% curhp)
+[AI] [predicted_damage] Mega Evolution simulation applied: 아쿠스타 (idx=1)
+[AI]   지진: 90 dmg (66.7% totalhp / 76.3% curhp)
+[AI] [predicted_damage] Mega Evolution simulation applied: 아쿠스타 (idx=1)
+[AI]   암석봉인: 37 dmg (27.4% totalhp / 31.4% curhp)
+[AI] 아쿠스타 (1) is considering using 트리플악셀 against 랜드로스 (0)...
+     + 30: damaging move (predicted damage 532 = 633% of target's HP)
+     + 50: predicted to KO the target
+     -  8: can trigger the target's item
+[AI] 아쿠스타 (1) is considering using 퀵턴 against 랜드로스 (0)...
+     + 30: damaging move (predicted damage 201 = 239% of target's HP)
+     + 50: predicted to KO the target
+     -  8: can trigger the target's item
+     + 10: 6. Active Pivot move boost.
+     - 10: function code modifier (generic)
+[AI] 아쿠스타 (1) is considering using 사념의박치기 against 랜드로스 (0)...
+     +  6: function code modifier (against target)
+     + 30: damaging move (predicted damage 134 = 159% of target's HP)
+     + 50: predicted to KO the target
+     -  8: can trigger the target's item
+[AI] Move choices for 아쿠스타 (1) with threshold: 160: 
+[AI]    *  32.3% to use 아쿠아브레이크 (target 0): score 180
+[AI]    *  19.4% to use 트리플악셀 (target 0): score 172
+[AI]    *  19.4% to use 퀵턴 (target 0): score 172
+[AI]    *  29.0% to use 사념의박치기 (target 0): score 178
+[AI] => will use 사념의박치기 (target 0)
+
+[Round order] 상대 아쿠스타 (1), 랜드로스 (0)
+
+"상대 아쿠스타의 \j[아쿠스타나이트,이,가] 엘리트 트레이너 test의 메가링에 반응하고 있다!"
+"\j[상대 아쿠스타,은,는] 메가진화하여 \j[메가아쿠스타,이,가] 되었다!"
+[Use move] 상대 아쿠스타 (1) used 사념의박치기
+"상대 아쿠스타의 사념의박치기!"
+[Move failed] Failed pbAccuracyCheck
+"상대 아쿠스타의 기술이 빗나갔다!"
+[Use move] 랜드로스 (0) used 유턴
+"랜드로스의 유턴!"
+[HP change] 상대 아쿠스타 lost 118 HP (118 -> 0)
+"급소에 맞았다!"
+"효과가 굉장했다!"
+"\j[상대 아쿠스타,은,는] 쓰러졌다!"
+"\j[랜드로스,은,는] test의 곁으로 돌아갔다!"
+"네 차례야, 나인테일!"
+[HP change] 나인테일 lost 45 HP (52 -> 7)
+"나인테일에게 뾰족한 바위가 박혔다!"
+[Ability triggered] 나인테일's 눈퍼뜨리기
+"눈이 내리기 시작했다!"
+"\j[랜드로스,이,가] 3186의 많은 경험치를 얻었다!"
+"\j[랜드로스,은,는] Lv. 51이 되었다!"
+"다른 포켓몬들도 학습장치를 통해 경험치를 얻었다!"
+
+[End of round 14]
+     - 10: 번치코: entry hazard damage 19.375
+[AI] move_id: UTURN
+[AI] move_id: EARTHQUAKE
+[AI] move_id: ROCKTOMB
+     - 40: 번치코: foe can OHKO (105.71808510638299% >= 100%)
+[AI] 번치코 predicted_damage for 플레어드라이브: 195
+[AI] pokemon 번치코 has switch score 79
+     - 12: 토게키스: entry hazard damage 47.75
+[AI] move_id: UTURN
+[AI] move_id: EARTHQUAKE
+[AI] move_id: ROCKTOMB
+     + 11: 토게키스: foe cannot 2HKO, +44.89528795811518% < 50%
+[AI] 토게키스 predicted_damage for 에어슬래시: 60
+[AI] 토게키스 predicted_damage for 매지컬샤인: 65
+[AI] 토게키스 predicted_damage for 화염방사: 96
+[AI] pokemon 토게키스 has switch score 128
+     -  9: 초염몽: entry hazard damage 18.875
+[AI] move_id: UTURN
+[AI] move_id: EARTHQUAKE
+[AI] move_id: ROCKTOMB
+     - 40: 초염몽: foe can OHKO (104.07894736842105% >= 100%)
+[AI] 초염몽 predicted_damage for 인파이트: 115
+[AI] 초염몽 predicted_damage for 플레어드라이브: 230
+[AI] 초염몽 predicted_damage for 유턴: 23
+[AI] 초염몽 predicted_damage for 풀묶기: 26
+[AI] pokemon 초염몽 has switch score 80
+"\j[엘리트 트레이너 test,은,는] \j[토게키스,을,를] 내보냈다!"
+[HP change] 상대 토게키스 lost 48 HP (191 -> 143)
+"상대 토게키스에게 뾰족한 바위가 박혔다!"
+
+===== Round 15 =====
+
+[AI] 토게키스 (1) couldn't find any usable items
+[AI] 토게키스 (1) is considering using 에어슬래시 against 나인테일 (0)...
+[AI] [damage_moves] computing 토게키스 (1) → 나인테일 (0) (turn 14)
+[AI]   에어슬래시: 60 dmg (33.3% totalhp / 857.1% curhp)
+[AI]   매지컬샤인: 65 dmg (36.1% totalhp / 928.6% curhp)
+[AI]   화염방사: 96 dmg (53.3% totalhp / 1371.4% curhp)
+     + 30: damaging move (predicted damage 60 = 857% of target's HP)
+     + 50: predicted to KO the target
+[AI] [damage_moves] computing 나인테일 (0) → 토게키스 (1) (turn 14)
+[AI]   프리즈드라이: 57 dmg (29.8% totalhp / 39.9% curhp)
+[AI]   문포스: 38 dmg (19.9% totalhp / 26.6% curhp)
+[AI] 토게키스 (1) is considering using 매지컬샤인...
+     + 30: damaging move (predicted damage 65 = 928% of target's HP)
+     + 50: predicted to KO the target
+[AI] 토게키스 (1) is considering using 화염방사 against 나인테일 (0)...
+     +  7: function code modifier (against target)
+     + 30: damaging move (predicted damage 96 = 1371% of target's HP)
+     + 50: predicted to KO the target
+[AI] 토게키스 (1) is considering using 전기자석파 against 나인테일 (0)...
+     + 25: function code modifier (against target)
+     + 10: 10. General Status Move Boost.
+[AI] Move choices for 토게키스 (1) with threshold: 167: 
+[AI]    *  28.3% to use 에어슬래시 (target 0): score 180
+[AI]    *  28.3% to use 매지컬샤인: score 180
+[AI]    *  43.5% to use 화염방사 (target 0): score 187
+[AI]    *   0.0% to use 전기자석파 (target 0): score 135
+[AI] => will use 화염방사 (target 0)
+
+[Round order] 나인테일 (0), 상대 토게키스 (1)
+
+[Use move] 나인테일 (0) used 오로라베일
+"나인테일의 오로라베일!"
+"\j[오로라베일,이,가] 우리편의 물리 및 특수 공격에 대한 저항력을 강화했다!"
+[Use move] 상대 토게키스 (1) used 화염방사
+"상대 토게키스의 화염방사!"
+[HP change] 나인테일 lost 7 HP (7 -> 0)
+"효과가 굉장했다!"
+"\j[나인테일,은,는] 쓰러졌다!"
+
+[End of round 15]
+[HP change] 상대 토게키스 gained 11 HP (143 -> 154)
+"상대 토게키스는 먹다남은음식으로 약간의 HP를 회복했다!"
+"힘내, 타부자고!"
+[HP change] 타부자고 lost 12 HP (187 -> 175)
+"타부자고에게 뾰족한 바위가 박혔다!"
+"\j[타부자고,은,는] \j[풍선,으로,로] 인해 공중에 떠 있다!"
+
+===== Round 16 =====
+
+[AI] 토게키스 (1) couldn't find any usable items
+[AI] 토게키스 (1) is considering using 에어슬래시 against 타부자고 (0)...
+[AI] [damage_moves] computing 토게키스 (1) → 타부자고 (0) (turn 15)
+[AI]   에어슬래시: 16 dmg (8.6% totalhp / 9.1% curhp)
+[AI]   매지컬샤인: 17 dmg (9.1% totalhp / 9.7% curhp)
+[AI]   화염방사: 51 dmg (27.3% totalhp / 29.1% curhp)
+     +  2: damaging move (predicted damage 16 = 9% of target's HP)
+     -  8: can trigger the target's item
+     - 50: Penalize useless move: very low predicted damage (8.6%).
+[AI] [damage_moves] computing 타부자고 (0) → 토게키스 (1) (turn 15)
+[AI]   골드러시: 162 dmg (84.8% totalhp / 105.2% curhp)
+[AI]   섀도볼: 56 dmg (29.3% totalhp / 36.4% curhp)
+[AI] [evade_ko] 타부자고 (0) 골드러시: 162 >= 154 *
+[AI] evade KO penalty chance is 100%
+     -100: Penalize move: user is slower than a foe who can KO. (Speed ratio: 1.27, Chance: 100%)
+[AI] 토게키스 (1) is considering using 매지컬샤인...
+     +  2: damaging move (predicted damage 17 = 9% of target's HP)
+     -  8: can trigger the target's item
+     - 50: Penalize useless move: very low predicted damage (9.1%).
+[AI] [evade_ko] 타부자고 (0) 골드러시: 162 >= 154 *
+[AI] evade KO penalty chance is 100%
+     -100: Penalize move: user is slower than a foe who can KO. (Speed ratio: 1.27, Chance: 100%)
+[AI] 토게키스 (1) is considering using 화염방사 against 타부자고 (0)...
+     +  7: function code modifier (against target)
+     +  8: damaging move (predicted damage 51 = 29% of target's HP)
+     -  8: can trigger the target's item
+     - 20: Penalize weak move: consider switching (27.3%).
+[AI] [evade_ko] 타부자고 (0) 골드러시: 162 >= 154 *
+[AI] evade KO penalty chance is 100%
+     -100: Penalize move: user is slower than a foe who can KO. (Speed ratio: 1.27, Chance: 100%)
+[AI] 토게키스 (1) is considering using 전기자석파 against 타부자고 (0)...
+     move will not affect 타부자고 (0)
+     -1099: move will fail
+[AI] 토게키스 (1) wants to switch due to terrible moves [에어슬래시=0, 매지컬샤인=0, 화염방사=0, 전기자석파=-999]
+[AI] 토게키스 (1) is being forced to switch out
+     - 10: 번치코: entry hazard damage 19.375
+[AI] move_id: MAKEITRAIN
+[AI] move_id: SHADOWBALL
+     -100: 번치코: foe can OHKO (132.31382978723406% >= 100%)
+[AI] 번치코 predicted_damage for 플레어드라이브: 120
+     +  8: 번치코: outspeeds 타부자고 (0) (145 vs 136).
+[AI] [damage_moves] computing 타부자고 (0) → 토게키스 (1) (turn 15)
+[AI]   골드러시: 162 dmg (84.8% totalhp / 105.2% curhp)
+[AI]   섀도볼: 56 dmg (29.3% totalhp / 36.4% curhp)
+     +  8: 번치코: tanks 타부자고 (0)'s best move better (78 vs 162 on current).
+[AI] pokemon 번치코 has switch score 19
+     -  9: 초염몽: entry hazard damage 18.875
+[AI] move_id: MAKEITRAIN
+[AI] move_id: SHADOWBALL
+     -100: 초염몽: foe can OHKO (143.0263157894737% >= 100%)
+[AI] 초염몽 predicted_damage for 인파이트: 1
+[AI] 초염몽 predicted_damage for 플레어드라이브: 142
+[AI] 초염몽 predicted_damage for 유턴: 7
+[AI] 초염몽 predicted_damage for 풀묶기: 10
+     +  8: 초염몽: outspeeds 타부자고 (0) (176 vs 136).
+     +  7: 초염몽: tanks 타부자고 (0)'s best move better (87 vs 162 on current).
+[AI] pokemon 초염몽 has switch score 21
+[AI] => staying in: all reserves scored < 60, not switching
+[AI]    => no good replacement Pokémon, will not switch after all
+[AI] 토게키스 (1) won't switch after all
+[AI] Move choices for 토게키스 (1) with threshold: -20: 
+[AI]    *  33.3% to use 에어슬래시 (target 0): score 0
+[AI]    *  33.3% to use 매지컬샤인: score 0
+[AI]    *  33.3% to use 화염방사 (target 0): score 0
+[AI]    *   0.0% to use 전기자석파 (target 0): score -999
+[AI] => will use 화염방사 (target 0)
+
+[Round order] 타부자고 (0), 상대 토게키스 (1)
+
+[Use move] 타부자고 (0) used 나쁜음모
+"타부자고의 나쁜음모!"
+[Stat change] 타부자고's 특수공격 changed by +2 (0 -> 2)
+"타부자고의 \j[특수공격,이,가] 크게 올랐다!"
+[Use move] 상대 토게키스 (1) used 화염방사
+"상대 토게키스의 화염방사!"
+[HP change] 타부자고 lost 47 HP (175 -> 128)
+"효과가 굉장했다!"
+"타부자고의 풍선이 터졌다!"
+[Item consumed] 타부자고 consumed its held 풍선
+
+[End of round 16]
+[HP change] 상대 토게키스 gained 11 HP (154 -> 165)
+"상대 토게키스는 먹다남은음식으로 약간의 HP를 회복했다!"
+
+===== Round 17 =====
+
+[AI] 토게키스 (1) couldn't find any usable items
+[AI] 토게키스 (1) is considering using 에어슬래시 against 타부자고 (0)...
+[AI] [damage_moves] computing 토게키스 (1) → 타부자고 (0) (turn 16)
+[AI]   에어슬래시: 16 dmg (8.6% totalhp / 12.5% curhp)
+[AI]   매지컬샤인: 17 dmg (9.1% totalhp / 13.3% curhp)
+[AI]   화염방사: 51 dmg (27.3% totalhp / 39.8% curhp)
+     +  3: damaging move (predicted damage 16 = 12% of target's HP)
+     - 50: Penalize useless move: very low predicted damage (8.6%).
+[AI] [damage_moves] computing 타부자고 (0) → 토게키스 (1) (turn 16)
+[AI]   골드러시: 321 dmg (168.1% totalhp / 194.5% curhp)
+[AI]   섀도볼: 108 dmg (56.5% totalhp / 65.5% curhp)
+[AI] [evade_ko] 타부자고 (0) 골드러시: 321 >= 165 *
+[AI] evade KO penalty chance is 100%
+     -100: Penalize move: user is slower than a foe who can KO. (Speed ratio: 1.27, Chance: 100%)
+[AI] 토게키스 (1) is considering using 매지컬샤인...
+     +  3: damaging move (predicted damage 17 = 13% of target's HP)
+     - 50: Penalize useless move: very low predicted damage (9.1%).
+[AI] [evade_ko] 타부자고 (0) 골드러시: 321 >= 165 *
+[AI] evade KO penalty chance is 100%
+     -100: Penalize move: user is slower than a foe who can KO. (Speed ratio: 1.27, Chance: 100%)
+[AI] 토게키스 (1) is considering using 화염방사 against 타부자고 (0)...
+     +  7: function code modifier (against target)
+     + 11: damaging move (predicted damage 51 = 39% of target's HP)
+     - 20: Penalize weak move: consider switching (27.3%).
+[AI] [evade_ko] 타부자고 (0) 골드러시: 321 >= 165 *
+[AI] evade KO penalty chance is 100%
+     -100: Penalize move: user is slower than a foe who can KO. (Speed ratio: 1.27, Chance: 100%)
+[AI] 토게키스 (1) is considering using 전기자석파 against 타부자고 (0)...
+     move will not affect 타부자고 (0)
+     -1099: move will fail
+[AI] 토게키스 (1) wants to switch due to terrible moves [에어슬래시=0, 매지컬샤인=0, 화염방사=0, 전기자석파=-999]
+[AI] 토게키스 (1) is being forced to switch out
+     - 10: 번치코: entry hazard damage 19.375
+[AI] move_id: MAKEITRAIN
+[AI] move_id: SHADOWBALL
+     -100: 번치코: foe can OHKO (240.8244680851064% >= 100%)
+[AI] 번치코 predicted_damage for 플레어드라이브: 120
+     +  8: 번치코: outspeeds 타부자고 (0) (145 vs 136).
+[AI] [damage_moves] computing 타부자고 (0) → 토게키스 (1) (turn 16)
+[AI]   골드러시: 321 dmg (168.1% totalhp / 194.5% curhp)
+[AI]   섀도볼: 108 dmg (56.5% totalhp / 65.5% curhp)
+     +  8: 번치코: tanks 타부자고 (0)'s best move better (155 vs 321 on current).
+[AI] pokemon 번치코 has switch score 24
+     -  9: 초염몽: entry hazard damage 18.875
+[AI] move_id: MAKEITRAIN
+[AI] move_id: SHADOWBALL
+     -100: 초염몽: foe can OHKO (263.02631578947364% >= 100%)
+[AI] 초염몽 predicted_damage for 인파이트: 1
+[AI] 초염몽 predicted_damage for 플레어드라이브: 142
+[AI] 초염몽 predicted_damage for 유턴: 7
+[AI] 초염몽 predicted_damage for 풀묶기: 10
+     +  8: 초염몽: outspeeds 타부자고 (0) (176 vs 136).
+     +  7: 초염몽: tanks 타부자고 (0)'s best move better (173 vs 321 on current).
+[AI] pokemon 초염몽 has switch score 27
+[AI] => staying in: all reserves scored < 60, not switching
+[AI]    => no good replacement Pokémon, will not switch after all
+[AI] 토게키스 (1) won't switch after all
+[AI] Move choices for 토게키스 (1) with threshold: -20: 
+[AI]    *  33.3% to use 에어슬래시 (target 0): score 0
+[AI]    *  33.3% to use 매지컬샤인: score 0
+[AI]    *  33.3% to use 화염방사 (target 0): score 0
+[AI]    *   0.0% to use 전기자석파 (target 0): score -999
+[AI] => will use 에어슬래시 (target 0)
+
+[Round order] 타부자고 (0), 상대 토게키스 (1)
+
+[Use move] 타부자고 (0) used 골드러시
+"타부자고의 골드러시!"
+[HP change] 상대 토게키스 lost 165 HP (165 -> 0)
+"효과가 굉장했다!"
+"\j[상대 토게키스,은,는] 쓰러졌다!"
+"동전이 여기저기 떨어졌다!"
+[Stat change] 타부자고's 특수공격 changed by -1 (2 -> 1)
+"타부자고의 \j[특수공격,이,가] 떨어졌다!"
+"\j[타부자고,이,가] 4779의 많은 경험치를 얻었다!"
+"\j[타부자고,은,는] Lv. 51이 되었다!"
+"다른 포켓몬들도 학습장치를 통해 경험치를 얻었다!"
+"\j[드닐레이브,은,는] Lv. 51이 되었다!"
+"\j[앱솔,은,는] Lv. 51이 되었다!"
+
+[End of round 17]
+     - 10: 번치코: entry hazard damage 19.375
+[AI] move_id: MAKEITRAIN
+[AI] move_id: SHADOWBALL
+     - 24: 번치코: foe can OHKO (188.6968085106383% >= 100%, but faster)
+[AI] 번치코 predicted_damage for 플레어드라이브: 119
+     +  8: 번치코: outspeeds 타부자고 (0) (145 vs 138).
+[AI] pokemon 번치코 has switch score 91
+     -  9: 초염몽: entry hazard damage 18.875
+[AI] move_id: MAKEITRAIN
+[AI] move_id: SHADOWBALL
+     - 24: 초염몽: foe can OHKO (206.18421052631578% >= 100%, but faster)
+[AI] 초염몽 predicted_damage for 인파이트: 1
+[AI] 초염몽 predicted_damage for 플레어드라이브: 140
+[AI] 초염몽 predicted_damage for 유턴: 7
+[AI] 초염몽 predicted_damage for 풀묶기: 10
+     +  8: 초염몽: outspeeds 타부자고 (0) (176 vs 138).
+[AI] pokemon 초염몽 has switch score 95
+"\j[엘리트 트레이너 test,은,는] \j[초염몽,을,를] 내보냈다!"
+[HP change] 상대 초염몽 lost 19 HP (95 -> 76)
+"상대 초염몽에게 뾰족한 바위가 박혔다!"
+
+===== Round 18 =====
+
+[AI] 초염몽 (1) couldn't find any usable items
+[AI] 초염몽 (1) is considering using 인파이트 against 타부자고 (0)...
+     move will not affect 타부자고 (0)
+     -1099: move will fail
+[AI] 초염몽 (1) is considering using 플레어드라이브 against 타부자고 (0)...
+     - 13: function code modifier (against target)
+[AI] [damage_moves] computing 초염몽 (1) → 타부자고 (0) (turn 17)
+[AI]   인파이트: 1 dmg (0.5% totalhp / 0.8% curhp)
+[AI]   플레어드라이브: 140 dmg (73.7% totalhp / 106.9% curhp)
+[AI]   유턴: 7 dmg (3.7% totalhp / 5.3% curhp)
+[AI]   풀묶기: 10 dmg (5.3% totalhp / 7.6% curhp)
+     + 30: damaging move (predicted damage 140 = 106% of target's HP)
+     + 50: predicted to KO the target
+[AI] [damage_moves] computing 타부자고 (0) → 초염몽 (1) (turn 17)
+[AI]   골드러시: 132 dmg (87.4% totalhp / 173.7% curhp)
+[AI]   섀도볼: 177 dmg (117.2% totalhp / 232.9% curhp)
+[AI] [evade_ko] 타부자고 (0) 골드러시: 132 >= 76 *
+[AI] [evade_ko] 타부자고 (0) 섀도볼: 177 >= 76 *
+[AI] 초염몽 (1) is considering using 유턴 against 타부자고 (0)...
+     +  1: damaging move (predicted damage 7 = 5% of target's HP)
+     + 10: 6. Active Pivot move boost.
+     - 10: function code modifier (generic)
+[AI] [evade_ko] 타부자고 (0) 골드러시: 132 >= 76 *
+[AI] [evade_ko] 타부자고 (0) 섀도볼: 177 >= 76 *
+[AI] 초염몽 (1) is considering using 풀묶기 against 타부자고 (0)...
+     +  2: damaging move (predicted damage 10 = 7% of target's HP)
+     - 50: Penalize useless move: very low predicted damage (5.3%).
+[AI] [evade_ko] 타부자고 (0) 골드러시: 132 >= 76 *
+[AI] [evade_ko] 타부자고 (0) 섀도볼: 177 >= 76 *
+[AI] Move choices for 초염몽 (1) with threshold: 147: 
+[AI]    *   0.0% to use 인파이트 (target 0): score -999
+[AI]    * 100.0% to use 플레어드라이브 (target 0): score 167
+[AI]    *   0.0% to use 유턴 (target 0): score 101
+[AI]    *   0.0% to use 풀묶기 (target 0): score 52
+[AI] => will use 플레어드라이브 (target 0)
+
+[Round order] 상대 초염몽 (1), 타부자고 (0)
+
+[Use move] 상대 초염몽 (1) used 플레어드라이브
+"상대 초염몽의 플레어드라이브!"
+[HP change] 타부자고 lost 121 HP (131 -> 10)
+"효과가 굉장했다!"
+[HP change] 상대 초염몽 lost 40 HP (76 -> 36)
+"\j[상대 초염몽,은,는] 반동으로 데미지를 입었다!"
+[Item triggered] 상대 초염몽's 생명의구슬 (recoil)
+[HP change] 상대 초염몽 lost 15 HP (36 -> 21)
+"상대 초염몽은 생명의구슬로 인해 HP를 조금 잃었다!"
+[Use move] 타부자고 (0) used 섀도볼
+"타부자고의 섀도볼!"
+[HP change] 상대 초염몽 lost 21 HP (21 -> 0)
+"\j[상대 초염몽,은,는] 쓰러졌다!"
+"\j[타부자고,이,가] 4569의 많은 경험치를 얻었다!"
+"다른 포켓몬들도 학습장치를 통해 경험치를 얻었다!"
+
+[End of round 18]
+"눈이 그쳤다."
+     - 10: 번치코: entry hazard damage 19.375
+[AI] move_id: MAKEITRAIN
+[AI] move_id: SHADOWBALL
+     - 24: 번치코: foe can OHKO (188.6968085106383% >= 100%, but faster)
+[AI] 번치코 predicted_damage for 플레어드라이브: 119
+     +  8: 번치코: outspeeds 타부자고 (0) (145 vs 138).
+[AI] pokemon 번치코 has switch score 103
+"\j[엘리트 트레이너 test,은,는] \j[번치코,을,를] 내보냈다!"
+[HP change] 상대 번치코 lost 19 HP (94 -> 75)
+"상대 번치코에게 뾰족한 바위가 박혔다!"
+
+===== Round 19 =====
+
+[AI] 번치코 (1) couldn't find any usable items
+[AI] 번치코 (1) is considering using 배턴터치...
+     -1099: move will fail
+[AI] 번치코 (1) is considering using 플레어드라이브 against 타부자고 (0)...
+     - 11: function code modifier (against target)
+[AI] [damage_moves] computing 번치코 (1) → 타부자고 (0) (turn 18)
+[AI]   플레어드라이브: 119 dmg (62.6% totalhp / 1190.0% curhp)
+     + 30: damaging move (predicted damage 119 = 1190% of target's HP)
+     + 50: predicted to KO the target
+[AI] 번치코 (1) is considering using 칼춤...
+     + 12: raising the user's 공격 by 2
+     + 12: function code modifier (generic)
+[AI] [smart_setup] statUp: [:ATTACK, 2]
+     - 40: GLOBAL NERF: Setup moves are inherently risky.
+[AI] [damage_moves] computing 타부자고 (0) → 번치코 (1) (turn 18)
+[AI]   골드러시: 118 dmg (76.1% totalhp / 157.3% curhp)
+[AI]   섀도볼: 158 dmg (101.9% totalhp / 210.7% curhp)
+[AI] [smart_setup] foe 타부자고 (0) best dmg vs user: 158 (101.9% totalhp, threshold 40%)
+     -200: Setup blocked: foe can OHKO.
+     + 10: 10. General Status Move Boost.
+[AI] 번치코 (1) is considering using 방어...
+     +  7: function code modifier (generic)
+     + 10: 10. General Status Move Boost.
+     + 12: Protect stall value.
+[AI] Move choices for 번치코 (1) with threshold: 149: 
+[AI]    *   0.0% to use 배턴터치: score -999
+[AI]    * 100.0% to use 플레어드라이브 (target 0): score 169
+[AI]    *   0.0% to use 칼춤: score 0
+[AI]    *   0.0% to use 방어: score 129
+[AI] => will use 플레어드라이브 (target 0)
+
+[Round order] 상대 번치코 (1), 타부자고 (0)
+
+[Use move] 상대 번치코 (1) used 플레어드라이브
+"상대 번치코의 플레어드라이브!"
+[HP change] 타부자고 lost 10 HP (10 -> 0)
+"효과가 굉장했다!"
+"\j[타부자고,은,는] 쓰러졌다!"
+[HP change] 상대 번치코 lost 3 HP (75 -> 72)
+"\j[상대 번치코,은,는] 반동으로 데미지를 입었다!"
+
+[End of round 19]
+[Ability triggered] 상대 번치코's 가속
+[Stat change] 상대 번치코's 스피드 changed by +1 (0 -> 1)
+"상대 번치코의 \j[스피드,이,가] 올랐다!"
+"조금 남았어! 힘내, 랜드로스!"
+[HP change] 랜드로스 lost 25 HP (87 -> 62)
+"랜드로스에게 뾰족한 바위가 박혔다!"
+[Ability triggered] 랜드로스's 위협
+[Stat change] 상대 번치코's 공격 changed by -1 (0 -> -1)
+"상대 번치코의 \j[공격,이,가] 떨어졌다!"
+
+===== Round 20 =====
+
+[AI] 번치코 (1) couldn't find any usable items
+[AI] 번치코 (1) is considering using 배턴터치...
+     -1099: move will fail
+[AI] 번치코 (1) is considering using 플레어드라이브 against 랜드로스 (0)...
+     + 14: function code modifier (against target)
+[AI] [damage_moves] computing 번치코 (1) → 랜드로스 (0) (turn 19)
+[AI]   플레어드라이브: 38 dmg (19.2% totalhp / 61.3% curhp)
+     + 18: damaging move (predicted damage 38 = 61% of target's HP)
+     -  8: can trigger the target's item
+     - 50: Penalize useless move: very low predicted damage (19.2%).
+[AI] 번치코 (1) is considering using 칼춤...
+     + 15: raising the user's 공격 by 2
+     + 15: function code modifier (generic)
+[AI] [smart_setup] statUp: [:ATTACK, 2]
+     - 40: GLOBAL NERF: Setup moves are inherently risky.
+[AI] [damage_moves] computing 랜드로스 (0) → 번치코 (1) (turn 19)
+[AI]   유턴: 15 dmg (9.7% totalhp / 20.8% curhp)
+[AI]   지진: 255 dmg (164.5% totalhp / 354.2% curhp)
+[AI]   암석봉인: 51 dmg (32.9% totalhp / 70.8% curhp)
+[AI] [smart_setup] foe 랜드로스 (0) best dmg vs user: 255 (164.5% totalhp, threshold 40%)
+     -200: Setup blocked: foe can OHKO.
+     + 10: 10. General Status Move Boost.
+[AI] 번치코 (1) is considering using 방어...
+     +  7: function code modifier (generic)
+     + 10: 10. General Status Move Boost.
+     + 12: Protect stall value.
+[AI] Move choices for 번치코 (1) with threshold: 109: 
+[AI]    *   0.0% to use 배턴터치: score -999
+[AI]    *   0.0% to use 플레어드라이브 (target 0): score 74
+[AI]    *   0.0% to use 칼춤: score 0
+[AI]    * 100.0% to use 방어: score 129
+[AI] => will use 방어
+
+[Round order] 상대 번치코 (1), 랜드로스 (0)
+
+[Use move] 상대 번치코 (1) used 방어
+"상대 번치코의 방어!"
+"\j[상대 번치코,은,는] 스스로를 지켰다!"
+[Use move] 랜드로스 (0) used 지진
+"랜드로스의 지진!"
+"\j[상대 번치코,은,는] 스스로를 지켰다!"
+
+[End of round 20]
+[Ability triggered] 상대 번치코's 가속
+[Stat change] 상대 번치코's 스피드 changed by +1 (1 -> 2)
+"상대 번치코의 \j[스피드,이,가] 올랐다!"
+
+===== Round 21 =====
+
+[AI] 번치코 (1) couldn't find any usable items
+[AI] 번치코 (1) is considering using 배턴터치...
+     -1099: move will fail
+[AI] 번치코 (1) is considering using 플레어드라이브 against 랜드로스 (0)...
+     + 14: function code modifier (against target)
+[AI] [damage_moves] computing 번치코 (1) → 랜드로스 (0) (turn 20)
+[AI]   플레어드라이브: 38 dmg (19.2% totalhp / 61.3% curhp)
+     + 18: damaging move (predicted damage 38 = 61% of target's HP)
+     -  8: can trigger the target's item
+     - 50: Penalize useless move: very low predicted damage (19.2%).
+[AI] 번치코 (1) is considering using 칼춤...
+     + 15: raising the user's 공격 by 2
+     + 15: function code modifier (generic)
+[AI] [smart_setup] statUp: [:ATTACK, 2]
+     - 40: GLOBAL NERF: Setup moves are inherently risky.
+[AI] [damage_moves] computing 랜드로스 (0) → 번치코 (1) (turn 20)
+[AI]   유턴: 15 dmg (9.7% totalhp / 20.8% curhp)
+[AI]   지진: 255 dmg (164.5% totalhp / 354.2% curhp)
+[AI]   암석봉인: 51 dmg (32.9% totalhp / 70.8% curhp)
+[AI] [smart_setup] foe 랜드로스 (0) best dmg vs user: 255 (164.5% totalhp, threshold 40%)
+     -200: Setup blocked: foe can OHKO.
+     + 10: 10. General Status Move Boost.
+[AI] 번치코 (1) is considering using 방어...
+     - 23: function code modifier (generic)
+     + 10: 10. General Status Move Boost.
+     -100: Protect likely to fail (consecutive).
+[AI] Move choices for 번치코 (1) with threshold: 54: 
+[AI]    *   0.0% to use 배턴터치: score -999
+[AI]    * 100.0% to use 플레어드라이브 (target 0): score 74
+[AI]    *   0.0% to use 칼춤: score 0
+[AI]    *   0.0% to use 방어: score 0
+[AI] => will use 플레어드라이브 (target 0)
+
+[Round order] 상대 번치코 (1), 랜드로스 (0)
+
+[Use move] 상대 번치코 (1) used 플레어드라이브
+"상대 번치코의 플레어드라이브!"
+[HP change] 랜드로스 lost 33 HP (62 -> 29)
+[HP change] 상대 번치코 lost 25 HP (72 -> 47)
+"상대 번치코는 울퉁불퉁멧으로 인해 데미지를 입었다!"
+[HP change] 상대 번치코 lost 11 HP (47 -> 36)
+"\j[상대 번치코,은,는] 반동으로 데미지를 입었다!"
+[Use move] 랜드로스 (0) used 지진
+"랜드로스의 지진!"
+[HP change] 상대 번치코 lost 36 HP (36 -> 0)
+"효과가 굉장했다!"
+"\j[상대 번치코,은,는] 쓰러졌다!"
+"\j[랜드로스,이,가] 4534의 많은 경험치를 얻었다!"
+"다른 포켓몬들도 학습장치를 통해 경험치를 얻었다!"
+
+===== Player won =====
+
+"엘리트 트레이너 test에게 승리했다!"
+"Test 9 — Mixed Coverage"

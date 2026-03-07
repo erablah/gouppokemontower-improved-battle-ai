@@ -68,8 +68,8 @@ class Battle::AI
     choices.each { |c| max_score = c[1] if max_score < c[1] }
     if @trainer.high_skill? && @user.can_switch_lax?
       badMoves = false
-      if max_score < MOVE_BASE_SCORE
-        badMoves = true if pbAIRandom(max_score) < 80
+      if max_score < MOVE_BASE_SCORE - 20
+        badMoves = true
       end
       if badMoves
         move_scores = choices.map { |c| "#{c[4].name}=#{c[1]}" }.join(", ")
@@ -213,20 +213,7 @@ class Battle::AI
         PBDebug.log_ai("=> forced switch: sacking #{party[reserves[0][0]].name} (best score #{reserves[0][1]})")
         return reserves[0][0]
       end
-      # # Voluntary switch: rate the current active Pokémon with the same system
-      # # and compare — sack whichever is least valuable
-      # active_pkmn = @battle.battlers[idxBattler].pokemon
-      # active_score = rate_replacement_pokemon(idxBattler, active_pkmn, 100, terrible_moves)
-      # PBDebug.log_ai("=> sack evaluation: active #{active_pkmn.name} score=#{active_score}, best reserve #{party[reserves[0][0]].name} score=#{reserves[0][1]}")
-      # # Find the worst-scored reserve (the one we'd sack)
-      # worst_reserve = reserves.last
-      # if worst_reserve[1] < active_score
-      #   # A reserve is worse than the active mon and there is an alternative better than active mon — switch to sack it
-      #   PBDebug.log_ai("=> sacking reserve #{party[worst_reserve[0]].name} (score #{worst_reserve[1]} < active #{active_score})")
-      #   return worst_reserve[0]
-      # else
-        # Active mon is the worst or equal — stay in, let it be the sack
-        PBDebug.log_ai("=> staying in: #{active_pkmn.name} is the sack (score #{active_score})")
+        PBDebug.log_ai("=> staying in: all reserves scored < 60, not switching")
         return -1
     end
     # Return the party index of the best rated replacement Pokémon
@@ -329,5 +316,35 @@ class Battle::AI::AIBattler
   def isRaidBoss?
     return self.battler.isRaidBoss? if self.battler.respond_to?(:isRaidBoss?)
     return false
+  end
+
+  # Override defensive Tera scoring to increase type matchup weights
+  alias defensive_tera_score_original get_defensive_tera_score
+  def get_defensive_tera_score(score, type, contact)
+    # Run original for status/field/weather bonuses
+    score = defensive_tera_score_original(score, type, contact)
+    # Add extra defensive type matchup scoring on top
+    @ai.each_foe_battler(@side) do |b, i|
+      b.battler.eachMove do |move|
+        next if !move.damagingMove?
+        move_type = move.pbCalcType(b.battler)
+        if @ai.battle.pbCanTerastallize?(b.index)
+          if ["CategoryDependsOnHigherDamageTera",
+              "TerapagosCategoryDependsOnHigherDamage"].include?(move.function_code)
+            move_type = b.battler.tera_type
+          end
+        end
+        next if @ai.pokemon_can_absorb_move?(self, move, move_type)
+        effectiveness = self.effectiveness_of_type_against_single_battler_type(move_type, type, b)
+        if Effectiveness.super_effective?(effectiveness)
+          score -= 10
+        elsif Effectiveness.not_very_effective?(effectiveness)
+          score += 10
+        elsif Effectiveness.ineffective?(effectiveness)
+          score += 20
+        end
+      end
+    end
+    return score
   end
 end
