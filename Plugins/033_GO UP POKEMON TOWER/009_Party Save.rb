@@ -1,8 +1,6 @@
 #===============================================================================
 # Multi-Slot Party Storage System (10 Slots)
 #===============================================================================
-PARTY_STORAGE_VARIABLE     = 150
-BANNED_FAMILY_VARIABLE     = 149  
 MAX_PARTY_SLOTS            = 11
 HALL_OF_FAME_FILE          = "TowerHallOfFame.rxdata"
 #===============================================================================
@@ -57,11 +55,11 @@ end
 #===============================================================================
 module BattlePartyStorage
   def self.init_storage
-    data = $game_variables[PARTY_STORAGE_VARIABLE]
+    data = $PokemonGlobal.tower_party_storage
     if !data.is_a?(Array) || data.length < MAX_PARTY_SLOTS
       data = Array.new(MAX_PARTY_SLOTS) { [] }
     end
-    $game_variables[PARTY_STORAGE_VARIABLE] = data
+    $PokemonGlobal.tower_party_storage = data
   end
 
   def self.save_party(slot)
@@ -71,7 +69,7 @@ module BattlePartyStorage
     return pbMessage("파티가 비어 있어 저장할 수 없습니다.") if party.empty?
 
     cloned = party.map { |pkmn| pkmn.clone }
-    $game_variables[PARTY_STORAGE_VARIABLE][idx] = cloned
+    $PokemonGlobal.tower_party_storage[idx] = cloned
 
 	unless idx == 10   # 0~10 인덱스 중 10 = 11번 슬롯
 	  TowerParty.ban_party_family(party, idx)
@@ -83,7 +81,7 @@ module BattlePartyStorage
   def self.load_party(slot)
     init_storage
     idx = slot - 1
-    stored = $game_variables[PARTY_STORAGE_VARIABLE][idx]
+    stored = $PokemonGlobal.tower_party_storage[idx]
     return pbMessage("#{slot}번 슬롯에는 저장된 파티가 없습니다.") if !stored || stored.empty?
 
     $player.party.clear
@@ -95,14 +93,14 @@ module BattlePartyStorage
   def self.clear_slot(slot)
     init_storage
     idx = slot - 1
-    $game_variables[PARTY_STORAGE_VARIABLE][idx] = []
+    $PokemonGlobal.tower_party_storage[idx] = []
     TowerParty.clear_banned_families(idx) unless idx == 10
   end
 
   def self.clear_all
     init_storage
-    $game_variables[PARTY_STORAGE_VARIABLE] = Array.new(MAX_PARTY_SLOTS) { [] }
-    $game_variables[BANNED_FAMILY_VARIABLE] = Array.new(10) { [] }
+    $PokemonGlobal.tower_party_storage = Array.new(MAX_PARTY_SLOTS) { [] }
+    $PokemonGlobal.tower_banned_families = Array.new(10) { [] }
     save_data([], HALL_OF_FAME_FILE) if File.exist?(HALL_OF_FAME_FILE)
   end
 end
@@ -118,17 +116,17 @@ def pbClearAllPartySlots;   BattlePartyStorage.clear_all;         end
 module TowerParty
   # 2D array: index 0-9 corresponds to slots 1-10
   def self.init_banned_families
-    val = $game_variables[BANNED_FAMILY_VARIABLE]
+    val = $PokemonGlobal.tower_banned_families
     if !val.is_a?(Array) || val.length < 10 || !val[0].is_a?(Array)
       val = Array.new(10) { [] }
-      $game_variables[BANNED_FAMILY_VARIABLE] = val
+      $PokemonGlobal.tower_banned_families = val
     end
     return val
   end
 
   def self.banned_families
     init_banned_families
-    return $game_variables[BANNED_FAMILY_VARIABLE]
+    return $PokemonGlobal.tower_banned_families
   end
 
   def self.all_banned_families
@@ -151,18 +149,18 @@ module TowerParty
 
   def self.ban_party_family(party, slot_index)
     init_banned_families
-    slot_families = $game_variables[BANNED_FAMILY_VARIABLE][slot_index] || []
+    slot_families = $PokemonGlobal.tower_banned_families[slot_index] || []
     party.each do |pkmn|
       family = GameData::Species.get(pkmn.species).get_baby_species
       next if slot_families.include?(family)
       slot_families << family
     end
-    $game_variables[BANNED_FAMILY_VARIABLE][slot_index] = slot_families
+    $PokemonGlobal.tower_banned_families[slot_index] = slot_families
   end
 
   def self.clear_banned_families(slot_index)
     init_banned_families
-    $game_variables[BANNED_FAMILY_VARIABLE][slot_index] = []
+    $PokemonGlobal.tower_banned_families[slot_index] = []
   end
 
   def self.clean_party!
@@ -171,7 +169,7 @@ module TowerParty
 
   # 파티를 적으로 불러와 싸우는 배틀
 	def self.battle(slot, trainer_type, trainer_name, trainer_version = 0)
-	  stored = $game_variables[PARTY_STORAGE_VARIABLE]
+	  stored = $PokemonGlobal.tower_party_storage
 	  return pbMessage("파티 저장소가 초기화되어 있지 않습니다.") unless stored.is_a?(Array)
 
 	  enemy_stored = stored[slot]
@@ -204,6 +202,33 @@ module TowerParty
   end
 end
 
+
+#===============================================================================
+# 스타터 포켓몬 선택 (밴 체크 포함)
+#===============================================================================
+def pbTowerStarterPokemon(species, level = 5)
+  species_name = GameData::Species.get(species).name
+  # 밴 체크
+  if TowerParty.species_banned?(species)
+    pbMessage("\\j[\\c[3]#{species_name}\\c[0],은,는] 사용할 수 없습니다.")
+    return false
+  end
+  # 선택 확인
+  if !pbConfirmMessage("\\j[\\c[3]#{species_name}\\c[0],을,를] 데려갈까요?")
+    return false
+  end
+  # 포켓몬 추가
+  pbSEPlay("Pkmn get")
+  _tower_pbAddPokemon(species, level)
+  FollowingPkmn.toggle(true)
+  pbMessage("\\xn[\\c[3]오박사\\c[0]]위로 올라가서 도전을 시작하시길 바랍니다!")
+  $game_switches[3] = false
+  $game_variables[7] = 1
+  $game_self_switches[[$game_map.map_id, @event_id, "A"]] = true
+  $game_switches[82] = true
+  $game_map.need_refresh = true
+  return true
+end
 
 #===============================================================================
 # 일반 포켓몬 추가 차단
@@ -281,7 +306,7 @@ end
 # Tower Hall of Fame Scene
 #===============================================================================
 def pbShowTowerHallOfFame
-  storage = $game_variables[PARTY_STORAGE_VARIABLE]
+  storage = $PokemonGlobal.tower_party_storage
 
   # 현재 저장된 파티만 불러오기
   records = []
@@ -322,15 +347,19 @@ end
 
 class PokemonGlobalMetadata
   attr_accessor :lobby_pokemon_talk
-  
+  attr_accessor :tower_party_storage
+  attr_accessor :tower_banned_families
+
   # initialize를 덮어쓰지 않고, alias를 사용하여 안전하게 확장합니다.
   unless method_defined?(:_tower_global_metadata_initialize_alias)
     alias_method :_tower_global_metadata_initialize_alias, :initialize
   end
-  
+
   def initialize
     _tower_global_metadata_initialize_alias # 원본 initialize 호출
     @lobby_pokemon_talk = nil # 새로운 변수를 nil로 초기화
+    @tower_party_storage = nil
+    @tower_banned_families = nil
   end
 end
 #===============================================================================
@@ -371,7 +400,7 @@ def pbPokemonLobbyTalk
   
   # 2. 저장된 파티 데이터 가져오기 및 유효성 검사
   BattlePartyStorage.init_storage
-  stored_parties = $game_variables[PARTY_STORAGE_VARIABLE]
+  stored_parties = $PokemonGlobal.tower_party_storage
   
   valid_slots = []
   if stored_parties.is_a?(Array)
@@ -430,7 +459,7 @@ def pbStartPokemonLobbyTalk
   
   # 2. 저장된 파티 슬롯에서 포켓몬 객체를 다시 불러옵니다.
   BattlePartyStorage.init_storage
-  stored_parties = $game_variables[PARTY_STORAGE_VARIABLE]
+  stored_parties = $PokemonGlobal.tower_party_storage
   
   party_index = slot_num - 1
   
