@@ -74,7 +74,7 @@ module BattlePartyStorage
     $game_variables[PARTY_STORAGE_VARIABLE][idx] = cloned
 
 	unless idx == 10   # 0~10 인덱스 중 10 = 11번 슬롯
-	  TowerParty.ban_party_family(party)
+	  TowerParty.ban_party_family(party, idx)
 	end
     pbRecordTowerHallOfFame
 
@@ -96,11 +96,13 @@ module BattlePartyStorage
     init_storage
     idx = slot - 1
     $game_variables[PARTY_STORAGE_VARIABLE][idx] = []
+    TowerParty.clear_banned_families(idx) unless idx == 10
   end
 
   def self.clear_all
     init_storage
     $game_variables[PARTY_STORAGE_VARIABLE] = Array.new(MAX_PARTY_SLOTS) { [] }
+    $game_variables[BANNED_FAMILY_VARIABLE] = Array.new(10) { [] }
     save_data([], HALL_OF_FAME_FILE) if File.exist?(HALL_OF_FAME_FILE)
   end
 end
@@ -114,32 +116,53 @@ def pbClearAllPartySlots;   BattlePartyStorage.clear_all;         end
 # 밴 시스템
 #===============================================================================
 module TowerParty
-  def self.banned_families
+  # 2D array: index 0-9 corresponds to slots 1-10
+  def self.init_banned_families
     val = $game_variables[BANNED_FAMILY_VARIABLE]
-    if !val.is_a?(Array)
-      val = []
+    if !val.is_a?(Array) || val.length < 10 || !val[0].is_a?(Array)
+      val = Array.new(10) { [] }
       $game_variables[BANNED_FAMILY_VARIABLE] = val
     end
     return val
   end
 
+  def self.banned_families
+    init_banned_families
+    return $game_variables[BANNED_FAMILY_VARIABLE]
+  end
+
+  def self.all_banned_families
+    families = []
+    banned_families.each do |slot_families|
+      next unless slot_families.is_a?(Array)
+      families.concat(slot_families)
+    end
+    return families.uniq
+  end
+
   def self.species_banned?(species)
     family = GameData::Species.get(species).get_baby_species
-    return banned_families.include?(family)
+    return all_banned_families.include?(family)
   end
 
   def self.filter_party_by_ban(party)
     return party.reject { |pkmn| species_banned?(pkmn.species) }
   end
 
-  def self.ban_party_family(party)
-    families = banned_families
+  def self.ban_party_family(party, slot_index)
+    init_banned_families
+    slot_families = $game_variables[BANNED_FAMILY_VARIABLE][slot_index] || []
     party.each do |pkmn|
       family = GameData::Species.get(pkmn.species).get_baby_species
-      next if families.include?(family)
-      families << family
+      next if slot_families.include?(family)
+      slot_families << family
     end
-    $game_variables[BANNED_FAMILY_VARIABLE] = families
+    $game_variables[BANNED_FAMILY_VARIABLE][slot_index] = slot_families
+  end
+
+  def self.clear_banned_families(slot_index)
+    init_banned_families
+    $game_variables[BANNED_FAMILY_VARIABLE][slot_index] = []
   end
 
   def self.clean_party!
@@ -447,24 +470,9 @@ end
 class Pokemon
   # 현재 포켓몬이 저장된 파티의 포켓몬과 같은 진화 계열에 속하는지 확인
   def in_stored_party?
-    # 🌟 FIX: 파티 저장 변수(150) 대신, 밴 시스템 변수(149)의 데이터를 활용합니다.
-    # 밴 목록에는 저장된 파티 포켓몬의 진화 계열 정보가 정확히 들어있습니다.
-    
-    # BANNED_FAMILY_VARIABLE 상수가 정의되었는지 확인
-    return false if !defined?(::BANNED_FAMILY_VARIABLE)
-    
-    # 밴 목록 (진화 계열 ID 배열, 변수 149번)을 직접 읽어옵니다.
-    # 전역 상수 ::BANNED_FAMILY_VARIABLE에 접근합니다.
-    banned_families_list = $game_variables[::BANNED_FAMILY_VARIABLE]
-    
-    # 데이터가 유효하지 않으면 false 반환
-    return false if !banned_families_list.is_a?(Array)
-    
-    # 현재 포켓몬의 진화 계열 ID를 확인합니다.
+    return false if !defined?(TowerParty)
     current_family = GameData::Species.get(self.species).get_baby_species
-    
-    # 밴 목록에 현재 포켓몬의 진화 계열이 포함되어 있다면 true 반환 (아이콘 표시)
-    return banned_families_list.include?(current_family)
+    return TowerParty.all_banned_families.include?(current_family)
   end
 end
 
