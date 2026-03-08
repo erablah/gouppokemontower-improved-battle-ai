@@ -48,7 +48,7 @@ class PokemonSummary_Scene
   #-----------------------------------------------------------------------------
   alias enhanced_pbPageCustomUse pbPageCustomUse
   def pbPageCustomUse(page_id)
-    if page_id == :page_skills && $game_switches[Settings::ENHANCED_STATS_SWITCH]
+    if page_id == :page_skills
       @statToggle = !@statToggle
       drawPage(:page_skills)
       pbPlayDecisionSE
@@ -197,7 +197,7 @@ class PokemonSummary_Scene
       when :HP then xpos, ypos, align = 292, 82, :center
       else xpos, ypos, align = 248, 94 + (32 * index), :left
       end
-      name = (s.id == :SPECIAL_ATTACK) ? "Sp. Atk" : (s.id == :SPECIAL_DEFENSE) ? "Sp. Def" : s.name
+      name = (s.id == :SPECIAL_ATTACK) ? _INTL("Special Attack") : (s.id == :SPECIAL_DEFENSE) ? _INTL("Special Defense") : s.name
       statshadow = shadow
       if !@pokemon.shadowPokemon? || @pokemon.heartStage <= 3
         @pokemon.nature_for_stats.stat_changes.each do |change|
@@ -220,13 +220,16 @@ class PokemonSummary_Scene
       index += 1
     end
     textpos.push(
-      [_INTL("EV/IV Total"), 224, 290, :left, base, shadow],
+      [_INTL("EV/IV 총합"), 224, 290, :left, base, shadow],
       [sprintf("%d  |  %d", ev_total, iv_total), 434, 290, :center, base2, shadow2],
-      [_INTL("EV's Remaining:"), 224, 322, :left, base2, shadow2],
+      [_INTL("남아있는 EV:"), 224, 322, :left, base2, shadow2],
       [sprintf("%d/%d", Pokemon::EV_LIMIT - ev_total, Pokemon::EV_LIMIT), 444, 322, :center, base2, shadow2],
-      [_INTL("Hidden Power Type:"), 224, 354, :left, base2, shadow2]
+      [_INTL("히든파워 타입:"), 224, 354, :left, base2, shadow2]
     )
+    original_size = overlay.font.size
+    overlay.font.size = 20  # Smaller text for enhanced stats
     pbDrawTextPositions(overlay, textpos)
+    overlay.font.size = original_size
     if @pokemon.hp > 0
       w = @pokemon.hp * 96 / @pokemon.totalhp.to_f
       w = 1 if w < 1
