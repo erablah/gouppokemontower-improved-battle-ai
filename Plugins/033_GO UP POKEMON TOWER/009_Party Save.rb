@@ -208,25 +208,27 @@ end
 #===============================================================================
 def pbTowerStarterPokemon(species, level = 5)
   species_name = GameData::Species.get(species).name
+  form_name = GameData::Species.get(species).form_name
+  full_name = form_name && !form_name.empty? ? "#{form_name} #{species_name}" : species_name
   # 밴 체크
   if TowerParty.species_banned?(species)
     pbMessage("\\j[\\c[3]#{species_name}\\c[0],은,는] 사용할 수 없습니다.")
     return false
   end
   # 선택 확인
-  if !pbConfirmMessage("\\j[\\c[3]#{species_name}\\c[0],을,를] 데려갈까요?")
+  if !pbConfirmMessage("\\j[\\c[3]#{full_name}\\c[0],을,를] 데려갈까요?")
     return false
   end
   # 포켓몬 추가
   pbSEPlay("Pkmn get")
   _tower_pbAddPokemon(species, level)
-  FollowingPkmn.toggle(true)
-  pbMessage("\\xn[\\c[3]오박사\\c[0]]위로 올라가서 도전을 시작하시길 바랍니다!")
   $game_switches[3] = false
   $game_variables[7] = 1
   $game_self_switches[[$game_map.map_id, @event_id, "A"]] = true
   $game_switches[82] = true
   $game_map.need_refresh = true
+    FollowingPkmn.toggle(true)
+  pbMessage("\\xn[\\c[3]오박사\\c[0]]위로 올라가서 도전을 시작하시길 바랍니다!")
   return true
 end
 
