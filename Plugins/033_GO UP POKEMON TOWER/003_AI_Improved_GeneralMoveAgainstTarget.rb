@@ -60,20 +60,6 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:boost_pivot_moves,
   }
 )
 
-#===============================================================================
-# 16. Penalize single-stage stat drop moves
-#===============================================================================
-Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:nerf_weak_debuffs,
-  proc { |score, move, user, target, ai, battle|
-    if move.statusMove? &&
-       ai.safe_function_code(move)&.include?("LowerTarget") &&
-       ai.safe_function_code(move)&.end_with?("1")
-      score -= 20
-    end
-    next score
-  }
-)
-
 #-------------------------------------------------------------------------------
 # [NEW] Penalize useless moves (low damage)
 #-------------------------------------------------------------------------------
@@ -91,11 +77,12 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:penalize_useless_moves,
       next score if will_ko
 
       if pct_dmg < 0.20
-        score -= 50
-        PBDebug.log_score_change(-50, "Penalize useless move: very low predicted damage (#{(pct_dmg * 100).round(1)}%).")
+        score -= 40
+        PBDebug.log_score_change(-40, "Penalize useless move: very low predicted damage (#{(pct_dmg * 100).round(1)}%).")
       elsif pct_dmg < 0.40
-        score -= 20
-        PBDebug.log_score_change(-20, "Penalize weak move: consider switching (#{(pct_dmg * 100).round(1)}%).")
+        penalty = (20 * [(0.40 - pct_dmg) / 0.20, 1.0].min).round
+        score -= penalty
+        PBDebug.log_score_change(-penalty, "Penalize weak move: consider switching (#{(pct_dmg * 100).round(1)}%).")
       end
     end
     next score

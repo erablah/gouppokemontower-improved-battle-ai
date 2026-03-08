@@ -21,6 +21,8 @@ end
 
 class Battle::AI
   MOVE_FAIL_SCORE = -999
+  REPLACEMENT_THRESHOLD_NORMAL = 60
+  REPLACEMENT_THRESHOLD_TERRIBLE_MOVES = 100
 
   #---------------------------------------------------------------------------
   # [Helper] Convert effectiveness multiplier to float
@@ -206,14 +208,15 @@ class Battle::AI
     end
     reserves.sort! { |a, b| b[1] <=> a[1] }   # Sort from highest to lowest rated
     # When all replacements are poorly rated, decide whether to sack
-    if @trainer.high_skill? && reserves[0][1] < 60
+    threshold = terrible_moves ? REPLACEMENT_THRESHOLD_TERRIBLE_MOVES : REPLACEMENT_THRESHOLD_NORMAL
+    if reserves[0][1] < threshold
       if forced_switch
         # Must switch (faint/pivot) — just pick the highest-scored reserve
         PBDebug.log_ai("=> forced switch: sacking #{party[reserves[0][0]].name} (best score #{reserves[0][1]})")
         return reserves[0][0]
       end
-        PBDebug.log_ai("=> staying in: all reserves scored < 60, not switching")
-        return -1
+      PBDebug.log_ai("=> staying in: all reserves scored < #{threshold} (best: #{reserves[0][1]}), not switching")
+      return -1
     end
     # Return the party index of the best rated replacement Pokémon
     return reserves[0][0]
