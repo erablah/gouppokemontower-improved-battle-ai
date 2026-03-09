@@ -540,3 +540,70 @@ class Battle::Scene::PokemonDataBox < Sprite
     draw_party_icon
   end
 end
+
+#===============================================================================
+# 구버전 세이브 데이터 마이그레이션
+# 이전: $game_variables[149] (밴 리스트), $game_variables[150] (파티 저장소)
+# 현재: $PokemonGlobal.tower_banned_families, $PokemonGlobal.tower_party_storage
+# $game_variables[148] = 1 이면 마이그레이션 완료 상태
+#===============================================================================
+MIGRATION_FLAG_VARIABLE    = 148
+OLD_PARTY_STORAGE_VARIABLE = 150
+OLD_BANNED_FAMILY_VARIABLE = 149
+
+def pbMigrateTowerSaveData
+  return if !$PokemonGlobal
+  return if $game_variables[MIGRATION_FLAG_VARIABLE] == 1
+  migrated = false
+
+  # --- 파티 저장소 마이그레이션 ---
+  old_storage = $game_variables[OLD_PARTY_STORAGE_VARIABLE]
+  if old_storage.is_a?(Array) && !old_storage.empty? && $PokemonGlobal.tower_party_storage.nil?
+    if old_storage.length < MAX_PARTY_SLOTS
+      old_storage += Array.new(MAX_PARTY_SLOTS - old_storage.length) { [] }
+    end
+    $PokemonGlobal.tower_party_storage = old_storage
+    $game_variables[OLD_PARTY_STORAGE_VARIABLE] = 0
+    migrated = true
+  end
+
+  # --- 밴 리스트 마이그레이션 ---
+  old_bans = $game_variables[OLD_BANNED_FAMILY_VARIABLE]
+  if old_bans.is_a?(Array) && !old_bans.empty? && $PokemonGlobal.tower_banned_families.nil?
+    if old_bans[0].is_a?(Array)
+      new_bans = old_bans
+    else
+      # 플랫 배열 (구버전): 슬롯 0에 전부 할당
+      new_bans = Array.new(10) { [] }
+      new_bans[0] = old_bans.dup
+    end
+    if new_bans.length < 10
+      new_bans += Array.new(10 - new_bans.length) { [] }
+    end
+    $PokemonGlobal.tower_banned_families = new_bans
+    $game_variables[OLD_BANNED_FAMILY_VARIABLE] = 0
+    migrated = true
+  end
+
+  # --- 저장소는 있지만 밴 리스트가 없는 경우 재구축 ---
+  if $PokemonGlobal.tower_party_storage.is_a?(Array) && $PokemonGlobal.tower_banned_families.nil?
+    $PokemonGlobal.tower_banned_families = Array.new(10) { [] }
+    $PokemonGlobal.tower_party_storage.each_with_index do |party, idx|
+      next if idx >= 10 || !party.is_a?(Array) || party.empty?
+      TowerParty.ban_party_family(party, idx)
+    end
+    migrated = true
+  end
+
+  $game_variables[MIGRATION_FLAG_VARIABLE] = 1
+
+  if migrated
+    pbMessage("세이브 데이터가 최신 버전으로 업데이트되었습니다.")
+  end
+end
+
+EventHandlers.add(:on_enter_map, :tower_save_migration,
+  proc { |_old_map_id|
+    pbMigrateTowerSaveData
+  }
+)
