@@ -80,7 +80,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:penalize_useless_moves,
         score -= 40
         PBDebug.log_score_change(-40, "Penalize useless move: very low predicted damage (#{(pct_dmg * 100).round(1)}%).")
       elsif pct_dmg < 0.40
-        penalty = (20 * [(0.40 - pct_dmg) / 0.20, 1.0].min).round
+        penalty = (40 * [(0.40 - pct_dmg) / 0.20, 1.0].min).round
         score -= penalty
         PBDebug.log_score_change(-penalty, "Penalize weak move: consider switching (#{(pct_dmg * 100).round(1)}%).")
       end
@@ -106,7 +106,6 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:phaze_with_hazards,
     hazard_value += 10 if foe_side.effects[PBEffects::StealthRock]
     hazard_value += 5 * foe_side.effects[PBEffects::Spikes]
     hazard_value += 5 * foe_side.effects[PBEffects::ToxicSpikes]
-    hazard_value += 8 if foe_side.effects[PBEffects::StickyWeb]
 
     if hazard_value > 0
       score += hazard_value
@@ -120,8 +119,8 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:phaze_with_hazards,
       target_boosts += stage if stage > 0
     end
     if target_boosts >= 2
-      score += 15
-      PBDebug.log_score_change(15, "Phaze to reset target's +#{target_boosts} boosts.")
+      score +=30
+      PBDebug.log_score_change(30, "Phaze to reset target's +#{target_boosts} boosts.")
     end
 
     next score
