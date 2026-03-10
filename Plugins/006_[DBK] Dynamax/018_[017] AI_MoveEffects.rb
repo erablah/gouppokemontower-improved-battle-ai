@@ -89,7 +89,7 @@ Battle::AI::Handlers::MoveEffectScore.add("RaiseUserSideAtk1",
     old_score = score
     battle.allSameSideBattlers(user.battler).each do |b|
       check_score = ai.get_score_for_target_stat_raise(old_score, ai.battlers[b.index], move.move.statUp)
-      score += check_score / battle.pbSideBattlerCount(user.battler)
+      score += (check_score - old_score) / battle.pbSideBattlerCount(user.battler)
     end
     next score 
   }
@@ -109,7 +109,7 @@ Battle::AI::Handlers::MoveEffectScore.add("LowerTargetSideAtk1",
     old_score = score
     battle.allOtherSideBattlers(user.battler).each do |b|
       check_score = ai.get_score_for_target_stat_drop(old_score, ai.battlers[b.index], move.move.statDown)
-      score += check_score / battle.pbOpposingBattlerCount(user.battler)
+      score += (check_score - old_score) / battle.pbOpposingBattlerCount(user.battler)
     end
     next score 
   }
@@ -135,9 +135,9 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("PoisonTargetSide",
   proc { |score, move, user, target, ai, battle|
     old_score = score
     battle.allOtherSideBattlers(user.battler).each do |b|
-      check_score = Battle::AI::Handlers::MoveEffectAgainstTargetScore.trigger("PoisonTarget", 
+      check_score = Battle::AI::Handlers::MoveEffectAgainstTargetScore.trigger("PoisonTarget",
                       old_score, move, user, ai.battlers[b.index], ai, battle)
-      score += check_score / battle.pbOpposingBattlerCount(user.battler)
+      score += (check_score - old_score) / battle.pbOpposingBattlerCount(user.battler)
     end
     next score
   }
@@ -150,9 +150,9 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("ParalyzeTargetSide",
   proc { |score, move, user, target, ai, battle|
     old_score = score
     battle.allOtherSideBattlers(user.battler).each do |b|
-      check_score = Battle::AI::Handlers::MoveEffectAgainstTargetScore.trigger("ParalyzeTarget", 
+      check_score = Battle::AI::Handlers::MoveEffectAgainstTargetScore.trigger("ParalyzeTarget",
                       old_score, move, user, ai.battlers[b.index], ai, battle)
-      score += check_score / battle.pbOpposingBattlerCount(user.battler)
+      score += (check_score - old_score) / battle.pbOpposingBattlerCount(user.battler)
     end
     next score
   }
@@ -165,11 +165,12 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("PoisonOrParalyzeTargetSi
   proc { |score, move, user, target, ai, battle|
     old_score = score
     battle.allOtherSideBattlers(user.battler).each do |b|
-      check_score = Battle::AI::Handlers::MoveEffectAgainstTargetScore.trigger("PoisonTarget", 
-                      old_score, move, user, ai.battlers[b.index], ai, battle)
-      check_score += Battle::AI::Handlers::MoveEffectAgainstTargetScore.trigger("ParalyzeTarget", 
+      poison_score = Battle::AI::Handlers::MoveEffectAgainstTargetScore.trigger("PoisonTarget",
                        old_score, move, user, ai.battlers[b.index], ai, battle)
-      score += check_score / battle.pbOpposingBattlerCount(user.battler)
+      paralyze_score = Battle::AI::Handlers::MoveEffectAgainstTargetScore.trigger("ParalyzeTarget",
+                         old_score, move, user, ai.battlers[b.index], ai, battle)
+      delta = (poison_score - old_score) + (paralyze_score - old_score)
+      score += delta / battle.pbOpposingBattlerCount(user.battler)
     end
     next score
   }
@@ -182,13 +183,14 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("PoisonParalyzeOrSleepTar
   proc { |score, move, user, target, ai, battle|
     old_score = score
     battle.allOtherSideBattlers(user.battler).each do |b|
-      check_score = Battle::AI::Handlers::MoveEffectAgainstTargetScore.trigger("PoisonTarget", 
+      poison_score = Battle::AI::Handlers::MoveEffectAgainstTargetScore.trigger("PoisonTarget",
+                       old_score, move, user, ai.battlers[b.index], ai, battle)
+      paralyze_score = Battle::AI::Handlers::MoveEffectAgainstTargetScore.trigger("ParalyzeTarget",
+                         old_score, move, user, ai.battlers[b.index], ai, battle)
+      sleep_score = Battle::AI::Handlers::MoveEffectAgainstTargetScore.trigger("SleepTarget",
                       old_score, move, user, ai.battlers[b.index], ai, battle)
-      check_score += Battle::AI::Handlers::MoveEffectAgainstTargetScore.trigger("ParalyzeTarget", 
-                       old_score, move, user, ai.battlers[b.index], ai, battle)
-      check_score += Battle::AI::Handlers::MoveEffectAgainstTargetScore.trigger("SleepTarget", 
-                       old_score, move, user, ai.battlers[b.index], ai, battle)
-      score += check_score / battle.pbOpposingBattlerCount(user.battler)
+      delta = (poison_score - old_score) + (paralyze_score - old_score) + (sleep_score - old_score)
+      score += delta / battle.pbOpposingBattlerCount(user.battler)
     end
     next score
   }
@@ -201,9 +203,9 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("InfatuateTargetSide",
   proc { |score, move, user, target, ai, battle|
     old_score = score
     battle.allOtherSideBattlers(user.battler).each do |b|
-      check_score = Battle::AI::Handlers::MoveEffectAgainstTargetScore.trigger("AttractTarget", 
+      check_score = Battle::AI::Handlers::MoveEffectAgainstTargetScore.trigger("AttractTarget",
                       old_score, move, user, ai.battlers[b.index], ai, battle)
-      score += check_score / battle.pbOpposingBattlerCount(user.battler)
+      score += (check_score - old_score) / battle.pbOpposingBattlerCount(user.battler)
     end
     next score
   }
@@ -216,9 +218,9 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("ConfuseTargetSide",
   proc { |score, move, user, target, ai, battle|
     old_score = score
     battle.allOtherSideBattlers(user.battler).each do |b|
-      check_score = Battle::AI::Handlers::MoveEffectAgainstTargetScore.trigger("ConfuseTarget", 
+      check_score = Battle::AI::Handlers::MoveEffectAgainstTargetScore.trigger("ConfuseTarget",
                       old_score, move, user, ai.battlers[b.index], ai, battle)
-      score += check_score / battle.pbOpposingBattlerCount(user.battler)
+      score += (check_score - old_score) / battle.pbOpposingBattlerCount(user.battler)
     end
     next score
   }
@@ -295,8 +297,9 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.copy("StartVineLashOnFoeSide"
 Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("DamageTargetStartGravity",
   proc { |score, move, user, target, ai, battle|
     next score if battle.field.effects[PBEffects::Gravity] > 0
-    score += Battle::AI::Handlers::MoveEffectScore.trigger("StartGravity", 
-               score, move, user, ai, battle)
+    gravity_score = Battle::AI::Handlers::MoveEffectScore.trigger("StartGravity",
+                      score, move, user, ai, battle)
+    score += (gravity_score || score) - score
     next score
   }
 )
@@ -379,9 +382,9 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("BindTargetSideUserCanSwi
   proc { |score, move, user, target, ai, battle|
     old_score = score
     battle.allOtherSideBattlers(user.battler).each do |b|
-      check_score = Battle::AI::Handlers::MoveEffectAgainstTargetScore.trigger("BindTarget", 
+      check_score = Battle::AI::Handlers::MoveEffectAgainstTargetScore.trigger("BindTarget",
                       old_score, move, user, ai.battlers[b.index], ai, battle)
-      score += check_score / battle.pbOpposingBattlerCount(user.battler)
+      score += (check_score - old_score) / battle.pbOpposingBattlerCount(user.battler)
     end
     next score
   }
