@@ -39,24 +39,8 @@ Battle::AI::Handlers::ShouldSwitch.add(:escape_boosted_foe,
     end
     next false unless threatening_foe
 
-    # Only trigger if at least one reserve can answer the threat
-    answer_codes = [
-      "SwitchOutTargetStatusMove",  # Whirlwind, Roar
-      "SwitchOutTargetDamagingMove", # Dragon Tail, Circle Throw
-      "ResetAllBattlersStatStages",  # Haze
-      "ResetTargetStatStages",       # Clear Smog
-      "DisableTargetStatusMoves",    # Taunt
-      "EncoreTarget"                 # Encore
-    ]
-    has_reserve_answer = reserves.any? do |pkmn|
-      next false unless pkmn
-      next true if pkmn.hasAbility?(:UNAWARE)
-      pkmn.moves.any? { |m| answer_codes.include?(m.function_code) }
-    end
-    next false unless has_reserve_answer
-
     PBDebug.log_ai(
-      "#{user.name}: foe has #{foe_total_boosts} positive boosts, reserves have answers — should switch."
+      "#{user.name}: foe has #{foe_total_boosts} positive boosts — should switch."
     )
     next true
   }
