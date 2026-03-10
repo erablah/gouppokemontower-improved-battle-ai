@@ -17,6 +17,7 @@ class Battle::Battler
     end
     ret
   end
+  # Fix: Struggle is blocked by Choice lock during the attack phase because
 end
 
 class Battle::AI
