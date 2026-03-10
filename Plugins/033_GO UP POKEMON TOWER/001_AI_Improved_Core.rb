@@ -17,7 +17,15 @@ class Battle::Battler
     end
     ret
   end
+
   # Fix: Struggle is blocked by Choice lock during the attack phase because
+  # pbTryUseMove calls pbCanChooseMove?, which rejects any move that isn't the
+  # Choice-locked move. Struggle should always be usable.
+  alias _tower_struggle_pbCanChooseMove pbCanChooseMove?
+  def pbCanChooseMove?(move, commandPhase, showMessages = true, specialUsage = false)
+    return true if move.is_a?(Battle::Move::Struggle)
+    return _tower_struggle_pbCanChooseMove(move, commandPhase, showMessages, specialUsage)
+  end
 end
 
 class Battle::AI
@@ -32,13 +40,115 @@ class Battle::AI
     return effectiveness_id.to_f / 100.0
   end
 
-  # Override: clamp score to at least 0 so negative scores from penalties
-  # don't get treated as move failure (-1) by the core engine.
-  alias pbGetMoveScoreAgainstTarget_original pbGetMoveScoreAgainstTarget
+
+  # Override: replace -1 sentinel with MOVE_FAIL_SCORE for failed moves,
+  # so negative penalty scores aren't confused with move failures.
   def pbGetMoveScoreAgainstTarget
-    result = pbGetMoveScoreAgainstTarget_original
-    return result if result == -1   # Actual move failure, keep as-is
-    return [result, 0].max
+    if @trainer.has_skill_flag?("PredictMoveFailure") && pbPredictMoveFailureAgainstTarget
+      PBDebug.log("     move will not affect #{@target.name}")
+      PBDebug.log_score_change(MOVE_FAIL_SCORE - MOVE_BASE_SCORE, "move will fail")
+      return MOVE_FAIL_SCORE
+    end
+    score = MOVE_BASE_SCORE
+    if @trainer.has_skill_flag?("ScoreMoves")
+      old_score = score
+      score = Battle::AI::Handlers.apply_move_effect_against_target_score(@move.function_code,
+         MOVE_BASE_SCORE, @move, @user, @target, self, @battle)
+      PBDebug.log_score_change(score - old_score, "function code modifier (against target)")
+      score = Battle::AI::Handlers.apply_general_move_against_target_score_modifiers(
+        score, @move, @user, @target, self, @battle)
+    end
+    target_data = @move.pbTarget(@user.battler)
+    if pbShouldInvertScore?(target_data)
+      if score == MOVE_USELESS_SCORE
+        PBDebug.log("     move is useless against #{@target.name}")
+        return MOVE_FAIL_SCORE
+      end
+      old_score = score
+      score = ((1.85 * MOVE_BASE_SCORE) - score).to_i
+      PBDebug.log_score_change(score - old_score, "score inverted (move targets ally but can target foe)")
+    end
+    return score
+  end
+
+  # Override: scale stat-change scores by additional effect chance for damaging
+  # moves with < 100% effect probability (e.g. Moonblast's 30% SpA drop).
+  alias_method :orig_get_score_for_target_stat_drop, :get_score_for_target_stat_drop
+  def get_score_for_target_stat_drop(score, target, stat_changes, whole_effect = true,
+                                     fixed_change = false, ignore_contrary = false)
+    result = orig_get_score_for_target_stat_drop(score, target, stat_changes, whole_effect, fixed_change, ignore_contrary)
+    if @move.damagingMove? && @move.move.addlEffect > 0 && @move.move.addlEffect < 100
+      delta = result - score
+      if delta != 0
+        chance = @move.move.addlEffect
+        chance = [chance * 2, 100].min if @user.has_active_ability?(:SERENEGRACE)
+        scaled_delta = (delta * chance / 100.0).round
+        PBDebug.log("     [additional effect scaling] stat drop: #{delta} * #{chance}% = #{scaled_delta}")
+        result = score + scaled_delta
+      end
+    end
+    return result
+  end
+
+  alias_method :orig_get_score_for_target_stat_raise, :get_score_for_target_stat_raise
+  def get_score_for_target_stat_raise(score, target, stat_changes, whole_effect = true,
+                                      fixed_change = false, ignore_contrary = false)
+    result = orig_get_score_for_target_stat_raise(score, target, stat_changes, whole_effect, fixed_change, ignore_contrary)
+    if @move.damagingMove? && @move.move.addlEffect > 0 && @move.move.addlEffect < 100
+      delta = result - score
+      if delta != 0
+        chance = @move.move.addlEffect
+        chance = [chance * 2, 100].min if @user.has_active_ability?(:SERENEGRACE)
+        scaled_delta = (delta * chance / 100.0).round
+        PBDebug.log("     [additional effect scaling] stat raise: #{delta} * #{chance}% = #{scaled_delta}")
+        result = score + scaled_delta
+      end
+    end
+    return result
+  end
+
+  # Override: remove the core engine's score = 0 clamp (line 284) so negative
+  # scores from penalties are preserved, letting the AI pick the least-bad move.
+  def pbGetMoveScore(targets = nil)
+    score = MOVE_BASE_SCORE
+    if targets
+      score = 0
+      affected_targets = 0
+      orig_move = @move.move
+      targets.each do |target|
+        set_up_move_check(orig_move)
+        set_up_move_check_target(target)
+        t_score = pbGetMoveScoreAgainstTarget
+        next if t_score <= MOVE_FAIL_SCORE
+        score += t_score
+        affected_targets += 1
+      end
+      if affected_targets == 0
+        score = (@trainer.has_skill_flag?("PredictMoveFailure")) ? MOVE_USELESS_SCORE : MOVE_BASE_SCORE
+      end
+      if affected_targets == 0 && @trainer.has_skill_flag?("PredictMoveFailure")
+        if !@move.move.worksWithNoTargets?
+          PBDebug.log_score_change(MOVE_FAIL_SCORE - MOVE_BASE_SCORE, "move will fail")
+          return MOVE_FAIL_SCORE
+        end
+      else
+        score /= affected_targets if affected_targets > 1
+        if @trainer.has_skill_flag?("PreferMultiTargetMoves") && affected_targets > 1
+          old_score = score
+          score += (affected_targets - 1) * 10
+          PBDebug.log_score_change(score - old_score, "affects multiple battlers")
+        end
+      end
+    end
+    if @trainer.has_skill_flag?("ScoreMoves")
+      old_score = score
+      score = Battle::AI::Handlers.apply_move_effect_score(@move.function_code,
+         score, @move, @user, self, @battle)
+      PBDebug.log_score_change(score - old_score, "function code modifier (generic)")
+      score = Battle::AI::Handlers.apply_general_move_score_modifiers(
+        score, @move, @user, self, @battle)
+    end
+    return score.to_i
   end
 
   # override: only one tera available per team.
@@ -202,6 +312,17 @@ class Battle::AI
       break if @trainer.has_skill_flag?("UsePokemonInOrder") && reserves.length > 0
     end
     return -1 if reserves.length == 0
+    # Double KO: all opposing battlers are fainted, so we don't know what the
+    # player will send in — pick randomly instead of scoring against a fainted foe.
+    if forced_switch
+      all_foes_fainted = true
+      @battle.allOtherSideBattlers(idxBattler).each { |b| all_foes_fainted = false if !b.fainted? }
+      if all_foes_fainted
+        chosen = reserves.sample
+        PBDebug.log_ai("=> double KO: randomly choosing #{party[chosen[0]].name}")
+        return chosen[0]
+      end
+    end
     # Rate each possible replacement Pokémon
     reserves.each_with_index do |reserve, i|
       reserves[i][1] = rate_replacement_pokemon(idxBattler, party[reserve[0]], reserve[1], terrible_moves)
