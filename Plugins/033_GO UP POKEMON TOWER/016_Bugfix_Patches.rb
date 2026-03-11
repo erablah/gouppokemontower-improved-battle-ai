@@ -1,16 +1,5 @@
 # map event bug fixes
 
-#===============================================================================
-# Fix: Map 67(shopping floor) has a shop-reset NPC event that should be reset when leaving the map.
-#===============================================================================
-EventHandlers.add(:on_leave_map, :reset_map_self_switches,
-  proc { |new_map_id, new_map|
-    old_map_id = $game_map.map_id
-    if old_map_id == 67
-      $game_self_switches[[67, 20, "A"]] = false
-    end
-  }
-)
 
 #===============================================================================
 # Fix: Game_Character wait_start uses System.uptime which resets on game launch.
