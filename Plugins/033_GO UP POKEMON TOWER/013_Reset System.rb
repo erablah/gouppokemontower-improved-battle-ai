@@ -149,6 +149,11 @@ class Scene_Map
         key = [map.map_id, event_id, "A"]
         $game_self_switches[key] = false
       end
+      # Map 67: 상점 갱신 NPC (이벤트 20) 셀프 스위치 리셋
+      if map.map_id == 67
+        $game_self_switches[[67, 20, "A"]] = false
+      end
+      $game_map.need_refresh = true
     end
 
     # 자동 저장 (실패해도 게임은 계속)

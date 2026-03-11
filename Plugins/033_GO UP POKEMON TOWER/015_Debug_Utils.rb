@@ -3,23 +3,64 @@
 #===============================================================================
 
 #-------------------------------------------------------------------------------
-# Override PBDebug.log_score_change to colorize score output in the console.
-#   Positive amounts → bright green
-#   Negative amounts → bright red
-# The plain-text line is still written to debuglog.txt unchanged.
+# Override PBDebug to always write to debuglog.txt regardless of $DEBUG.
+# Only the latest battle's logs are kept (file cleared at battle start).
+# Console output (echoln) still requires $DEBUG.
 #-------------------------------------------------------------------------------
 module PBDebug
+  def self.flush
+    if @@log.length > 0
+      File.open("Data/debuglog.txt", "a+b") { |f| f.write(@@log.join) }
+    end
+    @@log.clear
+  end
+
+  def self.log(msg)
+    echoln(msg.gsub("%", "%%")) if $DEBUG
+    @@log.push(msg + "\r\n")
+    PBDebug.flush
+  end
+
+  def self.log_header(msg)
+    echoln(Console.markup_style(msg.gsub("%", "%%"), text: :light_purple)) if $DEBUG
+    @@log.push(msg + "\r\n")
+    PBDebug.flush
+  end
+
+  def self.log_message(msg)
+    msg = "\"" + msg + "\""
+    echoln(Console.markup_style(msg.gsub("%", "%%"), text: :dark_gray)) if $DEBUG
+    @@log.push(msg + "\r\n")
+    PBDebug.flush
+  end
+
+  def self.log_ai(msg)
+    msg = "[AI] " + msg
+    echoln(msg.gsub("%", "%%")) if $DEBUG
+    @@log.push(msg + "\r\n")
+    PBDebug.flush
+  end
+
   def self.log_score_change(amt, msg)
     return if amt == 0
+    sign     = (amt > 0) ? "+" : "-"
+    amt_text = sprintf("%3d", amt.abs)
+    plain    = "     #{sign}#{amt_text}: #{msg}"
     if $DEBUG
-      sign     = (amt > 0) ? "+" : "-"
-      amt_text = sprintf("%3d", amt.abs)
-      plain    = "     #{sign}#{amt_text}: #{msg}"
-      color    = (amt > 0) ? :light_green : :light_red
+      color = (amt > 0) ? :light_green : :light_red
       echoln Console.markup_style(plain.gsub("%", "%%"), text: color)
-      @@log.push(plain + "\r\n")
-      PBDebug.flush
     end
+    @@log.push(plain + "\r\n")
+    PBDebug.flush
+  end
+end
+
+# Clear debuglog.txt at the start of each battle (keeps only latest battle)
+class Battle
+  alias _clear_debuglog_pbStartBattle pbStartBattle
+  def pbStartBattle
+    File.open("Data/debuglog.txt", "w") { |f| }
+    _clear_debuglog_pbStartBattle
   end
 end
 

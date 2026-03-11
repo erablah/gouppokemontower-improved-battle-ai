@@ -80,7 +80,7 @@ Battle::AI::Handlers::ShouldNotSwitch.add(:current_can_answer_boosted_foe,
       if ai.damage_moves(b, user).values.any? { |md| md[:dmg] >= user.battler.hp }
         faster = b.rough_stat(:SPEED) > user.rough_stat(:SPEED)
         foe_ohko_and_faster = true if faster
-        PBDebug.log("[should_not_switch] #{b.name} can OHKO #{user.name}#{faster ? ' (faster)' : ' (slower)'}")
+        PBDebug.log_ai("[should_not_switch] #{b.name} can OHKO #{user.name}#{faster ? ' (faster)' : ' (slower)'}")
       end
     end
     can_act_first = !foe_ohko_and_faster
