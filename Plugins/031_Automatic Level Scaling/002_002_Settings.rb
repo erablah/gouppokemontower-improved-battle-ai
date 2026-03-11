@@ -22,10 +22,10 @@ module LevelScalingSettings
     5 => Difficulty.new(fixed_increase: -1, random_increase: 1),
     6 => Difficulty.new(fixed_increase: 1, random_increase: 1),					 
 	7 => Difficulty.new(fixed_increase: 3, random_increase: 1),
-	8 => Difficulty.new(fixed_increase: 6, random_increase: 1),
-	9 => Difficulty.new(fixed_increase: 10, random_increase: 1),
-	10 => Difficulty.new(fixed_increase: 14, random_increase: 1),
-	11 => Difficulty.new(fixed_increase: 20, random_increase: 1),
+	8 => Difficulty.new(fixed_increase: 3, random_increase: 1),
+	9 => Difficulty.new(fixed_increase: 5, random_increase: 1),
+	10 => Difficulty.new(fixed_increase: 6, random_increase: 1),
+	11 => Difficulty.new(fixed_increase: 7, random_increase: 1),
 	12 => Difficulty.new(fixed_increase: 25, random_increase: 1)
   }
 
