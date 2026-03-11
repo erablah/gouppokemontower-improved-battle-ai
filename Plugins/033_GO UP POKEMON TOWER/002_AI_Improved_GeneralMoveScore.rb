@@ -39,7 +39,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
         foe_threatens = true
         break
       end
-      if best_foe_dmg.to_f / battler.totalhp.to_f > 0.4
+      if best_foe_dmg.to_f / battler.hp.to_f > 0.4
         foe_threatens = true
       end
     end
@@ -148,16 +148,16 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
         case stat_id
         when :ATTACK
           if has_physical
-            bonus += 20 * effective
+            bonus += 10 * effective
             detail_parts << "Atk +#{effective}"
           end
         when :SPECIAL_ATTACK
           if has_special
-            bonus += 20 * effective
+            bonus += 10 * effective
             detail_parts << "SpA +#{effective}"
           end
         when :DEFENSE, :SPECIAL_DEFENSE
-          bonus += 10 * effective
+          bonus += 5 * effective
           detail_parts << "#{stat_id == :DEFENSE ? "Def" : "SpD"} +#{effective}"
         end
       end
@@ -246,8 +246,8 @@ Battle::AI::Handlers::GeneralMoveScore.add(:boost_general_status_moves,
 
     if move.statusMove? &&
        !ai.safe_function_code(move)&.start_with?("ProtectUserEvenFromDynamaxMoves")
-      score += 10
-      PBDebug.log_score_change(10, "10. General Status Move Boost.")
+      score += 5
+      PBDebug.log_score_change(5, "5. General Status Move Boost.")
     end
     next score
   }
