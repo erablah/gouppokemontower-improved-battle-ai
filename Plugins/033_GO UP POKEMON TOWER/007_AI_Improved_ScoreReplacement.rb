@@ -88,29 +88,25 @@ Battle::AI::Handlers::ScoreReplacement.add(:foe_predicted_damage,
       if dmg_ratio >= 100
         # OHKO — full penalty, reduced if pkmn is faster (gets to act first)
         penalty = base_penalty
-        if foe_already_acted && pkmn_faster
+        if pkmn_faster
           penalty = (base_penalty * 0.6).to_i
         end
         score -= penalty
-        spd_tag = (foe_already_acted && pkmn_faster) ? ", but faster" : ""
+        spd_tag = pkmn_faster ? ", but im faster" : "im slower"
         spd_tag = ", priority" if worst_move_priority > 0
         PBDebug.log_score_change(score - prev_score, "#{pkmn.name}: foe can OHKO (#{dmg_ratio}% >= 100%#{spd_tag})")
       elsif dmg_ratio >= 50
-        # 2HKO — reduced penalty; further reduced if foe already acted or faster
-        # If foe hasn't acted but pkmn is faster, the switch-in moves first next
-        # turn before the foe's second hit, so penalty is softened
-        if foe_already_acted && pkmn_faster
-          penalty = (base_penalty * 0.25 * (dmg_ratio / 100.0)).to_i
-        elsif foe_already_acted
+        # 2HKO — reduced penalty; further reduced if pkmn is faster
+        # If pkmn is faster, the switch-in moves first next turn before
+        # the foe's second hit, so penalty is softened
+        if pkmn_faster
           penalty = (base_penalty * 0.5 * (dmg_ratio / 100.0)).to_i
-        elsif pkmn_faster
-          penalty = (base_penalty * 0.75 * (dmg_ratio / 100.0)).to_i
         else
           penalty = (base_penalty * (dmg_ratio / 100.0)).to_i
         end
         score -= penalty
-        spd_tag = pkmn_faster ? ", faster" : ""
-        spd_tag = ", priority" if worst_move_priority > 0
+        spd_tag = pkmn_faster ? ", but im faster" : "im slower"
+        spd_tag = ", with priority" if worst_move_priority > 0
         PBDebug.log_score_change(score - prev_score, "#{pkmn.name}: foe can 2HKO (#{dmg_ratio}%#{spd_tag})")
       else
         score += (base_boost * (100 - dmg_ratio) / 100).to_i
@@ -125,7 +121,8 @@ Battle::AI::Handlers::ScoreReplacement.add(:user_predicted_damage,
   proc { |idxBattler, pkmn, score, terrible_moves, battle, ai|
     # Add predicted damage of best pkmn's moves to score (if there is an opposing active battler)
     max_predicted_damage = 0
-    max_foe_hp = 1
+    max_foe_hp = 1  # tracks HP of the foe that takes the most damage (doubles-safe)
+    best_move_name = ""
     pkmn.moves.each do |m|
       next if m.power == 0 || (m.pp == 0 && m.total_pp > 0)
       ai.each_foe_battler(ai.user.side) do |b, i|
@@ -136,17 +133,23 @@ Battle::AI::Handlers::ScoreReplacement.add(:user_predicted_damage,
         simulated_move = Battle::Move.from_pokemon_move(battle, m)
         move.set_up(simulated_move)
         predicted_damage = move.predicted_damage(user: user, target: b, user_pokemon: pkmn)
-        PBDebug.log_ai("#{pkmn.name} predicted_damage for #{m.name}: #{predicted_damage}")
 
         if predicted_damage > max_predicted_damage
           max_predicted_damage = predicted_damage
           max_foe_hp = [b.hp, 1].max
+          best_move_name = m.name
         end
       end
     end
     # Scale linearly up to +30, capped at 150% of foe's current HP
+    # No bonus until at least 40% HP ratio
     dmg_ratio = max_predicted_damage.to_f / max_foe_hp
-    bonus = (30 * [dmg_ratio / 1.5, 1.0].min).round
+    if dmg_ratio < 0.5
+      bonus = 0
+    else
+      bonus = (30 * [dmg_ratio / 1.5, 1.0].min).round
+    end
+    PBDebug.log_score_change(bonus, "#{pkmn.name} best move: #{best_move_name}, dmg_ratio: #{(dmg_ratio * 100).round}% (#{max_predicted_damage}/#{max_foe_hp})")
     next score += bonus
   }
 )

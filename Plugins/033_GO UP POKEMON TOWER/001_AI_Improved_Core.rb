@@ -31,7 +31,7 @@ end
 class Battle::AI
   MOVE_FAIL_SCORE = -999
   REPLACEMENT_THRESHOLD_NORMAL = 60
-  REPLACEMENT_THRESHOLD_TERRIBLE_MOVES = 100
+  REPLACEMENT_THRESHOLD_TERRIBLE_MOVES = 120
 
   #---------------------------------------------------------------------------
   # [Helper] Convert effectiveness multiplier to float
