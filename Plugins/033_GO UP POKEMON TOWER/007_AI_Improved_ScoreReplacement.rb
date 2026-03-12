@@ -274,6 +274,10 @@ Battle::AI::Handlers::ScoreReplacement.add(:utility_switch_in,
 #===============================================================================
 Battle::AI::Handlers::ScoreReplacement.add(:status_moves_value,
   proc { |idxBattler, pkmn, score, terrible_moves, battle, ai|
+    # Create a temporary battler for the reserve so ability checks work (e.g. Corrosion)
+    temp_user = Battle::Battler.new(battle, idxBattler)
+    temp_user.pbInitialize(pkmn, 0)
+
     ai.each_foe_battler(ai.user.side) do |b, i|
       foe_speed = b.rough_stat(:SPEED)
       foe_is_physical = b.check_for_move { |m| m.physicalMove? }
@@ -285,19 +289,19 @@ Battle::AI::Handlers::ScoreReplacement.add(:status_moves_value,
         case m.function_code
         when "ParalyzeTarget"
           # Thunder Wave vs fast sweeper
-          if foe_speed >= 100 && b.status == :NONE
+          if foe_speed >= 100 && b.battler.pbCanParalyze?(temp_user, false)
             score += 8
             PBDebug.log_score_change(8, "Status value: #{m.name} vs fast foe (spd=#{foe_speed})")
           end
         when "BurnTarget"
           # Will-O-Wisp vs physical attacker
-          if foe_is_physical && b.status == :NONE
+          if foe_is_physical && b.battler.pbCanBurn?(temp_user, false)
             score += 8
             PBDebug.log_score_change(8, "Status value: #{m.name} vs physical foe")
           end
         when "PoisonTarget", "BadPoisonTarget"
           # Toxic vs bulky foe
-          if b.hp >= b.totalhp * 0.7 && b.status == :NONE
+          if b.hp >= b.totalhp * 0.7 && b.battler.pbCanPoison?(temp_user, false)
             score += 5
             PBDebug.log_score_change(5, "Status value: #{m.name} vs healthy foe")
           end
