@@ -89,7 +89,7 @@ Battle::AI::Handlers::ScoreReplacement.add(:foe_predicted_damage,
         # OHKO — full penalty, reduced if pkmn is faster (gets to act first)
         penalty = base_penalty
         if pkmn_faster
-          penalty = (base_penalty * 0.6).to_i
+          penalty = (base_penalty * 0.8).to_i
         end
         score -= penalty
         spd_tag = pkmn_faster ? ", but im faster" : "im slower"
@@ -274,7 +274,6 @@ Battle::AI::Handlers::ScoreReplacement.add(:utility_switch_in,
 #===============================================================================
 Battle::AI::Handlers::ScoreReplacement.add(:status_moves_value,
   proc { |idxBattler, pkmn, score, terrible_moves, battle, ai|
-    prev_score = score
     ai.each_foe_battler(ai.user.side) do |b, i|
       foe_speed = b.rough_stat(:SPEED)
       foe_is_physical = b.check_for_move { |m| m.physicalMove? }
@@ -359,7 +358,7 @@ Battle::AI::Handlers::ScoreReplacement.add(:tank_foe_best_move,
       # Bonus if replacement takes less damage than the current battler
       if replacement_dmg < current_dmg
         ratio = 1.0 - (replacement_dmg.to_f / current_dmg.to_f)
-        bonus = (15 * ratio).round
+        bonus = (20 * ratio).round
         if bonus > 0
           score += bonus
           PBDebug.log_score_change(bonus,

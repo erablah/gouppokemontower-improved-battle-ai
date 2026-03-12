@@ -365,16 +365,16 @@ Battle::AI::Handlers::GeneralMoveScore.add(:evade_knockout,
         PBDebug.log_ai("[evade_ko] skip sucker punch penalty (25% chance it will fail)")
         next score
       end
-      score -= 100
-      PBDebug.log_score_change(-100, "Penalize move: foe can KO with a higher-priority move.")
+      score -= 200
+      PBDebug.log_score_change(-200, "Penalize move: foe can KO with a higher-priority move.")
     elsif user_speed < max_foe_speed && foe_can_ko
       speed_ratio = max_foe_speed.to_f / user_speed.to_f
       chance = ((speed_ratio - 1.0) / 0.2 * 100).to_i.clamp(0, 100)
       PBDebug.log_ai("evade KO penalty chance is #{chance}%")
 
       if ai.pbAIRandom(100) < chance
-        score -= 100
-        PBDebug.log_score_change(-100, "Penalize move: user is slower than a foe who can KO. (Speed ratio: #{speed_ratio.round(2)}, Chance: #{chance}%)")
+        score -= 200
+        PBDebug.log_score_change(-200, "Penalize move: user is slower than a foe who can KO. (Speed ratio: #{speed_ratio.round(2)}, Chance: #{chance}%)")
       end
     end
 

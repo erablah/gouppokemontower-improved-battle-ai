@@ -30,8 +30,8 @@ end
 
 class Battle::AI
   MOVE_FAIL_SCORE = -999
-  REPLACEMENT_THRESHOLD_NORMAL = 60
-  REPLACEMENT_THRESHOLD_TERRIBLE_MOVES = 120
+  REPLACEMENT_THRESHOLD_NORMAL = 120
+  REPLACEMENT_THRESHOLD_TERRIBLE_MOVES = 60
 
   #---------------------------------------------------------------------------
   # [Helper] Convert effectiveness multiplier to float
@@ -171,6 +171,11 @@ class Battle::AI
 
    # override stat raise generic
   def get_target_stat_raise_score_generic(score, target, stat_changes, desire_mult = 1)
+    return score
+  end
+
+  # override stat drop generic
+  def get_target_stat_drop_score_generic(score, target, stat_changes, desire_mult = 1)
     return score
   end
 
@@ -329,7 +334,6 @@ class Battle::AI
       PBDebug.log_ai("pokemon #{party[reserve[0]].name} has switch score #{reserves[i][1]}")
     end
     reserves.sort! { |a, b| b[1] <=> a[1] }   # Sort from highest to lowest rated
-    # When all replacements are poorly rated, decide whether to sack
     threshold = terrible_moves ? REPLACEMENT_THRESHOLD_TERRIBLE_MOVES : REPLACEMENT_THRESHOLD_NORMAL
     if reserves[0][1] < threshold
       if forced_switch
