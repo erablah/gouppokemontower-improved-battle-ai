@@ -12,6 +12,13 @@ class Battle::AI::AIMove
     when :WATER then return 1 if @ai.battle.pbWeather == :HarshSun
     when :FIRE  then return 1 if @ai.battle.pbWeather == :HeavyRain
     end
+    # Tera Blast / Tera Starstorm: set category based on higher offensive stat
+    if ["CategoryDependsOnHigherDamageTera",
+        "TerapagosCategoryDependsOnHigherDamage"].include?(function_code)
+      user_battler = @ai.user.battler
+      realAtk, realSpAtk = user_battler.getOffensiveStats
+      @move.instance_variable_set(:@calcCategory, (realAtk > realSpAtk) ? 0 : 1)
+    end
     return rough_damage_original
   end
 
