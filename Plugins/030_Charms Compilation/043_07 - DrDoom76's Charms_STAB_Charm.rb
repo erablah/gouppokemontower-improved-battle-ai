@@ -162,16 +162,8 @@ class Battle::Move
       random = 85 + @battle.pbRandom(16)
       multipliers[:final_damage_multiplier] *= random / 100.0
     end
-    # STAB
-    if type && user.pbHasType?(type)
-      if user.hasActiveAbility?(:ADAPTABILITY)
-        multipliers[:final_damage_multiplier] *= 2
-      else
-        multipliers[:final_damage_multiplier] *= 1.5
-      end
-    end
-    # Type effectiveness
-    multipliers[:final_damage_multiplier] *= target.damageState.typeMod
+    # STAB + Type effectiveness (delegated for Tera compatibility)
+    pbCalcDamageMults_Type(user, target, numTargets, type, baseDmg, multipliers)
     # Burn
     if user.status == :BURN && physicalMove? && damageReducedByBurn? &&
        !user.hasActiveAbility?(:GUTS)
@@ -205,7 +197,8 @@ class Battle::Move
       multipliers[:final_damage_multiplier] *= 2
     end
     # Adds 25% more damage to STAB Bonus.
-    if type && user.pbHasType?(type) && $player.activeCharm?(:STABCHARM) && user.pbOwnedByPlayer?
+    has_stab = user.tera? ? (user.pbPreTeraTypes.include?(type) || user.typeTeraBoosted?(type)) : user.pbHasType?(type)
+    if type && has_stab && $player.activeCharm?(:STABCHARM) && user.pbOwnedByPlayer?
       multipliers[:final_damage_multiplier] *= 1.25
     end
 	# Resistor Charm
