@@ -59,13 +59,11 @@ Battle::AI::Handlers::ShouldNotSwitch.add(:current_can_answer_boosted_foe,
   proc { |user, reserves, ai, battle|
     # Only relevant when there is a boosted foe
     threatening_foe  = nil
-    foe_total_boosts = 0
     ai.each_foe_battler(user.side) do |b, i|
       boosts = 0
       GameData::Stat.each_battle { |s| boosts += b.stages[s.id] if b.stages[s.id] > 0 }
       if boosts >= 2
         threatening_foe  = b
-        foe_total_boosts = boosts
         break
       end
     end

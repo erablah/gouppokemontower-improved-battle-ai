@@ -59,9 +59,9 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
     has_good_damage = false
     ai.each_foe_battler(user.side) do |b, _i|
       best = ai.damage_moves(user, b).values.map { |md| md[:dmg] }.max || 0
-      pct  = (100.0 * best / [1, b.battler.totalhp].max).round(1)
-      PBDebug.log_ai("[smart_setup] best dmg vs #{b.name}: #{best} (#{pct}% totalhp, threshold 30%)")
-      if best.to_f / b.battler.totalhp.to_f > 0.3
+      pct  = (100.0 * best / [1, b.battler.hp].max).round(1)
+      PBDebug.log_ai("[smart_setup] best dmg vs #{b.name}: #{best} (#{pct}% hp, threshold 30%)")
+      if best.to_f / b.battler.hp.to_f > 0.3
         has_good_damage = true
         break
       end
@@ -80,11 +80,11 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
       stage = battler.stages[s]
       max_offensive_boost = [max_offensive_boost, stage].max if stage > 0
     end
-    if max_offensive_boost >= 3
-      score -= 100
-      PBDebug.log_score_change(-100, "Setup blocked: an offensive stat is already at +#{max_offensive_boost}.")
-      next score
-    end
+    # if max_offensive_boost >= 3
+    #   score -= 100
+    #   PBDebug.log_score_change(-100, "Setup blocked: an offensive stat is already at +#{max_offensive_boost}.")
+    #   next score
+    # end
 
     # -----------------------------------------------------------------------
     # F. Stat relevance check (only when statUp data is available)
@@ -273,19 +273,18 @@ Battle::AI::Handlers::GeneralMoveScore.add(:tactical_substitute,
     next Battle::AI::MOVE_USELESS_SCORE if hp_ratio < 0.60
 
     # -------------------------------------------------------------------------
-    # B. Foe threat analysis
+    # B. Foe threat analysis — reject if any foe can deal >25% in one hit
     # -------------------------------------------------------------------------
     threatened = false
     ai.each_foe_battler(user.side) do |b, i|
-      ai.known_foe_moves(b).each do |m|
-        next unless m.damagingMove?
-        eff = Effectiveness.calculate(m.type, *ai.safe_types(battler))
-        threatened = true if Effectiveness.super_effective?(eff)
+      best_dmg = ai.damage_moves(b, user).values.map { |md| md[:dmg] }.max || 0
+      if best_dmg > battler.totalhp * 0.3
+        threatened = true
+        break
       end
-      break if threatened
     end
 
-    # Substitute is counterproductive when hit by super-effective moves
+    # Substitute is counterproductive when foe can break it in one hit
     next Battle::AI::MOVE_USELESS_SCORE if threatened
 
     # -------------------------------------------------------------------------
@@ -296,27 +295,22 @@ Battle::AI::Handlers::GeneralMoveScore.add(:tactical_substitute,
 
     # 1) Substitute value increases if user has setup moves
     if user.check_for_move { |m| ai.safe_function_code(m)&.start_with?("RaiseUser") }
-      future_value += 40
+      future_value += 20
     end
 
-    # 2) Value increases if user has status moves
-    if user.check_for_move { |m|
-         ["SleepTarget", "PoisonTarget", "BurnTarget", "ParalyzeTarget"].include?(ai.safe_function_code(m))
-       }
-      future_value += 30
+    # 2) Value increases if foe has status moves (Substitute blocks them)
+    foe_has_status = false
+    ai.each_foe_battler(user.side) do |b, _i|
+      ai.known_foe_moves(b).each do |m|
+        foe_has_status = true if m.statusMove?
+      end
+      break if foe_has_status
     end
+    future_value += 15 if foe_has_status
 
-    # 3) Inaccurate moves / moves requiring a charge turn
-    if user.check_for_move { |m| m.accuracy < 100 }
-      future_value += 15
-    end
-
-    # Base weight (not too high)
-    bonus = 40 + future_value
-
-    score += bonus
+    score += future_value
     PBDebug.log_score_change(
-      bonus,
+      future_value,
       "Tactical Substitute (HP=#{(hp_ratio * 100).to_i}%)."
     )
 

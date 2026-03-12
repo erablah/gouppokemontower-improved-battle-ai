@@ -361,7 +361,9 @@ class Battle::AI
   # - keyed by move ID (symbol) for O(1) lookup of a specific move's damage
   # - cache key uses battler indexes; both directions stored separately (e.g. [0,1] != [1,0])
   def damage_moves(attacker, defender)
-    key = [attacker.index, defender.index, @battle.turnCount]
+    mega = @battle.pbRegisteredMegaEvolution?(attacker.index) rescue false
+    tera = (@battle.pbRegisteredTerastallize?(attacker.index) rescue false) || attacker.battler.tera?
+    key = [attacker.index, defender.index, @battle.turnCount, mega, tera]
     (@_ai_dmg_cache ||= {})[key] ||= begin
       PBDebug.log_ai("[damage_moves] computing #{attacker.name} → #{defender.name} (turn #{@battle.turnCount})")
       moves_by_id = {}
@@ -444,6 +446,50 @@ class Battle::AI::AIBattler
   def isRaidBoss?
     return self.battler.isRaidBoss? if self.battler.respond_to?(:isRaidBoss?)
     return false
+  end
+
+  # Override: always apply defensive tera score difference (not just when better)
+  alias total_tera_score_original get_total_tera_score
+  def get_total_tera_score
+    score = 0
+    tera_type = @battler.tera_type
+    lost_types = pbTypes(true).select { |t| t != tera_type }
+    type_name = GameData::Type.get(tera_type).name
+    PBDebug.log_ai("#{self.name} is considering Terastallizing into the #{type_name}-type...")
+    if can_attack? &&
+       (has_damaging_move_of_type?(tera_type) ||
+       has_move_with_function?("CategoryDependsOnHigherDamageTera",
+                               "TerapagosCategoryDependsOnHigherDamage"))
+      if lost_types.empty?
+        score = get_offensive_tera_score(score, tera_type, true)
+      else
+        old_score = 0
+        tera_score = get_offensive_tera_score(0, tera_type, true)
+        lost_types.each do |type|
+          type_score = get_offensive_tera_score(0, type)
+          old_score += type_score / lost_types.length
+        end
+        score += tera_score if tera_score > old_score
+      end
+    end
+    offensive_score = score
+    PBDebug.log_score_change(offensive_score, "offensive advantage")
+    if @ai.trainer.high_skill?
+      contact = @battler.affectedByContactEffect? && check_for_move { |m| m.contactMove? }
+      if lost_types.empty?
+        score = get_defensive_tera_score(score, tera_type, contact)
+      else
+        old_score = 0
+        tera_score = get_defensive_tera_score(0, tera_type, contact)
+        lost_types.each do |type|
+          type_score = get_defensive_tera_score(0, type, contact)
+          old_score += type_score / lost_types.length
+        end
+        score += tera_score - old_score
+      end
+    end
+    PBDebug.log_score_change(score - offensive_score, "defensive advantage")
+    return score
   end
 
   # Override defensive Tera scoring to increase type matchup weights
