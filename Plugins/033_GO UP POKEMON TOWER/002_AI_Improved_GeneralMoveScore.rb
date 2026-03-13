@@ -238,6 +238,36 @@ Battle::AI::Handlers::GeneralMoveScore.add(:prevent_redundant_effects,
 )
 
 #===============================================================================
+# 10. Penalize hazard setup when foe is boosted
+# A boosted foe is an immediate threat — spending a turn on hazards wastes tempo.
+#===============================================================================
+HAZARD_FUNCTION_CODES = [
+  "AddStealthRocksToFoeSide", "AddSpikesToFoeSide",
+  "AddToxicSpikesToFoeSide", "AddStickyWebToFoeSide"
+].freeze
+
+Battle::AI::Handlers::GeneralMoveScore.add(:penalize_hazards_vs_boosted_foe,
+  proc { |score, move, user, ai, battle|
+    next score unless HAZARD_FUNCTION_CODES.include?(ai.safe_function_code(move))
+
+    foe_boosts = 0
+    ai.each_foe_battler(user.side) do |b, _i|
+      GameData::Stat.each_battle do |s|
+        stage = b.stages[s.id]
+        foe_boosts += stage if stage > 0
+      end
+    end
+
+    if foe_boosts >= 2
+      penalty = 10 + (foe_boosts * 10)
+      score -= penalty
+      PBDebug.log_score_change(-penalty, "10. Hazard vs boosted foe (+#{foe_boosts} total boosts).")
+    end
+    next score
+  }
+)
+
+#===============================================================================
 # 15. General status move base score boost
 #===============================================================================
 Battle::AI::Handlers::GeneralMoveScore.add(:boost_general_status_moves,

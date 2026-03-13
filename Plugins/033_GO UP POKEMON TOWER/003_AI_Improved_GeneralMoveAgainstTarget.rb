@@ -68,7 +68,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:penalize_useless_moves,
     if move.damagingMove?
       # Skip penalty for damaging pivot moves (U-turn, Volt Switch, etc.)
       pivot_codes = ["SwitchOutUserDamagingMove", "LowerTargetAtkSpAtk1SwitchOutUser"]
-      next score if pivot_codes.include?(ai.safe_function_code(move))
+      next score if pivot_codes.include?(ai.safe_function_code(move)) && battle.pbCanChooseNonActive?(user.battler.index)
 
       dmg     = ai.damage_moves(user, target)[move.id]&.dig(:dmg) ||
                 move.predicted_damage(user: user, target: target)
