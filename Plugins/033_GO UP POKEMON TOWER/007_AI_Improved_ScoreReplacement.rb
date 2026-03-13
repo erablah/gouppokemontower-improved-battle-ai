@@ -40,8 +40,12 @@ Battle::AI::Handlers::ScoreReplacement.add(:foe_predicted_damage,
   proc { |idxBattler, pkmn, score, terrible_moves, battle, ai|
     prev_score = score
     ai.each_foe_battler(ai.user.side) do |b, i|
-      # Check whether this foe has already acted this turn
-      foe_already_acted = b.battler.movedThisRound?
+      # Determine scenario:
+      #   Scenario 1: Command phase, foe has NOT acted yet — hit is imminent
+      #   Scenario 2: Command phase, foe HAS acted — safe this turn
+      #   Scenario 3: Faint replacement (not command phase) — foe gets fresh turn
+      faint_replacement = !battle.command_phase
+      foe_already_acted = battle.command_phase && b.battler.movedThisRound?
 
       # Collect all known damaging moves (filtered by fog of war)
       known_damaging = ai.known_foe_moves(b).select { |m| m&.damagingMove? }
@@ -67,12 +71,9 @@ Battle::AI::Handlers::ScoreReplacement.add(:foe_predicted_damage,
       dmg_ratio = (worst_damage / pkmn.hp.to_f) * 100
 
       base_boost = 20
-      # If the foe hasn't acted yet, they can still attack the switch-in → higher penalty
-      # If the foe already acted, the switch-in is safe this turn → lower penalty
-      base_penalty = foe_already_acted ? 40 : 100
 
-      # Speed-aware penalty reduction
-      # Priority moves bypass speed — no reduction if foe's best move has priority
+      # Speed-aware check
+      # Priority moves bypass speed — pkmn is never "faster" against priority
       pkmn_faster = false
       if worst_move_priority <= 0
         foe_speed = b.rough_stat(:SPEED)
@@ -86,31 +87,41 @@ Battle::AI::Handlers::ScoreReplacement.add(:foe_predicted_damage,
       end
 
       if dmg_ratio >= 100
-        # OHKO — full penalty, reduced if pkmn is faster (gets to act first)
-        penalty = base_penalty
-        if pkmn_faster
-          penalty = (base_penalty * 0.8).to_i
-        end
-        score -= penalty
-        spd_tag = pkmn_faster ? ", but im faster" : "im slower"
-        spd_tag = ", priority" if worst_move_priority > 0
-        PBDebug.log_score_change(score - prev_score, "#{pkmn.name}: foe can OHKO (#{dmg_ratio}% >= 100%#{spd_tag})")
-      elsif dmg_ratio >= 50
-        # 2HKO — reduced penalty; further reduced if pkmn is faster
-        # If pkmn is faster, the switch-in moves first next turn before
-        # the foe's second hit, so penalty is softened
-        if pkmn_faster
-          penalty = (base_penalty * 0.5 * (dmg_ratio / 100.0)).to_i
+        # === OHKO ===
+        if !foe_already_acted && !faint_replacement
+          # Scenario 1: Hit is imminent this turn — speed doesn't help
+          penalty = 100
         else
-          penalty = base_penalty
+          # Scenario 2 & 3: Foe attacks next turn
+          # Faster: you get one turn to act → reduced penalty
+          # Slower/priority: you never get to act → full penalty
+          penalty = pkmn_faster ? 40 : 100
         end
         score -= penalty
-        spd_tag = pkmn_faster ? ", but im faster" : "im slower"
-        spd_tag = ", with priority" if worst_move_priority > 0
-        PBDebug.log_score_change(score - prev_score, "#{pkmn.name}: foe can 2HKO (#{dmg_ratio}%#{spd_tag})")
+        spd_tag = pkmn_faster ? ", faster" : ", slower"
+        spd_tag = ", priority" if worst_move_priority > 0
+        scenario_tag = faint_replacement ? "faint_repl" : (foe_already_acted ? "foe_acted" : "foe_pending")
+        PBDebug.log_score_change(score - prev_score, "#{pkmn.name}: foe can OHKO (#{dmg_ratio.to_i}%#{spd_tag}, #{scenario_tag})")
+      elsif dmg_ratio >= 50
+        # === 2HKO ===
+        if !foe_already_acted && !faint_replacement
+          # Scenario 1: Hit is imminent — flat penalty, speed irrelevant
+          penalty = 100
+        else
+          # Scenario 2 & 3: Foe attacks next turn
+          # Faster: softer base (20) since you move first before 2nd hit
+          # Slower/priority: harder base (40)
+          base = pkmn_faster ? 20 : 40
+          penalty = (base * (dmg_ratio / 100.0)).to_i
+        end
+        score -= penalty
+        spd_tag = pkmn_faster ? ", faster" : ", slower"
+        spd_tag = ", priority" if worst_move_priority > 0
+        scenario_tag = faint_replacement ? "faint_repl" : (foe_already_acted ? "foe_acted" : "foe_pending")
+        PBDebug.log_score_change(score - prev_score, "#{pkmn.name}: foe can 2HKO (#{dmg_ratio.to_i}%#{spd_tag}, #{scenario_tag})")
       else
         score += (base_boost * (100 - dmg_ratio) / 100).to_i
-        PBDebug.log_score_change(score - prev_score, "#{pkmn.name}: foe cannot 2HKO, +#{dmg_ratio}% < 50%")
+        PBDebug.log_score_change(score - prev_score, "#{pkmn.name}: foe cannot 2HKO, #{dmg_ratio.to_i}% < 50%")
       end
     end
     next score
@@ -149,6 +160,7 @@ Battle::AI::Handlers::ScoreReplacement.add(:user_predicted_damage,
     else
       bonus = (30 * [dmg_ratio / 1.5, 1.0].min).round
     end
+    bonus += 5 if dmg_ratio >= 1.0  # extra bonus if predicted OHKO
     PBDebug.log_score_change(bonus, "#{pkmn.name} best move: #{best_move_name}, dmg_ratio: #{(dmg_ratio * 100).round}% (#{max_predicted_damage}/#{max_foe_hp})")
     next score += bonus
   }
