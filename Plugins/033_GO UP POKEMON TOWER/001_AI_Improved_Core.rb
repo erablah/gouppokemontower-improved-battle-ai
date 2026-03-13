@@ -250,6 +250,7 @@ class Battle::AI
         PBDebug.log_ai("=> will use #{move_name}")
       end
     end
+    PBDebug.flush
   end
 
   #override pbChooseToSwitchOut

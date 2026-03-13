@@ -8,6 +8,8 @@
 # Console output (echoln) still requires $DEBUG.
 #-------------------------------------------------------------------------------
 module PBDebug
+  FLUSH_THRESHOLD = 50   # flush to disk every N buffered lines
+
   def self.flush
     if @@log.length > 0
       File.open("Data/debuglog.txt", "a+b") { |f| f.write(@@log.join) }
@@ -15,30 +17,34 @@ module PBDebug
     @@log.clear
   end
 
+  def self.maybe_flush
+    PBDebug.flush if @@log.length >= FLUSH_THRESHOLD
+  end
+
   def self.log(msg)
     echoln(msg.gsub("%", "%%")) if $DEBUG
     @@log.push(msg + "\r\n")
-    PBDebug.flush
+    PBDebug.maybe_flush
   end
 
   def self.log_header(msg)
     echoln(Console.markup_style(msg.gsub("%", "%%"), text: :light_purple)) if $DEBUG
     @@log.push(msg + "\r\n")
-    PBDebug.flush
+    PBDebug.maybe_flush
   end
 
   def self.log_message(msg)
     msg = "\"" + msg + "\""
     echoln(Console.markup_style(msg.gsub("%", "%%"), text: :dark_gray)) if $DEBUG
     @@log.push(msg + "\r\n")
-    PBDebug.flush
+    PBDebug.maybe_flush
   end
 
   def self.log_ai(msg)
     msg = "[AI] " + msg
     echoln(msg.gsub("%", "%%")) if $DEBUG
     @@log.push(msg + "\r\n")
-    PBDebug.flush
+    PBDebug.maybe_flush
   end
 
   def self.log_score_change(amt, msg)
@@ -51,7 +57,7 @@ module PBDebug
       echoln Console.markup_style(plain.gsub("%", "%%"), text: color)
     end
     @@log.push(plain + "\r\n")
-    PBDebug.flush
+    PBDebug.maybe_flush
   end
 end
 
