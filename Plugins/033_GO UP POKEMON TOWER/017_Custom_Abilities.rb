@@ -1,22 +1,40 @@
 #===============================================================================
 # Custom Ability: EERIECHILL (섬뜩한냉기)
 # - Ice-type moves are super effective against Fire and Ghost types
+# Uses pbCalcTypeModSingle override so SE text/sound displays correctly
 #===============================================================================
 
-# super effectiveness vs Fire/Ghost
-Battle::AbilityEffects::DamageCalcFromUser.add(:EERIECHILL,
-  proc { |ability, user, target, move, mults, power, type|
-    next if type != :ICE
-    # Super effective vs Fire: Ice normally does 0.5x to Fire, need 2x → multiply by 4
-    # Super effective vs Ghost: Ice normally does 1x to Ghost, need 2x → multiply by 2
-    target.pbTypes(true).each do |t|
-      case t
-      when :FIRE  then mults[:final_damage_multiplier] *= 4
-      when :GHOST then mults[:final_damage_multiplier] *= 2
+class Battle::Move
+  alias eeriechill_pbCalcTypeModSingle pbCalcTypeModSingle
+  def pbCalcTypeModSingle(moveType, defType, user, target)
+    ret = eeriechill_pbCalcTypeModSingle(moveType, defType, user, target)
+    if moveType == :ICE && user.hasActiveAbility?(:EERIECHILL)
+      if defType == :FIRE || defType == :GHOST
+        ret = Effectiveness::SUPER_EFFECTIVE_MULTIPLIER
       end
     end
-  }
-)
+    return ret
+  end
+end
+
+# AI type effectiveness awareness for Eerie Chill
+class Battle::AI::AIBattler
+  alias eeriechill_effectiveness effectiveness_of_type_against_battler
+  def effectiveness_of_type_against_battler(type, user = nil, move = nil)
+    ret = eeriechill_effectiveness(type, user, move)
+    if type == :ICE && user&.has_active_ability?(:EERIECHILL)
+      battler.pbTypes(true).each do |defend_type|
+        if (defend_type == :FIRE || defend_type == :GHOST) &&
+           !Effectiveness.super_effective_type?(type, defend_type)
+          # Undo the original calc for this type and apply SE instead
+          original = Effectiveness.calculate(type, defend_type)
+          ret = ret / original * Effectiveness::SUPER_EFFECTIVE_MULTIPLIER
+        end
+      end
+    end
+    return ret
+  end
+end
 
 #===============================================================================
 # Custom Ability: GRUDGECANDLE (미움불꽃)
