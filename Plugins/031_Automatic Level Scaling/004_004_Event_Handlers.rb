@@ -51,7 +51,8 @@ EventHandlers.add(:on_trainer_load, :automatic_level_scaling_and_custom,
     next if !trainer || id == 0
     AutomaticLevelScaling.difficulty = id
 
-  next if trainer.name.start_with?("test")
+  next if trainer.name == "test"
+
   # 🌟🌟🌟 [수정된 기능 3: 회차별 + 스위치 306 제어 + 트레이너 타입별 update_moves 설정] 🌟🌟🌟
   current_cycle = $game_variables[67]
   force_update_moves = $game_switches[306]   # ← 중요: 스위치 306 읽기
@@ -74,7 +75,7 @@ EventHandlers.add(:on_trainer_load, :automatic_level_scaling_and_custom,
         "RED", "LEAF", "GOLD", "LYRA", "RUBY", "MAY", "LUCAS", "DAWN",
         "HILBERT", "HILDA", "NATE", "ROSA", "CALEM", "SERENA", "ELIO",
         "SELENE", "VICTOR", "GLORIA", "FLORIAN", "JULIANA", "FARHAN",
-        "ELODIE", "VEGA", "ESMERALDA", "LUCIEN"
+        "ELODIE", "VEGA", "ESMERALDA", "LUCIEN",
       ]
 
       is_excluded = false
@@ -82,6 +83,7 @@ EventHandlers.add(:on_trainer_load, :automatic_level_scaling_and_custom,
         is_excluded = EXCLUDED_PREFIXES.any? { |prefix| ttype.start_with?(prefix) }
         is_excluded ||= EXCLUDED_NAMES.include?(ttype)
       end
+
 
       if is_excluded
         AutomaticLevelScaling.settings[:update_moves] = false

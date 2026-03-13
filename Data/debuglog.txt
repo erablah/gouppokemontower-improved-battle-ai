@@ -1,2717 +1,2001 @@
+[AI] DEBUG: [랜덤 파티] 트레이너 엘리트 트레이너 test의 팀은 6마리이므로 랜덤 파티가 적용되지 않았습니다.
 
 ================================================================
 
 [Started battle] Single trainer battle (1 trainer(s) vs. 1 trainer(s))
-"\j[챔피언 아이리스,이,가] 승부를 걸어왔다!"
-"\j[챔피언 아이리스,은,는] \j[보스로라,을,를] 내보냈다!"
-"가랏! 비비용!"
+"\j[엘리트 트레이너 test,이,가] 승부를 걸어왔다!"
+"\j[엘리트 트레이너 test,은,는] \j[핫삼,을,를] 내보냈다!"
+"가랏! 나인테일!"
+[Ability triggered] 나인테일's 눈퍼뜨리기
+"눈이 내리기 시작했다!"
 
 ===== Round 1 =====
 
-[AI] 보스로라 (1) couldn't find any usable items
-[AI] 보스로라 (1) is considering using 스텔스록...
-     + 30: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-[AI] 보스로라 (1) is considering using 양날박치기 against 비비용 (0)...
-     - 40: function code modifier (against target)
-     -  5: accuracy (predicted 80%)
-[AI] [damage_moves] computing 보스로라 (1) → 비비용 (0) (turn 0)
-[AI]   양날박치기: 1218 dmg (520.5% totalhp / 520.5% curhp)
-[AI]   메탈버스트: 60 dmg (25.6% totalhp / 25.6% curhp)
-     + 30: damaging move (predicted damage 1218 = 520% of target's HP)
+[AI] 핫삼 (1) couldn't find any usable items
+[AI] 핫삼 (1) will Mega Evolve
+[AI] 핫삼 (1) is considering using 유턴 against 나인테일 (0)...
+[AI] [damage_moves] computing 핫삼 (1) → 나인테일 (0) (turn 0)
+[AI] [predicted_damage] Mega Evolution simulation applied: 핫삼 (idx=1)
+[AI]   유턴: 37 dmg (20.6% totalhp / 20.6% curhp)
+[AI] [predicted_damage] Mega Evolution simulation applied: 핫삼 (idx=1)
+[AI]   불릿펀치: 252 dmg (140.0% totalhp / 140.0% curhp)
+[AI] [predicted_damage] Mega Evolution simulation applied: 핫삼 (idx=1)
+[AI]   탁쳐서떨구기: 34 dmg (18.9% totalhp / 18.9% curhp)
+     +  6: damaging move (predicted damage 37 = 20% of target's HP)
+     +  5: 6. Slow Pivot preference.
+     + 10: 6. Active Pivot move boost.
+[AI] [damage_moves] computing 나인테일 (0) → 핫삼 (1) (turn 0)
+[AI] [known_foe_moves] Hiding 앙코르 from 나인테일 (0) (never acted)
+[AI] [predicted_damage] Mega Evolution simulation applied: 핫삼 (idx=1)
+[AI]   프리즈드라이: 26 dmg (14.8% totalhp / 14.8% curhp)
+[AI] [predicted_damage] Mega Evolution simulation applied: 핫삼 (idx=1)
+[AI]   문포스: 35 dmg (19.9% totalhp / 19.9% curhp)
+[AI] 핫삼 (1) is considering using 불릿펀치 against 나인테일 (0)...
+     + 30: damaging move (predicted damage 252 = 140% of target's HP)
      + 50: predicted to KO the target
-[AI] 보스로라 (1) is considering using 메탈버스트...
-[AI] 보스로라 (1) is considering using 전기자석파 against 비비용 (0)...
-     + 25: function code modifier (against target)
+     +  8: Priority move bonus: user is slower than target.
+[AI] 핫삼 (1) is considering using 탁쳐서떨구기 against 나인테일 (0)...
+     + 24: function code modifier (against target)
+     +  5: damaging move (predicted damage 34 = 18% of target's HP)
+     - 40: Penalize useless move: very low predicted damage (18.9%).
+     + 10: Knock Off: removing target's item.
+[AI] 핫삼 (1) is considering using 칼춤...
+     + 12: raising the user's 공격 by 2
+     + 12: function code modifier (generic)
+[AI] [smart_setup] statUp: [:ATTACK, 2]
+     - 40: GLOBAL NERF: Setup moves are inherently risky.
+[AI] [smart_setup] foe 나인테일 (0) best dmg vs user: 35 (19.9% totalhp, threshold 40%)
+     + 50: Free setup: foes can't threaten (>40%).
+[AI] [smart_setup] best dmg vs 나인테일 (0): 252 (140.0% hp, threshold 30%)
+     + 20: Setup bonus: Atk +2.
      +  5: 5. General Status Move Boost.
-[AI] Move choices for 보스로라 (1) with threshold: 115: 
-[AI]    *  36.4% to use 스텔스록: score 135
-[AI]    *  36.4% to use 양날박치기 (target 0): score 135
-[AI]    *   0.0% to use 메탈버스트: score 100
-[AI]    *  27.3% to use 전기자석파 (target 0): score 130
-[AI] => will use 양날박치기 (target 0)
+[AI] Move choices for 핫삼 (1) with threshold: 168: 
+[AI]    *   0.0% to use 유턴 (target 0): score 121
+[AI]    * 100.0% to use 불릿펀치 (target 0): score 188
+[AI]    *   0.0% to use 탁쳐서떨구기 (target 0): score 99
+[AI]    *   0.0% to use 칼춤: score 147
+[AI] => will use 불릿펀치 (target 0)
 
 
-[Use move] 비비용 (0) used 수면가루
-"비비용의 수면가루!"
-"\j[상대 보스로라,은,는] 잠에 들었다!"
-[Status change] 상대 보스로라's sleep count is 2
-[Use move] 상대 보스로라 (1) used 양날박치기
-"\j[상대 보스로라,은,는] 깊이 자고 있다."
-[Status continues] 상대 보스로라's sleep count is 1
-[Move failed] 상대 보스로라 is asleep
+"나인테일, 교체야! 돌아와!"
+"네 차례야, 로토무!"
+"상대 핫삼의 \j[핫삼나이트,이,가] 엘리트 트레이너 test의 메가링에 반응하고 있다!"
+"\j[상대 핫삼,은,는] 메가진화하여 \j[메가 핫삼,이,가] 되었다!"
+[Use move] 상대 핫삼 (1) used 불릿펀치
+"상대 핫삼의 불릿펀치!"
+[HP change] 로토무 lost 16 HP (157 -> 141)
+"효과가 별로인 것 같다..."
 
 [End of round 1]
+[HP change] 로토무 gained 9 HP (141 -> 150)
+"로토무는 먹다남은음식으로 약간의 HP를 회복했다!"
 
 ===== Round 2 =====
 
-[AI] 보스로라 (1) couldn't find any usable items
-[AI] 보스로라 (1) is considering using 스텔스록...
-     + 30: function code modifier (generic)
+[AI] 핫삼 (1) couldn't find any usable items
+[AI] 핫삼 (1) is considering using 유턴 against 로토무 (0)...
+[AI] [damage_moves] computing 핫삼 (1) → 로토무 (0) (turn 1)
+[AI]   유턴: 41 dmg (26.1% totalhp / 27.3% curhp)
+[AI]   불릿펀치: 18 dmg (11.5% totalhp / 12.0% curhp)
+[AI]   탁쳐서떨구기: 77 dmg (49.0% totalhp / 51.3% curhp)
+     +  8: damaging move (predicted damage 41 = 27% of target's HP)
+     +  5: 6. Slow Pivot preference.
+     + 10: 6. Active Pivot move boost.
+[AI] [damage_moves] computing 로토무 (0) → 핫삼 (1) (turn 1)
+[AI]   볼트체인지: 63 dmg (35.8% totalhp / 35.8% curhp)
+[AI]   하이드로펌프: 66 dmg (37.5% totalhp / 37.5% curhp)
+[AI]   10만볼트: 81 dmg (46.0% totalhp / 46.0% curhp)
+[AI] 핫삼 (1) is considering using 불릿펀치 against 로토무 (0)...
+     +  3: damaging move (predicted damage 18 = 12% of target's HP)
+     - 40: Penalize useless move: very low predicted damage (11.5%).
+     +  8: Priority move bonus: user is slower than target.
+[AI] 핫삼 (1) is considering using 탁쳐서떨구기 against 로토무 (0)...
+     + 36: function code modifier (against target)
+     + 15: damaging move (predicted damage 77 = 51% of target's HP)
+     + 10: Knock Off: removing target's item.
+     +  5: Knock Off: target has high-value item.
+[AI] 핫삼 (1) is considering using 칼춤...
+     + 12: raising the user's 공격 by 2
+     + 12: function code modifier (generic)
+[AI] [smart_setup] statUp: [:ATTACK, 2]
+     - 40: GLOBAL NERF: Setup moves are inherently risky.
+[AI] [smart_setup] foe 로토무 (0) best dmg vs user: 81 (46.0% totalhp, threshold 40%)
+[AI] [smart_setup] best dmg vs 로토무 (0): 77 (51.3% hp, threshold 30%)
+     + 20: Setup bonus: Atk +2.
      +  5: 5. General Status Move Boost.
-[AI] 보스로라 (1) is considering using 양날박치기 against 비비용 (0)...
-     - 40: function code modifier (against target)
-     -  5: accuracy (predicted 80%)
-[AI] [damage_moves] computing 보스로라 (1) → 비비용 (0) (turn 1)
-[AI]   양날박치기: 1218 dmg (520.5% totalhp / 520.5% curhp)
-[AI]   메탈버스트: 60 dmg (25.6% totalhp / 25.6% curhp)
-     + 30: damaging move (predicted damage 1218 = 520% of target's HP)
-     + 50: predicted to KO the target
-[AI] 보스로라 (1) is considering using 메탈버스트...
-[AI] 보스로라 (1) is considering using 전기자석파 against 비비용 (0)...
-     + 25: function code modifier (against target)
-     +  5: 5. General Status Move Boost.
-[AI] Move choices for 보스로라 (1) with threshold: 115: 
-[AI]    *  36.4% to use 스텔스록: score 135
-[AI]    *  36.4% to use 양날박치기 (target 0): score 135
-[AI]    *   0.0% to use 메탈버스트: score 100
-[AI]    *  27.3% to use 전기자석파 (target 0): score 130
-[AI] => will use 양날박치기 (target 0)
+[AI] Move choices for 핫삼 (1) with threshold: 146: 
+[AI]    *   0.0% to use 유턴 (target 0): score 123
+[AI]    *   0.0% to use 불릿펀치 (target 0): score 71
+[AI]    * 100.0% to use 탁쳐서떨구기 (target 0): score 166
+[AI]    *   0.0% to use 칼춤: score 97
+[AI] => will use 탁쳐서떨구기 (target 0)
 
 
-"비비용, 돌아와!"
-"네 차례야, 괴력몬!"
-[Use move] 상대 보스로라 (1) used 양날박치기
-"\j[상대 보스로라,은,는] 일어났다!"
-"상대 보스로라의 양날박치기!"
-[HP change] 괴력몬 lost 95 HP (239 -> 144)
-"효과가 별로인 것 같다..."
-[HP change] 상대 보스로라 lost 48 HP (268 -> 220)
-"\j[상대 보스로라,은,는] 반동으로 데미지를 입었다!"
+[Use move] 로토무 (0) used 도깨비불
+"로토무의 도깨비불!"
+[Move failed] Failed pbAccuracyCheck
+"로토무의 기술이 빗나갔다!"
+[Use move] 상대 핫삼 (1) used 탁쳐서떨구기
+"상대 핫삼의 탁쳐서떨구기!"
+[HP change] 로토무 lost 72 HP (150 -> 78)
+"\j[로토무,은,는] \j[먹다남은음식,을,를] 떨어뜨렸다!"
 
 [End of round 2]
 
 ===== Round 3 =====
 
-[AI] 보스로라 (1) is considering using item 회복약 on party 보스로라 (party index 0)...
-     - 40: useless because 보스로라's HP isn't worth healing
-     - 40: useless because 보스로라 (1) has no condition to heal
-     -  8: prefers not to use item because it's last in stock
-     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
-     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 보스로라 (1) is considering using item 고급상처약 on party 보스로라 (party index 0)...
-     - 40: useless because 보스로라's HP isn't worth healing
-     -  8: prefers not to use item because it's last in stock
-     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
-     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 보스로라 (1) couldn't find any usable items
-[AI] 보스로라 (1) is considering using 스텔스록...
-     + 30: function code modifier (generic)
+[AI] 핫삼 (1) couldn't find any usable items
+[AI] 핫삼 (1) is considering using 유턴 against 로토무 (0)...
+[AI] [damage_moves] computing 핫삼 (1) → 로토무 (0) (turn 2)
+[AI]   유턴: 41 dmg (26.1% totalhp / 52.6% curhp)
+[AI]   불릿펀치: 18 dmg (11.5% totalhp / 23.1% curhp)
+[AI]   탁쳐서떨구기: 51 dmg (32.5% totalhp / 65.4% curhp)
+     + 15: damaging move (predicted damage 41 = 52% of target's HP)
+     +  5: 6. Slow Pivot preference.
+     + 10: 6. Active Pivot move boost.
+[AI] [damage_moves] computing 로토무 (0) → 핫삼 (1) (turn 2)
+[AI]   볼트체인지: 63 dmg (35.8% totalhp / 35.8% curhp)
+[AI]   하이드로펌프: 66 dmg (37.5% totalhp / 37.5% curhp)
+[AI]   10만볼트: 81 dmg (46.0% totalhp / 46.0% curhp)
+[AI] 핫삼 (1) is considering using 불릿펀치 against 로토무 (0)...
+     +  6: damaging move (predicted damage 18 = 23% of target's HP)
+     - 40: Penalize useless move: very low predicted damage (11.5%).
+     +  8: Priority move bonus: user is slower than target.
+[AI] 핫삼 (1) is considering using 탁쳐서떨구기 against 로토무 (0)...
+     + 19: damaging move (predicted damage 51 = 65% of target's HP)
+     - 15: Penalize weak move: consider switching (32.5%).
+     + 10: Knock Off: removing target's item.
+[AI] 핫삼 (1) is considering using 칼춤...
+     + 12: raising the user's 공격 by 2
+     + 12: function code modifier (generic)
+[AI] [smart_setup] statUp: [:ATTACK, 2]
+     - 40: GLOBAL NERF: Setup moves are inherently risky.
+[AI] [smart_setup] foe 로토무 (0) best dmg vs user: 81 (46.0% totalhp, threshold 40%)
+[AI] [smart_setup] best dmg vs 로토무 (0): 51 (65.4% hp, threshold 30%)
+     + 20: Setup bonus: Atk +2.
      +  5: 5. General Status Move Boost.
-[AI] 보스로라 (1) is considering using 양날박치기 against 괴력몬 (0)...
-     -  6: function code modifier (against target)
-[AI] [damage_moves] computing 보스로라 (1) → 괴력몬 (0) (turn 2)
-[AI]   양날박치기: 110 dmg (46.0% totalhp / 76.4% curhp)
-[AI]   메탈버스트: 60 dmg (25.1% totalhp / 41.7% curhp)
-     + 22: damaging move (predicted damage 110 = 76% of target's HP)
-[AI] 보스로라 (1) is considering using 메탈버스트...
-[AI] 보스로라 (1) is considering using 전기자석파 against 괴력몬 (0)...
-     + 25: function code modifier (against target)
-     +  5: 5. General Status Move Boost.
-[AI] Move choices for 보스로라 (1) with threshold: 115: 
-[AI]    *  55.6% to use 스텔스록: score 135
-[AI]    *   2.8% to use 양날박치기 (target 0): score 116
-[AI]    *   0.0% to use 메탈버스트: score 100
-[AI]    *  41.7% to use 전기자석파 (target 0): score 130
-[AI] => will use 전기자석파 (target 0)
+[AI] Move choices for 핫삼 (1) with threshold: 110: 
+[AI]    *  83.3% to use 유턴 (target 0): score 130
+[AI]    *   0.0% to use 불릿펀치 (target 0): score 74
+[AI]    *  16.7% to use 탁쳐서떨구기 (target 0): score 114
+[AI]    *   0.0% to use 칼춤: score 97
+[AI] => will use 유턴 (target 0)
 
 
-[Use move] 괴력몬 (0) used 탁쳐서떨구기
-"괴력몬의 탁쳐서떨구기!"
-[HP change] 상대 보스로라 lost 39 HP (220 -> 181)
-"\j[상대 보스로라,은,는] \j[애슈열매,을,를] 떨어뜨렸다!"
-[Use move] 상대 보스로라 (1) used 전기자석파
-"상대 보스로라의 전기자석파!"
-"\j[괴력몬,은,는] 마비에 걸렸다!"
+[Use move] 로토무 (0) used 도깨비불
+"로토무의 도깨비불!"
+[Move failed] Failed pbAccuracyCheck
+"로토무의 기술이 빗나갔다!"
+[Use move] 상대 핫삼 (1) used 유턴
+"상대 핫삼의 유턴!"
+[HP change] 로토무 lost 41 HP (78 -> 37)
+"효과가 별로인 것 같다..."
+"\j[상대 핫삼,은,는] 엘리트 트레이너 test의 곁으로 돌아갔다!"
+[AI] move_id: VOLTSWITCH
+[AI] move_id: HYDROPUMP
+[AI] move_id: THUNDERBOLT
+     + 17: 따라큐: foe cannot 2HKO, 12% < 50%
+     + 34: 따라큐 best move: 섀도클로, dmg_ratio: 146% (54/37)
+     +  8: 따라큐: outspeeds 로토무 (0) (162 vs 106).
+[AI] [damage_moves] computing 로토무 (0) → 핫삼 (1) (turn 2)
+[AI]   볼트체인지: 63 dmg (35.8% totalhp / 35.8% curhp)
+[AI]   하이드로펌프: 66 dmg (37.5% totalhp / 37.5% curhp)
+[AI]   10만볼트: 81 dmg (46.0% totalhp / 46.0% curhp)
+     + 16: 따라큐: tanks 로토무 (0)'s best move better (16.25 vs 81 on current).
+[AI] pokemon 따라큐 has switch score 175
+[AI] move_id: VOLTSWITCH
+[AI] move_id: HYDROPUMP
+[AI] move_id: THUNDERBOLT
+     - 22: 어흥염: foe can 2HKO (55%, slower, faint_repl)
+     + 31: 어흥염 best move: 탁쳐서떨구기, dmg_ratio: 130% (48/37)
+     +  3: 어흥염: tanks 로토무 (0)'s best move better (69 vs 81 on current).
+[AI] pokemon 어흥염 has switch score 112
+[AI] move_id: VOLTSWITCH
+[AI] move_id: HYDROPUMP
+[AI] move_id: THUNDERBOLT
+     + 14: 픽시: foe cannot 2HKO, 29% < 50%
+     + 12: 픽시 best move: 문포스, dmg_ratio: 59% (22/37)
+     +  5: 픽시: tanks 로토무 (0)'s best move better (59 vs 81 on current).
+[AI] pokemon 픽시 has switch score 131
+[AI] move_id: VOLTSWITCH
+[AI] move_id: HYDROPUMP
+[AI] move_id: THUNDERBOLT
+     + 13: 한카리아스: foe cannot 2HKO, 32% < 50%
+     + 35: 한카리아스 best move: 스케일샷, dmg_ratio: 265% (98/37)
+     +  8: 한카리아스: outspeeds 로토무 (0) (169 vs 106).
+     + 20: 한카리아스: tanks 로토무 (0)'s best move better (0 vs 81 on current).
+[AI] pokemon 한카리아스 has switch score 176
+[AI] move_id: VOLTSWITCH
+[AI] move_id: HYDROPUMP
+[AI] move_id: THUNDERBOLT
+     + 17: 미라이돈: foe cannot 2HKO, 13% < 50%
+     + 35: 미라이돈 best move: 용성군, dmg_ratio: 503% (186/37)
+     +  8: 미라이돈: outspeeds 로토무 (0) (205 vs 106).
+     + 17: 미라이돈: tanks 로토무 (0)'s best move better (14 vs 81 on current).
+[AI] pokemon 미라이돈 has switch score 177
+"\j[엘리트 트레이너 test,은,는] \j[미라이돈,을,를] 내보냈다!"
+[Ability triggered] 상대 미라이돈's 하드론엔진
+"발밑에 전기가 떠돌기 시작했다!"
+"\j[상대 미라이돈,은,는] 일렉트릭필드를 전개하여 미래 기관을 가동했다!"
 
 [End of round 3]
+"발밑에 전기가 떠돈다."
 
 ===== Round 4 =====
 
-[AI] 보스로라 (1) is considering using item 회복약 on party 보스로라 (party index 0)...
-     - 40: useless because 보스로라's HP isn't worth healing
-     - 40: useless because 보스로라 (1) has no condition to heal
-     -  8: prefers not to use item because it's last in stock
-     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
-     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 보스로라 (1) is considering using item 고급상처약 on party 보스로라 (party index 0)...
-     - 40: useless because 보스로라's HP isn't worth healing
-     -  8: prefers not to use item because it's last in stock
-     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
-     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 보스로라 (1) couldn't find any usable items
-[AI] 보스로라 (1) is considering using 스텔스록...
-     + 30: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-[AI] 보스로라 (1) is considering using 양날박치기 against 괴력몬 (0)...
-     -  7: function code modifier (against target)
-[AI] [damage_moves] computing 보스로라 (1) → 괴력몬 (0) (turn 3)
-[AI]   양날박치기: 110 dmg (46.0% totalhp / 76.4% curhp)
-[AI]   메탈버스트: 60 dmg (25.1% totalhp / 41.7% curhp)
-     + 22: damaging move (predicted damage 110 = 76% of target's HP)
-[AI] 보스로라 (1) is considering using 메탈버스트...
-     - 40: function code modifier (generic)
-[AI] 보스로라 (1) is considering using 전기자석파 against 괴력몬 (0)...
-     move will not affect 괴력몬 (0)
-     -1099: move will fail
-     -999: move will fail
-[AI] Move choices for 보스로라 (1) with threshold: 115: 
-[AI]    * 100.0% to use 스텔스록: score 135
-[AI]    *   0.0% to use 양날박치기 (target 0): score 115
-[AI]    *   0.0% to use 메탈버스트: score 60
-[AI]    *   0.0% to use 전기자석파 (target 0): score -999
-[AI] => will use 스텔스록
+[AI] 미라이돈 (1) couldn't find any usable items
+[AI] 미라이돈 (1) is considering using 볼트체인지 against 로토무 (0)...
+[AI] [damage_moves] computing 미라이돈 (1) → 로토무 (0) (turn 3)
+[AI]   볼트체인지: 66 dmg (42.0% totalhp / 178.4% curhp)
+[AI]   오버히트: 62 dmg (39.5% totalhp / 167.6% curhp)
+[AI]   용성군: 186 dmg (118.5% totalhp / 502.7% curhp)
+[AI]   라이트닝드라이브: 93 dmg (59.2% totalhp / 251.4% curhp)
+     + 30: damaging move (predicted damage 66 = 178% of target's HP)
+     + 50: predicted to KO the target
+     + 10: 6. Active Pivot move boost.
+     -  8: move is less suitable to be Choiced into
+[AI] [damage_moves] computing 로토무 (0) → 미라이돈 (1) (turn 3)
+[AI]   볼트체인지: 11 dmg (6.3% totalhp / 6.3% curhp)
+[AI]   하이드로펌프: 23 dmg (13.1% totalhp / 13.1% curhp)
+[AI]   10만볼트: 14 dmg (8.0% totalhp / 8.0% curhp)
+[AI] 미라이돈 (1) is considering using 오버히트 against 로토무 (0)...
+     + 30: damaging move (predicted damage 62 = 167% of target's HP)
+     + 50: predicted to KO the target
+     - 12: lowering the user's 특수공격 by 2
+     - 12: function code modifier (generic)
+     - 14: move is less suitable to be Choiced into
+[AI] 미라이돈 (1) is considering using 용성군 against 로토무 (0)...
+     + 30: damaging move (predicted damage 186 = 502% of target's HP)
+     + 50: predicted to KO the target
+     - 12: lowering the user's 특수공격 by 2
+     - 12: function code modifier (generic)
+     - 22: move is less suitable to be Choiced into
+[AI] 미라이돈 (1) is considering using 라이트닝드라이브 against 로토무 (0)...
+     + 30: damaging move (predicted damage 93 = 251% of target's HP)
+     + 50: predicted to KO the target
+     - 18: move is less suitable to be Choiced into
+[AI] Move choices for 미라이돈 (1) with threshold: 162: 
+[AI]    * 100.0% to use 볼트체인지 (target 0): score 182
+[AI]    *   0.0% to use 오버히트 (target 0): score 154
+[AI]    *   0.0% to use 용성군 (target 0): score 146
+[AI]    *   0.0% to use 라이트닝드라이브 (target 0): score 162
+[AI] => will use 볼트체인지 (target 0)
 
 
-[Use move] 상대 보스로라 (1) used 스텔스록
-"상대 보스로라의 스텔스록!"
-"우리편 주위로 뾰족한 돌이 떠다닌다!"
-[Use move] 괴력몬 (0) used 폭발펀치
-"괴력몬의 폭발펀치!"
-[HP change] 상대 보스로라 lost 181 HP (181 -> 0)
-"효과가 굉장했다!"
-"\j[상대 보스로라,은,는] 쓰러졌다!"
-"\j[비비용,이,가] 9611.25의 경험치를 얻었다!"
-"\j[비비용,은,는] Lv. 75이 되었다!"
-"\j[괴력몬,이,가] 9762.5의 경험치를 얻었다!"
-"다른 포켓몬들도 학습장치를 통해 경험치를 얻었다!"
-"\j[토오,은,는] Lv. 73이 되었다!"
+"잘했어, 로토무! 돌아와!"
+"네 차례야, 랜드로스!"
+[Ability triggered] 랜드로스's 위협
+[Stat change] 상대 미라이돈's 공격 changed by -1 (0 -> -1)
+"상대 미라이돈의 \j[공격,이,가] 떨어졌다!"
+[Use move] 상대 미라이돈 (1) used 볼트체인지
+"상대 미라이돈의 볼트체인지!"
+[Target immune] 랜드로스's type immunity
+"랜드로스에겐 소용이 없는 것 같다..."
 
 [End of round 4]
-[AI] move_id: KNOCKOFF
-[AI] move_id: DYNAMICPUNCH
-[AI] move_id: STONEEDGE
-[AI] move_id: BULLETPUNCH
-     - 32: 모토마: foe can OHKO (106.66666666666667% >= 100%, but im faster)
-     + 22: 모토마 best move: 용성군, dmg_ratio: 108% (155/144)
-     +  8: 모토마: outspeeds 괴력몬 (0) (239 vs 55).
-[AI] pokemon 모토마 has switch score 98
-[AI] move_id: KNOCKOFF
-[AI] move_id: DYNAMICPUNCH
-[AI] move_id: STONEEDGE
-[AI] move_id: BULLETPUNCH
-     - 32: 대검귀: foe can OHKO (104.76190476190477% >= 100%, but im faster)
-     + 25: 대검귀 best move: 셸블레이드, dmg_ratio: 127% (183/144)
-     +  8: 대검귀: outspeeds 괴력몬 (0) (210 vs 55).
-[AI] pokemon 대검귀 has switch score 101
-[AI] move_id: KNOCKOFF
-[AI] move_id: DYNAMICPUNCH
-[AI] move_id: STONEEDGE
-[AI] move_id: BULLETPUNCH
-     - 13: 펜드라: foe can 2HKO (66.94214876033058%, but im faster)
-     +  8: 펜드라: outspeeds 괴력몬 (0) (248 vs 55).
-[AI] pokemon 펜드라 has switch score 95
-[AI] move_id: KNOCKOFF
-[AI] move_id: DYNAMICPUNCH
-[AI] move_id: STONEEDGE
-[AI] move_id: BULLETPUNCH
-     - 19: 삼삼드래: foe can 2HKO (95.29411764705881%, but im faster)
-     + 30: 삼삼드래 best move: 용성군, dmg_ratio: 197% (284/144)
-     +  8: 삼삼드래: outspeeds 괴력몬 (0) (231 vs 55).
-[AI] pokemon 삼삼드래 has switch score 119
-[AI] move_id: KNOCKOFF
-[AI] move_id: DYNAMICPUNCH
-[AI] move_id: STONEEDGE
-[AI] move_id: BULLETPUNCH
-     + 10: 액스라이즈: foe cannot 2HKO, +49.797570850202426% < 50%
-     + 20: 액스라이즈 best move: 인파이트, dmg_ratio: 100% (144/144)
-     +  8: 액스라이즈: outspeeds 괴력몬 (0) (196 vs 55).
-[AI] pokemon 액스라이즈 has switch score 138
-"\j[챔피언 아이리스,은,는] \j[액스라이즈,을,를] 내보냈다!"
-[Ability triggered] 상대 액스라이즈's 틀깨기
-"\j[상대 액스라이즈,은,는] 틀을 깨뜨렸다!"
+"발밑에 전기가 떠돈다."
 
 ===== Round 5 =====
 
-[AI] 액스라이즈 (1) couldn't find any usable items
-[AI] 액스라이즈 (1) is considering using 용의춤...
-     raising the user's 스피드 isn't worthwhile
-     +  6: raising the user's 공격 by 1
-     +  6: function code modifier (generic)
-[AI] [smart_setup] statUp: [:ATTACK, 1, :SPEED, 1]
-     - 40: GLOBAL NERF: Setup moves are inherently risky.
-[AI] [damage_moves] computing 괴력몬 (0) → 액스라이즈 (1) (turn 4)
-[AI]   탁쳐서떨구기: 81 dmg (32.8% totalhp / 32.8% curhp)
-[AI]   폭발펀치: 123 dmg (49.8% totalhp / 49.8% curhp)
-[AI]   스톤에지: 82 dmg (33.2% totalhp / 33.2% curhp)
-[AI]   불릿펀치: 34 dmg (13.8% totalhp / 13.8% curhp)
-[AI] [smart_setup] foe 괴력몬 (0) best dmg vs user: 123 (49.8% totalhp, threshold 40%)
-[AI] [damage_moves] computing 액스라이즈 (1) → 괴력몬 (0) (turn 4)
-[AI]   지진: 120 dmg (50.2% totalhp / 83.3% curhp)
-[AI]   아이언헤드: 97 dmg (40.6% totalhp / 67.4% curhp)
-[AI]   인파이트: 144 dmg (60.3% totalhp / 100.0% curhp)
-[AI] [smart_setup] best dmg vs 괴력몬 (0): 144 (100.0% hp, threshold 30%)
-     +  5: Speed boost: already faster, slight bonus.
-     + 10: Setup bonus: Atk +1.
-     +  5: 5. General Status Move Boost.
-[AI] 액스라이즈 (1) is considering using 지진...
-     + 25: damaging move (predicted damage 120 = 83% of target's HP)
-[AI] 액스라이즈 (1) is considering using 아이언헤드 against 괴력몬 (0)...
-     + 17: function code modifier (against target)
-     + 20: damaging move (predicted damage 97 = 67% of target's HP)
-[AI] 액스라이즈 (1) is considering using 인파이트 against 괴력몬 (0)...
-     + 30: damaging move (predicted damage 144 = 100% of target's HP)
-     + 50: predicted to KO the target
-     lowering the user's 특수방어 isn't worthwhile
-     -  5: lowering the user's 방어 by 1
-     -  5: function code modifier (generic)
-[AI] Move choices for 액스라이즈 (1) with threshold: 155: 
-[AI]    *   0.0% to use 용의춤: score 86
-[AI]    *   0.0% to use 지진: score 125
-[AI]    *   0.0% to use 아이언헤드 (target 0): score 137
-[AI]    * 100.0% to use 인파이트 (target 0): score 175
-[AI] => will use 인파이트 (target 0)
+[AI] 미라이돈 (1) couldn't find any usable items
+[AI] 미라이돈 (1) is considering using 볼트체인지 against 랜드로스 (0)...
+     move will not affect 랜드로스 (0)
+     -1099: move will fail
+     -999: move will fail
+[AI] 미라이돈 (1) cannot choose to use 오버히트
+[AI] 미라이돈 (1) cannot choose to use 용성군
+[AI] 미라이돈 (1) cannot choose to use 라이트닝드라이브
+[AI] 미라이돈 (1) wants to switch due to terrible moves [볼트체인지=-999]
+[AI] 미라이돈 (1) is being forced to switch out
+[AI] [known_foe_moves] Hiding 유턴 from 랜드로스 (0) (never acted)
+[AI] move_id: EARTHQUAKE
+[AI] move_id: ROCKTOMB
+     + 11: 핫삼: foe cannot 2HKO, 40% < 50%
+[AI] [damage_moves] computing 랜드로스 (0) → 미라이돈 (1) (turn 4)
+[AI]   지진: 189 dmg (108.0% totalhp / 108.0% curhp)
+[AI]   암석봉인: 38 dmg (21.7% totalhp / 21.7% curhp)
+     + 12: 핫삼: tanks 랜드로스 (0)'s best move better (71 vs 189 on current).
+[AI] pokemon 핫삼 has switch score 123
+[AI] move_id: EARTHQUAKE
+[AI] move_id: ROCKTOMB
+     + 17: 따라큐: foe cannot 2HKO, 12% < 50%
+     +  8: 따라큐: outspeeds 랜드로스 (0) (162 vs 101).
+     + 18: 따라큐: tanks 랜드로스 (0)'s best move better (16.25 vs 189 on current).
+[AI] pokemon 따라큐 has switch score 143
+[AI] move_id: EARTHQUAKE
+[AI] move_id: ROCKTOMB
+     + 10: 어흥염: foe cannot 2HKO, 49% < 50%
+     + 10: 어흥염: tanks 랜드로스 (0)'s best move better (99 vs 189 on current).
+     + 12: 어흥염: Intimidate vs 랜드로스 (0) (2 phys moves)
+[AI] pokemon 어흥염 has switch score 132
+[AI] move_id: EARTHQUAKE
+[AI] move_id: ROCKTOMB
+     -100: 픽시: foe can 2HKO (50%, slower, foe_pending)
+     +  9: 픽시: tanks 랜드로스 (0)'s best move better (101 vs 189 on current).
+[AI] pokemon 픽시 has switch score 9
+[AI] move_id: EARTHQUAKE
+[AI] move_id: ROCKTOMB
+     -100: 한카리아스: foe can 2HKO (53%, faster, foe_pending)
+     + 10: 한카리아스 best move: 스케일샷, dmg_ratio: 52% (101/195)
+     +  8: 한카리아스: outspeeds 랜드로스 (0) (169 vs 101).
+     + 10: 한카리아스: tanks 랜드로스 (0)'s best move better (98 vs 189 on current).
+[AI] pokemon 한카리아스 has switch score 28
+[AI] => will switch with 따라큐
 
 
-"괴력몬, 돌아와!"
-"네 차례야, 갸라도스!"
-[HP change] 갸라도스 lost 62 HP (248 -> 186)
-"갸라도스에게 뾰족한 바위가 박혔다!"
-[Ability triggered] 갸라도스's 위협
-[Stat change] 상대 액스라이즈's 공격 changed by -1 (0 -> -1)
-"상대 액스라이즈의 \j[공격,이,가] 떨어졌다!"
-[Use move] 상대 액스라이즈 (1) used 인파이트
-"상대 액스라이즈의 인파이트!"
-[HP change] 갸라도스 lost 48 HP (186 -> 138)
-"효과가 별로인 것 같다..."
-[Stat change] 상대 액스라이즈's 방어 changed by -1 (0 -> -1)
-"상대 액스라이즈의 \j[방어,이,가] 떨어졌다!"
-[Stat change] 상대 액스라이즈's 특수방어 changed by -1 (0 -> -1)
-"상대 액스라이즈의 \j[특수방어,이,가] 떨어졌다!"
+"\j[엘리트 트레이너 test,이,가] \j[미라이돈,을,를] 넣었다!"
+"\j[엘리트 트레이너 test,은,는] \j[따라큐,을,를] 내보냈다!"
+[Use move] 랜드로스 (0) used 지진
+"랜드로스의 지진!"
+[Ability triggered] 상대 따라큐's 탈
+"탈이 대신 맞았다!"
+"상대 따라큐의 탈이 사라지고 정체가 들어났다!"
+[Form changed] 상대 따라큐 changed from form 0 to form 1
+[HP change] 상대 따라큐 lost 16 HP (130 -> 114)
 
 [End of round 5]
+"눈이 그쳤다."
+"발밑에 전기가 떠돈다."
 
 ===== Round 6 =====
 
-[AI] 액스라이즈 (1) couldn't find any usable items
-[AI] 액스라이즈 (1) is considering using 용의춤...
-     raising the user's 스피드 isn't worthwhile
-     +  6: raising the user's 공격 by 1
-     +  6: function code modifier (generic)
-[AI] [smart_setup] statUp: [:ATTACK, 1, :SPEED, 1]
+[AI] 따라큐 (1) is considering using item 회복약 on party 따라큐 (party index 1)...
+     - 40: useless because 따라큐's HP isn't worth healing
+     - 40: useless because 따라큐 (1) has no condition to heal
+     -  8: prefers not to use item because it's last in stock
+     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
+     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
+[AI] 따라큐 (1) couldn't find any usable items
+[AI] 따라큐 (1) is considering Terastallizing into the 페어리-type...
+     +  5: offensive advantage
+[AI] 따라큐 (1) will Terastallize
+[AI] 따라큐 (1) is considering using 야습 against 랜드로스 (0)...
+[AI] [damage_moves] computing 따라큐 (1) → 랜드로스 (0) (turn 5)
+[AI]   야습: 33 dmg (16.9% totalhp / 16.9% curhp)
+[AI]   치근거리기: 72 dmg (36.9% totalhp / 36.9% curhp)
+[AI]   섀도클로: 56 dmg (28.7% totalhp / 28.7% curhp)
+     +  5: damaging move (predicted damage 33 = 16% of target's HP)
+     -  8: can trigger the target's item
+     - 40: Penalize useless move: very low predicted damage (16.9%).
+[AI] [damage_moves] computing 랜드로스 (0) → 따라큐 (1) (turn 5)
+[AI]   유턴: 13 dmg (10.0% totalhp / 11.4% curhp)
+[AI]   지진: 113 dmg (86.9% totalhp / 99.1% curhp)
+[AI]   암석봉인: 46 dmg (35.4% totalhp / 40.4% curhp)
+[AI] 따라큐 (1) is considering using 치근거리기 against 랜드로스 (0)...
+     +  6: lowering the target's 공격 by 1
+     [additional effect scaling] stat drop: 6.0 * 10% = 1
+     +  1: function code modifier (against target)
+     + 11: damaging move (predicted damage 72 = 36% of target's HP)
+     -  8: can trigger the target's item
+     -  6: Penalize weak move: consider switching (36.9%).
+[AI] 따라큐 (1) is considering using 칼춤...
+     + 12: raising the user's 공격 by 2
+     + 12: function code modifier (generic)
+[AI] [smart_setup] statUp: [:ATTACK, 2]
      - 40: GLOBAL NERF: Setup moves are inherently risky.
-[AI] [damage_moves] computing 갸라도스 (0) → 액스라이즈 (1) (turn 5)
-[AI]   폭포오르기: 80 dmg (32.4% totalhp / 32.4% curhp)
-[AI]   지진: 132 dmg (53.4% totalhp / 53.4% curhp)
-[AI]   얼음엄니: 172 dmg (69.6% totalhp / 69.6% curhp)
-[AI] [smart_setup] foe 갸라도스 (0) best dmg vs user: 172 (69.6% totalhp, threshold 40%)
-[AI] [damage_moves] computing 액스라이즈 (1) → 갸라도스 (0) (turn 5)
-[AI]   지진: 0 dmg (0.0% totalhp / 0.0% curhp)
-[AI]   아이언헤드: 33 dmg (13.3% totalhp / 23.9% curhp)
-[AI]   인파이트: 49 dmg (19.8% totalhp / 35.5% curhp)
-[AI] [smart_setup] best dmg vs 갸라도스 (0): 49 (35.5% hp, threshold 30%)
-     +  5: Speed boost: already faster, slight bonus.
-     + 10: Setup bonus: Atk +1.
+[AI] [smart_setup] foe 랜드로스 (0) best dmg vs user: 113 (86.9% totalhp, threshold 40%)
+[AI] [smart_setup] best dmg vs 랜드로스 (0): 72 (36.9% hp, threshold 30%)
+     + 20: Setup bonus: Atk +2.
      +  5: 5. General Status Move Boost.
-[AI] 액스라이즈 (1) is considering using 지진...
-     move will not affect 갸라도스 (0)
-     -1099: move will fail
-     -999: move will fail
-[AI] 액스라이즈 (1) is considering using 아이언헤드 against 갸라도스 (0)...
-     +  9: function code modifier (against target)
-     +  7: damaging move (predicted damage 33 = 23% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (13.3%).
-[AI] 액스라이즈 (1) is considering using 인파이트 against 갸라도스 (0)...
-     + 10: damaging move (predicted damage 49 = 35% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (19.8%).
-     lowering the user's 특수방어 isn't worthwhile
-     -  3: lowering the user's 방어 by 1
-     -  3: function code modifier (generic)
-[AI] Move choices for 액스라이즈 (1) with threshold: 66: 
-[AI]    *  66.7% to use 용의춤: score 86
-[AI]    *   0.0% to use 지진: score -999
-[AI]    *  33.3% to use 아이언헤드 (target 0): score 76
-[AI]    *   0.0% to use 인파이트 (target 0): score 66
-[AI] => will use 용의춤
+[AI] 따라큐 (1) is considering using 섀도클로 against 랜드로스 (0)...
+     +  8: damaging move (predicted damage 56 = 28% of target's HP)
+     -  8: can trigger the target's item
+     - 23: Penalize weak move: consider switching (28.7%).
+[AI] Move choices for 따라큐 (1) with threshold: 78: 
+[AI]    *   0.0% to use 야습 (target 0): score 57
+[AI]    *  51.3% to use 치근거리기 (target 0): score 98
+[AI]    *  48.7% to use 칼춤: score 97
+[AI]    *   0.0% to use 섀도클로 (target 0): score 77
+[AI] => will use 치근거리기 (target 0)
 
 
-[Use move] 상대 액스라이즈 (1) used 용의춤
-"상대 액스라이즈의 용의춤!"
-[Stat change] 상대 액스라이즈's 공격 changed by +1 (-1 -> 0)
-"상대 액스라이즈의 \j[공격,이,가] 올랐다!"
-[Stat change] 상대 액스라이즈's 스피드 changed by +1 (0 -> 1)
-"상대 액스라이즈의 \j[스피드,이,가] 올랐다!"
-[Use move] 갸라도스 (0) used 얼음엄니
-"갸라도스의 얼음엄니!"
-[HP change] 상대 액스라이즈 lost 167 HP (247 -> 80)
-"효과가 굉장했다!"
+"\j[상대 따라큐,은,는] 페어리타입으로 테라스탈하였다!"
+[Use move] 상대 따라큐 (1) used 치근거리기
+"상대 따라큐의 치근거리기!"
+[HP change] 랜드로스 lost 90 HP (195 -> 105)
+[HP change] 상대 따라큐 lost 21 HP (114 -> 93)
+"상대 따라큐는 울퉁불퉁멧으로 인해 데미지를 입었다!"
+[Use move] 랜드로스 (0) used 지진
+"랜드로스의 지진!"
+[HP change] 상대 따라큐 lost 93 HP (93 -> 0)
+"\j[상대 따라큐,은,는] 쓰러졌다!"
+"\j[랜드로스,이,가] 2924의 많은 경험치를 얻었다!"
+"다른 포켓몬들도 학습장치를 통해 경험치를 얻었다!"
 
 [End of round 6]
+"발밑에 전기가 떠돈다."
+[AI] move_id: UTURN
+[AI] move_id: EARTHQUAKE
+[AI] move_id: ROCKTOMB
+     + 11: 핫삼: foe cannot 2HKO, 40% < 50%
+     + 15: 핫삼 best move: 탁쳐서떨구기, dmg_ratio: 76% (80/105)
+[AI] pokemon 핫삼 has switch score 126
+[AI] move_id: UTURN
+[AI] move_id: EARTHQUAKE
+[AI] move_id: ROCKTOMB
+     + 10: 어흥염: foe cannot 2HKO, 49% < 50%
+     + 17: 어흥염 best move: 플레어드라이브, dmg_ratio: 86% (90/105)
+     + 12: 어흥염: Intimidate vs 랜드로스 (0) (3 phys moves)
+[AI] pokemon 어흥염 has switch score 139
+[AI] move_id: UTURN
+[AI] move_id: EARTHQUAKE
+[AI] move_id: ROCKTOMB
+     - 20: 픽시: foe can 2HKO (50%, slower, faint_repl)
+     + 11: 픽시 best move: 문포스, dmg_ratio: 54% (57/105)
+[AI] pokemon 픽시 has switch score 91
+[AI] move_id: UTURN
+[AI] move_id: EARTHQUAKE
+[AI] move_id: ROCKTOMB
+     - 10: 한카리아스: foe can 2HKO (53%, faster, faint_repl)
+     + 19: 한카리아스 best move: 스케일샷, dmg_ratio: 96% (101/105)
+     +  8: 한카리아스: outspeeds 랜드로스 (0) (169 vs 101).
+[AI] pokemon 한카리아스 has switch score 117
+[AI] move_id: UTURN
+[AI] move_id: EARTHQUAKE
+[AI] move_id: ROCKTOMB
+     - 40: 미라이돈: foe can OHKO (108%, faster, faint_repl)
+     + 35: 미라이돈 best move: 용성군, dmg_ratio: 237% (249/105)
+     +  8: 미라이돈: outspeeds 랜드로스 (0) (205 vs 101).
+[AI] pokemon 미라이돈 has switch score 103
+"\j[엘리트 트레이너 test,은,는] \j[어흥염,을,를] 내보냈다!"
+[Ability triggered] 상대 어흥염's 위협
+[Stat change] 랜드로스's 공격 changed by -1 (0 -> -1)
+"랜드로스의 \j[공격,이,가] 떨어졌다!"
 
 ===== Round 7 =====
 
-[AI] 액스라이즈 (1) is considering using item 회복약 on party 액스라이즈 (party index 5)...
-     + 26: healing 액스라이즈 by 246 HP (80 -> 247) (79 over heal)
-     - 40: useless because 액스라이즈 (1) has no condition to heal
-     - 10: prefers basic healing items
-     -  8: prefers not to use item because it's last in stock
-     + 30: ITEM AI: Ace Pokémon preservation priority.
-[AI] 액스라이즈 (1) is considering using item 고급상처약 on party 액스라이즈 (party index 5)...
-     + 27: healing 액스라이즈 by 120 HP (80 -> 200) (0 over heal)
-     -  8: prefers not to use item because it's last in stock
-     + 30: ITEM AI: Ace Pokémon preservation priority.
-   => will use 고급상처약 (party index 5)
-[AI] 액스라이즈 (1) will use item 고급상처약
+[AI] 어흥염 (1) couldn't find any usable items
+[AI] 어흥염 (1) is considering using 막말내뱉기 against 랜드로스 (0)...
+     lowering the target's 특수공격 isn't worthwhile
+     +  4: lowering the target's 공격 by 1
+     +  4: function code modifier (against target)
+     +  5: 5. General Status Move Boost.
+[AI] [damage_moves] computing 랜드로스 (0) → 어흥염 (1) (turn 6)
+[AI]   유턴: 23 dmg (11.4% totalhp / 11.4% curhp)
+[AI]   지진: 99 dmg (49.3% totalhp / 49.3% curhp)
+[AI]   암석봉인: 40 dmg (19.9% totalhp / 19.9% curhp)
+[AI] 어흥염 (1) is considering using 플레어드라이브 against 랜드로스 (0)...
+     + 15: function code modifier (against target)
+[AI] [damage_moves] computing 어흥염 (1) → 랜드로스 (0) (turn 6)
+[AI]   플레어드라이브: 90 dmg (46.2% totalhp / 85.7% curhp)
+[AI]   탁쳐서떨구기: 74 dmg (37.9% totalhp / 70.5% curhp)
+[AI]   유턴: 18 dmg (9.2% totalhp / 17.1% curhp)
+     + 25: damaging move (predicted damage 90 = 85% of target's HP)
+     -  8: can trigger the target's item
+[AI] 어흥염 (1) is considering using 탁쳐서떨구기 against 랜드로스 (0)...
+     + 28: function code modifier (against target)
+     + 21: damaging move (predicted damage 74 = 70% of target's HP)
+     -  8: can trigger the target's item
+     -  4: Penalize weak move: consider switching (37.9%).
+     + 10: Knock Off: removing target's item.
+     +  5: Knock Off: target has high-value item.
+[AI] 어흥염 (1) is considering using 유턴 against 랜드로스 (0)...
+     +  5: damaging move (predicted damage 18 = 17% of target's HP)
+     -  8: can trigger the target's item
+     +  5: 6. Slow Pivot preference.
+     + 10: 6. Active Pivot move boost.
+[AI] Move choices for 어흥염 (1) with threshold: 132: 
+[AI]    *   0.0% to use 막말내뱉기 (target 0): score 109
+[AI]    *   0.0% to use 플레어드라이브 (target 0): score 132
+[AI]    * 100.0% to use 탁쳐서떨구기 (target 0): score 152
+[AI]    *   0.0% to use 유턴 (target 0): score 112
+[AI] => will use 탁쳐서떨구기 (target 0)
 
 
-"\j[챔피언 아이리스,은,는] 상대 액스라이즈에게 \j[고급상처약,을,를] 사용했다."
-[HP change] 상대 액스라이즈 gained 120 HP (80 -> 200)
-"상대 액스라이즈의 HP가 회복되었다."
-[Use move] 갸라도스 (0) used 얼음엄니
-"갸라도스의 얼음엄니!"
-[HP change] 상대 액스라이즈 lost 167 HP (200 -> 33)
-"효과가 굉장했다!"
+[Use move] 랜드로스 (0) used 스텔스록
+"랜드로스의 스텔스록!"
+"상대편 주위로 뾰족한 돌이 떠다닌다!"
+[Use move] 상대 어흥염 (1) used 탁쳐서떨구기
+"상대 어흥염의 탁쳐서떨구기!"
+[HP change] 랜드로스 lost 65 HP (105 -> 40)
+[HP change] 상대 어흥염 lost 33 HP (201 -> 168)
+"상대 어흥염은 울퉁불퉁멧으로 인해 데미지를 입었다!"
+"\j[랜드로스,은,는] \j[울퉁불퉁멧,을,를] 떨어뜨렸다!"
 
 [End of round 7]
+[HP change] 상대 어흥염 gained 12 HP (168 -> 180)
+"상대 어흥염은 먹다남은음식으로 약간의 HP를 회복했다!"
+"발밑의 전기가 사라졌다!"
 
 ===== Round 8 =====
 
-[AI] 액스라이즈 (1) is considering using item 회복약 on party 액스라이즈 (party index 5)...
-     + 39: healing 액스라이즈 by 246 HP (33 -> 247) (32 over heal)
-     - 40: useless because 액스라이즈 (1) has no condition to heal
+[AI] 어흥염 (1) is considering using item 회복약 on party 어흥염 (party index 2)...
+     - 40: useless because 어흥염's HP isn't worth healing
+     - 40: useless because 어흥염 (1) has no condition to heal
      -  8: prefers not to use item because it's last in stock
-     - 60: prefers not to use items on successive turns
-     - 20: prefers not to use HP-restoring items repeatedly on the same Pokemon
-     + 30: ITEM AI: Ace Pokémon preservation priority.
-[AI] 액스라이즈 (1) doesn't want to use any items
-[AI] 액스라이즈 (1) is considering using 용의춤...
-     raising the user's 스피드 isn't worthwhile
-     +  6: raising the user's 공격 by 1
-     +  6: function code modifier (generic)
-[AI] [smart_setup] statUp: [:ATTACK, 1, :SPEED, 1]
-     - 40: GLOBAL NERF: Setup moves are inherently risky.
-[AI] [damage_moves] computing 갸라도스 (0) → 액스라이즈 (1) (turn 7)
-[AI]   폭포오르기: 80 dmg (32.4% totalhp / 242.4% curhp)
-[AI]   지진: 132 dmg (53.4% totalhp / 400.0% curhp)
-[AI]   얼음엄니: 172 dmg (69.6% totalhp / 521.2% curhp)
-[AI] [smart_setup] foe 갸라도스 (0) best dmg vs user: 172 (69.6% totalhp, threshold 40%)
-     -200: Setup blocked: foe can OHKO.
+     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
+     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
+[AI] 어흥염 (1) couldn't find any usable items
+[AI] 어흥염 (1) is considering using 막말내뱉기 against 랜드로스 (0)...
+     lowering the target's 특수공격 isn't worthwhile
+     +  4: lowering the target's 공격 by 1
+     +  4: function code modifier (against target)
      +  5: 5. General Status Move Boost.
-[AI] [evade_ko] 갸라도스 (0) 폭포오르기: 80 >= 33
-[AI] [evade_ko] 갸라도스 (0) 지진: 132 >= 33
-[AI] [evade_ko] 갸라도스 (0) 얼음엄니: 172 >= 33
-[AI] 액스라이즈 (1) is considering using 지진...
-     move will not affect 갸라도스 (0)
-     -1099: move will fail
-     -999: move will fail
-[AI] 액스라이즈 (1) is considering using 아이언헤드 against 갸라도스 (0)...
-     +  9: function code modifier (against target)
-[AI] [damage_moves] computing 액스라이즈 (1) → 갸라도스 (0) (turn 7)
-[AI]   지진: 0 dmg (0.0% totalhp / 0.0% curhp)
-[AI]   아이언헤드: 50 dmg (20.2% totalhp / 36.2% curhp)
-[AI]   인파이트: 74 dmg (29.8% totalhp / 53.6% curhp)
-     + 10: damaging move (predicted damage 50 = 36% of target's HP)
-     - 40: Penalize weak move: consider switching (20.2%).
-[AI] [evade_ko] 갸라도스 (0) 폭포오르기: 80 >= 33
-[AI] [evade_ko] 갸라도스 (0) 지진: 132 >= 33
-[AI] [evade_ko] 갸라도스 (0) 얼음엄니: 172 >= 33
-[AI] 액스라이즈 (1) is considering using 인파이트 against 갸라도스 (0)...
-     + 16: damaging move (predicted damage 74 = 53% of target's HP)
-     - 20: Penalize weak move: consider switching (29.8%).
-     lowering the user's 특수방어 isn't worthwhile
-     -  3: lowering the user's 방어 by 1
-     -  3: function code modifier (generic)
-[AI] [evade_ko] 갸라도스 (0) 폭포오르기: 80 >= 33
-[AI] [evade_ko] 갸라도스 (0) 지진: 132 >= 33
-[AI] [evade_ko] 갸라도스 (0) 얼음엄니: 172 >= 33
-[AI] Move choices for 액스라이즈 (1) with threshold: 72: 
-[AI]    *   0.0% to use 용의춤: score -129
-[AI]    *   0.0% to use 지진: score -999
-[AI]    *  25.9% to use 아이언헤드 (target 0): score 79
-[AI]    *  74.1% to use 인파이트 (target 0): score 92
-[AI] => will use 아이언헤드 (target 0)
+[AI] [damage_moves] computing 랜드로스 (0) → 어흥염 (1) (turn 7)
+[AI]   유턴: 23 dmg (11.4% totalhp / 12.8% curhp)
+[AI]   지진: 99 dmg (49.3% totalhp / 55.0% curhp)
+[AI]   암석봉인: 40 dmg (19.9% totalhp / 22.2% curhp)
+[AI] 어흥염 (1) is considering using 플레어드라이브 against 랜드로스 (0)...
+     + 14: function code modifier (against target)
+[AI] [damage_moves] computing 어흥염 (1) → 랜드로스 (0) (turn 7)
+[AI]   플레어드라이브: 90 dmg (46.2% totalhp / 225.0% curhp)
+[AI]   탁쳐서떨구기: 50 dmg (25.6% totalhp / 125.0% curhp)
+[AI]   유턴: 18 dmg (9.2% totalhp / 45.0% curhp)
+     + 30: damaging move (predicted damage 90 = 225% of target's HP)
+     + 50: predicted to KO the target
+[AI] 어흥염 (1) is considering using 탁쳐서떨구기 against 랜드로스 (0)...
+     + 30: damaging move (predicted damage 50 = 125% of target's HP)
+     + 50: predicted to KO the target
+     + 10: Knock Off: removing target's item.
+[AI] 어흥염 (1) is considering using 유턴 against 랜드로스 (0)...
+     + 13: damaging move (predicted damage 18 = 45% of target's HP)
+     +  5: 6. Slow Pivot preference.
+     + 10: 6. Active Pivot move boost.
+     - 25: function code modifier (generic)
+[AI] Move choices for 어흥염 (1) with threshold: 174: 
+[AI]    *   0.0% to use 막말내뱉기 (target 0): score 109
+[AI]    *  55.6% to use 플레어드라이브 (target 0): score 194
+[AI]    *  44.4% to use 탁쳐서떨구기 (target 0): score 190
+[AI]    *   0.0% to use 유턴 (target 0): score 103
+[AI] => will use 플레어드라이브 (target 0)
 
 
-[Use move] 상대 액스라이즈 (1) used 아이언헤드
-"상대 액스라이즈의 아이언헤드!"
-[HP change] 갸라도스 lost 47 HP (138 -> 91)
-"효과가 별로인 것 같다..."
-[Use move] 갸라도스 (0) used 얼음엄니
-"갸라도스의 얼음엄니!"
-[HP change] 상대 액스라이즈 lost 33 HP (33 -> 0)
+[Use move] 랜드로스 (0) used 지진
+"랜드로스의 지진!"
+[HP change] 상대 어흥염 lost 90 HP (180 -> 90)
 "효과가 굉장했다!"
-"\j[상대 액스라이즈,은,는] 쓰러졌다!"
-"\j[갸라도스,이,가] 10263.75의 경험치를 얻었다!"
-"\j[갸라도스,은,는] Lv. 72이 되었다!"
-"\j[괴력몬,이,가] 9946.25의 경험치를 얻었다!"
-"\j[괴력몬,은,는] Lv. 74이 되었다!"
-"다른 포켓몬들도 학습장치를 통해 경험치를 얻었다!"
+[Use move] 상대 어흥염 (1) used 플레어드라이브
+"상대 어흥염의 플레어드라이브!"
+[HP change] 랜드로스 lost 40 HP (40 -> 0)
+"\j[랜드로스,은,는] 쓰러졌다!"
+[HP change] 상대 어흥염 lost 13 HP (90 -> 77)
+"\j[상대 어흥염,은,는] 반동으로 데미지를 입었다!"
 
 [End of round 8]
-[AI] move_id: WATERFALL
-[AI] move_id: EARTHQUAKE
-[AI] move_id: ICEFANG
-     - 10: 모토마: foe can 2HKO (51.11111111111111%, but im faster)
-     + 25: 모토마 best move: 용성군, dmg_ratio: 127% (119/94)
-     +  8: 모토마: outspeeds 갸라도스 (0) (239 vs 157).
-[AI] pokemon 모토마 has switch score 123
-[AI] move_id: WATERFALL
-[AI] move_id: EARTHQUAKE
-[AI] move_id: ICEFANG
-     + 12: 대검귀: foe cannot 2HKO, +38.095238095238095% < 50%
-     + 30: 대검귀 best move: 비검천중파, dmg_ratio: 171% (161/94)
-     +  8: 대검귀: outspeeds 갸라도스 (0) (210 vs 157).
-[AI] pokemon 대검귀 has switch score 150
-[AI] move_id: WATERFALL
-[AI] move_id: EARTHQUAKE
-[AI] move_id: ICEFANG
-     + 11: 펜드라: foe cannot 2HKO, +44.214876033057855% < 50%
-     + 14: 펜드라 best move: 만나자마자, dmg_ratio: 70% (66/94)
-     +  8: 펜드라: outspeeds 갸라도스 (0) (248 vs 157).
-[AI] pokemon 펜드라 has switch score 133
-[AI] move_id: WATERFALL
-[AI] move_id: EARTHQUAKE
-[AI] move_id: ICEFANG
-     + 10: 삼삼드래: foe cannot 2HKO, +45.490196078431374% < 50%
-     + 30: 삼삼드래 best move: 용성군, dmg_ratio: 232% (218/94)
-     +  8: 삼삼드래: outspeeds 갸라도스 (0) (231 vs 157).
-[AI] pokemon 삼삼드래 has switch score 148
-"\j[챔피언 아이리스,은,는] \j[대검귀,을,를] 내보냈다!"
+[HP change] 상대 어흥염 gained 12 HP (77 -> 89)
+"상대 어흥염은 먹다남은음식으로 약간의 HP를 회복했다!"
+"조금 남았어! 힘내, 나인테일!"
+[Ability triggered] 나인테일's 눈퍼뜨리기
+"눈이 내리기 시작했다!"
 
 ===== Round 9 =====
 
-[AI] 대검귀 (1) couldn't find any usable items
-[AI] 대검귀 (1) is considering using 비검천중파 against 갸라도스 (0)...
-[AI] [damage_moves] computing 대검귀 (1) → 갸라도스 (0) (turn 8)
-[AI]   비검천중파: 161 dmg (64.1% totalhp / 171.3% curhp)
-[AI]   성스러운칼: 74 dmg (29.5% totalhp / 78.7% curhp)
-[AI]   셸블레이드: 92 dmg (36.7% totalhp / 97.9% curhp)
-[AI]   아쿠아제트: 34 dmg (13.5% totalhp / 36.2% curhp)
-     + 30: damaging move (predicted damage 161 = 171% of target's HP)
-     + 50: predicted to KO the target
-     +240: function code modifier (generic)
-[AI] [damage_moves] computing 갸라도스 (0) → 대검귀 (1) (turn 8)
-[AI]   폭포오르기: 58 dmg (23.0% totalhp / 23.0% curhp)
-[AI]   지진: 96 dmg (38.1% totalhp / 38.1% curhp)
-[AI]   얼음엄니: 32 dmg (12.7% totalhp / 12.7% curhp)
-[AI] 대검귀 (1) is considering using 성스러운칼 against 갸라도스 (0)...
-     + 23: damaging move (predicted damage 74 = 78% of target's HP)
-     - 21: Penalize weak move: consider switching (29.5%).
-[AI] 대검귀 (1) is considering using 셸블레이드 against 갸라도스 (0)...
-     +  5: lowering the target's 방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 50% = 3
-     +  3: function code modifier (against target)
-     + 29: damaging move (predicted damage 92 = 97% of target's HP)
-     + 50: predicted to KO the target
-     -  7: Penalize weak move: consider switching (36.7%).
-[AI] 대검귀 (1) is considering using 아쿠아제트 against 갸라도스 (0)...
-     + 10: damaging move (predicted damage 34 = 36% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (13.5%).
-[AI] Move choices for 대검귀 (1) with threshold: 400: 
-[AI]    * 100.0% to use 비검천중파 (target 0): score 420
-[AI]    *   0.0% to use 성스러운칼 (target 0): score 102
-[AI]    *   0.0% to use 셸블레이드 (target 0): score 175
-[AI]    *   0.0% to use 아쿠아제트 (target 0): score 70
-[AI] => will use 비검천중파 (target 0)
+[AI] 어흥염 (1) is considering using item 회복약 on party 어흥염 (party index 2)...
+     + 22: healing 어흥염 by 200 HP (89 -> 201) (88 over heal)
+     - 40: useless because 어흥염 (1) has no condition to heal
+     -  8: prefers not to use item because it's last in stock
+     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
+[AI] 어흥염 (1) doesn't want to use any items
+[AI] 어흥염 (1) is considering using 막말내뱉기 against 나인테일 (0)...
+     lowering the target's 공격 isn't worthwhile
+     +  6: lowering the target's 특수공격 by 1
+     +  6: function code modifier (against target)
+     +  5: 5. General Status Move Boost.
+[AI] [damage_moves] computing 나인테일 (0) → 어흥염 (1) (turn 8)
+[AI] [known_foe_moves] Hiding 오로라베일 from 나인테일 (0) (never acted)
+[AI]   프리즈드라이: 23 dmg (11.4% totalhp / 25.8% curhp)
+[AI]   문포스: 60 dmg (29.9% totalhp / 67.4% curhp)
+[AI] 어흥염 (1) is considering using 플레어드라이브 against 나인테일 (0)...
+     - 12: function code modifier (against target)
+[AI] [damage_moves] computing 어흥염 (1) → 나인테일 (0) (turn 8)
+[AI]   플레어드라이브: 153 dmg (85.0% totalhp / 85.0% curhp)
+[AI]   탁쳐서떨구기: 32 dmg (17.8% totalhp / 17.8% curhp)
+[AI]   유턴: 16 dmg (8.9% totalhp / 8.9% curhp)
+     + 25: damaging move (predicted damage 153 = 85% of target's HP)
+[AI] 어흥염 (1) is considering using 탁쳐서떨구기 against 나인테일 (0)...
+     + 24: function code modifier (against target)
+     +  5: damaging move (predicted damage 32 = 17% of target's HP)
+     - 40: Penalize useless move: very low predicted damage (17.8%).
+     + 10: Knock Off: removing target's item.
+[AI] 어흥염 (1) is considering using 유턴 against 나인테일 (0)...
+     +  2: damaging move (predicted damage 16 = 8% of target's HP)
+     +  5: 6. Slow Pivot preference.
+     + 10: 6. Active Pivot move boost.
+     - 25: function code modifier (generic)
+[AI] Move choices for 어흥염 (1) with threshold: 93: 
+[AI]    *  40.9% to use 막말내뱉기 (target 0): score 111
+[AI]    *  45.5% to use 플레어드라이브 (target 0): score 113
+[AI]    *  13.6% to use 탁쳐서떨구기 (target 0): score 99
+[AI]    *   0.0% to use 유턴 (target 0): score 92
+[AI] => will use 막말내뱉기 (target 0)
 
 
-"좋아, 갸라도스! 돌아와!"
-"네 차례야, 찌리배리!"
-[HP change] 찌리배리 lost 35 HP (276 -> 241)
-"찌리배리에게 뾰족한 바위가 박혔다!"
-[Use move] 상대 대검귀 (1) used 비검천중파
-"상대 대검귀의 비검천중파!"
-[HP change] 찌리배리 lost 142 HP (241 -> 99)
-"우리편 주위로 압정이 뿌려졌다!"
-[Ability triggered] 찌리배리's 전기로바꾸기
-"비검천중파에게 공격을 받아 찌리배리의 전기가 충전되었다!"
+[Use move] 나인테일 (0) used 오로라베일
+"나인테일의 오로라베일!"
+"\j[오로라베일,이,가] 우리편의 물리 및 특수 공격에 대한 저항력을 강화했다!"
+[Use move] 상대 어흥염 (1) used 막말내뱉기
+"상대 어흥염의 막말내뱉기!"
+[Stat change] 나인테일's 공격 changed by -1 (0 -> -1)
+"나인테일의 \j[공격,이,가] 떨어졌다!"
+[Stat change] 나인테일's 특수공격 changed by -1 (0 -> -1)
+"나인테일의 \j[특수공격,이,가] 떨어졌다!"
+"\j[상대 어흥염,은,는] 엘리트 트레이너 test의 곁으로 돌아갔다!"
+     -  6: 핫삼: entry hazard damage 22.0
+[AI] move_id: FREEZEDRY
+[AI] move_id: MOONBLAST
+     + 14: 핫삼: foe cannot 2HKO, 25% < 50%
+     + 14: 핫삼 best move: 불릿펀치, dmg_ratio: 70% (126/180)
+[AI] [damage_moves] computing 나인테일 (0) → 어흥염 (1) (turn 8)
+[AI]   프리즈드라이: 15 dmg (7.5% totalhp / 16.9% curhp)
+[AI]   문포스: 41 dmg (20.4% totalhp / 46.1% curhp)
+     +  9: 핫삼: tanks 나인테일 (0)'s best move better (23 vs 41 on current).
+[AI] pokemon 핫삼 has switch score 130
+     -  6: 픽시: entry hazard damage 25.25
+[AI] move_id: FREEZEDRY
+[AI] move_id: MOONBLAST
+     + 12: 픽시: foe cannot 2HKO, 37% < 50%
+[AI] pokemon 픽시 has switch score 105
+     -  3: 한카리아스: entry hazard damage 11.4375
+[AI] move_id: FREEZEDRY
+[AI] move_id: MOONBLAST
+     - 30: 한카리아스: foe can 2HKO (75%, slower, faint_repl)
+     + 10: 한카리아스 best move: 아이언헤드, dmg_ratio: 51% (92/180)
+[AI] pokemon 한카리아스 has switch score 76
+     -  6: 미라이돈: entry hazard damage 21.875
+[AI] move_id: FREEZEDRY
+[AI] move_id: MOONBLAST
+     - 10: 미라이돈: foe can 2HKO (50%, faster, faint_repl)
+     + 25: 미라이돈 best move: 오버히트, dmg_ratio: 100% (180/180)
+     +  8: 미라이돈: outspeeds 나인테일 (0) (205 vs 177).
+[AI] pokemon 미라이돈 has switch score 116
+"\j[엘리트 트레이너 test,은,는] \j[핫삼,을,를] 내보냈다!"
+[HP change] 상대 핫삼 lost 22 HP (176 -> 154)
+"상대 핫삼에게 뾰족한 바위가 박혔다!"
 
 [End of round 9]
 
 ===== Round 10 =====
 
-[AI] 대검귀 (1) couldn't find any usable items
-[AI] 대검귀 (1) is considering using 비검천중파 against 찌리배리 (0)...
-[AI] [damage_moves] computing 대검귀 (1) → 찌리배리 (0) (turn 9)
-[AI]   비검천중파: 153 dmg (55.4% totalhp / 154.5% curhp)
-[AI]   성스러운칼: 140 dmg (50.7% totalhp / 141.4% curhp)
-[AI]   셸블레이드: 177 dmg (64.1% totalhp / 178.8% curhp)
-[AI]   아쿠아제트: 65 dmg (23.6% totalhp / 65.7% curhp)
-     + 30: damaging move (predicted damage 153 = 154% of target's HP)
-     + 50: predicted to KO the target
-     -  8: can trigger the target's ability
-     +223: function code modifier (generic)
-[AI] [damage_moves] computing 찌리배리 (0) → 대검귀 (1) (turn 9)
-[AI]   머드샷: 56 dmg (22.2% totalhp / 22.2% curhp)
-[AI]   파라볼라차지: 387 dmg (153.6% totalhp / 153.6% curhp)
-[AI]   볼트체인지: 417 dmg (165.5% totalhp / 165.5% curhp)
-[AI] [evade_ko] 찌리배리 (0) 파라볼라차지: 387 >= 252
-[AI] [evade_ko] 찌리배리 (0) 볼트체인지: 417 >= 252
-[AI] 대검귀 (1) is considering using 성스러운칼 against 찌리배리 (0)...
-     + 30: damaging move (predicted damage 140 = 141% of target's HP)
-     + 50: predicted to KO the target
-     -  8: can trigger the target's ability
-[AI] [evade_ko] 찌리배리 (0) 파라볼라차지: 387 >= 252
-[AI] [evade_ko] 찌리배리 (0) 볼트체인지: 417 >= 252
-[AI] 대검귀 (1) is considering using 셸블레이드 against 찌리배리 (0)...
-     +  5: lowering the target's 방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 50% = 3
-     +  3: function code modifier (against target)
-     + 30: damaging move (predicted damage 177 = 178% of target's HP)
-     + 50: predicted to KO the target
-     -  8: can trigger the target's ability
-[AI] [evade_ko] 찌리배리 (0) 파라볼라차지: 387 >= 252
-[AI] [evade_ko] 찌리배리 (0) 볼트체인지: 417 >= 252
-[AI] 대검귀 (1) is considering using 아쿠아제트 against 찌리배리 (0)...
-     + 19: damaging move (predicted damage 65 = 65% of target's HP)
-     -  8: can trigger the target's ability
-     - 33: Penalize weak move: consider switching (23.6%).
-[AI] Move choices for 대검귀 (1) with threshold: 375: 
-[AI]    * 100.0% to use 비검천중파 (target 0): score 395
-[AI]    *   0.0% to use 성스러운칼 (target 0): score 172
-[AI]    *   0.0% to use 셸블레이드 (target 0): score 175
-[AI]    *   0.0% to use 아쿠아제트 (target 0): score 78
-[AI] => will use 비검천중파 (target 0)
+[AI] 핫삼 (1) is considering using item 회복약 on party 핫삼 (party index 0)...
+     - 40: useless because 핫삼's HP isn't worth healing
+     - 40: useless because 핫삼 (1) has no condition to heal
+     -  8: prefers not to use item because it's last in stock
+     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
+     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
+[AI] 핫삼 (1) is considering using item 회복약 on party 어흥염 (party index 2)...
+     + 22: healing 어흥염 by 200 HP (89 -> 201) (88 over heal)
+     - 40: useless because 핫삼 (1) has no condition to heal
+     -  8: prefers not to use item because it's last in stock
+     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
+[AI] 핫삼 (1) doesn't want to use any items
+[AI] 핫삼 (1) is considering using 유턴 against 나인테일 (0)...
+[AI] [damage_moves] computing 핫삼 (1) → 나인테일 (0) (turn 9)
+[AI]   유턴: 18 dmg (10.0% totalhp / 10.0% curhp)
+[AI]   불릿펀치: 126 dmg (70.0% totalhp / 70.0% curhp)
+[AI]   탁쳐서떨구기: 17 dmg (9.4% totalhp / 9.4% curhp)
+     +  3: damaging move (predicted damage 18 = 10% of target's HP)
+     +  5: 6. Slow Pivot preference.
+     + 10: 6. Active Pivot move boost.
+     - 10: function code modifier (generic)
+[AI] [damage_moves] computing 나인테일 (0) → 핫삼 (1) (turn 9)
+[AI]   프리즈드라이: 17 dmg (9.7% totalhp / 11.0% curhp)
+[AI]   문포스: 23 dmg (13.1% totalhp / 14.9% curhp)
+[AI] 핫삼 (1) is considering using 불릿펀치 against 나인테일 (0)...
+     + 21: damaging move (predicted damage 126 = 70% of target's HP)
+     +  8: Priority move bonus: user is slower than target.
+[AI] 핫삼 (1) is considering using 탁쳐서떨구기 against 나인테일 (0)...
+     + 24: function code modifier (against target)
+     +  2: damaging move (predicted damage 17 = 9% of target's HP)
+     - 40: Penalize useless move: very low predicted damage (9.4%).
+     + 10: Knock Off: removing target's item.
+[AI] 핫삼 (1) is considering using 칼춤...
+     + 12: raising the user's 공격 by 2
+     + 12: function code modifier (generic)
+[AI] [smart_setup] statUp: [:ATTACK, 2]
+     - 40: GLOBAL NERF: Setup moves are inherently risky.
+[AI] [smart_setup] foe 나인테일 (0) best dmg vs user: 23 (13.1% totalhp, threshold 40%)
+     + 50: Free setup: foes can't threaten (>40%).
+[AI] [smart_setup] best dmg vs 나인테일 (0): 126 (70.0% hp, threshold 30%)
+     + 20: Setup bonus: Atk +2.
+     +  5: 5. General Status Move Boost.
+[AI] Move choices for 핫삼 (1) with threshold: 127: 
+[AI]    *   0.0% to use 유턴 (target 0): score 108
+[AI]    *   9.1% to use 불릿펀치 (target 0): score 129
+[AI]    *   0.0% to use 탁쳐서떨구기 (target 0): score 96
+[AI]    *  90.9% to use 칼춤: score 147
+[AI] => will use 칼춤
 
 
-"\j[wdsd,은,는] 괴력몬에게 \j[회복약,을,를] 사용했다."
-"괴력몬의 HP가 회복되었다."
-[Use move] 상대 대검귀 (1) used 비검천중파
-"상대 대검귀의 비검천중파!"
-[HP change] 찌리배리 lost 99 HP (99 -> 0)
-"우리편 주위로 압정이 뿌려졌다!"
-"\j[찌리배리,은,는] 쓰러졌다!"
+"나인테일, 돌아와!"
+"힘내, 타부자고!"
+"\j[타부자고,은,는] \j[풍선,으로,로] 인해 공중에 떠 있다!"
+[Use move] 상대 핫삼 (1) used 칼춤
+"상대 핫삼의 칼춤!"
+[Stat change] 상대 핫삼's 공격 changed by +2 (0 -> 2)
+"상대 핫삼의 \j[공격,이,가] 크게 올랐다!"
 
 [End of round 10]
-"네 차례야, 괴력몬!"
-[HP change] 괴력몬 lost 15 HP (243 -> 228)
-"괴력몬에게 뾰족한 바위가 박혔다!"
-[HP change] 괴력몬 lost 40 HP (228 -> 188)
-"\j[괴력몬,은,는] 압정에 찔렸다!"
 
 ===== Round 11 =====
 
-[AI] 대검귀 (1) couldn't find any usable items
-[AI] 대검귀 (1) is considering using 비검천중파 against 괴력몬 (0)...
-[AI] [damage_moves] computing 대검귀 (1) → 괴력몬 (0) (turn 10)
-[AI]   비검천중파: 79 dmg (32.5% totalhp / 42.0% curhp)
-[AI]   성스러운칼: 144 dmg (59.3% totalhp / 76.6% curhp)
-[AI]   셸블레이드: 182 dmg (74.9% totalhp / 96.8% curhp)
-[AI]   아쿠아제트: 66 dmg (27.2% totalhp / 35.1% curhp)
-     + 12: damaging move (predicted damage 79 = 42% of target's HP)
-     - 15: Penalize weak move: consider switching (32.5%).
-     +137: function code modifier (generic)
-[AI] [damage_moves] computing 괴력몬 (0) → 대검귀 (1) (turn 10)
-[AI]   탁쳐서떨구기: 44 dmg (17.5% totalhp / 17.5% curhp)
-[AI]   폭발펀치: 270 dmg (107.1% totalhp / 107.1% curhp)
-[AI]   스톤에지: 90 dmg (35.7% totalhp / 35.7% curhp)
-[AI]   불릿펀치: 19 dmg (7.5% totalhp / 7.5% curhp)
-[AI] [evade_ko] 괴력몬 (0) 폭발펀치: 270 >= 252
-[AI] 대검귀 (1) is considering using 성스러운칼 against 괴력몬 (0)...
-     + 22: damaging move (predicted damage 144 = 76% of target's HP)
-[AI] [evade_ko] 괴력몬 (0) 폭발펀치: 270 >= 252
-[AI] 대검귀 (1) is considering using 셸블레이드 against 괴력몬 (0)...
-     +  5: lowering the target's 방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 50% = 3
-     +  3: function code modifier (against target)
-     + 29: damaging move (predicted damage 182 = 96% of target's HP)
-     + 50: predicted to KO the target
-[AI] [evade_ko] 괴력몬 (0) 폭발펀치: 270 >= 252
-[AI] 대검귀 (1) is considering using 아쿠아제트 against 괴력몬 (0)...
-     + 10: damaging move (predicted damage 66 = 35% of target's HP)
-     - 26: Penalize weak move: consider switching (27.2%).
-[AI] Move choices for 대검귀 (1) with threshold: 214: 
-[AI]    * 100.0% to use 비검천중파 (target 0): score 234
-[AI]    *   0.0% to use 성스러운칼 (target 0): score 122
-[AI]    *   0.0% to use 셸블레이드 (target 0): score 182
-[AI]    *   0.0% to use 아쿠아제트 (target 0): score 84
-[AI] => will use 비검천중파 (target 0)
+[AI] 핫삼 (1) is considering using item 회복약 on party 핫삼 (party index 0)...
+     - 40: useless because 핫삼's HP isn't worth healing
+     - 40: useless because 핫삼 (1) has no condition to heal
+     -  8: prefers not to use item because it's last in stock
+     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
+     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
+[AI] 핫삼 (1) is considering using item 회복약 on party 어흥염 (party index 2)...
+     + 22: healing 어흥염 by 200 HP (89 -> 201) (88 over heal)
+     - 40: useless because 핫삼 (1) has no condition to heal
+     -  8: prefers not to use item because it's last in stock
+     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
+[AI] 핫삼 (1) doesn't want to use any items
+[AI] 핫삼 (1) is considering using 유턴 against 타부자고 (0)...
+[AI] [damage_moves] computing 핫삼 (1) → 타부자고 (0) (turn 10)
+[AI]   유턴: 23 dmg (12.3% totalhp / 12.3% curhp)
+[AI]   불릿펀치: 39 dmg (20.9% totalhp / 20.9% curhp)
+[AI]   탁쳐서떨구기: 168 dmg (89.8% totalhp / 89.8% curhp)
+     +  3: damaging move (predicted damage 23 = 12% of target's HP)
+     -  8: can trigger the target's item
+     +  5: 6. Slow Pivot preference.
+     + 10: 6. Active Pivot move boost.
+     - 25: function code modifier (generic)
+[AI] [damage_moves] computing 타부자고 (0) → 핫삼 (1) (turn 10)
+[AI]   골드러시: 74 dmg (42.0% totalhp / 48.1% curhp)
+[AI]   섀도볼: 101 dmg (57.4% totalhp / 65.6% curhp)
+[AI] 핫삼 (1) is considering using 불릿펀치 against 타부자고 (0)...
+     +  6: damaging move (predicted damage 39 = 20% of target's HP)
+     -  8: can trigger the target's item
+     - 38: Penalize weak move: consider switching (20.9%).
+     +  8: Priority move bonus: user is slower than target.
+[AI] 핫삼 (1) is considering using 탁쳐서떨구기 against 타부자고 (0)...
+     +  4: function code modifier (against target)
+     + 26: damaging move (predicted damage 168 = 89% of target's HP)
+     -  8: can trigger the target's item
+     + 10: Knock Off: removing target's item.
+[AI] 핫삼 (1) is considering using 칼춤...
+     +  6: raising the user's 공격 by 2
+     +  6: function code modifier (generic)
+[AI] [smart_setup] statUp: [:ATTACK, 2]
+     - 40: GLOBAL NERF: Setup moves are inherently risky.
+[AI] [smart_setup] foe 타부자고 (0) best dmg vs user: 101 (57.4% totalhp, threshold 40%)
+[AI] [smart_setup] best dmg vs 타부자고 (0): 168 (89.8% hp, threshold 30%)
+     + 20: Setup bonus: Atk +2.
+     +  5: 5. General Status Move Boost.
+[AI] Move choices for 핫삼 (1) with threshold: 112: 
+[AI]    *   0.0% to use 유턴 (target 0): score 85
+[AI]    *   0.0% to use 불릿펀치 (target 0): score 68
+[AI]    * 100.0% to use 탁쳐서떨구기 (target 0): score 132
+[AI]    *   0.0% to use 칼춤: score 91
+[AI] => will use 탁쳐서떨구기 (target 0)
 
 
-[Use move] 상대 대검귀 (1) used 비검천중파
-"상대 대검귀의 비검천중파!"
-[HP change] 괴력몬 lost 71 HP (188 -> 117)
-"효과가 별로인 것 같다..."
-"우리편 주위로 압정이 뿌려졌다!"
-[Use move] 괴력몬 (0) used 폭발펀치
-"괴력몬의 폭발펀치!"
-[HP change] 상대 대검귀 lost 229 HP (252 -> 23)
+[Use move] 타부자고 (0) used 섀도볼
+"타부자고의 섀도볼!"
+[HP change] 상대 핫삼 lost 92 HP (154 -> 62)
+[Use move] 상대 핫삼 (1) used 탁쳐서떨구기
+"상대 핫삼의 탁쳐서떨구기!"
+[HP change] 타부자고 lost 151 HP (187 -> 36)
 "효과가 굉장했다!"
-[HP change] 상대 대검귀 gained 63 HP (23 -> 86)
-"\j[상대 대검귀,은,는] \j[자뭉열매,으로,로] HP를 회복했다!"
-[Item consumed] 상대 대검귀 consumed its held 자뭉열매
-"\j[상대 대검귀,은,는] 혼란에 빠졌다!"
-[Lingering effect] 상대 대검귀's confusion count is 3
+"타부자고의 풍선이 터졌다!"
+[Item consumed] 타부자고 consumed its held 풍선
 
 [End of round 11]
 
 ===== Round 12 =====
 
-[AI] 대검귀 (1) is considering using item 만병통치제 on party 대검귀 (party index 2)...
-     + 15: curing 대검귀 (1)'s confusion
+[AI] 핫삼 (1) is considering using item 회복약 on party 핫삼 (party index 0)...
+     + 24: healing 핫삼 by 175 HP (62 -> 176) (61 over heal)
+     - 40: useless because 핫삼 (1) has no condition to heal
      -  8: prefers not to use item because it's last in stock
      - 40: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 대검귀 (1) is considering using item 회복약 on party 대검귀 (party index 2)...
-     + 26: healing 대검귀 by 251 HP (86 -> 252) (85 over heal)
-     + 15: curing 대검귀 (1)'s confusion
-     + 10: heals 대검귀 (1)'s HP and cures a condition
+[AI] 핫삼 (1) is considering using item 회복약 on party 어흥염 (party index 2)...
+     + 22: healing 어흥염 by 200 HP (89 -> 201) (88 over heal)
+     - 40: useless because 핫삼 (1) has no condition to heal
      -  8: prefers not to use item because it's last in stock
      - 40: ITEM AI: Non-ace Pokémon, item discouraged.
-   => will use 회복약 (party index 2)
-[AI] 대검귀 (1) will use item 회복약
+[AI] 핫삼 (1) doesn't want to use any items
+[AI] 핫삼 (1) is considering using 유턴 against 타부자고 (0)...
+[AI] [damage_moves] computing 핫삼 (1) → 타부자고 (0) (turn 11)
+[AI]   유턴: 23 dmg (12.3% totalhp / 63.9% curhp)
+[AI]   불릿펀치: 39 dmg (20.9% totalhp / 108.3% curhp)
+[AI]   탁쳐서떨구기: 112 dmg (59.9% totalhp / 311.1% curhp)
+     + 19: damaging move (predicted damage 23 = 63% of target's HP)
+     +  5: 6. Slow Pivot preference.
+     + 10: 6. Active Pivot move boost.
+     - 25: function code modifier (generic)
+[AI] [damage_moves] computing 타부자고 (0) → 핫삼 (1) (turn 11)
+[AI]   골드러시: 74 dmg (42.0% totalhp / 119.4% curhp)
+[AI]   섀도볼: 101 dmg (57.4% totalhp / 162.9% curhp)
+[AI] [evade_ko] 타부자고 (0) 골드러시: 74 >= 62
+[AI] [evade_ko] 타부자고 (0) 섀도볼: 101 >= 62
+[AI] evade KO penalty chance is 100%
+     -200: Penalize move: user is slower than a foe who can KO. (Speed ratio: 1.58, Chance: 100%)
+[AI] 핫삼 (1) is considering using 불릿펀치 against 타부자고 (0)...
+     +  8: target at low HP and move has priority over faster target
+     + 30: damaging move (predicted damage 39 = 108% of target's HP)
+     + 50: predicted to KO the target
+     +  8: Priority move bonus: user is slower than target.
+[AI] 핫삼 (1) is considering using 탁쳐서떨구기 against 타부자고 (0)...
+     + 30: damaging move (predicted damage 112 = 311% of target's HP)
+     + 50: predicted to KO the target
+     + 10: Knock Off: removing target's item.
+[AI] [evade_ko] 타부자고 (0) 골드러시: 74 >= 62
+[AI] [evade_ko] 타부자고 (0) 섀도볼: 101 >= 62
+[AI] evade KO penalty chance is 100%
+     -200: Penalize move: user is slower than a foe who can KO. (Speed ratio: 1.58, Chance: 100%)
+[AI] 핫삼 (1) is considering using 칼춤...
+     +  6: raising the user's 공격 by 2
+     +  6: function code modifier (generic)
+[AI] [smart_setup] statUp: [:ATTACK, 2]
+     - 40: GLOBAL NERF: Setup moves are inherently risky.
+[AI] [smart_setup] foe 타부자고 (0) best dmg vs user: 101 (57.4% totalhp, threshold 40%)
+     -200: Setup blocked: foe can OHKO.
+     +  5: 5. General Status Move Boost.
+[AI] [evade_ko] 타부자고 (0) 골드러시: 74 >= 62
+[AI] [evade_ko] 타부자고 (0) 섀도볼: 101 >= 62
+[AI] evade KO penalty chance is 100%
+     -200: Penalize move: user is slower than a foe who can KO. (Speed ratio: 1.58, Chance: 100%)
+[AI] Move choices for 핫삼 (1) with threshold: 176: 
+[AI]    *   0.0% to use 유턴 (target 0): score -91
+[AI]    * 100.0% to use 불릿펀치 (target 0): score 196
+[AI]    *   0.0% to use 탁쳐서떨구기 (target 0): score -10
+[AI]    *   0.0% to use 칼춤: score -329
+[AI] => will use 불릿펀치 (target 0)
 
 
-"\j[챔피언 아이리스,은,는] 상대 대검귀에게 \j[회복약,을,를] 사용했다."
-[Status change] 상대 대검귀's status was cured
-[HP change] 상대 대검귀 gained 166 HP (86 -> 252)
-"상대 대검귀의 HP가 회복되었다."
-[Use move] 괴력몬 (0) used 폭발펀치
-"괴력몬의 폭발펀치!"
-[HP change] 상대 대검귀 lost 252 HP (252 -> 0)
-"효과가 굉장했다!"
-"\j[상대 대검귀,은,는] 쓰러졌다!"
-"\j[갸라도스,이,가] 9876.25의 경험치를 얻었다!"
-"\j[갸라도스,은,는] Lv. 73이 되었다!"
-"\j[괴력몬,이,가] 9573.75의 경험치를 얻었다!"
-"다른 포켓몬들도 학습장치를 통해 경험치를 얻었다!"
-"\j[포푸니라,은,는] Lv. 72이 되었다!"
+[Use move] 상대 핫삼 (1) used 불릿펀치
+"상대 핫삼의 불릿펀치!"
+[HP change] 타부자고 lost 36 HP (36 -> 0)
+"급소에 맞았다!"
+"효과가 별로인 것 같다..."
+"\j[타부자고,은,는] 쓰러졌다!"
 
 [End of round 12]
-[AI] move_id: KNOCKOFF
-[AI] move_id: DYNAMICPUNCH
-[AI] move_id: STONEEDGE
-[AI] move_id: BULLETPUNCH
-     - 32: 모토마: foe can OHKO (108.88888888888889% >= 100%, but im faster)
-     + 26: 모토마 best move: 용성군, dmg_ratio: 130% (152/117)
-     +  8: 모토마: outspeeds 괴력몬 (0) (239 vs 112).
-[AI] pokemon 모토마 has switch score 102
-[AI] move_id: KNOCKOFF
-[AI] move_id: DYNAMICPUNCH
-[AI] move_id: STONEEDGE
-[AI] move_id: BULLETPUNCH
-     - 13: 펜드라: foe can 2HKO (68.59504132231406%, but im faster)
-     + 11: 펜드라 best move: 만나자마자, dmg_ratio: 56% (65/117)
-     +  8: 펜드라: outspeeds 괴력몬 (0) (248 vs 112).
-[AI] pokemon 펜드라 has switch score 106
-[AI] move_id: KNOCKOFF
-[AI] move_id: DYNAMICPUNCH
-[AI] move_id: STONEEDGE
-[AI] move_id: BULLETPUNCH
-     - 19: 삼삼드래: foe can 2HKO (96.47058823529412%, but im faster)
-     + 30: 삼삼드래 best move: 용성군, dmg_ratio: 240% (281/117)
-     +  8: 삼삼드래: outspeeds 괴력몬 (0) (231 vs 112).
-[AI] pokemon 삼삼드래 has switch score 119
-[AI] => forced switch: sacking 삼삼드래 (best score 119)
-"\j[챔피언 아이리스,은,는] \j[삼삼드래,을,를] 내보냈다!"
+"조금 남았어! 힘내, 앱솔!"
+[Ability triggered] 앱솔's 프레셔
+"\j[앱솔,은,는] 프레셔를 내뿜고 있다!"
 
 ===== Round 13 =====
 
-[AI] 삼삼드래 (1) couldn't find any usable items
-[AI] 삼삼드래 (1) is considering entering Dynamax form...
-     + 20: has damaging moves to convert into Max Moves
-     + 38: benefit of additional HP gained from Dynamax
-[AI] 삼삼드래 (1) is considering using 다이아크 against 괴력몬 (0)...
-[AI] [damage_moves] computing 삼삼드래 (1) → 괴력몬 (0) (turn 12)
-[AI]   다이아크: 140 dmg (57.6% totalhp / 119.7% curhp)
-[AI]   다이드라군: 302 dmg (124.3% totalhp / 258.1% curhp)
-[AI]   다이번: 201 dmg (82.7% totalhp / 171.8% curhp)
-[AI]   다이스틸: 187 dmg (77.0% totalhp / 159.8% curhp)
-     + 30: damaging move (predicted damage 140 = 119% of target's HP)
+[AI] 핫삼 (1) is considering using item 회복약 on party 핫삼 (party index 0)...
+     + 24: healing 핫삼 by 175 HP (62 -> 176) (61 over heal)
+     - 40: useless because 핫삼 (1) has no condition to heal
+     -  8: prefers not to use item because it's last in stock
+     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
+[AI] 핫삼 (1) is considering using item 회복약 on party 어흥염 (party index 2)...
+     + 22: healing 어흥염 by 200 HP (89 -> 201) (88 over heal)
+     - 40: useless because 핫삼 (1) has no condition to heal
+     -  8: prefers not to use item because it's last in stock
+     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
+[AI] 핫삼 (1) doesn't want to use any items
+[AI] 핫삼 (1) is considering using 유턴 against 앱솔 (0)...
+[AI] [damage_moves] computing 핫삼 (1) → 앱솔 (0) (turn 12)
+[AI] [predicted_damage] Mega Evolution simulation applied: 앱솔 (idx=0)
+[AI]   유턴: 128 dmg (91.4% totalhp / 91.4% curhp)
+[AI] [predicted_damage] Mega Evolution simulation applied: 앱솔 (idx=0)
+[AI]   불릿펀치: 110 dmg (78.6% totalhp / 78.6% curhp)
+[AI] [predicted_damage] Mega Evolution simulation applied: 앱솔 (idx=0)
+[AI]   탁쳐서떨구기: 79 dmg (56.4% totalhp / 56.4% curhp)
+     + 27: damaging move (predicted damage 128 = 91% of target's HP)
      + 50: predicted to KO the target
-     +  5: lowering the target's 특수방어 by 1
-     +  5: function code modifier (generic)
-[AI] [damage_moves] computing 괴력몬 (0) → 삼삼드래 (1) (turn 12)
-[AI]   탁쳐서떨구기: 41 dmg (16.1% totalhp / 16.1% curhp)
-[AI]   폭발펀치: 246 dmg (96.5% totalhp / 96.5% curhp)
-[AI]   스톤에지: 82 dmg (32.2% totalhp / 32.2% curhp)
-[AI]   불릿펀치: 34 dmg (13.3% totalhp / 13.3% curhp)
-[AI] 삼삼드래 (1) is considering using 다이드라군 against 괴력몬 (0)...
-     + 30: damaging move (predicted damage 302 = 258% of target's HP)
-     + 50: predicted to KO the target
-     +  6: lowering the target's 공격 by 1
+     +  5: 6. Slow Pivot preference.
+     + 10: 6. Active Pivot move boost.
+     - 25: function code modifier (generic)
+[AI] [damage_moves] computing 앱솔 (0) → 핫삼 (1) (turn 12)
+[AI] [known_foe_moves] Hiding 인파이트 from 앱솔 (0) (never acted)
+[AI] [predicted_damage] Mega Evolution simulation applied: 앱솔 (idx=0)
+[AI]   깜짝베기: 92 dmg (52.3% totalhp / 148.4% curhp)
+[AI] [predicted_damage] Mega Evolution simulation applied: 앱솔 (idx=0)
+[AI]   야습: 36 dmg (20.5% totalhp / 58.1% curhp)
+[AI] [evade_ko] 앱솔 (0) 깜짝베기: 92 >= 62
+[AI] evade KO penalty chance is 100%
+     -200: Penalize move: user is slower than a foe who can KO. (Speed ratio: 1.62, Chance: 100%)
+[AI] 핫삼 (1) is considering using 불릿펀치 against 앱솔 (0)...
+     + 23: damaging move (predicted damage 110 = 78% of target's HP)
+     +  8: Priority move bonus: user is slower than target.
+[AI] 핫삼 (1) is considering using 탁쳐서떨구기 against 앱솔 (0)...
+     + 16: damaging move (predicted damage 79 = 56% of target's HP)
+     + 10: Knock Off: removing target's item.
+[AI] [evade_ko] 앱솔 (0) 깜짝베기: 92 >= 62
+[AI] evade KO penalty chance is 100%
+     -200: Penalize move: user is slower than a foe who can KO. (Speed ratio: 1.62, Chance: 100%)
+[AI] 핫삼 (1) is considering using 칼춤...
+     +  6: raising the user's 공격 by 2
      +  6: function code modifier (generic)
-[AI] 삼삼드래 (1) is considering using 다이번 against 괴력몬 (0)...
-     + 30: damaging move (predicted damage 201 = 171% of target's HP)
-     + 50: predicted to KO the target
-     + 10: function code modifier (generic)
-[AI] 삼삼드래 (1) is considering using 다이스틸 against 괴력몬 (0)...
-     + 30: damaging move (predicted damage 187 = 159% of target's HP)
-     + 50: predicted to KO the target
-     +  5: raising the user's 방어 by 1
-     +  5: function code modifier (generic)
-[AI] Move choices for 삼삼드래 (1) with threshold: 170: 
-[AI]    *  22.7% to use 다이아크 (target 0): score 185
-[AI]    *  24.2% to use 다이드라군 (target 0): score 186
-[AI]    *  30.3% to use 다이번 (target 0): score 190
-[AI]    *  22.7% to use 다이스틸 (target 0): score 185
-[AI] => will use 다이번 (target 0)
+[AI] [smart_setup] statUp: [:ATTACK, 2]
+     - 40: GLOBAL NERF: Setup moves are inherently risky.
+[AI] [smart_setup] foe 앱솔 (0) best dmg vs user: 92 (52.3% totalhp, threshold 40%)
+     -200: Setup blocked: foe can OHKO.
+     +  5: 5. General Status Move Boost.
+[AI] [evade_ko] 앱솔 (0) 깜짝베기: 92 >= 62
+[AI] evade KO penalty chance is 100%
+     -200: Penalize move: user is slower than a foe who can KO. (Speed ratio: 1.62, Chance: 100%)
+[AI] Move choices for 핫삼 (1) with threshold: 111: 
+[AI]    *   0.0% to use 유턴 (target 0): score -33
+[AI]    * 100.0% to use 불릿펀치 (target 0): score 131
+[AI]    *   0.0% to use 탁쳐서떨구기 (target 0): score -74
+[AI]    *   0.0% to use 칼춤: score -329
+[AI] => will use 불릿펀치 (target 0)
 
 
-[Use move] 괴력몬 (0) used 불릿펀치
-"괴력몬의 불릿펀치!"
-[HP change] 상대 삼삼드래 lost 50 HP (383 -> 333)
-"급소에 맞았다!"
-[Use move] 상대 삼삼드래 (1) used 다이번
-"상대 삼삼드래의 다이번!"
-[HP change] 괴력몬 lost 117 HP (117 -> 0)
-"\j[괴력몬,은,는] 쓰러졌다!"
-"햇살이 강해졌다!"
+"앱솔의 \j[앱솔나이트Z,이,가] test의 메가링에 반응하고 있다!"
+"\j[앱솔,은,는] 메가진화하여 \j[메가앱솔Z,이,가] 되었다!"
+[Use move] 상대 핫삼 (1) used 불릿펀치
+"상대 핫삼의 불릿펀치!"
+[HP change] 앱솔 lost 102 HP (140 -> 38)
+[Use move] 앱솔 (0) used 깜짝베기
+"앱솔의 깜짝베기!"
+[HP change] 상대 핫삼 lost 62 HP (62 -> 0)
+"\j[상대 핫삼,은,는] 쓰러졌다!"
+"\j[나인테일,이,가] 3064의 많은 경험치를 얻었다!"
+"\j[앱솔,이,가] 3064의 많은 경험치를 얻었다!"
+"다른 포켓몬들도 학습장치를 통해 경험치를 얻었다!"
 
 [End of round 13]
-"햇살이 강하다."
-"힘내, 토오!"
-[HP change] 토오 lost 18 HP (288 -> 270)
-"토오에게 뾰족한 바위가 박혔다!"
-[HP change] 토오 lost 72 HP (270 -> 198)
-"\j[토오,은,는] 압정에 찔렸다!"
+"눈이 그쳤다."
+     - 28: 어흥염: entry hazard damage 50.25
+[AI] move_id: NIGHTSLASH
+[AI] move_id: SHADOWSNEAK
+     - 36: 어흥염: foe can 2HKO (92%, slower, faint_repl)
+     + 35: 어흥염 best move: 플레어드라이브, dmg_ratio: 179% (68/38)
+     + 12: 어흥염: Intimidate vs 앱솔 (0) (2 phys moves)
+[AI] pokemon 어흥염 has switch score 82
+     -  6: 픽시: entry hazard damage 25.25
+[AI] move_id: NIGHTSLASH
+[AI] move_id: SHADOWSNEAK
+     + 11: 픽시: foe cannot 2HKO, 44% < 50%
+     + 35: 픽시 best move: 문포스, dmg_ratio: 245% (93/38)
+[AI] pokemon 픽시 has switch score 139
+     -  3: 한카리아스: entry hazard damage 11.4375
+[AI] move_id: NIGHTSLASH
+[AI] move_id: SHADOWSNEAK
+     - 30: 한카리아스: foe can 2HKO (75%, slower, faint_repl)
+     + 35: 한카리아스 best move: 지진, dmg_ratio: 197% (75/38)
+[AI] pokemon 한카리아스 has switch score 101
+     -  6: 미라이돈: entry hazard damage 21.875
+[AI] move_id: NIGHTSLASH
+[AI] move_id: SHADOWSNEAK
+     - 32: 미라이돈: foe can 2HKO (82%, slower, faint_repl)
+     + 35: 미라이돈 best move: 용성군, dmg_ratio: 532% (202/38)
+[AI] pokemon 미라이돈 has switch score 96
+"\j[엘리트 트레이너 test,은,는] \j[픽시,을,를] 내보냈다!"
+[HP change] 상대 픽시 lost 25 HP (202 -> 177)
+"상대 픽시에게 뾰족한 바위가 박혔다!"
 
 ===== Round 14 =====
 
-[AI] 삼삼드래 (1) couldn't find any usable items
-[AI] 삼삼드래 (1) is considering using 다이아크 against 토오 (0)...
-[AI] [damage_moves] computing 삼삼드래 (1) → 토오 (0) (turn 13)
-[AI]   다이아크: 204 dmg (70.8% totalhp / 103.0% curhp)
-[AI]   다이드라군: 219 dmg (76.0% totalhp / 110.6% curhp)
-[AI]   다이번: 219 dmg (76.0% totalhp / 110.6% curhp)
-[AI]   다이스틸: 136 dmg (47.2% totalhp / 68.7% curhp)
-     + 30: damaging move (predicted damage 204 = 103% of target's HP)
+[AI] 픽시 (1) is considering using item 회복약 on party 어흥염 (party index 2)...
+     + 22: healing 어흥염 by 200 HP (89 -> 201) (88 over heal)
+     - 40: useless because 픽시 (1) has no condition to heal
+     -  8: prefers not to use item because it's last in stock
+     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
+[AI] 픽시 (1) is considering using item 회복약 on party 픽시 (party index 3)...
+     - 40: useless because 픽시's HP isn't worth healing
+     - 40: useless because 픽시 (1) has no condition to heal
+     -  8: prefers not to use item because it's last in stock
+     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
+     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
+[AI] 픽시 (1) doesn't want to use any items
+[AI] 픽시 (1) is considering using 문포스 against 앱솔 (0)...
+     ignore stat change (target's foes have Unaware)
+[AI] [damage_moves] computing 픽시 (1) → 앱솔 (0) (turn 13)
+[AI]   문포스: 93 dmg (66.4% totalhp / 244.7% curhp)
+     + 30: damaging move (predicted damage 93 = 244% of target's HP)
      + 50: predicted to KO the target
-     +  5: lowering the target's 특수방어 by 1
-     +  5: function code modifier (generic)
-[AI] [damage_moves] computing 토오 (0) → 삼삼드래 (1) (turn 13)
-[AI] [known_foe_moves] Hiding 맹독 from 토오 (0) (never acted)
-[AI]   독찌르기: 62 dmg (16.2% totalhp / 18.6% curhp)
-[AI] 삼삼드래 (1) is considering using 다이드라군 against 토오 (0)...
-     + 30: damaging move (predicted damage 219 = 110% of target's HP)
-     + 50: predicted to KO the target
-     +  6: lowering the target's 공격 by 1
-     +  6: function code modifier (generic)
-[AI] 삼삼드래 (1) is considering using 다이번 against 토오 (0)...
-     + 30: damaging move (predicted damage 219 = 110% of target's HP)
-     + 50: predicted to KO the target
-[AI] 삼삼드래 (1) is considering using 다이스틸 against 토오 (0)...
-     + 20: damaging move (predicted damage 136 = 68% of target's HP)
-     +  5: raising the user's 방어 by 1
-     +  5: function code modifier (generic)
-[AI] Move choices for 삼삼드래 (1) with threshold: 166: 
-[AI]    *  35.8% to use 다이아크 (target 0): score 185
-[AI]    *  37.7% to use 다이드라군 (target 0): score 186
-[AI]    *  26.4% to use 다이번 (target 0): score 180
-[AI]    *   0.0% to use 다이스틸 (target 0): score 125
-[AI] => will use 다이번 (target 0)
+[AI] [damage_moves] computing 앱솔 (0) → 픽시 (1) (turn 13)
+[AI]   깜짝베기: 65 dmg (32.2% totalhp / 36.7% curhp)
+[AI]   인파이트: 49 dmg (24.3% totalhp / 27.7% curhp)
+[AI]   야습: 51 dmg (25.2% totalhp / 28.8% curhp)
+[AI] 픽시 (1) is considering using 알낳기...
+     - 10: function code modifier (generic)
+     +  5: 5. General Status Move Boost.
+[AI] [smart_recovery] max foe dmg = 65 (32.2% totalhp, threshold 55%)
+[AI] 픽시 (1) is considering using 전기자석파 against 앱솔 (0)...
+     + 10: function code modifier (against target)
+     +  5: 5. General Status Move Boost.
+[AI] 픽시 (1) is considering using 스텔스록...
+     + 30: function code modifier (generic)
+     +  5: 5. General Status Move Boost.
+[AI] Move choices for 픽시 (1) with threshold: 160: 
+[AI]    * 100.0% to use 문포스 (target 0): score 180
+[AI]    *   0.0% to use 알낳기: score 95
+[AI]    *   0.0% to use 전기자석파 (target 0): score 115
+[AI]    *   0.0% to use 스텔스록: score 135
+[AI] => will use 문포스 (target 0)
 
 
-[Use move] 상대 삼삼드래 (1) used 다이번
-"상대 삼삼드래의 다이번!"
-[HP change] 토오 lost 198 HP (198 -> 0)
-"\j[토오,은,는] 쓰러졌다!"
+"좋아, 앱솔! 돌아와!"
+"힘내, 로토무!"
+[Use move] 상대 픽시 (1) used 문포스
+"상대 픽시의 문포스!"
+[HP change] 로토무 lost 10 HP (37 -> 27)
+"효과가 별로인 것 같다..."
 
 [End of round 14]
-"햇살이 강하다."
-"힘내, 갸라도스!"
-[HP change] 갸라도스 lost 64 HP (98 -> 34)
-"갸라도스에게 뾰족한 바위가 박혔다!"
-[Ability triggered] 갸라도스's 위협
-[Stat change] 상대 삼삼드래's 공격 changed by -1 (0 -> -1)
-"상대 삼삼드래의 \j[공격,이,가] 떨어졌다!"
 
 ===== Round 15 =====
 
-[AI] 삼삼드래 (1) couldn't find any usable items
-[AI] 삼삼드래 (1) is considering using 다이아크 against 갸라도스 (0)...
-[AI] [damage_moves] computing 삼삼드래 (1) → 갸라도스 (0) (turn 14)
-[AI]   다이아크: 215 dmg (84.3% totalhp / 632.4% curhp)
-[AI]   다이드라군: 231 dmg (90.6% totalhp / 679.4% curhp)
-[AI]   다이번: 116 dmg (45.5% totalhp / 341.2% curhp)
-[AI]   다이스틸: 72 dmg (28.2% totalhp / 211.8% curhp)
-     + 30: damaging move (predicted damage 215 = 632% of target's HP)
-     + 50: predicted to KO the target
-     +  5: lowering the target's 특수방어 by 1
-     +  5: function code modifier (generic)
-[AI] [damage_moves] computing 갸라도스 (0) → 삼삼드래 (1) (turn 14)
-[AI]   폭포오르기: 28 dmg (7.3% totalhp / 8.4% curhp)
-[AI]   지진: 0 dmg (0.0% totalhp / 0.0% curhp)
-[AI]   얼음엄니: 120 dmg (31.3% totalhp / 36.0% curhp)
-[AI] 삼삼드래 (1) is considering using 다이드라군 against 갸라도스 (0)...
-     + 30: damaging move (predicted damage 231 = 679% of target's HP)
-     + 50: predicted to KO the target
-     +  6: lowering the target's 공격 by 1
-     +  6: function code modifier (generic)
-[AI] 삼삼드래 (1) is considering using 다이번 against 갸라도스 (0)...
-     + 30: damaging move (predicted damage 116 = 341% of target's HP)
-     + 50: predicted to KO the target
-[AI] 삼삼드래 (1) is considering using 다이스틸 against 갸라도스 (0)...
-     + 30: damaging move (predicted damage 72 = 211% of target's HP)
-     + 50: predicted to KO the target
-     +  5: raising the user's 방어 by 1
-     +  5: function code modifier (generic)
-[AI] Move choices for 삼삼드래 (1) with threshold: 166: 
-[AI]    *  26.4% to use 다이아크 (target 0): score 185
-[AI]    *  27.8% to use 다이드라군 (target 0): score 186
-[AI]    *  19.4% to use 다이번 (target 0): score 180
-[AI]    *  26.4% to use 다이스틸 (target 0): score 185
-[AI] => will use 다이드라군 (target 0)
+[AI] 픽시 (1) is considering using item 회복약 on party 어흥염 (party index 2)...
+     + 22: healing 어흥염 by 200 HP (89 -> 201) (88 over heal)
+     - 40: useless because 픽시 (1) has no condition to heal
+     -  8: prefers not to use item because it's last in stock
+     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
+[AI] 픽시 (1) is considering using item 회복약 on party 픽시 (party index 3)...
+     - 40: useless because 픽시's HP isn't worth healing
+     - 40: useless because 픽시 (1) has no condition to heal
+     -  8: prefers not to use item because it's last in stock
+     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
+     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
+[AI] 픽시 (1) doesn't want to use any items
+[AI] 픽시 (1) is considering using 문포스 against 로토무 (0)...
+     ignore stat change (target's foes have Unaware)
+[AI] [damage_moves] computing 픽시 (1) → 로토무 (0) (turn 14)
+[AI]   문포스: 11 dmg (7.0% totalhp / 40.7% curhp)
+     + 12: damaging move (predicted damage 11 = 40% of target's HP)
+     - 40: Penalize useless move: very low predicted damage (7.0%).
+[AI] [damage_moves] computing 로토무 (0) → 픽시 (1) (turn 14)
+[AI]   볼트체인지: 45 dmg (22.3% totalhp / 25.4% curhp)
+[AI]   하이드로펌프: 47 dmg (23.3% totalhp / 26.6% curhp)
+[AI]   10만볼트: 59 dmg (29.2% totalhp / 33.3% curhp)
+[AI] 픽시 (1) is considering using 알낳기...
+     - 10: function code modifier (generic)
+     +  5: 5. General Status Move Boost.
+[AI] [smart_recovery] max foe dmg = 59 (29.2% totalhp, threshold 55%)
+[AI] 픽시 (1) is considering using 전기자석파 against 로토무 (0)...
+     move will not affect 로토무 (0)
+     -1099: move will fail
+     -999: move will fail
+[AI] 픽시 (1) is considering using 스텔스록...
+     + 30: function code modifier (generic)
+     +  5: 5. General Status Move Boost.
+[AI] Move choices for 픽시 (1) with threshold: 115: 
+[AI]    *   0.0% to use 문포스 (target 0): score 72
+[AI]    *   0.0% to use 알낳기: score 95
+[AI]    *   0.0% to use 전기자석파 (target 0): score -999
+[AI]    * 100.0% to use 스텔스록: score 135
+[AI] => will use 스텔스록
 
 
-"\j[wdsd,은,는] 토오에게 \j[기력의덩어리,을,를] 사용했다."
-"\j[토오,은,는] 기절 상태에서 회복됐다!"
-[Use move] 상대 삼삼드래 (1) used 다이드라군
-"상대 삼삼드래의 다이드라군!"
-[HP change] 갸라도스 lost 34 HP (34 -> 0)
-"\j[갸라도스,은,는] 쓰러졌다!"
+[Use move] 로토무 (0) used 10만볼트
+"로토무의 10만볼트!"
+[HP change] 상대 픽시 lost 59 HP (177 -> 118)
+"\j[상대 픽시,은,는] 마비에 걸렸다!"
+[Use move] 상대 픽시 (1) used 스텔스록
+"\j[상대 픽시,은,는] 몸이 저려 움직일 수 없다!"
+[Move failed] 상대 픽시 is paralyzed
 
 [End of round 15]
-"햇살이 강하다."
-"힘내, 토오!"
-[HP change] 토오 lost 18 HP (288 -> 270)
-"토오에게 뾰족한 바위가 박혔다!"
-[HP change] 토오 lost 72 HP (270 -> 198)
-"\j[토오,은,는] 압정에 찔렸다!"
 
 ===== Round 16 =====
 
-[AI] 삼삼드래 (1) couldn't find any usable items
-[AI] 삼삼드래 (1) is considering using 악의파동 against 토오 (0)...
-     +  6: function code modifier (against target)
-[AI] [damage_moves] computing 삼삼드래 (1) → 토오 (0) (turn 15)
-[AI]   악의파동: 126 dmg (43.8% totalhp / 63.6% curhp)
-[AI]   용성군: 204 dmg (70.8% totalhp / 103.0% curhp)
-[AI]   불대문자: 173 dmg (60.1% totalhp / 87.4% curhp)
-[AI]   러스터캐논: 84 dmg (29.2% totalhp / 42.4% curhp)
-     + 19: damaging move (predicted damage 126 = 63% of target's HP)
-[AI] [damage_moves] computing 토오 (0) → 삼삼드래 (1) (turn 15)
-[AI] [known_foe_moves] Hiding 맹독 from 토오 (0) (never acted)
-[AI]   독찌르기: 62 dmg (24.3% totalhp / 27.9% curhp)
-[AI] 삼삼드래 (1) is considering using 용성군 against 토오 (0)...
-     + 30: damaging move (predicted damage 204 = 103% of target's HP)
-     + 50: predicted to KO the target
-     - 12: lowering the user's 특수공격 by 2
-     - 12: function code modifier (generic)
-[AI] 삼삼드래 (1) is considering using 불대문자 against 토오 (0)...
-     + 18: function code modifier (against target)
-     -  3: accuracy (predicted 85%)
-     + 26: damaging move (predicted damage 173 = 87% of target's HP)
-[AI] 삼삼드래 (1) is considering using 러스터캐논 against 토오 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 10% = 1
-     +  1: function code modifier (against target)
-     + 12: damaging move (predicted damage 84 = 42% of target's HP)
-     - 22: Penalize weak move: consider switching (29.2%).
-[AI] Move choices for 삼삼드래 (1) with threshold: 148: 
-[AI]    *   0.0% to use 악의파동 (target 0): score 125
-[AI]    * 100.0% to use 용성군 (target 0): score 168
-[AI]    *   0.0% to use 불대문자 (target 0): score 141
-[AI]    *   0.0% to use 러스터캐논 (target 0): score 91
-[AI] => will use 용성군 (target 0)
+[AI] 픽시 (1) is considering using item 회복약 on party 어흥염 (party index 2)...
+     + 22: healing 어흥염 by 200 HP (89 -> 201) (88 over heal)
+     - 40: useless because 픽시 (1) has no condition to heal
+     -  8: prefers not to use item because it's last in stock
+     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
+[AI] 픽시 (1) is considering using item 회복약 on party 픽시 (party index 3)...
+     - 40: useless because 픽시's HP isn't worth healing
+     + 15: curing 픽시 (1)'s 마비 status
+     - 40: useless because item isn't used to its full potential
+     -  8: prefers not to use item because it's last in stock
+     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
+[AI] 픽시 (1) doesn't want to use any items
+[AI] 픽시 (1) is considering using 문포스 against 로토무 (0)...
+     ignore stat change (target's foes have Unaware)
+[AI] [damage_moves] computing 픽시 (1) → 로토무 (0) (turn 15)
+[AI]   문포스: 11 dmg (7.0% totalhp / 40.7% curhp)
+     + 12: damaging move (predicted damage 11 = 40% of target's HP)
+     - 40: Penalize useless move: very low predicted damage (7.0%).
+[AI] [damage_moves] computing 로토무 (0) → 픽시 (1) (turn 15)
+[AI]   볼트체인지: 45 dmg (22.3% totalhp / 38.1% curhp)
+[AI]   하이드로펌프: 47 dmg (23.3% totalhp / 39.8% curhp)
+[AI]   10만볼트: 59 dmg (29.2% totalhp / 50.0% curhp)
+[AI] 픽시 (1) is considering using 알낳기...
+     - 10: function code modifier (generic)
+     +  5: 5. General Status Move Boost.
+[AI] [smart_recovery] max foe dmg = 59 (29.2% totalhp, threshold 55%)
+     + 16: Smart recovery at 58% HP.
+[AI] 픽시 (1) is considering using 전기자석파 against 로토무 (0)...
+     move will not affect 로토무 (0)
+     -1099: move will fail
+     -999: move will fail
+[AI] 픽시 (1) is considering using 스텔스록...
+     + 30: function code modifier (generic)
+     +  5: 5. General Status Move Boost.
+[AI] Move choices for 픽시 (1) with threshold: 115: 
+[AI]    *   0.0% to use 문포스 (target 0): score 72
+[AI]    *   0.0% to use 알낳기: score 111
+[AI]    *   0.0% to use 전기자석파 (target 0): score -999
+[AI]    * 100.0% to use 스텔스록: score 135
+[AI] => will use 스텔스록
 
 
-[Use move] 상대 삼삼드래 (1) used 용성군
-"상대 삼삼드래의 용성군!"
-[HP change] 토오 lost 194 HP (198 -> 4)
-[Stat change] 상대 삼삼드래's 특수공격 changed by -2 (0 -> -2)
-"상대 삼삼드래의 \j[특수공격,이,가] 크게 떨어졌다!"
-[Use move] 토오 (0) used 하품
-"토오의 하품!"
-"\j[토오,은,는] \j[상대 삼삼드래,을,를] 졸리게 만들었다!"
+[Use move] 로토무 (0) used 10만볼트
+"로토무의 10만볼트!"
+[HP change] 상대 픽시 lost 59 HP (118 -> 59)
+[Use move] 상대 픽시 (1) used 스텔스록
+"상대 픽시의 스텔스록!"
+"우리편 주위로 뾰족한 돌이 떠다닌다!"
 
 [End of round 16]
-"햇살이 강하다."
-[HP change] 토오 gained 18 HP (4 -> 22)
-"토오는 먹다남은음식으로 약간의 HP를 회복했다!"
+"우리편의 오로라베일이 사라졌다!"
 
 ===== Round 17 =====
 
-[AI] 삼삼드래 (1) wants to switch because it is yawning and can't do anything while asleep
-[AI] [damage_moves] computing 토오 (0) → 삼삼드래 (1) (turn 16)
-[AI]   독찌르기: 62 dmg (24.3% totalhp / 27.9% curhp)
-[AI] 삼삼드래 (1) couldn't find any usable items
-[AI] 삼삼드래 (1) is considering using 악의파동 against 토오 (0)...
-     +  6: function code modifier (against target)
-[AI] [damage_moves] computing 삼삼드래 (1) → 토오 (0) (turn 16)
-[AI]   악의파동: 65 dmg (22.6% totalhp / 295.5% curhp)
-[AI]   용성군: 104 dmg (36.1% totalhp / 472.7% curhp)
-[AI]   불대문자: 87 dmg (30.2% totalhp / 395.5% curhp)
-[AI]   러스터캐논: 43 dmg (14.9% totalhp / 195.5% curhp)
-     + 30: damaging move (predicted damage 65 = 295% of target's HP)
-     + 50: predicted to KO the target
-[AI] 삼삼드래 (1) is considering using 용성군 against 토오 (0)...
-     + 30: damaging move (predicted damage 104 = 472% of target's HP)
-     + 50: predicted to KO the target
-     -  6: lowering the user's 특수공격 by 2
-     -  6: function code modifier (generic)
-[AI] 삼삼드래 (1) is considering using 불대문자 against 토오 (0)...
-     + 18: function code modifier (against target)
-     -  3: accuracy (predicted 85%)
-     + 30: damaging move (predicted damage 87 = 395% of target's HP)
-     + 50: predicted to KO the target
-[AI] 삼삼드래 (1) is considering using 러스터캐논 against 토오 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 10% = 1
-     +  1: function code modifier (against target)
-     + 30: damaging move (predicted damage 43 = 195% of target's HP)
-     + 50: predicted to KO the target
-[AI] Move choices for 삼삼드래 (1) with threshold: 175: 
-[AI]    *  29.7% to use 악의파동 (target 0): score 186
-[AI]    *   0.0% to use 용성군 (target 0): score 174
-[AI]    *  54.1% to use 불대문자 (target 0): score 195
-[AI]    *  16.2% to use 러스터캐논 (target 0): score 181
-[AI] => will use 불대문자 (target 0)
+[AI] 픽시 (1) is considering using item 회복약 on party 어흥염 (party index 2)...
+     + 22: healing 어흥염 by 200 HP (89 -> 201) (88 over heal)
+     - 40: useless because 픽시 (1) has no condition to heal
+     -  8: prefers not to use item because it's last in stock
+     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
+[AI] 픽시 (1) is considering using item 회복약 on party 픽시 (party index 3)...
+     + 28: healing 픽시 by 201 HP (59 -> 202) (58 over heal)
+     + 15: curing 픽시 (1)'s 마비 status
+     + 10: heals 픽시 (1)'s HP and cures a condition
+     -  8: prefers not to use item because it's last in stock
+     - 40: ITEM AI: Non-ace Pokémon, item discouraged.
+   => will use 회복약 (party index 3)
+[AI] 픽시 (1) will use item 회복약
 
 
-"\j[wdsd,은,는] 토오에게 \j[회복약,을,를] 사용했다."
-[Status change] 토오's status was cured
-[HP change] 토오 gained 266 HP (22 -> 288)
-"토오의 HP가 회복되었다."
-[Use move] 상대 삼삼드래 (1) used 불대문자
-"상대 삼삼드래의 불대문자!"
-[HP change] 토오 lost 75 HP (288 -> 213)
+"\j[엘리트 트레이너 test,은,는] 상대 픽시에게 \j[회복약,을,를] 사용했다."
+[Status change] 상대 픽시's status was cured
+[HP change] 상대 픽시 gained 143 HP (59 -> 202)
+"상대 픽시의 HP가 회복되었다."
+[Use move] 로토무 (0) used 10만볼트
+"로토무의 10만볼트!"
+[HP change] 상대 픽시 lost 50 HP (202 -> 152)
 
 [End of round 17]
-"햇살이 원래대로 돌아왔다."
-[HP change] 토오 gained 18 HP (213 -> 231)
-"토오는 먹다남은음식으로 약간의 HP를 회복했다!"
-[Lingering effect] 상대 삼삼드래 fell asleep because of Yawn
-"\j[상대 삼삼드래,은,는] 잠에 들었다!"
-[Status change] 상대 삼삼드래's sleep count is 3
 
 ===== Round 18 =====
 
-[AI] 삼삼드래 (1) couldn't find any usable items
-[AI] 삼삼드래 (1) is considering using 악의파동 against 토오 (0)...
-     +  6: function code modifier (against target)
-[AI] [damage_moves] computing 삼삼드래 (1) → 토오 (0) (turn 17)
-[AI]   악의파동: 65 dmg (22.6% totalhp / 28.1% curhp)
-[AI]   용성군: 104 dmg (36.1% totalhp / 45.0% curhp)
-[AI]   불대문자: 58 dmg (20.1% totalhp / 25.1% curhp)
-[AI]   러스터캐논: 43 dmg (14.9% totalhp / 18.6% curhp)
-     +  8: damaging move (predicted damage 65 = 28% of target's HP)
-     - 35: Penalize weak move: consider switching (22.6%).
-[AI] [damage_moves] computing 토오 (0) → 삼삼드래 (1) (turn 17)
-[AI]   독찌르기: 62 dmg (24.3% totalhp / 27.9% curhp)
-[AI] 삼삼드래 (1) is considering using 용성군 against 토오 (0)...
-     + 13: damaging move (predicted damage 104 = 45% of target's HP)
-     -  8: Penalize weak move: consider switching (36.1%).
-     -  6: lowering the user's 특수공격 by 2
-     -  6: function code modifier (generic)
-[AI] 삼삼드래 (1) is considering using 불대문자 against 토오 (0)...
-     + 18: function code modifier (against target)
-     -  3: accuracy (predicted 85%)
-     +  7: damaging move (predicted damage 58 = 25% of target's HP)
-     - 40: Penalize weak move: consider switching (20.1%).
-[AI] 삼삼드래 (1) is considering using 러스터캐논 against 토오 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 10% = 1
-     +  1: function code modifier (against target)
-     +  5: damaging move (predicted damage 43 = 18% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (14.9%).
-[AI] Move choices for 삼삼드래 (1) with threshold: 79: 
-[AI]    *   0.0% to use 악의파동 (target 0): score 79
-[AI]    *  87.0% to use 용성군 (target 0): score 99
-[AI]    *  13.0% to use 불대문자 (target 0): score 82
-[AI]    *   0.0% to use 러스터캐논 (target 0): score 66
-[AI] => will use 불대문자 (target 0)
+[AI] 픽시 (1) couldn't find any usable items
+[AI] 픽시 (1) is considering using 문포스 against 로토무 (0)...
+     ignore stat change (target's foes have Unaware)
+[AI] [damage_moves] computing 픽시 (1) → 로토무 (0) (turn 17)
+[AI]   문포스: 22 dmg (14.0% totalhp / 81.5% curhp)
+     + 24: damaging move (predicted damage 22 = 81% of target's HP)
+     - 40: Penalize useless move: very low predicted damage (14.0%).
+[AI] [damage_moves] computing 로토무 (0) → 픽시 (1) (turn 17)
+[AI]   볼트체인지: 45 dmg (22.3% totalhp / 29.6% curhp)
+[AI]   하이드로펌프: 47 dmg (23.3% totalhp / 30.9% curhp)
+[AI]   10만볼트: 59 dmg (29.2% totalhp / 38.8% curhp)
+[AI] 픽시 (1) is considering using 알낳기...
+     - 10: function code modifier (generic)
+     +  5: 5. General Status Move Boost.
+[AI] [smart_recovery] max foe dmg = 59 (29.2% totalhp, threshold 55%)
+[AI] 픽시 (1) is considering using 전기자석파 against 로토무 (0)...
+     move will not affect 로토무 (0)
+     -1099: move will fail
+     -999: move will fail
+[AI] 픽시 (1) is considering using 스텔스록...
+     -1099: move will fail
+[AI] Move choices for 픽시 (1) with threshold: 75: 
+[AI]    *  31.0% to use 문포스 (target 0): score 84
+[AI]    *  69.0% to use 알낳기: score 95
+[AI]    *   0.0% to use 전기자석파 (target 0): score -999
+[AI]    *   0.0% to use 스텔스록: score -999
+[AI] => will use 문포스 (target 0)
 
 
-"\j[wdsd,은,는] 갸라도스에게 \j[기력의조각,을,를] 사용했다."
-"\j[갸라도스,은,는] 기절 상태에서 회복됐다!"
-[Use move] 상대 삼삼드래 (1) used 불대문자
-"\j[상대 삼삼드래,은,는] 깊이 자고 있다."
-[Status continues] 상대 삼삼드래's sleep count is 2
-[Move failed] 상대 삼삼드래 is asleep
+[Use move] 로토무 (0) used 10만볼트
+"로토무의 10만볼트!"
+[HP change] 상대 픽시 lost 54 HP (152 -> 98)
+[Use move] 상대 픽시 (1) used 문포스
+"상대 픽시의 문포스!"
+[HP change] 로토무 lost 21 HP (27 -> 6)
+"효과가 별로인 것 같다..."
+[Stat change] 로토무's 특수공격 changed by -1 (0 -> -1)
+"로토무의 \j[특수공격,이,가] 떨어졌다!"
 
 [End of round 18]
-[HP change] 토오 gained 18 HP (231 -> 249)
-"토오는 먹다남은음식으로 약간의 HP를 회복했다!"
 
 ===== Round 19 =====
 
-[AI] 삼삼드래 (1) couldn't find any usable items
-[AI] 삼삼드래 (1) is considering using 악의파동 against 토오 (0)...
-     +  6: function code modifier (against target)
-[AI] [damage_moves] computing 삼삼드래 (1) → 토오 (0) (turn 18)
-[AI]   악의파동: 65 dmg (22.6% totalhp / 26.1% curhp)
-[AI]   용성군: 104 dmg (36.1% totalhp / 41.8% curhp)
-[AI]   불대문자: 58 dmg (20.1% totalhp / 23.3% curhp)
-[AI]   러스터캐논: 43 dmg (14.9% totalhp / 17.3% curhp)
-     +  7: damaging move (predicted damage 65 = 26% of target's HP)
-     - 35: Penalize weak move: consider switching (22.6%).
-[AI] [damage_moves] computing 토오 (0) → 삼삼드래 (1) (turn 18)
-[AI]   독찌르기: 62 dmg (24.3% totalhp / 27.9% curhp)
-[AI] 삼삼드래 (1) is considering using 용성군 against 토오 (0)...
-     + 12: damaging move (predicted damage 104 = 41% of target's HP)
-     -  8: Penalize weak move: consider switching (36.1%).
-     -  6: lowering the user's 특수공격 by 2
-     -  6: function code modifier (generic)
-[AI] 삼삼드래 (1) is considering using 불대문자 against 토오 (0)...
-     + 18: function code modifier (against target)
-     -  3: accuracy (predicted 85%)
-     +  6: damaging move (predicted damage 58 = 23% of target's HP)
-     - 40: Penalize weak move: consider switching (20.1%).
-[AI] 삼삼드래 (1) is considering using 러스터캐논 against 토오 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 10% = 1
-     +  1: function code modifier (against target)
-     +  5: damaging move (predicted damage 43 = 17% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (14.9%).
-[AI] Move choices for 삼삼드래 (1) with threshold: 78: 
-[AI]    *   0.0% to use 악의파동 (target 0): score 78
-[AI]    *  87.0% to use 용성군 (target 0): score 98
-[AI]    *  13.0% to use 불대문자 (target 0): score 81
-[AI]    *   0.0% to use 러스터캐논 (target 0): score 66
-[AI] => will use 불대문자 (target 0)
+[AI] 픽시 (1) couldn't find any usable items
+[AI] 픽시 (1) is considering using 문포스 against 로토무 (0)...
+     ignore stat change (target's foes have Unaware)
+[AI] [damage_moves] computing 픽시 (1) → 로토무 (0) (turn 18)
+[AI]   문포스: 22 dmg (14.0% totalhp / 366.7% curhp)
+     + 30: damaging move (predicted damage 22 = 366% of target's HP)
+     + 50: predicted to KO the target
+[AI] [damage_moves] computing 로토무 (0) → 픽시 (1) (turn 18)
+[AI]   볼트체인지: 45 dmg (22.3% totalhp / 45.9% curhp)
+[AI]   하이드로펌프: 47 dmg (23.3% totalhp / 48.0% curhp)
+[AI]   10만볼트: 59 dmg (29.2% totalhp / 60.2% curhp)
+[AI] 픽시 (1) is considering using 알낳기...
+     + 15: function code modifier (generic)
+     +  5: 5. General Status Move Boost.
+[AI] [smart_recovery] max foe dmg = 59 (29.2% totalhp, threshold 55%)
+     + 26: Smart recovery at 48% HP.
+[AI] 픽시 (1) is considering using 전기자석파 against 로토무 (0)...
+     move will not affect 로토무 (0)
+     -1099: move will fail
+     -999: move will fail
+[AI] 픽시 (1) is considering using 스텔스록...
+     -1099: move will fail
+[AI] Move choices for 픽시 (1) with threshold: 160: 
+[AI]    * 100.0% to use 문포스 (target 0): score 180
+[AI]    *   0.0% to use 알낳기: score 146
+[AI]    *   0.0% to use 전기자석파 (target 0): score -999
+[AI]    *   0.0% to use 스텔스록: score -999
+[AI] => will use 문포스 (target 0)
 
 
-"\j[wdsd,은,는] 갸라도스에게 \j[좋은상처약,을,를] 사용했다."
-"갸라도스의 HP가 회복되었다."
-[Use move] 상대 삼삼드래 (1) used 불대문자
-"\j[상대 삼삼드래,은,는] 깊이 자고 있다."
-[Status continues] 상대 삼삼드래's sleep count is 1
-[Move failed] 상대 삼삼드래 is asleep
+[Use move] 로토무 (0) used 10만볼트
+"로토무의 10만볼트!"
+[HP change] 상대 픽시 lost 53 HP (98 -> 45)
+[Use move] 상대 픽시 (1) used 문포스
+"상대 픽시의 문포스!"
+[HP change] 로토무 lost 6 HP (6 -> 0)
+"급소에 맞았다!"
+"효과가 별로인 것 같다..."
+"\j[로토무,은,는] 쓰러졌다!"
 
 [End of round 19]
-[HP change] 토오 gained 18 HP (249 -> 267)
-"토오는 먹다남은음식으로 약간의 HP를 회복했다!"
+"상대가 약해져 있어! 가랏, 나인테일!"
+[HP change] 나인테일 lost 45 HP (180 -> 135)
+"나인테일에게 뾰족한 바위가 박혔다!"
+[Ability triggered] 나인테일's 눈퍼뜨리기
+"눈이 내리기 시작했다!"
 
 ===== Round 20 =====
 
-[AI] 삼삼드래 (1) couldn't find any usable items
-[AI] 삼삼드래 (1) is considering using 악의파동 against 토오 (0)...
-     +  6: function code modifier (against target)
-[AI] [damage_moves] computing 삼삼드래 (1) → 토오 (0) (turn 19)
-[AI]   악의파동: 65 dmg (22.6% totalhp / 24.3% curhp)
-[AI]   용성군: 104 dmg (36.1% totalhp / 39.0% curhp)
-[AI]   불대문자: 58 dmg (20.1% totalhp / 21.7% curhp)
-[AI]   러스터캐논: 43 dmg (14.9% totalhp / 16.1% curhp)
-     +  7: damaging move (predicted damage 65 = 24% of target's HP)
-     - 35: Penalize weak move: consider switching (22.6%).
-[AI] [damage_moves] computing 토오 (0) → 삼삼드래 (1) (turn 19)
-[AI]   독찌르기: 62 dmg (24.3% totalhp / 27.9% curhp)
-[AI] 삼삼드래 (1) is considering using 용성군 against 토오 (0)...
-     + 11: damaging move (predicted damage 104 = 38% of target's HP)
-     -  8: Penalize weak move: consider switching (36.1%).
-     -  6: lowering the user's 특수공격 by 2
-     -  6: function code modifier (generic)
-[AI] 삼삼드래 (1) is considering using 불대문자 against 토오 (0)...
-     + 18: function code modifier (against target)
-     -  3: accuracy (predicted 85%)
-     +  6: damaging move (predicted damage 58 = 21% of target's HP)
-     - 40: Penalize weak move: consider switching (20.1%).
-[AI] 삼삼드래 (1) is considering using 러스터캐논 against 토오 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 10% = 1
-     +  1: function code modifier (against target)
-     +  4: damaging move (predicted damage 43 = 16% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (14.9%).
-[AI] Move choices for 삼삼드래 (1) with threshold: 77: 
-[AI]    *   4.0% to use 악의파동 (target 0): score 78
-[AI]    *  80.0% to use 용성군 (target 0): score 97
-[AI]    *  16.0% to use 불대문자 (target 0): score 81
-[AI]    *   0.0% to use 러스터캐논 (target 0): score 65
-[AI] => will use 용성군 (target 0)
+[AI] 픽시 (1) couldn't find any usable items
+[AI] 픽시 (1) is considering using 문포스 against 나인테일 (0)...
+     ignore stat change (target's foes have Unaware)
+[AI] [damage_moves] computing 픽시 (1) → 나인테일 (0) (turn 19)
+[AI]   문포스: 63 dmg (35.0% totalhp / 46.7% curhp)
+     + 14: damaging move (predicted damage 63 = 46% of target's HP)
+     - 10: Penalize weak move: consider switching (35.0%).
+[AI] [damage_moves] computing 나인테일 (0) → 픽시 (1) (turn 19)
+[AI]   프리즈드라이: 38 dmg (18.8% totalhp / 84.4% curhp)
+[AI]   문포스: 50 dmg (24.8% totalhp / 111.1% curhp)
+[AI] [evade_ko] 나인테일 (0) 문포스: 50 >= 45
+[AI] evade KO penalty chance is 100%
+     -200: Penalize move: user is slower than a foe who can KO. (Speed ratio: 2.21, Chance: 100%)
+[AI] 픽시 (1) is considering using 알낳기...
+     + 23: function code modifier (generic)
+     +  5: 5. General Status Move Boost.
+[AI] [evade_ko] 나인테일 (0) 문포스: 50 >= 45
+[AI] evade KO penalty chance is 100%
+     -200: Penalize move: user is slower than a foe who can KO. (Speed ratio: 2.21, Chance: 100%)
+[AI] [smart_recovery] max foe dmg = 50 (24.8% totalhp, threshold 55%)
+[AI] 픽시 (1) is considering using 전기자석파 against 나인테일 (0)...
+     + 10: function code modifier (against target)
+     +  5: 5. General Status Move Boost.
+[AI] [evade_ko] 나인테일 (0) 문포스: 50 >= 45
+[AI] evade KO penalty chance is 100%
+     -200: Penalize move: user is slower than a foe who can KO. (Speed ratio: 2.21, Chance: 100%)
+[AI] 픽시 (1) is considering using 스텔스록...
+     -1099: move will fail
+[AI] 픽시 (1) wants to switch due to terrible moves [문포스=-96, 알낳기=-72, 전기자석파=-85, 스텔스록=-999]
+[AI] 픽시 (1) is being forced to switch out
+     - 28: 어흥염: entry hazard damage 50.25
+[AI] move_id: FREEZEDRY
+[AI] move_id: MOONBLAST
+     -100: 어흥염: foe can OHKO (123%, slower, foe_pending)
+     + 28: 어흥염 best move: 플레어드라이브, dmg_ratio: 113% (153/135)
+[AI] [damage_moves] computing 나인테일 (0) → 픽시 (1) (turn 19)
+[AI]   프리즈드라이: 38 dmg (18.8% totalhp / 84.4% curhp)
+[AI]   문포스: 50 dmg (24.8% totalhp / 111.1% curhp)
+[AI] pokemon 어흥염 has switch score 0
+     -  3: 한카리아스: entry hazard damage 11.4375
+[AI] move_id: FREEZEDRY
+[AI] move_id: MOONBLAST
+     -100: 한카리아스: foe can OHKO (107%, slower, foe_pending)
+     + 32: 한카리아스 best move: 아이언헤드, dmg_ratio: 136% (184/135)
+[AI] pokemon 한카리아스 has switch score 28
+     -  6: 미라이돈: entry hazard damage 21.875
+[AI] move_id: FREEZEDRY
+[AI] move_id: MOONBLAST
+     -100: 미라이돈: foe can 2HKO (69%, faster, foe_pending)
+     + 35: 미라이돈 best move: 오버히트, dmg_ratio: 267% (360/135)
+     +  8: 미라이돈: outspeeds 나인테일 (0) (205 vs 177).
+[AI] pokemon 미라이돈 has switch score 36
+[AI] => staying in: all reserves scored < 60 (best: 36), not switching
+[AI]    => no good replacement Pokémon, will not switch after all
+[AI] 픽시 (1) won't switch after all
+[AI] Move choices for 픽시 (1) with threshold: -92: 
+[AI]    *   0.0% to use 문포스 (target 0): score -96
+[AI]    *  74.1% to use 알낳기: score -72
+[AI]    *  25.9% to use 전기자석파 (target 0): score -85
+[AI]    *   0.0% to use 스텔스록: score -999
+[AI] => will use 알낳기
 
 
-[Use move] 상대 삼삼드래 (1) used 용성군
-"\j[상대 삼삼드래,은,는] 일어났다!"
-"상대 삼삼드래의 용성군!"
-[HP change] 토오 lost 104 HP (267 -> 163)
-[Stat change] 상대 삼삼드래's 특수공격 changed by -2 (-2 -> -4)
-"상대 삼삼드래의 \j[특수공격,이,가] 크게 떨어졌다!"
-[Use move] 토오 (0) used 독압정
-"토오의 독압정!"
-"상대편 주위로 독압정이 뿌려졌다!"
+[Use move] 나인테일 (0) used 오로라베일
+"나인테일의 오로라베일!"
+"\j[오로라베일,이,가] 우리편의 물리 및 특수 공격에 대한 저항력을 강화했다!"
+[Use move] 상대 픽시 (1) used 알낳기
+"상대 픽시의 알낳기!"
+[HP change] 상대 픽시 gained 101 HP (45 -> 146)
+"상대 픽시의 HP가 회복되었다."
 
 [End of round 20]
-[HP change] 토오 gained 18 HP (163 -> 181)
-"토오는 먹다남은음식으로 약간의 HP를 회복했다!"
 
 ===== Round 21 =====
 
-[AI] 삼삼드래 (1) couldn't find any usable items
-[AI] 삼삼드래 (1) is considering using 악의파동 against 토오 (0)...
-     +  6: function code modifier (against target)
-[AI] [damage_moves] computing 삼삼드래 (1) → 토오 (0) (turn 20)
-[AI]   악의파동: 44 dmg (15.3% totalhp / 24.3% curhp)
-[AI]   용성군: 69 dmg (24.0% totalhp / 38.1% curhp)
-[AI]   불대문자: 39 dmg (13.5% totalhp / 21.5% curhp)
-[AI]   러스터캐논: 29 dmg (10.1% totalhp / 16.0% curhp)
-     +  7: damaging move (predicted damage 44 = 24% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (15.3%).
-[AI] [damage_moves] computing 토오 (0) → 삼삼드래 (1) (turn 20)
-[AI]   독찌르기: 62 dmg (24.3% totalhp / 27.9% curhp)
-[AI] 삼삼드래 (1) is considering using 용성군 against 토오 (0)...
-     + 11: damaging move (predicted damage 69 = 38% of target's HP)
-     - 32: Penalize weak move: consider switching (24.0%).
-     -  4: lowering the user's 특수공격 by 2
-     -  4: function code modifier (generic)
-[AI] 삼삼드래 (1) is considering using 불대문자 against 토오 (0)...
-     + 18: function code modifier (against target)
-     -  3: accuracy (predicted 85%)
-     +  6: damaging move (predicted damage 39 = 21% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (13.5%).
-[AI] 삼삼드래 (1) is considering using 러스터캐논 against 토오 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 10% = 1
-     +  1: function code modifier (against target)
-     +  4: damaging move (predicted damage 29 = 16% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (10.1%).
-[AI] Move choices for 삼삼드래 (1) with threshold: 61: 
-[AI]    *  24.0% to use 악의파동 (target 0): score 73
-[AI]    *  28.0% to use 용성군 (target 0): score 75
-[AI]    *  40.0% to use 불대문자 (target 0): score 81
-[AI]    *   8.0% to use 러스터캐논 (target 0): score 65
-[AI] => will use 용성군 (target 0)
+[AI] 픽시 (1) couldn't find any usable items
+[AI] 픽시 (1) is considering using 문포스 against 나인테일 (0)...
+     ignore stat change (target's foes have Unaware)
+[AI] [damage_moves] computing 픽시 (1) → 나인테일 (0) (turn 20)
+[AI]   문포스: 32 dmg (17.8% totalhp / 23.7% curhp)
+     +  7: damaging move (predicted damage 32 = 23% of target's HP)
+     - 40: Penalize useless move: very low predicted damage (17.8%).
+[AI] [damage_moves] computing 나인테일 (0) → 픽시 (1) (turn 20)
+[AI]   프리즈드라이: 38 dmg (18.8% totalhp / 26.0% curhp)
+[AI]   문포스: 50 dmg (24.8% totalhp / 34.2% curhp)
+[AI] 픽시 (1) is considering using 알낳기...
+     - 10: function code modifier (generic)
+     +  5: 5. General Status Move Boost.
+[AI] [smart_recovery] max foe dmg = 50 (24.8% totalhp, threshold 55%)
+[AI] 픽시 (1) is considering using 전기자석파 against 나인테일 (0)...
+     + 10: function code modifier (against target)
+     +  5: 5. General Status Move Boost.
+[AI] 픽시 (1) is considering using 스텔스록...
+     -1099: move will fail
+[AI] Move choices for 픽시 (1) with threshold: 95: 
+[AI]    *   0.0% to use 문포스 (target 0): score 67
+[AI]    *   0.0% to use 알낳기: score 95
+[AI]    * 100.0% to use 전기자석파 (target 0): score 115
+[AI]    *   0.0% to use 스텔스록: score -999
+[AI] => will use 전기자석파 (target 0)
 
 
-[Use move] 상대 삼삼드래 (1) used 용성군
-"상대 삼삼드래의 용성군!"
-[HP change] 토오 lost 61 HP (181 -> 120)
-[Stat change] 상대 삼삼드래's 특수공격 changed by -2 (-4 -> -6)
-"상대 삼삼드래의 \j[특수공격,이,가] 크게 떨어졌다!"
-[Use move] 토오 (0) used 독압정
-"토오의 독압정!"
-"상대편 주위로 독압정이 뿌려졌다!"
+[Use move] 나인테일 (0) used 앙코르
+"나인테일의 앙코르!"
+"\j[상대 픽시,은,는] 앙코르 상태에 들어갔다!"
+[Use move] 상대 픽시 (1) used 전기자석파
+"상대 픽시의 알낳기!"
+[HP change] 상대 픽시 gained 56 HP (146 -> 202)
+"상대 픽시의 HP가 회복되었다."
 
 [End of round 21]
-[HP change] 토오 gained 18 HP (120 -> 138)
-"토오는 먹다남은음식으로 약간의 HP를 회복했다!"
 
 ===== Round 22 =====
 
-[AI] 삼삼드래 (1) couldn't find any usable items
-[AI] 삼삼드래 (1) is considering using 악의파동 against 토오 (0)...
-     +  6: function code modifier (against target)
-[AI] [damage_moves] computing 삼삼드래 (1) → 토오 (0) (turn 21)
-[AI]   악의파동: 33 dmg (11.5% totalhp / 23.9% curhp)
-[AI]   용성군: 53 dmg (18.4% totalhp / 38.4% curhp)
-[AI]   불대문자: 30 dmg (10.4% totalhp / 21.7% curhp)
-[AI]   러스터캐논: 22 dmg (7.6% totalhp / 15.9% curhp)
-     +  7: damaging move (predicted damage 33 = 23% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (11.5%).
-[AI] [damage_moves] computing 토오 (0) → 삼삼드래 (1) (turn 21)
-[AI]   독찌르기: 62 dmg (24.3% totalhp / 27.9% curhp)
-[AI] 삼삼드래 (1) is considering using 용성군 against 토오 (0)...
-     + 11: damaging move (predicted damage 53 = 38% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (18.4%).
-     lowering the user's 특수공격 isn't worthwhile
-[AI] 삼삼드래 (1) is considering using 불대문자 against 토오 (0)...
-     + 18: function code modifier (against target)
-     -  3: accuracy (predicted 85%)
-     +  6: damaging move (predicted damage 30 = 21% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (10.4%).
-[AI] 삼삼드래 (1) is considering using 러스터캐논 against 토오 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 10% = 1
-     +  1: function code modifier (against target)
-     +  4: damaging move (predicted damage 22 = 15% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (7.6%).
-[AI] Move choices for 삼삼드래 (1) with threshold: 61: 
-[AI]    *  26.1% to use 악의파동 (target 0): score 73
-[AI]    *  21.7% to use 용성군 (target 0): score 71
-[AI]    *  43.5% to use 불대문자 (target 0): score 81
-[AI]    *   8.7% to use 러스터캐논 (target 0): score 65
-[AI] => will use 악의파동 (target 0)
+[AI] 픽시 (1) couldn't find any usable items
+[AI] 픽시 (1) cannot choose to use 문포스
+[AI] 픽시 (1) is considering using 알낳기...
+     -1099: move will fail
+[AI] 픽시 (1) cannot choose to use 전기자석파
+[AI] 픽시 (1) cannot choose to use 스텔스록
+[AI] 픽시 (1) wants to switch due to terrible moves [알낳기=-999]
+[AI] 픽시 (1) is being forced to switch out
+     - 28: 어흥염: entry hazard damage 50.25
+[AI] move_id: FREEZEDRY
+[AI] move_id: MOONBLAST
+     -100: 어흥염: foe can OHKO (123%, slower, foe_pending)
+     + 11: 어흥염 best move: 플레어드라이브, dmg_ratio: 57% (77/135)
+[AI] [damage_moves] computing 나인테일 (0) → 픽시 (1) (turn 21)
+[AI]   프리즈드라이: 38 dmg (18.8% totalhp / 18.8% curhp)
+[AI]   문포스: 50 dmg (24.8% totalhp / 24.8% curhp)
+[AI] pokemon 어흥염 has switch score -17
+     -  3: 한카리아스: entry hazard damage 11.4375
+[AI] move_id: FREEZEDRY
+[AI] move_id: MOONBLAST
+     -100: 한카리아스: foe can OHKO (107%, slower, foe_pending)
+     + 14: 한카리아스 best move: 아이언헤드, dmg_ratio: 68% (92/135)
+[AI] pokemon 한카리아스 has switch score 10
+     -  6: 미라이돈: entry hazard damage 21.875
+[AI] move_id: FREEZEDRY
+[AI] move_id: MOONBLAST
+     -100: 미라이돈: foe can 2HKO (69%, faster, foe_pending)
+     + 32: 미라이돈 best move: 오버히트, dmg_ratio: 133% (180/135)
+     +  8: 미라이돈: outspeeds 나인테일 (0) (205 vs 177).
+[AI] pokemon 미라이돈 has switch score 33
+[AI] => staying in: all reserves scored < 60 (best: 33), not switching
+[AI]    => no good replacement Pokémon, will not switch after all
+[AI] 픽시 (1) won't switch after all
+[AI] Move choices for 픽시 (1) with threshold: -1019: 
+[AI]    * 100.0% to use 알낳기: score -999
+[AI] => will use 알낳기
 
 
-[Use move] 상대 삼삼드래 (1) used 악의파동
-"상대 삼삼드래의 악의파동!"
-[HP change] 토오 lost 32 HP (138 -> 106)
-[Use move] 토오 (0) used 맹독
-"\j[토오,은,는] 풀이 죽어 움직일 수 없다!"
-[Move failed] 토오 flinched
+"나인테일, 돌아와!"
+"네 차례야, 드닐레이브!"
+[HP change] 드닐레이브 lost 48 HP (190 -> 142)
+"드닐레이브에게 뾰족한 바위가 박혔다!"
+[Use move] 상대 픽시 (1) used 알낳기
+"상대 픽시의 알낳기!"
+"상대 픽시의 HP가 가득 찼다"
+[Move failed] In function code HealUserHalfOfTotalHP's def pbMoveFailed?
 
 [End of round 22]
-[HP change] 토오 gained 18 HP (106 -> 124)
-"토오는 먹다남은음식으로 약간의 HP를 회복했다!"
 
 ===== Round 23 =====
 
-[AI] 삼삼드래 (1) couldn't find any usable items
-[AI] 삼삼드래 (1) is considering using 악의파동 against 토오 (0)...
-     +  6: function code modifier (against target)
-[AI] [damage_moves] computing 삼삼드래 (1) → 토오 (0) (turn 22)
-[AI]   악의파동: 33 dmg (11.5% totalhp / 26.6% curhp)
-[AI]   용성군: 53 dmg (18.4% totalhp / 42.7% curhp)
-[AI]   불대문자: 30 dmg (10.4% totalhp / 24.2% curhp)
-[AI]   러스터캐논: 22 dmg (7.6% totalhp / 17.7% curhp)
-     +  7: damaging move (predicted damage 33 = 26% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (11.5%).
-[AI] [damage_moves] computing 토오 (0) → 삼삼드래 (1) (turn 22)
-[AI]   독찌르기: 62 dmg (24.3% totalhp / 27.9% curhp)
-[AI] 삼삼드래 (1) is considering using 용성군 against 토오 (0)...
-     + 12: damaging move (predicted damage 53 = 42% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (18.4%).
-     lowering the user's 특수공격 isn't worthwhile
-[AI] 삼삼드래 (1) is considering using 불대문자 against 토오 (0)...
-     + 18: function code modifier (against target)
-     -  3: accuracy (predicted 85%)
-     +  7: damaging move (predicted damage 30 = 24% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (10.4%).
-[AI] 삼삼드래 (1) is considering using 러스터캐논 against 토오 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 10% = 1
-     +  1: function code modifier (against target)
-     +  5: damaging move (predicted damage 22 = 17% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (7.6%).
-[AI] Move choices for 삼삼드래 (1) with threshold: 62: 
-[AI]    *  24.4% to use 악의파동 (target 0): score 73
-[AI]    *  22.2% to use 용성군 (target 0): score 72
-[AI]    *  44.4% to use 불대문자 (target 0): score 82
-[AI]    *   8.9% to use 러스터캐논 (target 0): score 66
-[AI] => will use 불대문자 (target 0)
+[AI] 픽시 (1) couldn't find any usable items
+[AI] 픽시 (1) cannot choose to use 문포스
+[AI] 픽시 (1) is considering using 알낳기...
+     -1099: move will fail
+[AI] 픽시 (1) cannot choose to use 전기자석파
+[AI] 픽시 (1) cannot choose to use 스텔스록
+[AI] 픽시 (1) wants to switch due to terrible moves [알낳기=-999]
+[AI] 픽시 (1) is being forced to switch out
+     - 28: 어흥염: entry hazard damage 50.25
+[AI] [known_foe_moves] Hiding 칼춤 from 드닐레이브 (0) (never acted)
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     -100: 어흥염: foe can OHKO (127%, slower, foe_pending)
+[AI] [damage_moves] computing 드닐레이브 (0) → 픽시 (1) (turn 22)
+[AI]   스케일샷: 0 dmg (0.0% totalhp / 0.0% curhp)
+[AI]   고드름침: 129 dmg (63.9% totalhp / 63.9% curhp)
+[AI]   얼음뭉치: 53 dmg (26.2% totalhp / 26.2% curhp)
+     + 15: 어흥염: tanks 드닐레이브 (0)'s best move better (32 vs 129 on current).
+     + 12: 어흥염: Intimidate vs 드닐레이브 (0) (3 phys moves)
+[AI] pokemon 어흥염 has switch score -1
+     -  3: 한카리아스: entry hazard damage 11.4375
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     -100: 한카리아스: foe can OHKO (281%, faster, foe_pending)
+     + 10: 한카리아스 best move: 스케일샷, dmg_ratio: 52% (74/142)
+     +  8: 한카리아스: outspeeds 드닐레이브 (0) (169 vs 139).
+[AI] pokemon 한카리아스 has switch score 14
+     -  6: 미라이돈: entry hazard damage 21.875
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     -100: 미라이돈: foe can OHKO (151%, faster, foe_pending)
+     + 35: 미라이돈 best move: 용성군, dmg_ratio: 213% (302/142)
+     +  8: 미라이돈: outspeeds 드닐레이브 (0) (205 vs 139).
+[AI] pokemon 미라이돈 has switch score 36
+[AI] => staying in: all reserves scored < 60 (best: 36), not switching
+[AI]    => no good replacement Pokémon, will not switch after all
+[AI] 픽시 (1) won't switch after all
+[AI] Move choices for 픽시 (1) with threshold: -1019: 
+[AI]    * 100.0% to use 알낳기: score -999
+[AI] => will use 알낳기
 
 
-[Use move] 상대 삼삼드래 (1) used 불대문자
-"상대 삼삼드래의 불대문자!"
-[HP change] 토오 lost 27 HP (124 -> 97)
-[Use move] 토오 (0) used 맹독
-"토오의 맹독!"
-"\j[상대 삼삼드래,은,는] 맹독에 걸렸다!"
+[Use move] 드닐레이브 (0) used 칼춤
+"드닐레이브의 칼춤!"
+[Stat change] 드닐레이브's 공격 changed by +2 (0 -> 2)
+"드닐레이브의 \j[공격,이,가] 크게 올랐다!"
+[Use move] 상대 픽시 (1) used 알낳기
+"상대 픽시의 알낳기!"
+"상대 픽시의 HP가 가득 찼다"
+[Move failed] In function code HealUserHalfOfTotalHP's def pbMoveFailed?
 
 [End of round 23]
-[HP change] 토오 gained 18 HP (97 -> 115)
-"토오는 먹다남은음식으로 약간의 HP를 회복했다!"
-[HP change] 상대 삼삼드래 lost 15 HP (222 -> 207)
-"\j[상대 삼삼드래,은,는] 독의 데미지를 받았다!"
 
 ===== Round 24 =====
 
-[AI] 삼삼드래 (1) couldn't find any usable items
-[AI] 삼삼드래 (1) is considering using 악의파동 against 토오 (0)...
-     +  6: function code modifier (against target)
-[AI] [damage_moves] computing 삼삼드래 (1) → 토오 (0) (turn 23)
-[AI]   악의파동: 33 dmg (11.5% totalhp / 28.7% curhp)
-[AI]   용성군: 53 dmg (18.4% totalhp / 46.1% curhp)
-[AI]   불대문자: 30 dmg (10.4% totalhp / 26.1% curhp)
-[AI]   러스터캐논: 22 dmg (7.6% totalhp / 19.1% curhp)
-     +  8: damaging move (predicted damage 33 = 28% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (11.5%).
-[AI] [damage_moves] computing 토오 (0) → 삼삼드래 (1) (turn 23)
-[AI]   독찌르기: 62 dmg (24.3% totalhp / 30.0% curhp)
-[AI] 삼삼드래 (1) is considering using 용성군 against 토오 (0)...
-     + 13: damaging move (predicted damage 53 = 46% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (18.4%).
-     lowering the user's 특수공격 isn't worthwhile
-[AI] 삼삼드래 (1) is considering using 불대문자 against 토오 (0)...
-     + 18: function code modifier (against target)
-     -  3: accuracy (predicted 85%)
-     +  7: damaging move (predicted damage 30 = 26% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (10.4%).
-[AI] 삼삼드래 (1) is considering using 러스터캐논 against 토오 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 10% = 1
-     +  1: function code modifier (against target)
-     +  5: damaging move (predicted damage 22 = 19% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (7.6%).
-[AI] Move choices for 삼삼드래 (1) with threshold: 62: 
-[AI]    *  25.5% to use 악의파동 (target 0): score 74
-[AI]    *  23.4% to use 용성군 (target 0): score 73
-[AI]    *  42.6% to use 불대문자 (target 0): score 82
-[AI]    *   8.5% to use 러스터캐논 (target 0): score 66
-[AI] => will use 불대문자 (target 0)
+[AI] 픽시 (1): foe has 2 positive boosts — should switch.
+[AI] 픽시 (1) couldn't find any usable items
+[AI] 픽시 (1) cannot choose to use 문포스
+[AI] 픽시 (1) is considering using 알낳기...
+     -1099: move will fail
+[AI] 픽시 (1) cannot choose to use 전기자석파
+[AI] 픽시 (1) cannot choose to use 스텔스록
+[AI] 픽시 (1) wants to switch due to terrible moves [알낳기=-999]
+[AI] 픽시 (1) is being forced to switch out
+     - 28: 어흥염: entry hazard damage 50.25
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     -100: 어흥염: foe can OHKO (213%, slower, foe_pending)
+[AI] [damage_moves] computing 드닐레이브 (0) → 픽시 (1) (turn 23)
+[AI]   스케일샷: 0 dmg (0.0% totalhp / 0.0% curhp)
+[AI]   고드름침: 129 dmg (63.9% totalhp / 63.9% curhp)
+[AI]   얼음뭉치: 53 dmg (26.2% totalhp / 26.2% curhp)
+     +  9: 어흥염: tanks 드닐레이브 (0)'s best move better (70 vs 129 on current).
+     + 12: 어흥염: Intimidate vs 드닐레이브 (0) (3 phys moves)
+[AI] pokemon 어흥염 has switch score -7
+     -  3: 한카리아스: entry hazard damage 11.4375
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     -100: 한카리아스: foe can OHKO (553%, faster, foe_pending)
+     + 10: 한카리아스 best move: 스케일샷, dmg_ratio: 52% (74/142)
+     +  8: 한카리아스: outspeeds 드닐레이브 (0) (169 vs 139).
+[AI] pokemon 한카리아스 has switch score 14
+     -  6: 미라이돈: entry hazard damage 21.875
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     -100: 미라이돈: foe can OHKO (286%, faster, foe_pending)
+     + 35: 미라이돈 best move: 용성군, dmg_ratio: 213% (302/142)
+     +  8: 미라이돈: outspeeds 드닐레이브 (0) (205 vs 139).
+[AI] pokemon 미라이돈 has switch score 36
+[AI] => staying in: all reserves scored < 60 (best: 36), not switching
+[AI]    => no good replacement Pokémon, will not switch after all
+[AI] 픽시 (1) won't switch after all
+[AI] Move choices for 픽시 (1) with threshold: -1019: 
+[AI]    * 100.0% to use 알낳기: score -999
+[AI] => will use 알낳기
 
 
-[Use move] 상대 삼삼드래 (1) used 불대문자
-"상대 삼삼드래의 불대문자!"
-[HP change] 토오 lost 26 HP (115 -> 89)
-"\j[토오,은,는] 화상을 입었다!"
-[Use move] 토오 (0) used 독찌르기
-"토오의 독찌르기!"
-[HP change] 상대 삼삼드래 lost 28 HP (207 -> 179)
+[Use move] 드닐레이브 (0) used 고드름침
+"드닐레이브의 고드름침!"
+[HP change] 상대 픽시 lost 31 HP (202 -> 171)
+[HP change] 상대 픽시 lost 33 HP (171 -> 138)
+[HP change] 상대 픽시 lost 35 HP (138 -> 103)
+[HP change] 상대 픽시 lost 30 HP (103 -> 73)
+"4번 맞았다!"
+[Use move] 상대 픽시 (1) used 알낳기
+"상대 픽시의 알낳기!"
+[HP change] 상대 픽시 gained 101 HP (73 -> 174)
+"상대 픽시의 HP가 회복되었다."
 
 [End of round 24]
-[HP change] 토오 gained 18 HP (89 -> 107)
-"토오는 먹다남은음식으로 약간의 HP를 회복했다!"
-[HP change] 상대 삼삼드래 lost 31 HP (179 -> 148)
-"\j[상대 삼삼드래,은,는] 독의 데미지를 받았다!"
-[HP change] 토오 lost 18 HP (107 -> 89)
-"\j[토오,은,는] 화상의 데미지를 받았다!"
+"눈이 그쳤다."
+"\j[상대 픽시,은,는] 앙코르 상태가 끝났다!"
 
 ===== Round 25 =====
 
-[AI] 삼삼드래 (1) couldn't find any usable items
-[AI] 삼삼드래 (1) is considering using 악의파동 against 토오 (0)...
-     +  6: function code modifier (against target)
-[AI] [damage_moves] computing 삼삼드래 (1) → 토오 (0) (turn 24)
-[AI]   악의파동: 33 dmg (11.5% totalhp / 37.1% curhp)
-[AI]   용성군: 53 dmg (18.4% totalhp / 59.6% curhp)
-[AI]   불대문자: 30 dmg (10.4% totalhp / 33.7% curhp)
-[AI]   러스터캐논: 22 dmg (7.6% totalhp / 24.7% curhp)
-     + 11: damaging move (predicted damage 33 = 37% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (11.5%).
-[AI] [damage_moves] computing 토오 (0) → 삼삼드래 (1) (turn 24)
-[AI]   독찌르기: 31 dmg (12.2% totalhp / 20.9% curhp)
-[AI] 삼삼드래 (1) is considering using 용성군 against 토오 (0)...
-     + 17: damaging move (predicted damage 53 = 59% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (18.4%).
-     lowering the user's 특수공격 isn't worthwhile
-[AI] 삼삼드래 (1) cannot use 불대문자 (no PP left)
-[AI] 삼삼드래 (1) is considering using 러스터캐논 against 토오 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 10% = 1
-     +  1: function code modifier (against target)
-     +  7: damaging move (predicted damage 22 = 24% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (7.6%).
-[AI] 삼삼드래 (1) wants to switch due to terrible moves [악의파동=77, 용성군=77, 러스터캐논=68]
-[AI] 삼삼드래 (1) is being forced to switch out
-[AI] move_id: POISONJAB
-     + 17: 모토마: foe cannot 2HKO, +13.703703703703704% < 50%
-     + 26: 모토마 best move: 탁쳐서떨구기, dmg_ratio: 131% (117/89)
-     + 10: Utility: Taunt vs status-heavy foe
-     +  8: 모토마: outspeeds 토오 (0) (239 vs 42).
-[AI] [damage_moves] computing 토오 (0) → 삼삼드래 (1) (turn 24)
-[AI]   독찌르기: 31 dmg (12.2% totalhp / 20.9% curhp)
-[AI] pokemon 모토마 has switch score 151
-[AI] move_id: POISONJAB
-     + 18: 펜드라: foe cannot 2HKO, +6.198347107438017% < 50%
-     + 20: 펜드라 best move: 만나자마자, dmg_ratio: 102% (91/89)
-     +  8: 펜드라: outspeeds 토오 (0) (248 vs 42).
-     + 10: 펜드라: tanks 토오 (0)'s best move better (15 vs 31 on current).
-[AI] pokemon 펜드라 has switch score 166
-[AI] => will switch with 펜드라
+[AI] 픽시 (1): foe has 2 positive boosts — should switch.
+[AI] 픽시 (1) couldn't find any usable items
+[AI] 픽시 (1) is considering using 문포스 against 드닐레이브 (0)...
+     ignore stat change (target's foes have Unaware)
+[AI] [damage_moves] computing 픽시 (1) → 드닐레이브 (0) (turn 24)
+[AI]   문포스: 69 dmg (36.3% totalhp / 48.6% curhp)
+     + 14: damaging move (predicted damage 69 = 48% of target's HP)
+     -  8: can trigger the target's ability
+     -  7: Penalize weak move: consider switching (36.3%).
+[AI] [damage_moves] computing 드닐레이브 (0) → 픽시 (1) (turn 24)
+[AI]   스케일샷: 0 dmg (0.0% totalhp / 0.0% curhp)
+[AI]   고드름침: 129 dmg (63.9% totalhp / 74.1% curhp)
+[AI]   얼음뭉치: 53 dmg (26.2% totalhp / 30.5% curhp)
+[AI] 픽시 (1) cannot use 알낳기 (no PP left)
+[AI] 픽시 (1) is considering using 전기자석파 against 드닐레이브 (0)...
+     + 25: function code modifier (against target)
+     +  5: 5. General Status Move Boost.
+[AI] 픽시 (1) is considering using 스텔스록...
+     -1099: move will fail
+[AI] Move choices for 픽시 (1) with threshold: 110: 
+[AI]    *   0.0% to use 문포스 (target 0): score 99
+[AI]    * 100.0% to use 전기자석파 (target 0): score 130
+[AI]    *   0.0% to use 스텔스록: score -999
+[AI] => will use 전기자석파 (target 0)
 
 
-"\j[챔피언 아이리스,이,가] \j[삼삼드래,을,를] 넣었다!"
-"\j[챔피언 아이리스,은,는] \j[펜드라,을,를] 내보냈다!"
-"\j[상대 펜드라,은,는] 독압정에 찔렸다!"
-"\j[wdsd,은,는] 토오에게 \j[회복약,을,를] 사용했다."
-[Status change] 토오's status was cured
-[HP change] 토오 gained 199 HP (89 -> 288)
-"토오의 HP가 회복되었다."
+[Use move] 드닐레이브 (0) used 고드름침
+"드닐레이브의 고드름침!"
+[HP change] 상대 픽시 lost 32 HP (174 -> 142)
+[HP change] 상대 픽시 lost 32 HP (142 -> 110)
+[HP change] 상대 픽시 lost 34 HP (110 -> 76)
+[HP change] 상대 픽시 lost 32 HP (76 -> 44)
+[HP change] 상대 픽시 lost 32 HP (44 -> 12)
+"5번 맞았다!"
+[Use move] 상대 픽시 (1) used 전기자석파
+"상대 픽시의 전기자석파!"
+"\j[드닐레이브,은,는] 마비에 걸렸다!"
 
 [End of round 25]
 
 ===== Round 26 =====
 
-[AI] 펜드라 (1) is considering using item 만병통치제 on party 삼삼드래 (party index 4)...
-     + 10: curing 펜드라 (1)'s 독 status
-     -  8: prefers not to use item because it's last in stock
-     + 30: ITEM AI: Ace Pokémon preservation priority.
-   => will use 만병통치제 (party index 4)
-[AI] 펜드라 (1) will use item 만병통치제
+[AI] 픽시 (1): foe has 2 positive boosts — should switch.
+[AI] 픽시 (1) won't switch after all because it will faint from entry hazards if it switches back in
+[AI] 픽시 (1) couldn't find any usable items
+[AI] 픽시 (1) is considering using 문포스 against 드닐레이브 (0)...
+     ignore stat change (target's foes have Unaware)
+[AI] [damage_moves] computing 픽시 (1) → 드닐레이브 (0) (turn 25)
+[AI]   문포스: 69 dmg (36.3% totalhp / 48.6% curhp)
+     + 14: damaging move (predicted damage 69 = 48% of target's HP)
+     -  8: can trigger the target's ability
+     -  7: Penalize weak move: consider switching (36.3%).
+[AI] [damage_moves] computing 드닐레이브 (0) → 픽시 (1) (turn 25)
+[AI]   스케일샷: 0 dmg (0.0% totalhp / 0.0% curhp)
+[AI]   고드름침: 129 dmg (63.9% totalhp / 1075.0% curhp)
+[AI]   얼음뭉치: 53 dmg (26.2% totalhp / 441.7% curhp)
+[AI] [evade_ko] 드닐레이브 (0) 고드름침: 129 >= 12
+[AI] [evade_ko] 드닐레이브 (0) 얼음뭉치: 53 >= 12
+[AI] [evade_ko] 드닐레이브 (0) has priority KO move: 얼음뭉치 (pri 1 > 0)
+     -200: Penalize move: foe can KO with a higher-priority move.
+[AI] 픽시 (1) cannot use 알낳기 (no PP left)
+[AI] 픽시 (1) is considering using 전기자석파 against 드닐레이브 (0)...
+     move will not affect 드닐레이브 (0)
+     -1099: move will fail
+     -999: move will fail
+[AI] 픽시 (1) is considering using 스텔스록...
+     -1099: move will fail
+[AI] 픽시 (1) wants to switch due to terrible moves [문포스=-101, 전기자석파=-999, 스텔스록=-999]
+[AI] 픽시 (1) is being forced to switch out
+     - 28: 어흥염: entry hazard damage 50.25
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     -100: 어흥염: foe can OHKO (213%, faster, foe_pending)
+     +  8: 어흥염: outspeeds 드닐레이브 (0) (80 vs 70).
+[AI] [damage_moves] computing 드닐레이브 (0) → 픽시 (1) (turn 25)
+[AI]   스케일샷: 0 dmg (0.0% totalhp / 0.0% curhp)
+[AI]   고드름침: 129 dmg (63.9% totalhp / 1075.0% curhp)
+[AI]   얼음뭉치: 53 dmg (26.2% totalhp / 441.7% curhp)
+     +  9: 어흥염: tanks 드닐레이브 (0)'s best move better (70 vs 129 on current).
+     + 12: 어흥염: Intimidate vs 드닐레이브 (0) (3 phys moves)
+[AI] pokemon 어흥염 has switch score 0
+     -  3: 한카리아스: entry hazard damage 11.4375
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     -100: 한카리아스: foe can OHKO (553%, faster, foe_pending)
+     + 15: 한카리아스 best move: 스케일샷, dmg_ratio: 77% (110/142)
+     +  8: 한카리아스: outspeeds 드닐레이브 (0) (169 vs 70).
+[AI] pokemon 한카리아스 has switch score 19
+     -  6: 미라이돈: entry hazard damage 21.875
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     -100: 미라이돈: foe can OHKO (286%, faster, foe_pending)
+     + 35: 미라이돈 best move: 용성군, dmg_ratio: 213% (302/142)
+     +  8: 미라이돈: outspeeds 드닐레이브 (0) (205 vs 70).
+[AI] pokemon 미라이돈 has switch score 36
+[AI] => staying in: all reserves scored < 60 (best: 36), not switching
+[AI]    => no good replacement Pokémon, will not switch after all
+[AI] 픽시 (1) won't switch after all
+[AI] Move choices for 픽시 (1) with threshold: -121: 
+[AI]    * 100.0% to use 문포스 (target 0): score -101
+[AI]    *   0.0% to use 전기자석파 (target 0): score -999
+[AI]    *   0.0% to use 스텔스록: score -999
+[AI] => will use 문포스 (target 0)
 
 
-"\j[챔피언 아이리스,은,는] 삼삼드래에게 \j[만병통치제,을,를] 사용했다."
-"\j[삼삼드래,은,는] 건강해졌다."
-[Use move] 토오 (0) used 하품
-"토오의 하품!"
-"\j[토오,은,는] \j[상대 펜드라,을,를] 졸리게 만들었다!"
+[Use move] 드닐레이브 (0) used 얼음뭉치
+"드닐레이브의 얼음뭉치!"
+[HP change] 상대 픽시 lost 12 HP (12 -> 0)
+"\j[상대 픽시,은,는] 쓰러졌다!"
+"\j[나인테일,이,가] 4236의 많은 경험치를 얻었다!"
+"\j[나인테일,은,는] Lv. 51이 되었다!"
+"\j[드닐레이브,이,가] 4236의 많은 경험치를 얻었다!"
+"\j[앱솔,이,가] 4236의 많은 경험치를 얻었다!"
+"\j[앱솔,은,는] Lv. 51이 되었다!"
 
 [End of round 26]
-[Ability triggered] 상대 펜드라's 가속
-[Stat change] 상대 펜드라's 스피드 changed by +1 (0 -> 1)
-"상대 펜드라의 \j[스피드,이,가] 올랐다!"
+     - 28: 어흥염: entry hazard damage 50.25
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     - 40: 어흥염: foe can OHKO (213%, faster, faint_repl)
+     +  8: 어흥염: outspeeds 드닐레이브 (0) (80 vs 70).
+     + 12: 어흥염: Intimidate vs 드닐레이브 (0) (3 phys moves)
+[AI] pokemon 어흥염 has switch score 51
+     -  3: 한카리아스: entry hazard damage 11.4375
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     - 40: 한카리아스: foe can OHKO (553%, faster, faint_repl)
+     + 15: 한카리아스 best move: 스케일샷, dmg_ratio: 77% (110/142)
+     +  8: 한카리아스: outspeeds 드닐레이브 (0) (169 vs 70).
+[AI] pokemon 한카리아스 has switch score 79
+     -  6: 미라이돈: entry hazard damage 21.875
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     - 40: 미라이돈: foe can OHKO (286%, faster, faint_repl)
+     + 35: 미라이돈 best move: 용성군, dmg_ratio: 213% (302/142)
+     +  8: 미라이돈: outspeeds 드닐레이브 (0) (205 vs 70).
+[AI] pokemon 미라이돈 has switch score 96
+[AI] => forced switch: sacking 미라이돈 (best score 96)
+"\j[엘리트 트레이너 test,은,는] \j[미라이돈,을,를] 내보냈다!"
+[HP change] 상대 미라이돈 lost 22 HP (175 -> 153)
+"상대 미라이돈에게 뾰족한 바위가 박혔다!"
+[Ability triggered] 상대 미라이돈's 하드론엔진
+"발밑에 전기가 떠돌기 시작했다!"
+"\j[상대 미라이돈,은,는] 일렉트릭필드를 전개하여 미래 기관을 가동했다!"
 
 ===== Round 27 =====
 
-[AI] 펜드라 (1) wants to switch because it is yawning and can't do anything while asleep
-[AI] [damage_moves] computing 토오 (0) → 펜드라 (1) (turn 26)
-[AI]   독찌르기: 31 dmg (12.8% totalhp / 12.8% curhp)
-[AI] 펜드라 (1) couldn't find any usable items
-[AI] 펜드라 (1) will Mega Evolve
-[AI] 펜드라 (1) is considering using 킬러스핀...
-[AI] [damage_moves] computing 펜드라 (1) → 토오 (0) (turn 26)
-[AI] [predicted_damage] Mega Evolution simulation applied: 펜드라 (idx=1)
-[AI]   킬러스핀: 20 dmg (6.9% totalhp / 6.9% curhp)
-[AI] [predicted_damage] Mega Evolution simulation applied: 펜드라 (idx=1)
-[AI]   만나자마자: 0 dmg (0.0% totalhp / 0.0% curhp)
-     +  2: damaging move (predicted damage 20 = 6% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (6.9%).
-[AI] 펜드라 (1) is considering using 만나자마자...
-     -1099: move will fail
-[AI] 펜드라 (1) is considering using 방어...
-     +  7: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-     + 12: Protect stall value.
-[AI] 펜드라 (1) is considering using 배턴터치...
-     +  5: 5. General Status Move Boost.
-[AI] Move choices for 펜드라 (1) with threshold: 104: 
-[AI]    *   0.0% to use 킬러스핀: score 62
-[AI]    *   0.0% to use 만나자마자: score -999
-[AI]    *  95.2% to use 방어: score 124
-[AI]    *   4.8% to use 배턴터치: score 105
-[AI] => will use 방어
-
-
-"토오, 잘했어! 돌아와!"
-"네 차례야, 비비용!"
-[HP change] 비비용 lost 119 HP (238 -> 119)
-"비비용에게 뾰족한 바위가 박혔다!"
-"상대 펜드라의 \j[펜드라나이트,이,가] 챔피언 아이리스의 메가링에 반응하고 있다!"
-"\j[상대 펜드라,은,는] 메가진화하여 \j[메가펜드라,이,가] 되었다!"
-[Use move] 상대 펜드라 (1) used 방어
-"상대 펜드라의 방어!"
-"하지만 실패했다!"
-[Move failed] In function code ProtectUser's def pbMoveFailed?
-
-[End of round 27]
-[Lingering effect] 상대 펜드라 fell asleep because of Yawn
-"\j[상대 펜드라,은,는] 잠에 들었다!"
-[Status change] 상대 펜드라's sleep count is 3
-[Ability triggered] 상대 펜드라's 가속
-[Stat change] 상대 펜드라's 스피드 changed by +1 (1 -> 2)
-"상대 펜드라의 \j[스피드,이,가] 올랐다!"
-
-===== Round 28 =====
-
-[AI] 펜드라 (1) couldn't find any usable items
-[AI] 펜드라 (1) is considering using 킬러스핀...
-[AI] [damage_moves] computing 펜드라 (1) → 비비용 (0) (turn 27)
-[AI]   킬러스핀: 78 dmg (32.8% totalhp / 65.5% curhp)
-[AI]   만나자마자: 0 dmg (0.0% totalhp / 0.0% curhp)
-     + 19: damaging move (predicted damage 78 = 65% of target's HP)
-     - 14: Penalize weak move: consider switching (32.8%).
-     + 37: function code modifier (generic)
-[AI] [damage_moves] computing 비비용 (0) → 펜드라 (1) (turn 27)
-[AI]   폭풍: 222 dmg (91.7% totalhp / 91.7% curhp)
-[AI] 펜드라 (1) is considering using 만나자마자...
-     -1099: move will fail
-[AI] 펜드라 (1) is considering using 방어...
-     +  7: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-     + 12: Protect stall value.
-[AI] 펜드라 (1) is considering using 배턴터치...
-     + 15: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-[AI] Move choices for 펜드라 (1) with threshold: 122: 
-[AI]    *  90.9% to use 킬러스핀: score 142
-[AI]    *   0.0% to use 만나자마자: score -999
-[AI]    *   9.1% to use 방어: score 124
-[AI]    *   0.0% to use 배턴터치: score 120
-[AI] => will use 킬러스핀
-
-
-[Use move] 상대 펜드라 (1) used 킬러스핀
-"\j[상대 펜드라,은,는] 깊이 자고 있다."
-[Status continues] 상대 펜드라's sleep count is 2
-[Move failed] 상대 펜드라 is asleep
-[Use move] 비비용 (0) used 대타출동
-"비비용의 대타출동!"
-[HP change] 비비용 lost 59 HP (119 -> 60)
-"비비용은 대타를 집어넣었다!"
-
-[End of round 28]
-[Ability triggered] 상대 펜드라's 가속
-[Stat change] 상대 펜드라's 스피드 changed by +1 (2 -> 3)
-"상대 펜드라의 \j[스피드,이,가] 올랐다!"
-
-===== Round 29 =====
-
-[AI] 펜드라 (1) couldn't find any usable items
-[AI] 펜드라 (1) is considering using 킬러스핀...
-[AI] [damage_moves] computing 펜드라 (1) → 비비용 (0) (turn 28)
-[AI]   킬러스핀: 78 dmg (32.8% totalhp / 130.0% curhp)
-[AI]   만나자마자: 0 dmg (0.0% totalhp / 0.0% curhp)
-     + 19: damaging move (predicted damage 78 = 130% of target's Substitute)
-[AI] [damage_moves] computing 비비용 (0) → 펜드라 (1) (turn 28)
-[AI]   폭풍: 222 dmg (91.7% totalhp / 91.7% curhp)
-[AI] 펜드라 (1) is considering using 만나자마자...
-     -1099: move will fail
-[AI] 펜드라 (1) is considering using 방어...
-     +  7: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-     + 12: Protect stall value.
-[AI] 펜드라 (1) is considering using 배턴터치...
-     + 15: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-[AI] Move choices for 펜드라 (1) with threshold: 104: 
-[AI]    *  29.4% to use 킬러스핀: score 119
-[AI]    *   0.0% to use 만나자마자: score -999
-[AI]    *  39.2% to use 방어: score 124
-[AI]    *  31.4% to use 배턴터치: score 120
-[AI] => will use 배턴터치
-
-
-[Use move] 상대 펜드라 (1) used 배턴터치
-"\j[상대 펜드라,은,는] 깊이 자고 있다."
-[Status continues] 상대 펜드라's sleep count is 1
-[Move failed] 상대 펜드라 is asleep
-[Use move] 비비용 (0) used 나비춤
-"비비용의 나비춤!"
-[Stat change] 비비용's 특수공격 changed by +1 (0 -> 1)
-"비비용의 \j[특수공격,이,가] 올랐다!"
-[Stat change] 비비용's 특수방어 changed by +1 (0 -> 1)
-"비비용의 \j[특수방어,이,가] 올랐다!"
-[Stat change] 비비용's 스피드 changed by +1 (0 -> 1)
-"비비용의 \j[스피드,이,가] 올랐다!"
-
-[End of round 29]
-[Ability triggered] 상대 펜드라's 가속
-[Stat change] 상대 펜드라's 스피드 changed by +1 (3 -> 4)
-"상대 펜드라의 \j[스피드,이,가] 올랐다!"
-
-===== Round 30 =====
-
-[AI] 펜드라 (1): foe has 3 positive boosts — should switch.
-[AI] 펜드라 (1) won't switch after all because it has a lot of raised stats
-[AI] 펜드라 (1) couldn't find any usable items
-[AI] 펜드라 (1) is considering using 킬러스핀...
-[AI] [damage_moves] computing 펜드라 (1) → 비비용 (0) (turn 29)
-[AI]   킬러스핀: 78 dmg (32.8% totalhp / 130.0% curhp)
-[AI]   만나자마자: 0 dmg (0.0% totalhp / 0.0% curhp)
-     + 19: damaging move (predicted damage 78 = 130% of target's Substitute)
-[AI] [damage_moves] computing 비비용 (0) → 펜드라 (1) (turn 29)
-[AI]   폭풍: 333 dmg (137.6% totalhp / 137.6% curhp)
-[AI] [evade_ko] 비비용 (0) 폭풍: 333 >= 242
-[AI] 펜드라 (1) is considering using 만나자마자...
-     -1099: move will fail
-[AI] 펜드라 (1) is considering using 방어...
-     +  7: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-     + 12: Protect stall value.
-[AI] 펜드라 (1) is considering using 배턴터치...
-     + 25: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-[AI] [evade_ko] 비비용 (0) 폭풍: 333 >= 242
-[AI] Move choices for 펜드라 (1) with threshold: 110: 
-[AI]    *  20.9% to use 킬러스핀: score 119
-[AI]    *   0.0% to use 만나자마자: score -999
-[AI]    *  32.6% to use 방어: score 124
-[AI]    *  46.5% to use 배턴터치: score 130
-[AI] => will use 배턴터치
-
-
-[Use move] 상대 펜드라 (1) used 배턴터치
-"\j[상대 펜드라,은,는] 일어났다!"
-"상대 펜드라의 배턴터치!"
-[AI] move_id: HURRICANE
-     -100: 모토마: foe can 2HKO (77.77777777777779%im slower)
-     + 30: 모토마 best move: 용성군, dmg_ratio: 218% (131/60)
-     + 10: Utility: Taunt vs status-heavy foe
-[AI] [damage_moves] computing 비비용 (0) → 펜드라 (1) (turn 29)
-[AI]   폭풍: 333 dmg (137.6% totalhp / 137.6% curhp)
-     +  7: 모토마: tanks 비비용 (0)'s best move better (210 vs 333 on current).
-[AI] pokemon 모토마 has switch score 47
-[AI] move_id: HURRICANE
-     -100: 삼삼드래: foe can OHKO (121.62162162162163% >= 100%im slower)
-     + 30: 삼삼드래 best move: 용성군, dmg_ratio: 400% (240/60)
-     +  9: 삼삼드래: tanks 비비용 (0)'s best move better (180 vs 333 on current).
-[AI] pokemon 삼삼드래 has switch score 39
-[AI] => forced switch: sacking 모토마 (best score 47)
-"\j[챔피언 아이리스,은,는] \j[모토마,을,를] 내보냈다!"
-[Use move] 비비용 (0) used 나비춤
-"비비용의 나비춤!"
-[Stat change] 비비용's 특수공격 changed by +1 (1 -> 2)
-"비비용의 \j[특수공격,이,가] 올랐다!"
-[Stat change] 비비용's 특수방어 changed by +1 (1 -> 2)
-"비비용의 \j[특수방어,이,가] 올랐다!"
-[Stat change] 비비용's 스피드 changed by +1 (1 -> 2)
-"비비용의 \j[스피드,이,가] 올랐다!"
-
-[End of round 30]
-
-===== Round 31 =====
-
-[AI] 모토마 (1): foe has 6 positive boosts — should switch.
-[AI] 모토마 (1) won't switch after all because it has a lot of raised stats
-[AI] 모토마 (1) couldn't find any usable items
-[AI] 모토마 (1) is considering using 탁쳐서떨구기 against 비비용 (0)...
-[AI] [damage_moves] computing 모토마 (1) → 비비용 (0) (turn 30)
-[AI]   탁쳐서떨구기: 113 dmg (47.5% totalhp / 188.3% curhp)
-[AI]   용성군: 99 dmg (41.6% totalhp / 165.0% curhp)
-     + 20: damaging move (predicted damage 113 = 188% of target's Substitute)
-     + 10: Knock Off: removing target's item.
-[AI] [damage_moves] computing 비비용 (0) → 모토마 (1) (turn 30)
-[AI]   폭풍: 279 dmg (103.3% totalhp / 103.3% curhp)
-[AI] 모토마 (1) is considering using 꼬리자르기...
-     +  5: 5. General Status Move Boost.
-[AI] 모토마 (1) is considering using 용성군 against 비비용 (0)...
-     + 20: damaging move (predicted damage 99 = 165% of target's Substitute)
-     -  8: lowering the user's 특수공격 by 2
-     -  8: function code modifier (generic)
-[AI] 모토마 (1) is considering using 도발 against 비비용 (0)...
-     + 19: Taunt: 3 status moves, has setup.
-     + 19: function code modifier (against target)
-     +  5: 5. General Status Move Boost.
-[AI] Move choices for 모토마 (1) with threshold: 110: 
-[AI]    *  55.6% to use 탁쳐서떨구기 (target 0): score 130
-[AI]    *   0.0% to use 꼬리자르기: score 105
-[AI]    *   5.6% to use 용성군 (target 0): score 112
-[AI]    *  38.9% to use 도발 (target 0): score 124
-[AI] => will use 도발 (target 0)
-
-
-[Use move] 상대 모토마 (1) used 도발
-"상대 모토마의 도발!"
-"\j[비비용,은,는] 도발에 넘어갔다!"
-[Use move] 비비용 (0) used 수면가루
-"\j[비비용,은,는] 도발 상태라 \j[수면가루,을,를] 사용할 수 없다!"
-
-[End of round 31]
-
-===== Round 32 =====
-
-[AI] 모토마 (1): foe has 6 positive boosts — should switch.
-[AI] 모토마 (1) won't switch after all because it has a lot of raised stats
-[AI] 모토마 (1) couldn't find any usable items
-[AI] 모토마 (1) is considering using 탁쳐서떨구기 against 비비용 (0)...
-[AI] [damage_moves] computing 모토마 (1) → 비비용 (0) (turn 31)
-[AI]   탁쳐서떨구기: 113 dmg (47.5% totalhp / 188.3% curhp)
-[AI]   용성군: 99 dmg (41.6% totalhp / 165.0% curhp)
-     + 20: damaging move (predicted damage 113 = 188% of target's Substitute)
-     + 10: Knock Off: removing target's item.
-[AI] [damage_moves] computing 비비용 (0) → 모토마 (1) (turn 31)
-[AI]   폭풍: 279 dmg (103.3% totalhp / 103.3% curhp)
-[AI] 모토마 (1) is considering using 꼬리자르기...
-     +  5: 5. General Status Move Boost.
-[AI] 모토마 (1) is considering using 용성군 against 비비용 (0)...
-     + 20: damaging move (predicted damage 99 = 165% of target's Substitute)
-     -  8: lowering the user's 특수공격 by 2
-     -  8: function code modifier (generic)
-[AI] 모토마 (1) is considering using 도발 against 비비용 (0)...
-     move will not affect 비비용 (0)
-     -1099: move will fail
-     -999: move will fail
-[AI] Move choices for 모토마 (1) with threshold: 110: 
-[AI]    *  90.9% to use 탁쳐서떨구기 (target 0): score 130
-[AI]    *   0.0% to use 꼬리자르기: score 105
-[AI]    *   9.1% to use 용성군 (target 0): score 112
-[AI]    *   0.0% to use 도발 (target 0): score -999
-[AI] => will use 탁쳐서떨구기 (target 0)
-
-
-[Use move] 상대 모토마 (1) used 탁쳐서떨구기
-"상대 모토마의 탁쳐서떨구기!"
-[Substitute HP change] 비비용's substitute lost 59 HP (59 -> 0)
-"대타가 비비용의 데미지를 대신 받았다!"
-"비비용의 대타가 사라졌다!"
-[Use move] 비비용 (0) used 폭풍
-"비비용의 폭풍!"
-[HP change] 상대 모토마 lost 259 HP (270 -> 11)
-[HP change] 상대 모토마 gained 67 HP (11 -> 78)
-"\j[상대 모토마,은,는] \j[자뭉열매,으로,로] HP를 회복했다!"
-[Item consumed] 상대 모토마 consumed its held 자뭉열매
-
-[End of round 32]
-
-===== Round 33 =====
-
-[AI] 모토마 (1): foe has 6 positive boosts — should switch.
-[AI] 모토마 (1) won't switch after all because it has a lot of raised stats
-[AI] 모토마 (1) couldn't find any usable items
-[AI] 모토마 (1) is considering using 탁쳐서떨구기 against 비비용 (0)...
-[AI] [damage_moves] computing 모토마 (1) → 비비용 (0) (turn 32)
-[AI]   탁쳐서떨구기: 113 dmg (47.5% totalhp / 188.3% curhp)
-[AI]   용성군: 99 dmg (41.6% totalhp / 165.0% curhp)
-     + 30: damaging move (predicted damage 113 = 188% of target's HP)
-     + 50: predicted to KO the target
-     + 10: Knock Off: removing target's item.
-[AI] [damage_moves] computing 비비용 (0) → 모토마 (1) (turn 32)
-[AI]   폭풍: 279 dmg (103.3% totalhp / 357.7% curhp)
-[AI] [evade_ko] 비비용 (0) 폭풍: 279 >= 78
-[AI] 모토마 (1) is considering using 꼬리자르기...
-     -1099: move will fail
-[AI] 모토마 (1) is considering using 용성군 against 비비용 (0)...
-     + 30: damaging move (predicted damage 99 = 165% of target's HP)
-     + 50: predicted to KO the target
-     -  8: lowering the user's 특수공격 by 2
-     -  8: function code modifier (generic)
-[AI] [evade_ko] 비비용 (0) 폭풍: 279 >= 78
-[AI] 모토마 (1) is considering using 도발 against 비비용 (0)...
-     move will not affect 비비용 (0)
-     -1099: move will fail
-     -999: move will fail
-[AI] Move choices for 모토마 (1) with threshold: 170: 
-[AI]    *  90.9% to use 탁쳐서떨구기 (target 0): score 190
-[AI]    *   0.0% to use 꼬리자르기: score -999
-[AI]    *   9.1% to use 용성군 (target 0): score 172
-[AI]    *   0.0% to use 도발 (target 0): score -999
-[AI] => will use 탁쳐서떨구기 (target 0)
-
-
-[Use move] 상대 모토마 (1) used 탁쳐서떨구기
-"상대 모토마의 탁쳐서떨구기!"
-[HP change] 비비용 lost 60 HP (60 -> 0)
-"급소에 맞았다!"
-"\j[비비용,은,는] 쓰러졌다!"
-"\j[비비용,은,는] \j[부적금화,을,를] 떨어뜨렸다!"
-
-[End of round 33]
-"조금 남았어! 힘내, 포푸니라!"
-[HP change] 포푸니라 lost 50 HP (199 -> 149)
-"포푸니라에게 뾰족한 바위가 박혔다!"
-[HP change] 포푸니라 lost 49 HP (149 -> 100)
-"\j[포푸니라,은,는] 압정에 찔렸다!"
-[Ability triggered] 포푸니라's 프레셔
-"\j[포푸니라,은,는] 프레셔를 내뿜고 있다!"
-
-===== Round 34 =====
-
-[AI] 모토마 (1) couldn't find any usable items
-[AI] 모토마 (1) is considering using 탁쳐서떨구기 against 포푸니라 (0)...
-     + 40: function code modifier (against target)
-[AI] [damage_moves] computing 모토마 (1) → 포푸니라 (0) (turn 33)
-[AI]   탁쳐서떨구기: 52 dmg (26.1% totalhp / 52.0% curhp)
-[AI]   용성군: 150 dmg (75.4% totalhp / 150.0% curhp)
-     + 15: damaging move (predicted damage 52 = 52% of target's HP)
-     - 28: Penalize weak move: consider switching (26.1%).
-     + 10: Knock Off: removing target's item.
-     +  5: Knock Off: target has high-value item.
-[AI] [damage_moves] computing 포푸니라 (0) → 모토마 (1) (turn 33)
-[AI] [known_foe_moves] Hiding 독찌르기 from 포푸니라 (0) (never acted)
-[AI]   고드름떨구기: 300 dmg (111.1% totalhp / 384.6% curhp)
-[AI]   얼음뭉치: 144 dmg (53.3% totalhp / 184.6% curhp)
-[AI]   탁쳐서떨구기: 117 dmg (43.3% totalhp / 150.0% curhp)
-[AI] [evade_ko] 포푸니라 (0) 고드름떨구기: 300 >= 78
-[AI] [evade_ko] 포푸니라 (0) 얼음뭉치: 144 >= 78
-[AI] [evade_ko] 포푸니라 (0) has priority KO move: 얼음뭉치 (pri 1 > 0)
-[AI] [evade_ko] 포푸니라 (0) 탁쳐서떨구기: 117 >= 78
+[AI] 미라이돈 (1): foe has 2 positive boosts — should switch.
+[AI] [damage_moves] computing 드닐레이브 (0) → 미라이돈 (1) (turn 26)
+[AI]   스케일샷: 480 dmg (274.3% totalhp / 313.7% curhp)
+[AI]   고드름침: 480 dmg (274.3% totalhp / 313.7% curhp)
+[AI]   얼음뭉치: 195 dmg (111.4% totalhp / 127.5% curhp)
+[AI] [should_not_switch] 드닐레이브 (0) can OHKO 미라이돈 (1) (slower)
+[AI] 미라이돈 (1) couldn't find any usable items
+[AI] 미라이돈 (1) is considering using 볼트체인지 against 드닐레이브 (0)...
+[AI] [damage_moves] computing 미라이돈 (1) → 드닐레이브 (0) (turn 26)
+[AI]   볼트체인지: 53 dmg (27.9% totalhp / 37.3% curhp)
+[AI]   오버히트: 101 dmg (53.2% totalhp / 71.1% curhp)
+[AI]   용성군: 302 dmg (158.9% totalhp / 212.7% curhp)
+[AI]   라이트닝드라이브: 75 dmg (39.5% totalhp / 52.8% curhp)
+     + 11: damaging move (predicted damage 53 = 37% of target's HP)
+     -  8: can trigger the target's ability
+     + 10: 6. Active Pivot move boost.
+     - 10: function code modifier (generic)
+     -  8: move is less suitable to be Choiced into
+[AI] [evade_ko] 드닐레이브 (0) 스케일샷: 480 >= 153
+[AI] [evade_ko] 드닐레이브 (0) 고드름침: 480 >= 153
+[AI] [evade_ko] 드닐레이브 (0) 얼음뭉치: 195 >= 153
+[AI] [evade_ko] 드닐레이브 (0) has priority KO move: 얼음뭉치 (pri 1 > 0)
      -200: Penalize move: foe can KO with a higher-priority move.
-[AI] 모토마 (1) is considering using 꼬리자르기...
-     -1099: move will fail
-[AI] 모토마 (1) is considering using 용성군 against 포푸니라 (0)...
-     + 30: damaging move (predicted damage 150 = 150% of target's HP)
-     + 50: predicted to KO the target
-     -  8: lowering the user's 특수공격 by 2
-     -  8: function code modifier (generic)
-[AI] [evade_ko] 포푸니라 (0) 고드름떨구기: 300 >= 78
-[AI] [evade_ko] 포푸니라 (0) 얼음뭉치: 144 >= 78
-[AI] [evade_ko] 포푸니라 (0) has priority KO move: 얼음뭉치 (pri 1 > 0)
-[AI] [evade_ko] 포푸니라 (0) 탁쳐서떨구기: 117 >= 78
-     -200: Penalize move: foe can KO with a higher-priority move.
-[AI] 모토마 (1) is considering using 도발 against 포푸니라 (0)...
-     - 40: function code modifier (against target)
-     +  5: 5. General Status Move Boost.
-[AI] [evade_ko] 포푸니라 (0) 고드름떨구기: 300 >= 78
-[AI] [evade_ko] 포푸니라 (0) 얼음뭉치: 144 >= 78
-[AI] [evade_ko] 포푸니라 (0) has priority KO move: 얼음뭉치 (pri 1 > 0)
-[AI] [evade_ko] 포푸니라 (0) 탁쳐서떨구기: 117 >= 78
-     -200: Penalize move: foe can KO with a higher-priority move.
-[AI] 모토마 (1) wants to switch due to terrible moves [탁쳐서떨구기=-58, 꼬리자르기=-999, 용성군=-28, 도발=-135]
-[AI] 모토마 (1) is being forced to switch out
-[AI] move_id: ICICLECRASH
-[AI] move_id: ICESHARD
-[AI] move_id: KNOCKOFF
-     + 13: 펜드라: foe cannot 2HKO, +33.88429752066116% < 50%
-     + 30: 펜드라 best move: 만나자마자, dmg_ratio: 423% (423/100)
-[AI] [damage_moves] computing 포푸니라 (0) → 모토마 (1) (turn 33)
-[AI]   고드름떨구기: 300 dmg (111.1% totalhp / 384.6% curhp)
-[AI]   얼음뭉치: 144 dmg (53.3% totalhp / 184.6% curhp)
-[AI]   탁쳐서떨구기: 117 dmg (43.3% totalhp / 150.0% curhp)
-     + 15: 펜드라: tanks 포푸니라 (0)'s best move better (82 vs 300 on current).
-[AI] pokemon 펜드라 has switch score 158
-[AI] move_id: ICICLECRASH
-[AI] move_id: ICESHARD
-[AI] move_id: KNOCKOFF
-     - 80: 삼삼드래: foe can OHKO (171.6216216216216% >= 100%, but im faster)
-     + 30: 삼삼드래 best move: 용성군, dmg_ratio: 276% (276/100)
-     +  8: 삼삼드래: outspeeds 포푸니라 (0) (231 vs 228).
-     +  3: 삼삼드래: tanks 포푸니라 (0)'s best move better (254 vs 300 on current).
-[AI] pokemon 삼삼드래 has switch score 61
-[AI] => will switch with 펜드라
-
-
-"\j[챔피언 아이리스,이,가] \j[모토마,을,를] 넣었다!"
-[Ability triggered] 상대 모토마's 재생력
-[HP change] 상대 모토마 gained 90 HP (78 -> 168)
-"\j[챔피언 아이리스,은,는] \j[펜드라,을,를] 내보냈다!"
-[Use move] 포푸니라 (0) used 얼음뭉치
-"포푸니라의 얼음뭉치!"
-[HP change] 상대 펜드라 lost 39 HP (242 -> 203)
-[Item triggered] 포푸니라's 생명의구슬 (recoil)
-[HP change] 포푸니라 lost 19 HP (100 -> 81)
-"포푸니라는 생명의구슬로 인해 HP를 조금 잃었다!"
-
-[End of round 34]
-
-===== Round 35 =====
-
-[AI] 펜드라 (1) couldn't find any usable items
-[AI] 펜드라 (1) is considering using 킬러스핀...
-[AI] [damage_moves] computing 펜드라 (1) → 포푸니라 (0) (turn 34)
-[AI]   킬러스핀: 72 dmg (36.2% totalhp / 88.9% curhp)
-[AI]   만나자마자: 423 dmg (212.6% totalhp / 522.2% curhp)
-     + 26: damaging move (predicted damage 72 = 88% of target's HP)
-     -  8: Penalize weak move: consider switching (36.2%).
-     + 36: function code modifier (generic)
-[AI] [damage_moves] computing 포푸니라 (0) → 펜드라 (1) (turn 34)
-[AI]   고드름떨구기: 82 dmg (33.9% totalhp / 40.4% curhp)
-[AI]   얼음뭉치: 41 dmg (16.9% totalhp / 20.2% curhp)
-[AI]   탁쳐서떨구기: 64 dmg (26.4% totalhp / 31.5% curhp)
-[AI]   독찌르기: 26 dmg (10.7% totalhp / 12.8% curhp)
-[AI] 펜드라 (1) is considering using 만나자마자 against 포푸니라 (0)...
-     +  8: target at low HP and move has priority over faster target
-     + 30: damaging move (predicted damage 423 = 522% of target's HP)
-     + 50: predicted to KO the target
-     +  8: Priority move bonus: user is slower than target.
-     + 25: function code modifier (generic)
-[AI] 펜드라 (1) is considering using 방어...
-     +  7: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-     + 12: Protect stall value.
-[AI] 펜드라 (1) is considering using 배턴터치...
-     +  5: 5. General Status Move Boost.
-[AI] Move choices for 펜드라 (1) with threshold: 201: 
-[AI]    *   0.0% to use 킬러스핀: score 154
-[AI]    * 100.0% to use 만나자마자 (target 0): score 221
-[AI]    *   0.0% to use 방어: score 124
-[AI]    *   0.0% to use 배턴터치: score 105
-[AI] => will use 만나자마자 (target 0)
-
-
-[Use move] 상대 펜드라 (1) used 만나자마자
-[Ability triggered] 포푸니라's 프레셔
-"상대 펜드라의 만나자마자!"
-[HP change] 포푸니라 lost 81 HP (81 -> 0)
-"효과가 굉장했다!"
-"\j[포푸니라,은,는] 쓰러졌다!"
-
-[End of round 35]
-[Ability triggered] 상대 펜드라's 가속
-[Stat change] 상대 펜드라's 스피드 changed by +1 (0 -> 1)
-"상대 펜드라의 \j[스피드,이,가] 올랐다!"
-"힘내, 토오!"
-[HP change] 토오 lost 18 HP (288 -> 270)
-"토오에게 뾰족한 바위가 박혔다!"
-[HP change] 토오 lost 72 HP (270 -> 198)
-"\j[토오,은,는] 압정에 찔렸다!"
-
-===== Round 36 =====
-
-[AI] 펜드라 (1) couldn't find any usable items
-[AI] 펜드라 (1) is considering using 킬러스핀...
-[AI] [damage_moves] computing 펜드라 (1) → 토오 (0) (turn 35)
-[AI]   킬러스핀: 20 dmg (6.9% totalhp / 10.1% curhp)
-[AI]   만나자마자: 0 dmg (0.0% totalhp / 0.0% curhp)
-     +  3: damaging move (predicted damage 20 = 10% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (6.9%).
-[AI] [damage_moves] computing 토오 (0) → 펜드라 (1) (turn 35)
-[AI]   독찌르기: 20 dmg (8.3% totalhp / 9.9% curhp)
-[AI] 펜드라 (1) is considering using 만나자마자...
-     -1099: move will fail
-[AI] 펜드라 (1) is considering using 방어...
-     -  1: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-     + 12: Protect stall value.
-[AI] 펜드라 (1) is considering using 배턴터치...
-     +  5: 5. General Status Move Boost.
-[AI] Move choices for 펜드라 (1) with threshold: 96: 
-[AI]    *   0.0% to use 킬러스핀: score 63
-[AI]    *   0.0% to use 만나자마자: score -999
-[AI]    *  69.0% to use 방어: score 116
-[AI]    *  31.0% to use 배턴터치: score 105
-[AI] => will use 방어
-
-
-[Use move] 상대 펜드라 (1) used 방어
-"상대 펜드라의 방어!"
-"\j[상대 펜드라,은,는] 스스로를 지켰다!"
-[Use move] 토오 (0) used 하품
-"토오의 하품!"
-"\j[상대 펜드라,은,는] 스스로를 지켰다!"
-
-[End of round 36]
-[HP change] 토오 gained 18 HP (198 -> 216)
-"토오는 먹다남은음식으로 약간의 HP를 회복했다!"
-[Ability triggered] 상대 펜드라's 가속
-[Stat change] 상대 펜드라's 스피드 changed by +1 (1 -> 2)
-"상대 펜드라의 \j[스피드,이,가] 올랐다!"
-
-===== Round 37 =====
-
-[AI] 펜드라 (1) couldn't find any usable items
-[AI] 펜드라 (1) is considering using 킬러스핀...
-[AI] [damage_moves] computing 펜드라 (1) → 토오 (0) (turn 36)
-[AI]   킬러스핀: 20 dmg (6.9% totalhp / 9.3% curhp)
-[AI]   만나자마자: 0 dmg (0.0% totalhp / 0.0% curhp)
-     +  2: damaging move (predicted damage 20 = 9% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (6.9%).
-[AI] [damage_moves] computing 토오 (0) → 펜드라 (1) (turn 36)
-[AI]   독찌르기: 20 dmg (8.3% totalhp / 9.9% curhp)
-[AI] 펜드라 (1) is considering using 만나자마자...
-     -1099: move will fail
-[AI] 펜드라 (1) is considering using 방어...
-     - 31: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-     -100: Protect likely to fail (consecutive).
-[AI] 펜드라 (1) is considering using 배턴터치...
-     + 15: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-[AI] Move choices for 펜드라 (1) with threshold: 100: 
-[AI]    *   0.0% to use 킬러스핀: score 62
-[AI]    *   0.0% to use 만나자마자: score -999
-[AI]    *   0.0% to use 방어: score -26
-[AI]    * 100.0% to use 배턴터치: score 120
-[AI] => will use 배턴터치
-
-
-[Use move] 상대 펜드라 (1) used 배턴터치
-"상대 펜드라의 배턴터치!"
-[AI] move_id: POISONJAB
-     + 11: 모토마: foe cannot 2HKO, +44.047619047619044% < 50%
-     + 11: 모토마 best move: 탁쳐서떨구기, dmg_ratio: 54% (117/216)
-     + 10: Utility: Taunt vs status-heavy foe
-     +  8: 모토마: outspeeds 토오 (0) (239 vs 42).
-[AI] [damage_moves] computing 토오 (0) → 펜드라 (1) (turn 36)
-[AI]   독찌르기: 20 dmg (8.3% totalhp / 9.9% curhp)
-[AI] pokemon 모토마 has switch score 140
-[AI] move_id: POISONJAB
-     + 11: 삼삼드래: foe cannot 2HKO, +41.891891891891895% < 50%
-     + 19: 삼삼드래 best move: 용성군, dmg_ratio: 94% (204/216)
-     +  8: 삼삼드래: outspeeds 토오 (0) (231 vs 42).
-[AI] pokemon 삼삼드래 has switch score 138
-"\j[챔피언 아이리스,은,는] \j[모토마,을,를] 내보냈다!"
-[Use move] 토오 (0) used 하품
-"토오의 하품!"
-"\j[토오,은,는] \j[상대 모토마,을,를] 졸리게 만들었다!"
-
-[End of round 37]
-[HP change] 토오 gained 18 HP (216 -> 234)
-"토오는 먹다남은음식으로 약간의 HP를 회복했다!"
-
-===== Round 38 =====
-
-[AI] 모토마 (1) couldn't find any usable items
-[AI] 모토마 (1) is considering using 탁쳐서떨구기 against 토오 (0)...
-     + 36: function code modifier (against target)
-[AI] [damage_moves] computing 모토마 (1) → 토오 (0) (turn 37)
-[AI]   탁쳐서떨구기: 117 dmg (40.6% totalhp / 50.0% curhp)
-[AI]   용성군: 111 dmg (38.5% totalhp / 47.4% curhp)
-     + 15: damaging move (predicted damage 117 = 50% of target's HP)
-     + 10: Knock Off: removing target's item.
-     +  5: Knock Off: target has high-value item.
-[AI] [damage_moves] computing 토오 (0) → 모토마 (1) (turn 37)
-[AI]   독찌르기: 74 dmg (27.4% totalhp / 44.0% curhp)
-[AI] 모토마 (1) is considering using 꼬리자르기...
-     -  4: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-[AI] 모토마 (1) is considering using 용성군 against 토오 (0)...
-     + 14: damaging move (predicted damage 111 = 47% of target's HP)
-     -  3: Penalize weak move: consider switching (38.5%).
-     -  8: lowering the user's 특수공격 by 2
-     -  8: function code modifier (generic)
-[AI] 모토마 (1) is considering using 도발 against 토오 (0)...
-     +  9: Taunt: 3 status moves.
-     +  9: function code modifier (against target)
-     +  5: 5. General Status Move Boost.
-[AI] Move choices for 모토마 (1) with threshold: 146: 
-[AI]    * 100.0% to use 탁쳐서떨구기 (target 0): score 166
-[AI]    *   0.0% to use 꼬리자르기: score 101
-[AI]    *   0.0% to use 용성군 (target 0): score 103
-[AI]    *   0.0% to use 도발 (target 0): score 114
-[AI] => will use 탁쳐서떨구기 (target 0)
-
-
-[Use move] 상대 모토마 (1) used 탁쳐서떨구기
-"상대 모토마의 탁쳐서떨구기!"
-[HP change] 토오 lost 116 HP (234 -> 118)
-"\j[토오,은,는] \j[먹다남은음식,을,를] 떨어뜨렸다!"
-[Use move] 토오 (0) used 독찌르기
-"토오의 독찌르기!"
-[HP change] 상대 모토마 lost 70 HP (168 -> 98)
-"\j[상대 모토마,은,는] 독에 걸렸다!"
-
-[End of round 38]
-[HP change] 상대 모토마 lost 33 HP (98 -> 65)
-"\j[상대 모토마,은,는] 독의 데미지를 받았다!"
-
-===== Round 39 =====
-
-[AI] 모토마 (1) wants to switch because it will take a lot of EOR damage
-[AI] [damage_moves] computing 토오 (0) → 모토마 (1) (turn 38)
-[AI]   독찌르기: 74 dmg (27.4% totalhp / 113.8% curhp)
-[AI] move_id: POISONJAB
-     + 18: 펜드라: foe cannot 2HKO, +9.852216748768473% < 50%
-     + 20: 펜드라 best move: 만나자마자, dmg_ratio: 101% (119/118)
-     +  8: 펜드라: outspeeds 토오 (0) (170 vs 42).
-[AI] [damage_moves] computing 토오 (0) → 모토마 (1) (turn 38)
-[AI]   독찌르기: 74 dmg (27.4% totalhp / 113.8% curhp)
-     + 15: 펜드라: tanks 토오 (0)'s best move better (20 vs 74 on current).
-[AI] pokemon 펜드라 has switch score 161
-[AI] move_id: POISONJAB
-     + 11: 삼삼드래: foe cannot 2HKO, +41.891891891891895% < 50%
-     + 30: 삼삼드래 best move: 용성군, dmg_ratio: 173% (204/118)
-     +  8: 삼삼드래: outspeeds 토오 (0) (231 vs 42).
-     +  3: 삼삼드래: tanks 토오 (0)'s best move better (62 vs 74 on current).
-[AI] pokemon 삼삼드래 has switch score 152
-[AI] => will switch with 펜드라
-
-
-"\j[챔피언 아이리스,이,가] \j[모토마,을,를] 넣었다!"
-[Ability triggered] 상대 모토마's 재생력
-[HP change] 상대 모토마 gained 90 HP (65 -> 155)
-"\j[챔피언 아이리스,은,는] \j[펜드라,을,를] 내보냈다!"
-[Use move] 토오 (0) used 독찌르기
-"토오의 독찌르기!"
-[HP change] 상대 펜드라 lost 18 HP (203 -> 185)
-"효과가 별로인 것 같다..."
-
-[End of round 39]
-
-===== Round 40 =====
-
-[AI] 펜드라 (1) couldn't find any usable items
-[AI] 펜드라 (1) is considering using 킬러스핀...
-[AI] [damage_moves] computing 펜드라 (1) → 토오 (0) (turn 39)
-[AI]   킬러스핀: 20 dmg (6.9% totalhp / 16.9% curhp)
-[AI]   만나자마자: 119 dmg (41.3% totalhp / 100.8% curhp)
-     +  5: damaging move (predicted damage 20 = 16% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (6.9%).
-[AI] [damage_moves] computing 토오 (0) → 펜드라 (1) (turn 39)
-[AI]   독찌르기: 20 dmg (8.3% totalhp / 10.8% curhp)
-[AI] 펜드라 (1) is considering using 만나자마자 against 토오 (0)...
-     + 30: damaging move (predicted damage 119 = 100% of target's HP)
-     + 50: predicted to KO the target
-     + 25: function code modifier (generic)
-[AI] 펜드라 (1) is considering using 방어...
-     +  7: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-     + 12: Protect stall value.
-[AI] 펜드라 (1) is considering using 배턴터치...
-     +  5: 5. General Status Move Boost.
-[AI] Move choices for 펜드라 (1) with threshold: 185: 
-[AI]    *   0.0% to use 킬러스핀: score 65
-[AI]    * 100.0% to use 만나자마자 (target 0): score 205
-[AI]    *   0.0% to use 방어: score 124
-[AI]    *   0.0% to use 배턴터치: score 105
-[AI] => will use 만나자마자 (target 0)
-
-
-[Use move] 상대 펜드라 (1) used 만나자마자
-"상대 펜드라의 만나자마자!"
-[HP change] 토오 lost 110 HP (118 -> 8)
-"효과가 별로인 것 같다..."
-[Use move] 토오 (0) used 하품
-"토오의 하품!"
-"\j[토오,은,는] \j[상대 펜드라,을,를] 졸리게 만들었다!"
-
-[End of round 40]
-[Ability triggered] 상대 펜드라's 가속
-[Stat change] 상대 펜드라's 스피드 changed by +1 (0 -> 1)
-"상대 펜드라의 \j[스피드,이,가] 올랐다!"
-
-===== Round 41 =====
-
-[AI] 펜드라 (1) wants to switch because it is yawning and can't do anything while asleep
-[AI] [damage_moves] computing 토오 (0) → 펜드라 (1) (turn 40)
-[AI]   독찌르기: 20 dmg (8.3% totalhp / 10.8% curhp)
-[AI] 펜드라 (1) couldn't find any usable items
-[AI] 펜드라 (1) is considering using 킬러스핀...
-[AI] [damage_moves] computing 펜드라 (1) → 토오 (0) (turn 40)
-[AI]   킬러스핀: 20 dmg (6.9% totalhp / 250.0% curhp)
-[AI]   만나자마자: 0 dmg (0.0% totalhp / 0.0% curhp)
-     + 30: damaging move (predicted damage 20 = 250% of target's HP)
-     + 50: predicted to KO the target
-[AI] 펜드라 (1) is considering using 만나자마자...
-     -1099: move will fail
-[AI] 펜드라 (1) is considering using 방어...
-     +  7: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-     + 12: Protect stall value.
-[AI] 펜드라 (1) is considering using 배턴터치...
-     +  5: 5. General Status Move Boost.
-[AI] Move choices for 펜드라 (1) with threshold: 160: 
-[AI]    * 100.0% to use 킬러스핀: score 180
-[AI]    *   0.0% to use 만나자마자: score -999
-[AI]    *   0.0% to use 방어: score 124
-[AI]    *   0.0% to use 배턴터치: score 105
-[AI] => will use 킬러스핀
-
-
-"\j[wdsd,은,는] 토오에게 \j[회복약,을,를] 사용했다."
-[Status change] 토오's status was cured
-[HP change] 토오 gained 280 HP (8 -> 288)
-"토오의 HP가 회복되었다."
-[Use move] 상대 펜드라 (1) used 킬러스핀
-"상대 펜드라의 킬러스핀!"
-[HP change] 토오 lost 17 HP (288 -> 271)
-"효과가 별로인 것 같다..."
-
-[End of round 41]
-[Lingering effect] 상대 펜드라 fell asleep because of Yawn
-"\j[상대 펜드라,은,는] 잠에 들었다!"
-[Status change] 상대 펜드라's sleep count is 2
-[Ability triggered] 상대 펜드라's 가속
-[Stat change] 상대 펜드라's 스피드 changed by +1 (1 -> 2)
-"상대 펜드라의 \j[스피드,이,가] 올랐다!"
-
-===== Round 42 =====
-
-[AI] 펜드라 (1) couldn't find any usable items
-[AI] 펜드라 (1) is considering using 킬러스핀...
-[AI] [damage_moves] computing 펜드라 (1) → 토오 (0) (turn 41)
-[AI]   킬러스핀: 20 dmg (6.9% totalhp / 7.4% curhp)
-[AI]   만나자마자: 0 dmg (0.0% totalhp / 0.0% curhp)
-     +  2: damaging move (predicted damage 20 = 7% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (6.9%).
-[AI] [damage_moves] computing 토오 (0) → 펜드라 (1) (turn 41)
-[AI]   독찌르기: 20 dmg (8.3% totalhp / 10.8% curhp)
-[AI] 펜드라 (1) is considering using 만나자마자...
-     -1099: move will fail
-[AI] 펜드라 (1) is considering using 방어...
-     +  7: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-     + 12: Protect stall value.
-[AI] 펜드라 (1) is considering using 배턴터치...
-     + 15: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-[AI] Move choices for 펜드라 (1) with threshold: 104: 
-[AI]    *   0.0% to use 킬러스핀: score 62
-[AI]    *   0.0% to use 만나자마자: score -999
-[AI]    *  55.6% to use 방어: score 124
-[AI]    *  44.4% to use 배턴터치: score 120
-[AI] => will use 방어
-
-
-"\j[wdsd,은,는] 갸라도스에게 \j[좋은상처약,을,를] 사용했다."
-"갸라도스의 HP가 회복되었다."
-[Use move] 상대 펜드라 (1) used 방어
-"\j[상대 펜드라,은,는] 깊이 자고 있다."
-[Status continues] 상대 펜드라's sleep count is 1
-[Move failed] 상대 펜드라 is asleep
-
-[End of round 42]
-[Ability triggered] 상대 펜드라's 가속
-[Stat change] 상대 펜드라's 스피드 changed by +1 (2 -> 3)
-"상대 펜드라의 \j[스피드,이,가] 올랐다!"
-
-===== Round 43 =====
-
-[AI] 펜드라 (1) couldn't find any usable items
-[AI] 펜드라 (1) is considering using 킬러스핀...
-[AI] [damage_moves] computing 펜드라 (1) → 토오 (0) (turn 42)
-[AI]   킬러스핀: 20 dmg (6.9% totalhp / 7.4% curhp)
-[AI]   만나자마자: 0 dmg (0.0% totalhp / 0.0% curhp)
-     +  2: damaging move (predicted damage 20 = 7% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (6.9%).
-[AI] [damage_moves] computing 토오 (0) → 펜드라 (1) (turn 42)
-[AI]   독찌르기: 20 dmg (8.3% totalhp / 10.8% curhp)
-[AI] 펜드라 (1) is considering using 만나자마자...
-     -1099: move will fail
-[AI] 펜드라 (1) is considering using 방어...
-     +  7: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-     + 12: Protect stall value.
-[AI] 펜드라 (1) is considering using 배턴터치...
-     + 15: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-[AI] Move choices for 펜드라 (1) with threshold: 104: 
-[AI]    *   0.0% to use 킬러스핀: score 62
-[AI]    *   0.0% to use 만나자마자: score -999
-[AI]    *  55.6% to use 방어: score 124
-[AI]    *  44.4% to use 배턴터치: score 120
-[AI] => will use 배턴터치
-
-
-[Use move] 상대 펜드라 (1) used 배턴터치
-"\j[상대 펜드라,은,는] 일어났다!"
-"상대 펜드라의 배턴터치!"
-[AI] move_id: POISONJAB
-     + 10: 모토마: foe cannot 2HKO, +47.74193548387097% < 50%
-     + 10: Utility: Taunt vs status-heavy foe
-     +  8: 모토마: outspeeds 토오 (0) (239 vs 42).
-[AI] [damage_moves] computing 토오 (0) → 펜드라 (1) (turn 42)
-[AI]   독찌르기: 20 dmg (8.3% totalhp / 10.8% curhp)
-[AI] pokemon 모토마 has switch score 128
-[AI] move_id: POISONJAB
-     + 11: 삼삼드래: foe cannot 2HKO, +41.891891891891895% < 50%
-     + 15: 삼삼드래 best move: 용성군, dmg_ratio: 75% (204/271)
-     +  8: 삼삼드래: outspeeds 토오 (0) (231 vs 42).
-[AI] pokemon 삼삼드래 has switch score 134
-"\j[챔피언 아이리스,은,는] \j[삼삼드래,을,를] 내보냈다!"
-[Use move] 토오 (0) used 독압정
-"토오의 독압정!"
-"상대편 주위로 독압정이 뿌려졌다!"
-
-[End of round 43]
-
-===== Round 44 =====
-
-[AI] 삼삼드래 (1) couldn't find any usable items
-[AI] 삼삼드래 (1) is considering using 악의파동 against 토오 (0)...
-     +  6: function code modifier (against target)
-[AI] [damage_moves] computing 삼삼드래 (1) → 토오 (0) (turn 43)
-[AI]   악의파동: 126 dmg (43.8% totalhp / 46.5% curhp)
-[AI]   용성군: 204 dmg (70.8% totalhp / 75.3% curhp)
-[AI]   불대문자: 115 dmg (39.9% totalhp / 42.4% curhp)
-[AI]   러스터캐논: 84 dmg (29.2% totalhp / 31.0% curhp)
-     + 13: damaging move (predicted damage 126 = 46% of target's HP)
-[AI] [damage_moves] computing 토오 (0) → 삼삼드래 (1) (turn 43)
-[AI]   독찌르기: 62 dmg (24.3% totalhp / 41.9% curhp)
-[AI] 삼삼드래 (1) is considering using 용성군 against 토오 (0)...
-     + 22: damaging move (predicted damage 204 = 75% of target's HP)
+[AI] 미라이돈 (1) is considering using 오버히트 against 드닐레이브 (0)...
+     + 21: damaging move (predicted damage 101 = 71% of target's HP)
+     -  8: can trigger the target's ability
      - 12: lowering the user's 특수공격 by 2
      - 12: function code modifier (generic)
-[AI] 삼삼드래 (1) cannot use 불대문자 (no PP left)
-[AI] 삼삼드래 (1) is considering using 러스터캐논 against 토오 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 10% = 1
-     +  1: function code modifier (against target)
-     +  9: damaging move (predicted damage 84 = 30% of target's HP)
-     - 22: Penalize weak move: consider switching (29.2%).
-[AI] Move choices for 삼삼드래 (1) with threshold: 99: 
-[AI]    *  64.5% to use 악의파동 (target 0): score 119
-[AI]    *  35.5% to use 용성군 (target 0): score 110
-[AI]    *   0.0% to use 러스터캐논 (target 0): score 88
+     - 14: move is less suitable to be Choiced into
+[AI] [evade_ko] 드닐레이브 (0) 스케일샷: 480 >= 153
+[AI] [evade_ko] 드닐레이브 (0) 고드름침: 480 >= 153
+[AI] [evade_ko] 드닐레이브 (0) 얼음뭉치: 195 >= 153
+[AI] [evade_ko] 드닐레이브 (0) has priority KO move: 얼음뭉치 (pri 1 > 0)
+     -200: Penalize move: foe can KO with a higher-priority move.
+[AI] 미라이돈 (1) is considering using 용성군 against 드닐레이브 (0)...
+     + 30: damaging move (predicted damage 302 = 212% of target's HP)
+     + 50: predicted to KO the target
+     -  8: can trigger the target's ability
+     - 12: lowering the user's 특수공격 by 2
+     - 12: function code modifier (generic)
+     - 22: move is less suitable to be Choiced into
+[AI] [evade_ko] 드닐레이브 (0) 스케일샷: 480 >= 153
+[AI] [evade_ko] 드닐레이브 (0) 고드름침: 480 >= 153
+[AI] [evade_ko] 드닐레이브 (0) 얼음뭉치: 195 >= 153
+[AI] [evade_ko] 드닐레이브 (0) has priority KO move: 얼음뭉치 (pri 1 > 0)
+     -200: Penalize move: foe can KO with a higher-priority move.
+[AI] 미라이돈 (1) is considering using 라이트닝드라이브 against 드닐레이브 (0)...
+     + 15: damaging move (predicted damage 75 = 52% of target's HP)
+     -  8: can trigger the target's ability
+     -  1: Penalize weak move: consider switching (39.5%).
+     - 18: move is less suitable to be Choiced into
+[AI] [evade_ko] 드닐레이브 (0) 스케일샷: 480 >= 153
+[AI] [evade_ko] 드닐레이브 (0) 고드름침: 480 >= 153
+[AI] [evade_ko] 드닐레이브 (0) 얼음뭉치: 195 >= 153
+[AI] [evade_ko] 드닐레이브 (0) has priority KO move: 얼음뭉치 (pri 1 > 0)
+     -200: Penalize move: foe can KO with a higher-priority move.
+[AI] 미라이돈 (1) wants to switch due to terrible moves [볼트체인지=-105, 오버히트=-113, 용성군=-62, 라이트닝드라이브=-112]
+[AI] 미라이돈 (1) is being forced to switch out
+     - 28: 어흥염: entry hazard damage 50.25
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     -100: 어흥염: foe can OHKO (213%, faster, foe_pending)
+     +  8: 어흥염: outspeeds 드닐레이브 (0) (80 vs 70).
+[AI] [damage_moves] computing 드닐레이브 (0) → 미라이돈 (1) (turn 26)
+[AI]   스케일샷: 480 dmg (274.3% totalhp / 313.7% curhp)
+[AI]   고드름침: 480 dmg (274.3% totalhp / 313.7% curhp)
+[AI]   얼음뭉치: 195 dmg (111.4% totalhp / 127.5% curhp)
+     + 14: 어흥염: tanks 드닐레이브 (0)'s best move better (140 vs 480 on current).
+     + 12: 어흥염: Intimidate vs 드닐레이브 (0) (3 phys moves)
+[AI] pokemon 어흥염 has switch score 5
+     -  3: 한카리아스: entry hazard damage 11.4375
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     -100: 한카리아스: foe can OHKO (553%, faster, foe_pending)
+     + 15: 한카리아스 best move: 스케일샷, dmg_ratio: 77% (110/142)
+     +  8: 한카리아스: outspeeds 드닐레이브 (0) (169 vs 70).
+[AI] pokemon 한카리아스 has switch score 19
+[AI] => staying in: all reserves scored < 60 (best: 19), not switching
+[AI]    => no good replacement Pokémon, will not switch after all
+[AI] 미라이돈 (1) won't switch after all
+[AI] Move choices for 미라이돈 (1) with threshold: -82: 
+[AI]    *   0.0% to use 볼트체인지 (target 0): score -105
+[AI]    *   0.0% to use 오버히트 (target 0): score -113
+[AI]    * 100.0% to use 용성군 (target 0): score -62
+[AI]    *   0.0% to use 라이트닝드라이브 (target 0): score -112
 [AI] => will use 용성군 (target 0)
 
 
-[Use move] 상대 삼삼드래 (1) used 용성군
-"상대 삼삼드래의 용성군!"
-[HP change] 토오 lost 190 HP (271 -> 81)
-[Stat change] 상대 삼삼드래's 특수공격 changed by -2 (0 -> -2)
-"상대 삼삼드래의 \j[특수공격,이,가] 크게 떨어졌다!"
-[Use move] 토오 (0) used 맹독
-"토오의 맹독!"
-"\j[상대 삼삼드래,은,는] 맹독에 걸렸다!"
+[Use move] 드닐레이브 (0) used 얼음뭉치
+"드닐레이브의 얼음뭉치!"
+[HP change] 상대 미라이돈 lost 153 HP (153 -> 0)
+"효과가 굉장했다!"
+"\j[상대 미라이돈,은,는] 쓰러졌다!"
+"\j[드닐레이브,이,가] 5864의 많은 경험치를 얻었다!"
+"\j[드닐레이브,은,는] Lv. 51이 되었다!"
+"다른 포켓몬들도 학습장치를 통해 경험치를 얻었다!"
 
-[End of round 44]
-[HP change] 상대 삼삼드래 lost 15 HP (148 -> 133)
-"\j[상대 삼삼드래,은,는] 독의 데미지를 받았다!"
+[End of round 27]
+"우리편의 오로라베일이 사라졌다!"
+"발밑에 전기가 떠돈다."
+     - 28: 어흥염: entry hazard damage 50.25
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     - 40: 어흥염: foe can OHKO (217%, faster, faint_repl)
+     + 13: 어흥염 best move: 플레어드라이브, dmg_ratio: 66% (96/146)
+     +  8: 어흥염: outspeeds 드닐레이브 (0) (80 vs 71).
+     + 12: 어흥염: Intimidate vs 드닐레이브 (0) (3 phys moves)
+[AI] pokemon 어흥염 has switch score 64
+     -  3: 한카리아스: entry hazard damage 11.4375
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     - 40: 한카리아스: foe can OHKO (563%, faster, faint_repl)
+     + 35: 한카리아스 best move: 스케일샷, dmg_ratio: 148% (216/146)
+     +  8: 한카리아스: outspeeds 드닐레이브 (0) (169 vs 71).
+[AI] pokemon 한카리아스 has switch score 99
+[AI] => forced switch: sacking 한카리아스 (best score 99)
+"\j[엘리트 트레이너 test,은,는] \j[한카리아스,을,를] 내보냈다!"
+[HP change] 상대 한카리아스 lost 11 HP (183 -> 172)
+"상대 한카리아스에게 뾰족한 바위가 박혔다!"
 
-===== Round 45 =====
+===== Round 28 =====
 
-[AI] 삼삼드래 (1) couldn't find any usable items
-[AI] 삼삼드래 (1) is considering using 악의파동 against 토오 (0)...
-     +  6: function code modifier (against target)
-[AI] [damage_moves] computing 삼삼드래 (1) → 토오 (0) (turn 44)
-[AI]   악의파동: 65 dmg (22.6% totalhp / 80.2% curhp)
-[AI]   용성군: 104 dmg (36.1% totalhp / 128.4% curhp)
-[AI]   불대문자: 58 dmg (20.1% totalhp / 71.6% curhp)
-[AI]   러스터캐논: 43 dmg (14.9% totalhp / 53.1% curhp)
-     + 24: damaging move (predicted damage 65 = 80% of target's HP)
-     - 35: Penalize weak move: consider switching (22.6%).
-[AI] [damage_moves] computing 토오 (0) → 삼삼드래 (1) (turn 44)
-[AI]   독찌르기: 62 dmg (24.3% totalhp / 46.6% curhp)
-[AI] 삼삼드래 (1) cannot use 용성군 (no PP left)
-[AI] 삼삼드래 (1) cannot use 불대문자 (no PP left)
-[AI] 삼삼드래 (1) is considering using 러스터캐논 against 토오 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 10% = 1
-     +  1: function code modifier (against target)
-     + 15: damaging move (predicted damage 43 = 53% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (14.9%).
-[AI] Move choices for 삼삼드래 (1) with threshold: 75: 
-[AI]    *  95.2% to use 악의파동 (target 0): score 95
-[AI]    *   4.8% to use 러스터캐논 (target 0): score 76
-[AI] => will use 악의파동 (target 0)
-
-
-"\j[wdsd,은,는] 토오에게 \j[회복약,을,를] 사용했다."
-[Status change] 토오's status was cured
-[HP change] 토오 gained 207 HP (81 -> 288)
-"토오의 HP가 회복되었다."
-[Use move] 상대 삼삼드래 (1) used 악의파동
-"상대 삼삼드래의 악의파동!"
-[HP change] 토오 lost 55 HP (288 -> 233)
-
-[End of round 45]
-[HP change] 상대 삼삼드래 lost 31 HP (133 -> 102)
-"\j[상대 삼삼드래,은,는] 독의 데미지를 받았다!"
-
-===== Round 46 =====
-
-[AI] 삼삼드래 (1) couldn't find any usable items
-[AI] 삼삼드래 (1) is considering using 악의파동 against 토오 (0)...
-     +  6: function code modifier (against target)
-[AI] [damage_moves] computing 삼삼드래 (1) → 토오 (0) (turn 45)
-[AI]   악의파동: 65 dmg (22.6% totalhp / 27.9% curhp)
-[AI]   용성군: 104 dmg (36.1% totalhp / 44.6% curhp)
-[AI]   불대문자: 58 dmg (20.1% totalhp / 24.9% curhp)
-[AI]   러스터캐논: 43 dmg (14.9% totalhp / 18.5% curhp)
-     +  8: damaging move (predicted damage 65 = 27% of target's HP)
-     - 35: Penalize weak move: consider switching (22.6%).
-[AI] [damage_moves] computing 토오 (0) → 삼삼드래 (1) (turn 45)
-[AI]   독찌르기: 62 dmg (24.3% totalhp / 60.8% curhp)
-[AI] 삼삼드래 (1) cannot use 용성군 (no PP left)
-[AI] 삼삼드래 (1) cannot use 불대문자 (no PP left)
-[AI] 삼삼드래 (1) is considering using 러스터캐논 against 토오 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 10% = 1
-     +  1: function code modifier (against target)
-     +  5: damaging move (predicted damage 43 = 18% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (14.9%).
-[AI] 삼삼드래 (1) wants to switch due to terrible moves [악의파동=79, 러스터캐논=66]
-[AI] 삼삼드래 (1) is being forced to switch out
-[AI] move_id: POISONJAB
-     + 10: 모토마: foe cannot 2HKO, +47.74193548387097% < 50%
-     + 10: Utility: Taunt vs status-heavy foe
-     +  8: 모토마: outspeeds 토오 (0) (239 vs 42).
-[AI] [damage_moves] computing 토오 (0) → 삼삼드래 (1) (turn 45)
-[AI]   독찌르기: 62 dmg (24.3% totalhp / 60.8% curhp)
-[AI] pokemon 모토마 has switch score 118
-[AI] move_id: POISONJAB
-     + 17: 펜드라: foe cannot 2HKO, +10.81081081081081% < 50%
-     + 10: 펜드라 best move: 만나자마자, dmg_ratio: 51% (119/233)
-     +  8: 펜드라: outspeeds 토오 (0) (170 vs 42).
-     + 14: 펜드라: tanks 토오 (0)'s best move better (20 vs 62 on current).
-[AI] pokemon 펜드라 has switch score 159
-[AI] => will switch with 펜드라
-
-
-"\j[챔피언 아이리스,이,가] \j[삼삼드래,을,를] 넣었다!"
-"\j[챔피언 아이리스,은,는] \j[펜드라,을,를] 내보냈다!"
-"\j[상대 펜드라,은,는] 독압정에 찔렸다!"
-[Use move] 토오 (0) used 독찌르기
-"토오의 독찌르기!"
-[HP change] 상대 펜드라 lost 18 HP (185 -> 167)
-"효과가 별로인 것 같다..."
-
-[End of round 46]
-
-===== Round 47 =====
-
-[AI] 펜드라 (1) couldn't find any usable items
-[AI] 펜드라 (1) is considering using 킬러스핀...
-[AI] [damage_moves] computing 펜드라 (1) → 토오 (0) (turn 46)
-[AI]   킬러스핀: 20 dmg (6.9% totalhp / 8.6% curhp)
-[AI]   만나자마자: 119 dmg (41.3% totalhp / 51.1% curhp)
-     +  2: damaging move (predicted damage 20 = 8% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (6.9%).
-[AI] [damage_moves] computing 토오 (0) → 펜드라 (1) (turn 46)
-[AI]   독찌르기: 20 dmg (8.3% totalhp / 12.0% curhp)
-[AI] 펜드라 (1) is considering using 만나자마자 against 토오 (0)...
-     + 15: damaging move (predicted damage 119 = 51% of target's HP)
-     + 25: function code modifier (generic)
-[AI] 펜드라 (1) is considering using 방어...
-     +  7: function code modifier (generic)
+[AI] 한카리아스 (1): foe has 2 positive boosts — should switch.
+[AI] [damage_moves] computing 드닐레이브 (0) → 한카리아스 (1) (turn 27)
+[AI]   스케일샷: 510 dmg (278.7% totalhp / 296.5% curhp)
+[AI]   고드름침: 1020 dmg (557.4% totalhp / 593.0% curhp)
+[AI]   얼음뭉치: 414 dmg (226.2% totalhp / 240.7% curhp)
+[AI] [should_not_switch] 드닐레이브 (0) can OHKO 한카리아스 (1) (slower)
+[AI] [damage_moves] computing 한카리아스 (1) → 드닐레이브 (0) (turn 27)
+[AI]   아이언헤드: 116 dmg (59.8% totalhp / 79.5% curhp)
+[AI]   지진: 108 dmg (55.7% totalhp / 74.0% curhp)
+[AI]   스케일샷: 216 dmg (111.3% totalhp / 147.9% curhp)
+[AI] [should_not_switch] 한카리아스 (1) can KO 드닐레이브 (0) (216 >= 146 hp)
+[AI] 한카리아스 (1) couldn't find any usable items
+[AI] 한카리아스 (1) is considering using 아이언헤드 against 드닐레이브 (0)...
+     + 17: function code modifier (against target)
+     + 23: damaging move (predicted damage 116 = 79% of target's HP)
+     -  8: can trigger the target's ability
+[AI] [evade_ko] 드닐레이브 (0) 스케일샷: 510 >= 172
+[AI] [evade_ko] 드닐레이브 (0) 고드름침: 1020 >= 172
+[AI] [evade_ko] 드닐레이브 (0) 얼음뭉치: 414 >= 172
+[AI] [evade_ko] 드닐레이브 (0) has priority KO move: 얼음뭉치 (pri 1 > 0)
+     -200: Penalize move: foe can KO with a higher-priority move.
+[AI] 한카리아스 (1) is considering using 지진...
+     + 22: damaging move (predicted damage 108 = 73% of target's HP)
+     -  8: can trigger the target's ability
+[AI] [evade_ko] 드닐레이브 (0) 스케일샷: 510 >= 172
+[AI] [evade_ko] 드닐레이브 (0) 고드름침: 1020 >= 172
+[AI] [evade_ko] 드닐레이브 (0) 얼음뭉치: 414 >= 172
+[AI] [evade_ko] 드닐레이브 (0) has priority KO move: 얼음뭉치 (pri 1 > 0)
+     -200: Penalize move: foe can KO with a higher-priority move.
+[AI] 한카리아스 (1) is considering using 스케일샷 against 드닐레이브 (0)...
+     raising the user's 스피드 isn't worthwhile
+     -  5: lowering the user's 방어 by 1
+     -  5: function code modifier (against target)
+     + 30: damaging move (predicted damage 216 = 147% of target's HP)
+     + 50: predicted to KO the target
+     -  8: can trigger the target's ability
+[AI] [evade_ko] 드닐레이브 (0) 스케일샷: 510 >= 172
+[AI] [evade_ko] 드닐레이브 (0) 고드름침: 1020 >= 172
+[AI] [evade_ko] 드닐레이브 (0) 얼음뭉치: 414 >= 172
+[AI] [evade_ko] 드닐레이브 (0) has priority KO move: 얼음뭉치 (pri 1 > 0)
+     -200: Penalize move: foe can KO with a higher-priority move.
+[AI] 한카리아스 (1) is considering using 칼춤...
+     + 12: raising the user's 공격 by 2
+     + 12: function code modifier (generic)
+[AI] [smart_setup] statUp: [:ATTACK, 2]
+     - 40: GLOBAL NERF: Setup moves are inherently risky.
+[AI] [smart_setup] foe 드닐레이브 (0) best dmg vs user: 1020 (557.4% totalhp, threshold 40%)
+     -200: Setup blocked: foe can OHKO.
      +  5: 5. General Status Move Boost.
-     + 12: Protect stall value.
-[AI] 펜드라 (1) is considering using 배턴터치...
-     +  5: 5. General Status Move Boost.
-[AI] Move choices for 펜드라 (1) with threshold: 120: 
-[AI]    *   0.0% to use 킬러스핀: score 62
-[AI]    *  83.3% to use 만나자마자 (target 0): score 140
-[AI]    *  16.7% to use 방어: score 124
-[AI]    *   0.0% to use 배턴터치: score 105
-[AI] => will use 만나자마자 (target 0)
+[AI] [evade_ko] 드닐레이브 (0) 스케일샷: 510 >= 172
+[AI] [evade_ko] 드닐레이브 (0) 고드름침: 1020 >= 172
+[AI] [evade_ko] 드닐레이브 (0) 얼음뭉치: 414 >= 172
+[AI] [evade_ko] 드닐레이브 (0) has priority KO move: 얼음뭉치 (pri 1 > 0)
+     -200: Penalize move: foe can KO with a higher-priority move.
+[AI] 한카리아스 (1) wants to switch due to terrible moves [아이언헤드=-68, 지진=-86, 스케일샷=-33, 칼춤=-323]
+[AI] 한카리아스 (1) is being forced to switch out
+     - 28: 어흥염: entry hazard damage 50.25
+[AI] move_id: SCALESHOT
+[AI] move_id: ICICLESPEAR
+[AI] move_id: ICESHARD
+     -100: 어흥염: foe can OHKO (217%, faster, foe_pending)
+     + 13: 어흥염 best move: 플레어드라이브, dmg_ratio: 66% (96/146)
+     +  8: 어흥염: outspeeds 드닐레이브 (0) (80 vs 71).
+[AI] [damage_moves] computing 드닐레이브 (0) → 한카리아스 (1) (turn 27)
+[AI]   스케일샷: 510 dmg (278.7% totalhp / 296.5% curhp)
+[AI]   고드름침: 1020 dmg (557.4% totalhp / 593.0% curhp)
+[AI]   얼음뭉치: 414 dmg (226.2% totalhp / 240.7% curhp)
+     + 19: 어흥염: tanks 드닐레이브 (0)'s best move better (71 vs 1020 on current).
+     + 12: 어흥염: Intimidate vs 드닐레이브 (0) (3 phys moves)
+[AI] pokemon 어흥염 has switch score 23
+[AI] => staying in: all reserves scored < 60 (best: 23), not switching
+[AI]    => no good replacement Pokémon, will not switch after all
+[AI] 한카리아스 (1) won't switch after all
+[AI] Move choices for 한카리아스 (1) with threshold: -53: 
+[AI]    *   0.0% to use 아이언헤드 (target 0): score -68
+[AI]    *   0.0% to use 지진: score -86
+[AI]    * 100.0% to use 스케일샷 (target 0): score -33
+[AI]    *   0.0% to use 칼춤: score -323
+[AI] => will use 스케일샷 (target 0)
 
 
-[Use move] 상대 펜드라 (1) used 만나자마자
-"상대 펜드라의 만나자마자!"
-[HP change] 토오 lost 117 HP (233 -> 116)
-"효과가 별로인 것 같다..."
-[Use move] 토오 (0) used 하품
-"토오의 하품!"
-"\j[토오,은,는] \j[상대 펜드라,을,를] 졸리게 만들었다!"
+[Use move] 드닐레이브 (0) used 얼음뭉치
+"\j[드닐레이브,은,는] 몸이 저려 움직일 수 없다!"
+[Move failed] 드닐레이브 is paralyzed
+[Use move] 상대 한카리아스 (1) used 스케일샷
+"상대 한카리아스의 스케일샷!"
+[HP change] 드닐레이브 lost 56 HP (146 -> 90)
+[HP change] 드닐레이브 lost 56 HP (90 -> 34)
+[HP change] 드닐레이브 lost 34 HP (34 -> 0)
+"\j[드닐레이브,은,는] 쓰러졌다!"
+"효과가 굉장했다!"
+"3번 맞았다!"
+[Stat change] 상대 한카리아스's 방어 changed by -1 (0 -> -1)
+"상대 한카리아스의 \j[방어,이,가] 떨어졌다!"
+[Stat change] 상대 한카리아스's 스피드 changed by +1 (0 -> 1)
+"상대 한카리아스의 \j[스피드,이,가] 올랐다!"
 
-[End of round 47]
-[Ability triggered] 상대 펜드라's 가속
-[Stat change] 상대 펜드라's 스피드 changed by +1 (0 -> 1)
-"상대 펜드라의 \j[스피드,이,가] 올랐다!"
+[End of round 28]
+"발밑에 전기가 떠돈다."
+"힘내, 나인테일!"
+[HP change] 나인테일 lost 46 HP (138 -> 92)
+"나인테일에게 뾰족한 바위가 박혔다!"
+[Ability triggered] 나인테일's 눈퍼뜨리기
+"눈이 내리기 시작했다!"
 
-===== Round 48 =====
+===== Round 29 =====
 
-[AI] 펜드라 (1) wants to switch because it is yawning and can't do anything while asleep
-[AI] [damage_moves] computing 토오 (0) → 펜드라 (1) (turn 47)
-[AI]   독찌르기: 20 dmg (8.3% totalhp / 12.0% curhp)
-[AI] 펜드라 (1) couldn't find any usable items
-[AI] 펜드라 (1) is considering using 킬러스핀...
-[AI] [damage_moves] computing 펜드라 (1) → 토오 (0) (turn 47)
-[AI]   킬러스핀: 20 dmg (6.9% totalhp / 17.2% curhp)
-[AI]   만나자마자: 0 dmg (0.0% totalhp / 0.0% curhp)
-     +  5: damaging move (predicted damage 20 = 17% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (6.9%).
-[AI] 펜드라 (1) is considering using 만나자마자...
+[AI] 한카리아스 (1) couldn't find any usable items
+[AI] 한카리아스 (1) is considering using 아이언헤드 against 나인테일 (0)...
+     +  9: function code modifier (against target)
+[AI] [damage_moves] computing 한카리아스 (1) → 나인테일 (0) (turn 28)
+[AI]   아이언헤드: 180 dmg (98.4% totalhp / 195.7% curhp)
+[AI]   지진: 84 dmg (45.9% totalhp / 91.3% curhp)
+[AI]   스케일샷: 0 dmg (0.0% totalhp / 0.0% curhp)
+     + 30: damaging move (predicted damage 180 = 195% of target's HP)
+     + 50: predicted to KO the target
+[AI] [damage_moves] computing 나인테일 (0) → 한카리아스 (1) (turn 28)
+[AI]   프리즈드라이: 186 dmg (101.6% totalhp / 108.1% curhp)
+[AI]   문포스: 126 dmg (68.9% totalhp / 73.3% curhp)
+[AI] [evade_ko] 나인테일 (0) 프리즈드라이: 186 >= 172
+[AI] 한카리아스 (1) is considering using 지진...
+     + 27: damaging move (predicted damage 84 = 91% of target's HP)
+     + 50: predicted to KO the target
+[AI] [evade_ko] 나인테일 (0) 프리즈드라이: 186 >= 172
+[AI] 한카리아스 (1) is considering using 스케일샷 against 나인테일 (0)...
+     move will not affect 나인테일 (0)
      -1099: move will fail
-[AI] 펜드라 (1) is considering using 방어...
-     +  7: function code modifier (generic)
+     -999: move will fail
+[AI] 한카리아스 (1) is considering using 칼춤...
+     + 12: raising the user's 공격 by 2
+     + 12: function code modifier (generic)
+[AI] [smart_setup] statUp: [:ATTACK, 2]
+     - 40: GLOBAL NERF: Setup moves are inherently risky.
+[AI] [smart_setup] foe 나인테일 (0) best dmg vs user: 186 (101.6% totalhp, threshold 40%)
+     -200: Setup blocked: foe can OHKO.
      +  5: 5. General Status Move Boost.
-     + 12: Protect stall value.
-[AI] 펜드라 (1) is considering using 배턴터치...
-     +  5: 5. General Status Move Boost.
-[AI] Move choices for 펜드라 (1) with threshold: 104: 
-[AI]    *   0.0% to use 킬러스핀: score 65
-[AI]    *   0.0% to use 만나자마자: score -999
-[AI]    *  95.2% to use 방어: score 124
-[AI]    *   4.8% to use 배턴터치: score 105
-[AI] => will use 배턴터치
+[AI] [evade_ko] 나인테일 (0) 프리즈드라이: 186 >= 172
+[AI] Move choices for 한카리아스 (1) with threshold: 169: 
+[AI]    *  71.4% to use 아이언헤드 (target 0): score 189
+[AI]    *  28.6% to use 지진: score 177
+[AI]    *   0.0% to use 스케일샷 (target 0): score -999
+[AI]    *   0.0% to use 칼춤: score -123
+[AI] => will use 아이언헤드 (target 0)
 
 
-"좋아, 토오! 돌아와!"
-"힘내, 갸라도스!"
-[HP change] 갸라도스 lost 64 HP (247 -> 183)
-"갸라도스에게 뾰족한 바위가 박혔다!"
-[Ability triggered] 갸라도스's 위협
-[Stat change] 상대 펜드라's 공격 changed by -1 (0 -> -1)
-"상대 펜드라의 \j[공격,이,가] 떨어졌다!"
-[Use move] 상대 펜드라 (1) used 배턴터치
-"상대 펜드라의 배턴터치!"
-[AI] move_id: POISONJAB
-     - 28: 모토마: foe can 2HKO (56.774193548387096%, but im faster)
-     + 13: 모토마 best move: 용성군, dmg_ratio: 64% (117/183)
-     + 10: Utility: Taunt vs status-heavy foe
-     +  8: 모토마: outspeeds 갸라도스 (0) (239 vs 159).
-[AI] [damage_moves] computing 갸라도스 (0) → 펜드라 (1) (turn 47)
-[AI]   독찌르기: 24 dmg (9.9% totalhp / 14.4% curhp)
-[AI] pokemon 모토마 has switch score 103
-[AI] move_id: POISONJAB
-     - 36: 삼삼드래: foe can 2HKO (72.54901960784314%, but im faster)
-     + 15: 삼삼드래 best move: 악의파동, dmg_ratio: 73% (134/183)
-     +  8: 삼삼드래: outspeeds 갸라도스 (0) (231 vs 159).
-[AI] pokemon 삼삼드래 has switch score 87
-[AI] => forced switch: sacking 모토마 (best score 103)
-"\j[챔피언 아이리스,은,는] \j[모토마,을,를] 내보냈다!"
-
-[End of round 48]
-[HP change] 상대 모토마 lost 33 HP (155 -> 122)
-"\j[상대 모토마,은,는] 독의 데미지를 받았다!"
-
-===== Round 49 =====
-
-[AI] 모토마 (1) wants to switch to heal with 재생력
-[AI] [damage_moves] computing 갸라도스 (0) → 모토마 (1) (turn 48)
-[AI]   폭포오르기: 66 dmg (24.4% totalhp / 54.1% curhp)
-[AI]   지진: 110 dmg (40.7% totalhp / 90.2% curhp)
-[AI]   얼음엄니: 144 dmg (53.3% totalhp / 118.0% curhp)
-[AI] move_id: WATERFALL
-[AI] move_id: EARTHQUAKE
-[AI] move_id: ICEFANG
-     + 11: 펜드라: foe cannot 2HKO, +43.11377245508982% < 50%
-     +  8: 펜드라: outspeeds 갸라도스 (0) (170 vs 159).
-[AI] [damage_moves] computing 갸라도스 (0) → 모토마 (1) (turn 48)
-[AI]   폭포오르기: 66 dmg (24.4% totalhp / 54.1% curhp)
-[AI]   지진: 110 dmg (40.7% totalhp / 90.2% curhp)
-[AI]   얼음엄니: 144 dmg (53.3% totalhp / 118.0% curhp)
-     + 15: 펜드라: tanks 갸라도스 (0)'s best move better (39 vs 144 on current).
-[AI] pokemon 펜드라 has switch score 134
-[AI] move_id: WATERFALL
-[AI] move_id: EARTHQUAKE
-[AI] move_id: ICEFANG
-     - 80: 삼삼드래: foe can OHKO (117.64705882352942% >= 100%, but im faster)
-     + 15: 삼삼드래 best move: 악의파동, dmg_ratio: 73% (134/183)
-     +  8: 삼삼드래: outspeeds 갸라도스 (0) (231 vs 159).
-     +  3: 삼삼드래: tanks 갸라도스 (0)'s best move better (120 vs 144 on current).
-[AI] pokemon 삼삼드래 has switch score 46
-[AI] => will switch with 펜드라
-
-
-"\j[챔피언 아이리스,이,가] \j[모토마,을,를] 넣었다!"
-[Ability triggered] 상대 모토마's 재생력
-[HP change] 상대 모토마 gained 90 HP (122 -> 212)
-"\j[챔피언 아이리스,은,는] \j[펜드라,을,를] 내보냈다!"
-[Use move] 갸라도스 (0) used 용의춤
-"갸라도스의 용의춤!"
-[Stat change] 갸라도스's 공격 changed by +1 (0 -> 1)
-"갸라도스의 \j[공격,이,가] 올랐다!"
-[Stat change] 갸라도스's 스피드 changed by +1 (0 -> 1)
-"갸라도스의 \j[스피드,이,가] 올랐다!"
-
-[End of round 49]
-
-===== Round 50 =====
-
-[AI] 펜드라 (1): foe has 2 positive boosts — should switch.
-[AI] [damage_moves] computing 갸라도스 (0) → 펜드라 (1) (turn 49)
-[AI]   슈퍼아쿠아토네이도: 213 dmg (88.0% totalhp / 127.5% curhp)
-[AI]   지진: 89 dmg (36.8% totalhp / 53.3% curhp)
-[AI]   얼음엄니: 58 dmg (24.0% totalhp / 34.7% curhp)
-[AI] [should_not_switch] 갸라도스 (0) can OHKO 펜드라 (1) (faster)
-[AI] [damage_moves] computing 펜드라 (1) → 갸라도스 (0) (turn 49)
-[AI]   킬러스핀: 59 dmg (23.1% totalhp / 32.2% curhp)
-[AI]   만나자마자: 85 dmg (33.3% totalhp / 46.4% curhp)
-[AI] move_id: HYDROVORTEX
-[AI] move_id: EARTHQUAKE
-[AI] move_id: ICEFANG
-     - 80: 모토마: foe can OHKO (100.9433962264151% >= 100%, but im faster)
-     + 13: 모토마 best move: 용성군, dmg_ratio: 64% (117/183)
-     +  8: 모토마: outspeeds 갸라도스 (0) (239 vs 238).
-[AI] [damage_moves] computing 갸라도스 (0) → 펜드라 (1) (turn 49)
-[AI]   슈퍼아쿠아토네이도: 213 dmg (88.0% totalhp / 127.5% curhp)
-[AI]   지진: 89 dmg (36.8% totalhp / 53.3% curhp)
-[AI]   얼음엄니: 58 dmg (24.0% totalhp / 34.7% curhp)
-     + 13: 모토마: tanks 갸라도스 (0)'s best move better (74 vs 213 on current).
-[AI] pokemon 모토마 has switch score 54
-[AI] move_id: HYDROVORTEX
-[AI] move_id: EARTHQUAKE
-[AI] move_id: ICEFANG
-     -100: 삼삼드래: foe can OHKO (176.47058823529412% >= 100%im slower)
-     + 15: 삼삼드래 best move: 악의파동, dmg_ratio: 73% (134/183)
-     + 14: 삼삼드래: tanks 갸라도스 (0)'s best move better (62 vs 213 on current).
-[AI] pokemon 삼삼드래 has switch score 29
-[AI] => staying in: all reserves scored < 120 (best: 54), not switching
-[AI]    => no good replacement Pokémon, will not switch after all
-[AI] 펜드라 (1) couldn't find any usable items
-[AI] 펜드라 (1) is considering using 킬러스핀...
-[AI] [damage_moves] computing 펜드라 (1) → 갸라도스 (0) (turn 49)
-[AI]   킬러스핀: 59 dmg (23.1% totalhp / 32.2% curhp)
-[AI]   만나자마자: 85 dmg (33.3% totalhp / 46.4% curhp)
-     +  9: damaging move (predicted damage 59 = 32% of target's HP)
-     - 34: Penalize weak move: consider switching (23.1%).
-     + 40: function code modifier (generic)
-[AI] [evade_ko] 갸라도스 (0) 슈퍼아쿠아토네이도: 213 >= 167
-[AI] evade KO penalty chance is 100%
-     -200: Penalize move: user is slower than a foe who can KO. (Speed ratio: 1.4, Chance: 100%)
-[AI] 펜드라 (1) is considering using 만나자마자 against 갸라도스 (0)...
-     + 13: damaging move (predicted damage 85 = 46% of target's HP)
-     - 13: Penalize weak move: consider switching (33.3%).
-     +  8: Priority move bonus: user is slower than target.
-     + 25: function code modifier (generic)
-[AI] 펜드라 (1) is considering using 방어...
-     +  7: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-     + 12: Protect stall value.
-[AI] 펜드라 (1) is considering using 배턴터치...
-     +  5: 5. General Status Move Boost.
-[AI] [evade_ko] 갸라도스 (0) 슈퍼아쿠아토네이도: 213 >= 167
-[AI] evade KO penalty chance is 100%
-     -200: Penalize move: user is slower than a foe who can KO. (Speed ratio: 1.4, Chance: 100%)
-[AI] Move choices for 펜드라 (1) with threshold: 113: 
-[AI]    *   0.0% to use 킬러스핀: score -85
-[AI]    *  64.5% to use 만나자마자 (target 0): score 133
-[AI]    *  35.5% to use 방어: score 124
-[AI]    *   0.0% to use 배턴터치: score -95
-[AI] => will use 방어
-
-
-[Use move] 상대 펜드라 (1) used 방어
-"상대 펜드라의 방어!"
-"\j[상대 펜드라,은,는] 스스로를 지켰다!"
-[Use move] 갸라도스 (0) used 슈퍼아쿠아토네이도
-"\j[갸라도스,은,는] Z파워로 둘러싸여있다!"
-"갸라도스가 Z파워로 전력을 발휘한다!"
-"갸라도스의 슈퍼아쿠아토네이도!"
-[HP change] 상대 펜드라 lost 167 HP (167 -> 0)
-"급소에 맞았다!"
-"\j[상대 펜드라,은,는] 쓰러졌다!"
-"\j[갸라도스,이,가] 8951.25의 경험치를 얻었다!"
-"다른 포켓몬들도 학습장치를 통해 경험치를 얻었다!"
-
-[End of round 50]
-[AI] move_id: HYDROVORTEX
-[AI] move_id: EARTHQUAKE
-[AI] move_id: ICEFANG
-     - 40: 모토마: foe can OHKO (100.9433962264151% >= 100%im slower)
-     + 13: 모토마 best move: 용성군, dmg_ratio: 64% (117/183)
-[AI] pokemon 모토마 has switch score 73
-[AI] move_id: HYDROVORTEX
-[AI] move_id: EARTHQUAKE
-[AI] move_id: ICEFANG
-     - 40: 삼삼드래: foe can OHKO (176.47058823529412% >= 100%im slower)
-     + 15: 삼삼드래 best move: 악의파동, dmg_ratio: 73% (134/183)
-[AI] pokemon 삼삼드래 has switch score 75
-[AI] => forced switch: sacking 삼삼드래 (best score 75)
-"\j[챔피언 아이리스,은,는] \j[삼삼드래,을,를] 내보냈다!"
-
-===== Round 51 =====
-
-[AI] 삼삼드래 (1): foe has 2 positive boosts — should switch.
-[AI] [damage_moves] computing 갸라도스 (0) → 삼삼드래 (1) (turn 50)
-[AI]   폭포오르기: 83 dmg (32.5% totalhp / 81.4% curhp)
-[AI]   지진: 0 dmg (0.0% totalhp / 0.0% curhp)
-[AI]   얼음엄니: 180 dmg (70.6% totalhp / 176.5% curhp)
-[AI] [should_not_switch] 갸라도스 (0) can OHKO 삼삼드래 (1) (faster)
-[AI] [damage_moves] computing 삼삼드래 (1) → 갸라도스 (0) (turn 50)
-[AI]   악의파동: 134 dmg (52.5% totalhp / 73.2% curhp)
-[AI]   용성군: 215 dmg (84.3% totalhp / 117.5% curhp)
-[AI]   불대문자: 61 dmg (23.9% totalhp / 33.3% curhp)
-[AI]   러스터캐논: 45 dmg (17.6% totalhp / 24.6% curhp)
-[AI] move_id: WATERFALL
-[AI] move_id: EARTHQUAKE
-[AI] move_id: ICEFANG
-     -100: 모토마: foe can OHKO (100.9433962264151% >= 100%im slower)
-     + 13: 모토마 best move: 용성군, dmg_ratio: 64% (117/183)
-[AI] [damage_moves] computing 갸라도스 (0) → 삼삼드래 (1) (turn 50)
-[AI]   폭포오르기: 83 dmg (32.5% totalhp / 81.4% curhp)
-[AI]   지진: 0 dmg (0.0% totalhp / 0.0% curhp)
-[AI]   얼음엄니: 180 dmg (70.6% totalhp / 176.5% curhp)
-[AI] pokemon 모토마 has switch score 13
-[AI] => staying in: all reserves scored < 120 (best: 13), not switching
-[AI]    => no good replacement Pokémon, will not switch after all
-[AI] 삼삼드래 (1) couldn't find any usable items
-[AI] 삼삼드래 (1) is considering using 악의파동 against 갸라도스 (0)...
-[AI] [damage_moves] computing 삼삼드래 (1) → 갸라도스 (0) (turn 50)
-[AI]   악의파동: 134 dmg (52.5% totalhp / 73.2% curhp)
-[AI]   용성군: 215 dmg (84.3% totalhp / 117.5% curhp)
-[AI]   불대문자: 61 dmg (23.9% totalhp / 33.3% curhp)
-[AI]   러스터캐논: 45 dmg (17.6% totalhp / 24.6% curhp)
-     + 21: damaging move (predicted damage 134 = 73% of target's HP)
-[AI] [evade_ko] 갸라도스 (0) 얼음엄니: 180 >= 102
-[AI] evade KO penalty chance is 19%
-     -200: Penalize move: user is slower than a foe who can KO. (Speed ratio: 1.04, Chance: 19%)
-[AI] 삼삼드래 (1) cannot use 용성군 (no PP left)
-[AI] 삼삼드래 (1) cannot use 불대문자 (no PP left)
-[AI] 삼삼드래 (1) is considering using 러스터캐논 against 갸라도스 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 10% = 1
-     +  1: function code modifier (against target)
-     +  7: damaging move (predicted damage 45 = 24% of target's HP)
-     - 40: Penalize useless move: very low predicted damage (17.6%).
-[AI] [evade_ko] 갸라도스 (0) 얼음엄니: 180 >= 102
-[AI] evade KO penalty chance is 19%
-[AI] 삼삼드래 (1) wants to switch due to terrible moves [악의파동=-79, 러스터캐논=68]
-[AI] 삼삼드래 (1) is being forced to switch out
-[AI] move_id: WATERFALL
-[AI] move_id: EARTHQUAKE
-[AI] move_id: ICEFANG
-     -100: 모토마: foe can OHKO (100.9433962264151% >= 100%im slower)
-     + 13: 모토마 best move: 용성군, dmg_ratio: 64% (117/183)
-[AI] [damage_moves] computing 갸라도스 (0) → 삼삼드래 (1) (turn 50)
-[AI]   폭포오르기: 83 dmg (32.5% totalhp / 81.4% curhp)
-[AI]   지진: 0 dmg (0.0% totalhp / 0.0% curhp)
-[AI]   얼음엄니: 180 dmg (70.6% totalhp / 176.5% curhp)
-[AI] pokemon 모토마 has switch score 13
-[AI] => staying in: all reserves scored < 60 (best: 13), not switching
-[AI]    => no good replacement Pokémon, will not switch after all
-[AI] 삼삼드래 (1) won't switch after all
-[AI] Move choices for 삼삼드래 (1) with threshold: 48: 
-[AI]    *   0.0% to use 악의파동 (target 0): score -79
-[AI]    * 100.0% to use 러스터캐논 (target 0): score 68
-[AI] => will use 러스터캐논 (target 0)
-
-
-[Use move] 갸라도스 (0) used 얼음엄니
-"갸라도스의 얼음엄니!"
-[HP change] 상대 삼삼드래 lost 102 HP (102 -> 0)
+[Use move] 상대 한카리아스 (1) used 아이언헤드
+"상대 한카리아스의 아이언헤드!"
+[HP change] 나인테일 lost 92 HP (92 -> 0)
 "효과가 굉장했다!"
-"\j[상대 삼삼드래,은,는] 쓰러졌다!"
-"\j[갸라도스,이,가] 11051.25의 경험치를 얻었다!"
-"다른 포켓몬들도 학습장치를 통해 경험치를 얻었다!"
-"\j[토오,은,는] Lv. 74이 되었다!"
+"\j[나인테일,은,는] 쓰러졌다!"
 
-[End of round 51]
-[AI] move_id: WATERFALL
-[AI] move_id: EARTHQUAKE
-[AI] move_id: ICEFANG
-     - 40: 모토마: foe can OHKO (100.9433962264151% >= 100%im slower)
-     + 13: 모토마 best move: 용성군, dmg_ratio: 64% (117/183)
-[AI] pokemon 모토마 has switch score 73
-[AI] => forced switch: sacking 모토마 (best score 73)
-"\j[챔피언 아이리스,은,는] \j[모토마,을,를] 내보냈다!"
+[End of round 29]
+"발밑에 전기가 떠돈다."
+"힘내, 앱솔!"
+[HP change] 앱솔 lost 18 HP (41 -> 23)
+"앱솔에게 뾰족한 바위가 박혔다!"
 
-===== Round 52 =====
+===== Round 30 =====
 
-[AI] 모토마 (1) couldn't find any usable items
-[AI] 모토마 (1) is considering using 탁쳐서떨구기 against 갸라도스 (0)...
-[AI] [damage_moves] computing 모토마 (1) → 갸라도스 (0) (turn 51)
-[AI]   탁쳐서떨구기: 56 dmg (22.0% totalhp / 30.6% curhp)
-[AI]   용성군: 117 dmg (45.9% totalhp / 63.9% curhp)
-     +  9: damaging move (predicted damage 56 = 30% of target's HP)
-     - 36: Penalize weak move: consider switching (22.0%).
-     + 10: Knock Off: removing target's item.
-[AI] [damage_moves] computing 갸라도스 (0) → 모토마 (1) (turn 51)
-[AI]   폭포오르기: 99 dmg (36.7% totalhp / 46.7% curhp)
-[AI]   지진: 164 dmg (60.7% totalhp / 77.4% curhp)
-[AI]   얼음엄니: 214 dmg (79.3% totalhp / 100.9% curhp)
-[AI] 모토마 (1) is considering using 꼬리자르기...
-     + 28: function code modifier (generic)
+[AI] 한카리아스 (1) couldn't find any usable items
+[AI] 한카리아스 (1) is considering using 아이언헤드 against 앱솔 (0)...
+     +  9: function code modifier (against target)
+[AI] [damage_moves] computing 한카리아스 (1) → 앱솔 (0) (turn 29)
+[AI]   아이언헤드: 80 dmg (55.9% totalhp / 347.8% curhp)
+[AI]   지진: 149 dmg (104.2% totalhp / 647.8% curhp)
+[AI]   스케일샷: 149 dmg (104.2% totalhp / 647.8% curhp)
+     + 30: damaging move (predicted damage 80 = 347% of target's HP)
+     + 50: predicted to KO the target
+     + 10: prefer damaging moves (no foe party Pokémon left)
+[AI] [damage_moves] computing 앱솔 (0) → 한카리아스 (1) (turn 29)
+[AI]   깜짝베기: 194 dmg (106.0% totalhp / 112.8% curhp)
+[AI]   인파이트: 147 dmg (80.3% totalhp / 85.5% curhp)
+[AI]   야습: 75 dmg (41.0% totalhp / 43.6% curhp)
+[AI] [evade_ko] 앱솔 (0) 깜짝베기: 194 >= 172
+[AI] 한카리아스 (1) is considering using 지진...
+     + 30: damaging move (predicted damage 149 = 647% of target's HP)
+     + 50: predicted to KO the target
+     + 10: prefer damaging moves (no foe party Pokémon left)
+[AI] [evade_ko] 앱솔 (0) 깜짝베기: 194 >= 172
+[AI] 한카리아스 (1) is considering using 스케일샷 against 앱솔 (0)...
+     raising the user's 스피드 isn't worthwhile
+     -  3: lowering the user's 방어 by 1
+     -  3: function code modifier (against target)
+     + 30: damaging move (predicted damage 149 = 647% of target's HP)
+     + 50: predicted to KO the target
+     + 10: prefer damaging moves (no foe party Pokémon left)
+[AI] [evade_ko] 앱솔 (0) 깜짝베기: 194 >= 172
+[AI] 한카리아스 (1) is considering using 칼춤...
+     + 12: raising the user's 공격 by 2
+     + 12: function code modifier (generic)
+[AI] [smart_setup] statUp: [:ATTACK, 2]
+     - 40: GLOBAL NERF: Setup moves are inherently risky.
+[AI] [smart_setup] foe 앱솔 (0) best dmg vs user: 194 (106.0% totalhp, threshold 40%)
+     -200: Setup blocked: foe can OHKO.
      +  5: 5. General Status Move Boost.
-[AI] 모토마 (1) is considering using 용성군 against 갸라도스 (0)...
-     + 19: damaging move (predicted damage 117 = 63% of target's HP)
-     -  8: lowering the user's 특수공격 by 2
-     -  8: function code modifier (generic)
-[AI] 모토마 (1) is considering using 도발 against 갸라도스 (0)...
-     + 13: Taunt: 1 status moves, has setup.
-     + 13: function code modifier (against target)
-     +  5: 5. General Status Move Boost.
-[AI] Move choices for 모토마 (1) with threshold: 113: 
-[AI]    *   0.0% to use 탁쳐서떨구기 (target 0): score 83
-[AI]    *  80.0% to use 꼬리자르기: score 133
-[AI]    *   0.0% to use 용성군 (target 0): score 111
-[AI]    *  20.0% to use 도발 (target 0): score 118
-[AI] => will use 꼬리자르기
-
-
-[Use move] 갸라도스 (0) used 얼음엄니
-"갸라도스의 얼음엄니!"
-[HP change] 상대 모토마 lost 205 HP (212 -> 7)
-"효과가 굉장했다!"
-[Use move] 상대 모토마 (1) used 꼬리자르기
-"상대 모토마의 꼬리자르기!"
-"대타를 만들 체력이 부족하다!"
-[Move failed] In function code UserMakeSubstituteSwitchOut's def pbMoveFailed?
-
-[End of round 52]
-[HP change] 상대 모토마 lost 7 HP (7 -> 0)
-"\j[상대 모토마,은,는] 독의 데미지를 받았다!"
-"\j[상대 모토마,은,는] 쓰러졌다!"
-"\j[갸라도스,이,가] 6446.25의 경험치를 얻었다!"
-"\j[갸라도스,은,는] Lv. 74이 되었다!"
-"다른 포켓몬들도 학습장치를 통해 경험치를 얻었다!"
-
-===== Player won =====
-
-"챔피언 아이리스에게 승리했다!"
-"멋진 승부였어!"
-
-"승부에서 15,600원을 얻었다!"
-"아이리스에게서 승리해 업그레이드 토큰을 39개 얻었다!"
+[AI] [evade_ko] 앱솔 (0) 깜짝베기: 194 >= 172
+[AI] Move choices for 한카리아스 (1) with threshold: 179: 
+[AI]    *  52.6% to use 아이언헤드 (target 0): score 199
+[AI]    *  28.9% to use 지진: score 190
+[AI]    *  18.4% to use 스케일샷 (target 0): score 186
+[AI]    *   0.0% to use 칼춤: score -123
+[AI] => will use 아이언헤드 (target 0)
