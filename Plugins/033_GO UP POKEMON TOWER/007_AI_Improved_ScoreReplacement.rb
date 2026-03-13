@@ -102,7 +102,7 @@ Battle::AI::Handlers::ScoreReplacement.add(:foe_predicted_damage,
         if pkmn_faster
           penalty = (base_penalty * 0.5 * (dmg_ratio / 100.0)).to_i
         else
-          penalty = (base_penalty * (dmg_ratio / 100.0)).to_i
+          penalty = base_penalty
         end
         score -= penalty
         spd_tag = pkmn_faster ? ", but im faster" : "im slower"

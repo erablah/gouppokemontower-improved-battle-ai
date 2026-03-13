@@ -339,8 +339,16 @@ class Battle::AI::AIMove
   # predicted_damage: orchestrator
   #---------------------------------------------------------------------------
   def predicted_damage(user:, target:, user_pokemon: nil, target_pokemon: nil)
-    sim = setup_simulation(user, target, user_pokemon, target_pokemon)
+    sim = nil
+    prev_move = @ai.instance_variable_get(:@move)
     begin
+      sim = setup_simulation(user, target, user_pokemon, target_pokemon)
+      # Early return 0 for moves predicted to fail
+      @ai.instance_variable_set(:@move, self)
+      will_fail = (@ai.pbPredictMoveFailure rescue false) ||
+                  (@ai.pbPredictMoveFailureAgainstTarget rescue false)
+      return 0 if will_fail
+
       calc_type = self.rough_type
       dmg = self.rough_damage
       dmg = apply_damage_corrections(dmg, sim[:eff_user], sim[:user_sim], calc_type)
@@ -348,6 +356,7 @@ class Battle::AI::AIMove
 
       return dmg
     ensure
+      @ai.instance_variable_set(:@move, prev_move)
       restore_simulation(sim)
     end
   end

@@ -338,7 +338,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:evade_knockout,
       relevant = ai.damage_moves(b, user).values.reject { |md| move.move.priority > md[:move].priority }
       ko_moves = relevant.select { |md| md[:dmg] >= user.hp * 1.05 }
       ko_moves.each do |ko_entry|
-        PBDebug.log_ai("[evade_ko] #{b.name} #{ko_entry[:move].name}: #{ko_entry[:dmg]} >= #{user.hp} *")
+        PBDebug.log_ai("[evade_ko] #{b.name} #{ko_entry[:move].name}: #{ko_entry[:dmg]} >= #{user.hp}")
         foe_can_ko = true
         if ko_entry[:move].priority > move.move.priority
           priority_ko      = true
@@ -440,12 +440,6 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_recovery,
       bonus = (15 + (20 * (0.60 - hp_ratio) / 0.20)).to_i  # 15~35
       score += bonus
       PBDebug.log_score_change(bonus, "Smart recovery at #{(hp_ratio * 100).to_i}% HP.")
-    end
-
-    # Bonus if behind Substitute
-    if battler.effects[PBEffects::Substitute] > 0
-      score += 10
-      PBDebug.log_score_change(10, "Safe recovery behind Substitute.")
     end
 
     next score
@@ -600,7 +594,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_rest,
     hp_ratio = battler.hp.to_f / battler.totalhp
 
     # Not worth using above 70% HP
-    next Battle::AI::MOVE_USELESS_SCORE if hp_ratio > 0.70
+    next Battle::AI::MOVE_USELESS_SCORE if hp_ratio > 0.60
 
     # Already asleep
     next Battle::AI::MOVE_USELESS_SCORE if battler.status == :SLEEP
@@ -635,8 +629,8 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_rest,
       break if foe_has_setup
     end
     if foe_has_setup
-      score -= 30
-      PBDebug.log_score_change(-30, "Rest: foe has setup potential while user sleeps.")
+      score -= 40
+      PBDebug.log_score_change(-40, "Rest: foe has setup potential while user sleeps.")
     end
 
     next score

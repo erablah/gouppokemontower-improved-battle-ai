@@ -136,7 +136,7 @@ Battle::AI::Handlers::ShouldNotSwitch.add(:current_can_answer_boosted_foe,
       if best_dmg >= threatening_foe.hp
         PBDebug.log_ai("[should_not_switch] #{user.name} can KO #{threatening_foe.name} (#{best_dmg} >= #{threatening_foe.hp} hp)")
         next true
-      elsif best_dmg >= threatening_foe.totalhp * 0.5
+      elsif best_dmg >= threatening_foe.hp * 0.5
         PBDebug.log_ai("[should_not_switch] #{user.name} can deal #{best_dmg} (>=50%) to #{threatening_foe.name}")
         next true
       end
@@ -151,11 +151,25 @@ Battle::AI::Handlers::ShouldNotSwitch.add(:current_can_answer_boosted_foe,
     if priority_dmg >= threatening_foe.hp
       PBDebug.log_ai("[should_not_switch] #{user.name} can KO #{threatening_foe.name} with priority (#{priority_dmg} >= #{threatening_foe.hp} hp)")
       next true
-    elsif priority_dmg >= threatening_foe.totalhp * 0.5
+    elsif priority_dmg >= threatening_foe.hp * 0.5
       PBDebug.log_ai("[should_not_switch] #{user.name} can deal #{priority_dmg} (>=50%) to #{threatening_foe.name} with priority")
       next true
     end
 
     next false
+  }
+)
+
+Battle::AI::Handlers::ShouldNotSwitch.add(:current_takes_no_damage,
+  proc { |user, reserves, ai, battle|
+      takes_no_damage = true
+
+      ai.each_foe_battler(user.side) do |b, _i|
+      if ai.damage_moves(b, user).values.any? { |md| md[:dmg] >= user.battler.hp * 0.4 }
+        takes_no_damage = false 
+      end
+    end
+
+    next takes_no_damage
   }
 )

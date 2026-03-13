@@ -107,6 +107,23 @@ class Battle::AI
     return result
   end
 
+  # Override: Returns whether the move will definitely fail (assuming no battle conditions
+  # change between now and using the move).
+  def pbPredictMoveFailure
+    # User is awake and can't use moves that are only usable when asleep
+    return true if !@user.battler.asleep? && @move.move.usableWhenAsleep?
+    # NOTE: Truanting is not considered, because if it is, a Pokémon with Truant
+    #       will want to switch due to terrible moves every other round (because
+    #       all of its moves will fail), and this is disruptive and shouldn't be
+    #       how such Pokémon behave.
+    # Primal weather
+    return true if @battle.pbWeather == :HeavyRain && @move.rough_type == :FIRE
+    return true if @battle.pbWeather == :HarshSun && @move.rough_type == :WATER
+    # Move effect-specific checks
+    return true if Battle::AI::Handlers.move_will_fail?(@move.function_code, @move, @user, self, @battle)
+    return false
+  end
+
   # Override: remove the core engine's score = 0 clamp (line 284) so negative
   # scores from penalties are preserved, letting the AI pick the least-bad move.
   def pbGetMoveScore(targets = nil)
@@ -128,7 +145,7 @@ class Battle::AI
       end
       if affected_targets == 0 && @trainer.has_skill_flag?("PredictMoveFailure")
         if !@move.move.worksWithNoTargets?
-          PBDebug.log_score_change(MOVE_FAIL_SCORE - MOVE_BASE_SCORE, "move will fail")
+          PBDebug.log_score_change(MOVE_FAIL_SCORE, "move will fail")
           return MOVE_FAIL_SCORE
         end
       else
