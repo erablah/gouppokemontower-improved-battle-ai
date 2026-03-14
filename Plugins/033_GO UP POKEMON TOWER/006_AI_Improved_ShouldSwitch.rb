@@ -73,14 +73,8 @@ Battle::AI::Handlers::ShouldNotSwitch.add(:current_can_answer_boosted_foe,
     next true if user.has_active_ability?(:UNAWARE)
 
     # Pre-compute OHKO threat for both move-based and sash checks
-    foe_ohko_and_faster = false
-    ai.each_foe_battler(user.side) do |b, _i|
-      if ai.damage_moves(b, user).values.any? { |md| md[:dmg] >= user.battler.hp }
-        faster = b.rough_stat(:SPEED) > user.rough_stat(:SPEED)
-        foe_ohko_and_faster = true if faster
-        PBDebug.log_ai("[should_not_switch] #{b.name} can OHKO #{user.name}#{faster ? ' (faster)' : ' (slower)'}")
-      end
-    end
+    summary = ai.matchup_summary
+    foe_ohko_and_faster = summary[:foe_can_ohko_and_outspeeds]
     can_act_first = !foe_ohko_and_faster
 
     # 2–6. Move-based answers: only valid when we can act before being KO'd

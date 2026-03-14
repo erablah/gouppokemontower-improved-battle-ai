@@ -28,21 +28,10 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
     #    → cancel the -50 penalty (+50)
     # -----------------------------------------------------------------------
 
-    foe_threatens = false
-    foe_can_ohko = false
-    ai.each_foe_battler(user.side) do |b, _i|
-      best_foe_dmg = ai.damage_moves(b, user).values.map { |md| md[:dmg] }.max || 0
-      pct = (100.0 * best_foe_dmg / [1, battler.totalhp].max).round(1)
-      PBDebug.log_ai("[smart_setup] foe #{b.name} best dmg vs user: #{best_foe_dmg} (#{pct}% totalhp, threshold 40%)")
-      if best_foe_dmg >= battler.hp
-        foe_can_ohko = true
-        foe_threatens = true
-        break
-      end
-      if best_foe_dmg.to_f / battler.hp.to_f > 0.4
-        foe_threatens = true
-      end
-    end
+    summary = ai.matchup_summary
+    foe_can_ohko = summary[:foe_can_ohko]
+    foe_threatens = summary[:foes].values.any? { |f| f[:best_dmg].to_f / battler.hp.to_f > 0.4 }
+    foe_threatens = true if foe_can_ohko
     if foe_can_ohko
       score -= 200
       PBDebug.log_score_change(-200, "Setup blocked: foe can OHKO.")
@@ -56,16 +45,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
     # -----------------------------------------------------------------------
     # D. Block setup if no move can deal >40% to any foe
     # -----------------------------------------------------------------------
-    has_good_damage = false
-    ai.each_foe_battler(user.side) do |b, _i|
-      best = ai.damage_moves(user, b).values.map { |md| md[:dmg] }.max || 0
-      pct  = (100.0 * best / [1, b.battler.hp].max).round(1)
-      PBDebug.log_ai("[smart_setup] best dmg vs #{b.name}: #{best} (#{pct}% hp, threshold 30%)")
-      if best.to_f / b.battler.hp.to_f > 0.3
-        has_good_damage = true
-        break
-      end
-    end
+    has_good_damage = summary[:foes].values.any? { |f| f[:user_best_dmg].to_f / f[:foe_hp].to_f > 0.3 }
     if !has_good_damage
       score -= 50
       PBDebug.log_score_change(-50, "Setup blocked: No damaging move can do >30% of target HP.")
@@ -113,7 +93,9 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
         current_spd_stage = battler.stages[:SPEED]
         new_stage = [current_spd_stage + spd_stages, 6].min
         spd_mult = (2.0 + new_stage) / 2.0
-        base_speed = user_speed / ((2.0 + current_spd_stage) / 2.0)  # un-boost
+        current_mult = (2.0 + current_spd_stage) / 2.0
+        current_mult = 0.25 if current_mult <= 0  # safeguard against division by zero
+        base_speed = user_speed / current_mult  # un-boost
         boosted_speed = base_speed * spd_mult
 
         if user_speed < max_foe_speed && boosted_speed >= max_foe_speed
@@ -305,14 +287,8 @@ Battle::AI::Handlers::GeneralMoveScore.add(:tactical_substitute,
     # -------------------------------------------------------------------------
     # B. Foe threat analysis — reject if any foe can deal >25% in one hit
     # -------------------------------------------------------------------------
-    threatened = false
-    ai.each_foe_battler(user.side) do |b, i|
-      best_dmg = ai.damage_moves(b, user).values.map { |md| md[:dmg] }.max || 0
-      if best_dmg > battler.totalhp * 0.3
-        threatened = true
-        break
-      end
-    end
+    summary = ai.matchup_summary
+    threatened = summary[:foes].values.any? { |f| f[:best_dmg] > battler.totalhp * 0.3 }
 
     # Substitute is counterproductive when foe can break it in one hit
     next Battle::AI::MOVE_USELESS_SCORE if threatened
@@ -382,9 +358,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:evade_knockout,
 
     # Priority KO moves bypass speed — always penalize
     if priority_ko
-      # FailsIfTargetActed moves (e.g. Sucker Punch) only work if we don't act
-      # first — there's a 25% chance we move first and they whiff, so skip
-      # the penalty in that case.
+      # implement chance for sucker punch
       if priority_ko_move&.is_a?(Battle::Move::FailsIfTargetActed) && ai.pbAIRandom(100) < 25
         PBDebug.log_ai("[evade_ko] skip sucker punch penalty (25% chance it will fail)")
         next score
@@ -452,11 +426,8 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_recovery,
     hp_ratio = battler.hp.to_f / battler.totalhp
 
     # Check if foe can 2HKO — recovery is futile
-    max_foe_dmg = 0
-    ai.each_foe_battler(user.side) do |b, _i|
-      dmg = ai.damage_moves(b, user).values.map { |md| md[:dmg] }.max || 0
-      max_foe_dmg = [max_foe_dmg, dmg].max
-    end
+    summary = ai.matchup_summary
+    max_foe_dmg = summary[:max_foe_dmg]
     PBDebug.log_ai("[smart_recovery] max foe dmg = #{max_foe_dmg} (#{(100.0 * max_foe_dmg / [1, battler.totalhp].max).round(1)}% totalhp, threshold 55%)")
 
     if max_foe_dmg >= battler.totalhp * 0.55

@@ -284,6 +284,109 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("FreezeTarget",
 )
 
 #===============================================================================
+# FreezeFlinchTarget  (Ice Fang)
+# BurnFlinchTarget    (Fire Fang)
+# ParalyzeFlinchTarget (Thunder Fang)
+#
+# The base game stores EffectChance = 101 as a magic number meaning
+# "10% for each of two effects".  The base AI scoring reads addlEffect
+# raw (101%) and massively over-scores these moves.  These overrides
+# replace the base handlers with correct 10%-scaled scoring for both
+# the flinch and the status component.
+#===============================================================================
+
+# Helper: flinch component (10% chance, mirrors FlinchTarget handler logic)
+module AIEffectScoreHelper
+  FANG_FLINCH_CHANCE = 10
+  FANG_STATUS_CHANCE = 10
+
+  def self.fang_flinch_score(score, move, user, target, ai, battle)
+    return 0 if target.faster_than?(user) || target.effects[PBEffects::Substitute] > 0
+    return 0 if target.has_active_ability?(:INNERFOCUS) && !battle.moldBreaker
+    add_effect = move.get_score_change_for_additional_effect(user, target)
+    return 0 if add_effect == -999
+    bonus = add_effect
+    bonus += (30 * (FANG_FLINCH_CHANCE / 100.0)).round   # 3
+    bonus += 8 if target.status == :PARALYSIS ||
+                  target.effects[PBEffects::Confusion] > 1 ||
+                  target.effects[PBEffects::Attract] >= 0
+    bonus
+  end
+end
+
+Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("FreezeFlinchTarget",
+  proc { |score, move, user, target, ai, battle|
+    # Flinch component
+    score += AIEffectScoreHelper.fang_flinch_score(score, move, user, target, ai, battle)
+    # Freeze component (10% chance)
+    if target.battler.pbCanFreeze?(user.battler, false, move.move)
+      if !target.has_active_item?([:ASPEARBERRY, :LUMBERRY])
+        can_heal = target.faster_than?(user) &&
+                   target.has_active_ability?(:HYDRATION) &&
+                   [:Rain, :HeavyRain].include?(target.battler.effectiveWeather)
+        unless can_heal
+          bonus = (30 * (AIEffectScoreHelper::FANG_STATUS_CHANCE / 100.0)).round  # 3
+          bonus -= 2 if target.has_active_ability?(:MARVELSCALE)
+          bonus -= 3 if target.check_for_move { |m| m.thawsUser? }
+          score += [bonus, 0].max
+        end
+      end
+    end
+    next score
+  }
+)
+
+Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("BurnFlinchTarget",
+  proc { |score, move, user, target, ai, battle|
+    # Flinch component
+    score += AIEffectScoreHelper.fang_flinch_score(score, move, user, target, ai, battle)
+    # Burn component (10% chance)
+    if target.battler.pbCanBurn?(user.battler, false, move.move)
+      if !target.has_active_item?([:RAWSTBERRY, :LUMBERRY])
+        can_heal = target.faster_than?(user) &&
+                   target.has_active_ability?(:HYDRATION) &&
+                   [:Rain, :HeavyRain].include?(target.battler.effectiveWeather)
+        unless can_heal
+          bonus = (20 * (AIEffectScoreHelper::FANG_STATUS_CHANCE / 100.0)).round  # 2
+          if !target.has_active_ability?(:GUTS) && target.check_for_move { |m| m.physicalMove? }
+            bonus += 2
+          end
+          bonus -= 2 if target.has_active_ability?([:FLAREBOOST, :GUTS, :MARVELSCALE, :QUICKFEET])
+          score += [bonus, 0].max
+        end
+      end
+    end
+    next score
+  }
+)
+
+Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("ParalyzeFlinchTarget",
+  proc { |score, move, user, target, ai, battle|
+    # Flinch component
+    score += AIEffectScoreHelper.fang_flinch_score(score, move, user, target, ai, battle)
+    # Paralysis component (10% chance)
+    if target.battler.pbCanParalyze?(user.battler, false, move.move)
+      if !target.has_active_item?([:CHERIBERRY, :LUMBERRY])
+        can_heal = target.faster_than?(user) &&
+                   target.has_active_ability?(:HYDRATION) &&
+                   [:Rain, :HeavyRain].include?(target.battler.effectiveWeather)
+        unless can_heal
+          bonus = (20 * (AIEffectScoreHelper::FANG_STATUS_CHANCE / 100.0)).round  # 2
+          if target.faster_than?(user)
+            user_speed = user.rough_stat(:SPEED)
+            target_speed = target.rough_stat(:SPEED)
+            bonus += 3 if target_speed < user_speed * ((Settings::MECHANICS_GENERATION >= 7) ? 2 : 4)
+          end
+          bonus -= 2 if target.has_active_ability?([:GUTS, :MARVELSCALE, :QUICKFEET])
+          score += [bonus, 0].max
+        end
+      end
+    end
+    next score
+  }
+)
+
+#===============================================================================
 # [NEW] Taunt Override — Tactical Taunt
 #===============================================================================
 Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("DisableTargetStatusMoves",

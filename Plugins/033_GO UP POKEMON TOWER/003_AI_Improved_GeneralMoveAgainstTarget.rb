@@ -17,7 +17,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:predicted_damage,
       else
         score += ([30.0 * dmg / target.hp, 30].min).to_i
         PBDebug.log_score_change(score - old_score, "damaging move (predicted damage #{dmg} = #{100 * dmg / target.hp}% of target's HP)")
-        if ai.trainer.has_skill_flag?("HPAware") && dmg >= target.hp * 0.9   # Predicted to KO the target
+        if ai.trainer.has_skill_flag?("HPAware") && dmg >= target.hp   # Predicted to KO the target
           old_score = score
           score += 50
           PBDebug.log_score_change(score - old_score, "predicted to KO the target")
@@ -137,7 +137,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:boost_knock_off,
     next score if target.has_active_ability?(:STICKYHOLD)
 
     # Base bonus for item removal
-    score += 10
+    score += 5
     PBDebug.log_score_change(10, "Knock Off: removing target's item.")
 
     # Extra bonus for high-value items
@@ -145,7 +145,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:boost_knock_off,
       :LEFTOVERS, :EVIOLITE, :LIFEORB, :ASSAULTVEST, :ROCKYHELMET,
     ]
     if target.has_active_item?(high_value_items)
-      score += 5
+      score += 10
       PBDebug.log_score_change(5, "Knock Off: target has high-value item.")
     end
 

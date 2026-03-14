@@ -42,24 +42,13 @@ Battle::AI::Handlers::GeneralItemScore.add(
     # -------------------------------------------------------------------------
     PBDebug.log_ai("[item_ai] idxPkmn=#{idxPkmn.inspect}, battler.pokemonIndex=#{battler.pokemonIndex}")
     if idxPkmn == battler.pokemonIndex
+      summary = ai.matchup_summary
       max_foe_dmg = 0
       foe_outspeeds = false
-      user_speed = user_ai.rough_stat(:SPEED)
-      ai.each_foe_battler(user_ai.side) do |b, _i|
-        foe_moves = ai.damage_moves(b, user_ai).values
-        best_move = foe_moves.max_by { |md| md[:dmg] }
-        dmg = best_move ? best_move[:dmg] : 0
-        if dmg > max_foe_dmg
-          max_foe_dmg = dmg
-          # Re-evaluate speed based on the worst-case foe
-          foe_speed = b.rough_stat(:SPEED)
-          PBDebug.log_ai("[item_ai] foe #{b.name}: max_dmg=#{dmg}, foe_speed=#{foe_speed}, user_speed=#{user_speed}")
-          foe_outspeeds = foe_speed > user_speed
-          # Priority on the threatening move overrides speed
-          if best_move && best_move[:move].priority > 0
-            foe_outspeeds = true
-            PBDebug.log_ai("[item_ai] foe #{b.name} best move has priority — treating as outspeeds")
-          end
+      summary[:foes].each_value do |foe|
+        if foe[:best_dmg] > max_foe_dmg
+          max_foe_dmg = foe[:best_dmg]
+          foe_outspeeds = foe[:effectively_outspeeds]
         end
       end
 

@@ -201,11 +201,7 @@ class Battle::AI
     user_battler = @user.battler
     max_score = choices.map { |c| c[1] }.max || 0
     if @trainer.high_skill? && @user.can_switch_lax?
-      badMoves = false
       if max_score < MOVE_BASE_SCORE - 20
-        badMoves = true
-      end
-      if badMoves
         move_scores = choices.map { |c| "#{c[4].name}=#{c[1]}" }.join(", ")
         PBDebug.log_ai("#{@user.name} wants to switch due to terrible moves [#{move_scores}]")
         if pbChooseToSwitchOut(true)
@@ -213,6 +209,22 @@ class Battle::AI
           return
         end
         PBDebug.log_ai("#{@user.name} won't switch after all")
+      else
+        # Doomed attacker: foe will OHKO, we can't KO back — consider switching
+        has_sash = @user.has_active_item?(:FOCUSSASH)
+        has_sturdy = @user.has_active_ability?(:STURDY)
+        has_sub = @user.effects[PBEffects::Substitute] > 0
+        unless has_sash || has_sturdy || has_sub
+          summary = matchup_summary
+          if summary[:foe_can_ohko] && !summary[:user_can_ko_any]
+            PBDebug.log_ai("#{@user.name} is doomed (foe OHKOs, can't KO back). Considering switch.")
+            if pbChooseToSwitchOut(false, skip_should_switch: true)
+              @battle.pbUnregisterMegaEvolution(@user.index)
+              return
+            end
+            PBDebug.log_ai("#{@user.name} will attack despite being doomed")
+          end
+        end
       end
     end
 
@@ -254,9 +266,7 @@ class Battle::AI
   end
 
   #override pbChooseToSwitchOut
-  def pbChooseToSwitchOut(terrible_moves = false)
-    # Clear damage cache — game state may have changed since move scoring
-    @_ai_dmg_cache = {}
+  def pbChooseToSwitchOut(terrible_moves = false, skip_should_switch: false)
     return false if !@battle.canSwitch   # Battle rule
     return false if @user.wild?
     return false if !@battle.pbCanSwitchOut?(@user.index)
@@ -274,6 +284,8 @@ class Battle::AI
     # Various calculations to decide whether to switch
     if terrible_moves
       PBDebug.log_ai("#{@user.name} is being forced to switch out")
+    elsif skip_should_switch
+      PBDebug.log_ai("#{@user.name} is considering switch (skipping ShouldSwitch handlers)")
     else
       return false if !@trainer.has_skill_flag?("ConsiderSwitching")
       reserves = get_non_active_party_pokemon(@user.index)
@@ -312,9 +324,12 @@ class Battle::AI
     # forced_switch: Passed as true explicitly by the battle engine when a Pokémon faints or uses a pivoting move (e.g., U-turn, Parting Shot).
     # terrible_moves: Passed as true during the AI's action phase if its current moveset has no good options.
 
-    # Clear damage cache — game state may have changed since move scoring
-    # (faints, pivots, stat changes, field effects, or different Pokémon at same index)
-    @_ai_dmg_cache = {}
+    # Clear caches only on forced switches (faints/pivots) where a different
+    # Pokémon now occupies the battler index, invalidating cached results.
+    if forced_switch
+      @_ai_dmg_cache = {}
+      @_matchup_cache = {}
+    end
 
     # Get all possible replacement Pokémon
     party = @battle.pbParty(idxBattler)
@@ -397,6 +412,59 @@ class Battle::AI
         moves_by_id[m.id] = { move: m, dmg: dmg }
       end
       moves_by_id
+    end
+  end
+
+  # Returns a cached summary of KO/speed data for all current battler pairs.
+  # Reuses damage_moves cache — no redundant computation.
+  def matchup_summary
+    mega = @battle.pbRegisteredMegaEvolution?(@user.index) rescue false
+    tera = (@battle.pbRegisteredTerastallize?(@user.index) rescue false) || @user.battler.tera?
+    key = [@user.index, @battle.turnCount, mega, tera]
+    (@_matchup_cache ||= {})[key] ||= begin
+      summary = { foes: {} }
+      user_speed = @user.rough_stat(:SPEED)
+      summary[:user_speed] = user_speed
+      summary[:foe_can_ohko] = false
+      summary[:foe_can_ohko_and_outspeeds] = false
+      summary[:user_can_ko_any] = false
+      summary[:max_foe_dmg] = 0
+
+      each_foe_battler(@user.side) do |b, _i|
+        foe_dmg_data = damage_moves(b, @user)
+        user_dmg_data = damage_moves(@user, b)
+
+        best_foe = foe_dmg_data.values.max_by { |md| md[:dmg] }
+        best_user = user_dmg_data.values.max_by { |md| md[:dmg] }
+
+        foe_speed = b.rough_stat(:SPEED)
+        foe_best_dmg = best_foe ? best_foe[:dmg] : 0
+        user_best_dmg = best_user ? best_user[:dmg] : 0
+
+        foe_outspeeds = foe_speed > user_speed
+        foe_has_priority = best_foe && best_foe[:move].priority > 0
+        foe_effectively_outspeeds = foe_outspeeds || foe_has_priority
+
+        foe_entry = {
+          best_dmg:    foe_best_dmg,
+          best_move:   best_foe&.dig(:move),
+          best_priority: best_foe ? best_foe[:move].priority : 0,
+          user_best_dmg: user_best_dmg,
+          speed:       foe_speed,
+          outspeeds:   foe_outspeeds,
+          effectively_outspeeds: foe_effectively_outspeeds,
+          can_ohko:    foe_best_dmg >= @user.hp,
+          dmg_ratio:   foe_best_dmg.to_f / [@user.battler.totalhp, 1].max,
+          foe_hp:      b.hp,
+          foe_totalhp: b.battler.totalhp,
+        }
+        summary[:foes][b.index] = foe_entry
+        summary[:max_foe_dmg] = [summary[:max_foe_dmg], foe_best_dmg].max
+        summary[:foe_can_ohko] = true if foe_entry[:can_ohko]
+        summary[:foe_can_ohko_and_outspeeds] = true if foe_entry[:can_ohko] && foe_effectively_outspeeds
+        summary[:user_can_ko_any] = true if user_best_dmg >= b.hp
+      end
+      summary
     end
   end
 
