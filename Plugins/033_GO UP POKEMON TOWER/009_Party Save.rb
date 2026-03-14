@@ -110,6 +110,8 @@ def pbLoadPartySlot(slot);  BattlePartyStorage.load_party(slot);  end
 def pbClearPartySlot(slot); BattlePartyStorage.clear_slot(slot); end
 def pbClearAllPartySlots;   BattlePartyStorage.clear_all;         end
 
+def pbRemoveAllBannedSpecices; TowerParty.clear_all_banned_families; end
+
 #===============================================================================
 # 밴 시스템
 #===============================================================================
@@ -161,6 +163,11 @@ module TowerParty
   def self.clear_banned_families(slot_index)
     init_banned_families
     $PokemonGlobal.tower_banned_families[slot_index] = []
+  end
+
+  def self.clear_all_banned_families
+    init_banned_families
+    $PokemonGlobal.tower_banned_families = Array.new(10) { [] }
   end
 
   def self.clean_party!
