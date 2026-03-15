@@ -51,8 +51,9 @@ Battle::AI::Handlers::ScoreReplacement.add(:foe_predicted_damage,
       known_damaging = ai.known_foe_moves(b).select { |m| m&.damagingMove? }
       next if known_damaging.empty?
 
-      # Evaluate worst-case damage across all known damaging moves
+      # Evaluate worst-case damage across all known damaging moves vs replacement
       worst_damage = 0
+      worst_move_id = nil
       worst_move_priority = 0
       known_damaging.each do |m|
         PBDebug.log_ai("move_id: #{m.id}")
@@ -63,22 +64,108 @@ Battle::AI::Handlers::ScoreReplacement.add(:foe_predicted_damage,
         predicted_damage = move.predicted_damage(user: b, target: target, target_pokemon: pkmn)
         if predicted_damage > worst_damage
           worst_damage = predicted_damage
+          worst_move_id = m.id
           worst_move_priority = sim_move.priority
         end
       end
 
-      worst_damage += ai.calculate_entry_hazard_damage(pkmn, idxBattler & 1)
-      dmg_ratio = (worst_damage / pkmn.hp.to_f) * 100
+      entry_hazard_damage = ai.calculate_entry_hazard_damage(pkmn, idxBattler & 1)
+
+      # --- Scenario 1: First-hit prediction logic ---
+      scenario_1 = battle.command_phase && !foe_already_acted && !ai.user.battler.fainted?
+      if scenario_1
+        # Get foe's worst move vs current battler
+        foe_vs_current = ai.damage_moves(b, ai.user)
+        best_vs_current = foe_vs_current.values.max_by { |md| md[:dmg] }
+
+        if best_vs_current && best_vs_current[:dmg] > 0 && worst_move_id
+          move_C_id = best_vs_current[:move].id   # worst move vs current
+          move_R_id = worst_move_id                # worst move vs replacement
+
+          if move_C_id == move_R_id
+            # Same move is worst for both — no prediction needed
+            first_hit_dmg = worst_damage + entry_hazard_damage
+            first_hit_priority = worst_move_priority
+            PBDebug.log_ai("  [Scenario1] #{pkmn.name} vs #{b.name}: same worst move (#{move_C_id}), first_hit=#{first_hit_dmg}")
+          else
+            # Different worst moves — compute prediction probability
+            dmg_A = best_vs_current[:dmg]  # move_C damage to current
+            # Look up move_R damage to current
+            move_R_vs_current = foe_vs_current[move_R_id]
+            dmg_B = move_R_vs_current ? move_R_vs_current[:dmg] : 0
+
+            # chance = probability foe uses move_C (the one targeting current)
+            # Higher when move_R does little damage to current (foe wouldn't pick it)
+            chance = 0.2 + 0.8 * (dmg_A - dmg_B) / [dmg_A, 1].max
+            chance = [[chance, 0.2].max, 1.0].min
+
+            # Get cached roll from matchup_summary
+            summary = ai.matchup_summary
+            roll = summary[:foes][b.index][:switch_prediction_roll]
+
+            if roll < (chance * 100).to_i
+              # Foe uses move_C (targeting current) — simulate on replacement
+              sim_move = Battle::Move.from_pokemon_move(battle, Pokemon::Move.new(move_C_id))
+              target = Battle::AI::AIBattler.new(ai, idxBattler)
+              ai_move = Battle::AI::AIMove.new(ai)
+              ai_move.set_up(sim_move)
+              first_hit_dmg = ai_move.predicted_damage(user: b, target: target, target_pokemon: pkmn)
+              first_hit_dmg += entry_hazard_damage
+              first_hit_priority = sim_move.priority
+              PBDebug.log_ai("  [Scenario1] #{pkmn.name} vs #{b.name}: predicted move_C=#{move_C_id} (chance=#{(chance*100).to_i}%, roll=#{roll}), first_hit=#{first_hit_dmg}")
+            else
+              # Foe predicted the switch — uses move_R (worst vs replacement)
+              first_hit_dmg = worst_damage + entry_hazard_damage
+              first_hit_priority = worst_move_priority
+              PBDebug.log_ai("  [Scenario1] #{pkmn.name} vs #{b.name}: predicted move_R=#{move_R_id} (chance=#{(chance*100).to_i}%, roll=#{roll}), first_hit=#{first_hit_dmg}")
+            end
+          end
+
+          subsequent_hit_dmg = worst_damage  # no hazards — already switched in
+          dmg_priority = first_hit_priority
+
+          # Speed check for subsequent hits
+          pkmn_faster = false
+          if worst_move_priority <= 0
+            foe_speed = b.rough_stat(:SPEED)
+            eff_speed = pkmn.speed
+            if ai.user.pbOwnSide.effects[PBEffects::StickyWeb] &&
+               !pkmn.hasItem?(:HEAVYDUTYBOOTS) && !ai.pokemon_airborne?(pkmn)
+              eff_speed = (eff_speed * 2 / 3.0).to_i
+            end
+            pkmn_faster = eff_speed > foe_speed
+          end
+
+          # Evaluate OHKO/2HKO
+          if first_hit_dmg >= pkmn.hp
+            score -= 100
+            PBDebug.log_score_change(score - prev_score, "#{pkmn.name}: Scenario1 OHKO (first_hit=#{first_hit_dmg}/#{pkmn.hp}hp, foe_pending)")
+          elsif first_hit_dmg + subsequent_hit_dmg >= pkmn.hp
+            score -= 100
+            PBDebug.log_score_change(score - prev_score, "#{pkmn.name}: Scenario1 2HKO (first=#{first_hit_dmg}+subsequent=#{subsequent_hit_dmg}=#{first_hit_dmg+subsequent_hit_dmg}/#{pkmn.hp}hp, foe_pending)")
+          else
+            # Below 2HKO — ongoing threat bonus based on subsequent hit ratio
+            dmg_ratio = (subsequent_hit_dmg / pkmn.hp.to_f) * 100
+            base_boost = 20
+            score += (base_boost * (100 - dmg_ratio) / 100).to_i
+            PBDebug.log_score_change(score - prev_score, "#{pkmn.name}: Scenario1 below 2HKO, subsequent #{dmg_ratio.to_i}% (first=#{first_hit_dmg}, sub=#{subsequent_hit_dmg})")
+          end
+          next  # done with this foe for Scenario 1
+        end
+        # Fallback: if damage_moves returned no data, fall through to standard logic
+      end
+
+      # --- Scenarios 2 & 3 (and Scenario 1 fallback): all hits use worst_damage ---
+      worst_damage_with_hazards = worst_damage + entry_hazard_damage
+      dmg_ratio = (worst_damage_with_hazards / pkmn.hp.to_f) * 100
 
       base_boost = 20
 
       # Speed-aware check
-      # Priority moves bypass speed — pkmn is never "faster" against priority
       pkmn_faster = false
       if worst_move_priority <= 0
         foe_speed = b.rough_stat(:SPEED)
         eff_speed = pkmn.speed
-        # Sticky Web: -1 Speed stage on switch-in for grounded Pokémon
         if ai.user.pbOwnSide.effects[PBEffects::StickyWeb] &&
            !pkmn.hasItem?(:HEAVYDUTYBOOTS) && !ai.pokemon_airborne?(pkmn)
           eff_speed = (eff_speed * 2 / 3.0).to_i
@@ -88,36 +175,22 @@ Battle::AI::Handlers::ScoreReplacement.add(:foe_predicted_damage,
 
       if dmg_ratio >= 100
         # === OHKO ===
-        if !foe_already_acted && !faint_replacement
-          # Scenario 1: Hit is imminent this turn — speed doesn't help
-          penalty = 100
-        else
-          # Scenario 2 & 3: Foe attacks next turn
-          # Faster: you get one turn to act → reduced penalty
-          # Slower/priority: you never get to act → full penalty
-          penalty = pkmn_faster ? 40 : 100
-        end
+        # Scenario 2 & 3: Foe attacks next turn
+        penalty = pkmn_faster ? 40 : 100
         score -= penalty
         spd_tag = pkmn_faster ? ", faster" : ", slower"
         spd_tag = ", priority" if worst_move_priority > 0
-        scenario_tag = faint_replacement ? "faint_repl" : (foe_already_acted ? "foe_acted" : "foe_pending")
+        scenario_tag = faint_replacement ? "faint_repl" : "foe_acted"
         PBDebug.log_score_change(score - prev_score, "#{pkmn.name}: foe can OHKO (#{dmg_ratio.to_i}%#{spd_tag}, #{scenario_tag})")
       elsif dmg_ratio >= 50
         # === 2HKO ===
-        if !foe_already_acted && !faint_replacement
-          # Scenario 1: Hit is imminent — flat penalty, speed irrelevant
-          penalty = 100
-        else
-          # Scenario 2 & 3: Foe attacks next turn
-          # Faster: softer base (20) since you move first before 2nd hit
-          # Slower/priority: harder base (40)
-          base = pkmn_faster ? 20 : 40
-          penalty = (base * (dmg_ratio / 100.0)).to_i
-        end
+        # Scenario 2 & 3: Foe attacks next turn
+        base = pkmn_faster ? 20 : 40
+        penalty = (base * (dmg_ratio / 100.0)).to_i
         score -= penalty
         spd_tag = pkmn_faster ? ", faster" : ", slower"
         spd_tag = ", priority" if worst_move_priority > 0
-        scenario_tag = faint_replacement ? "faint_repl" : (foe_already_acted ? "foe_acted" : "foe_pending")
+        scenario_tag = faint_replacement ? "faint_repl" : "foe_acted"
         PBDebug.log_score_change(score - prev_score, "#{pkmn.name}: foe can 2HKO (#{dmg_ratio.to_i}%#{spd_tag}, #{scenario_tag})")
       else
         score += (base_boost * (100 - dmg_ratio) / 100).to_i
@@ -341,46 +414,6 @@ Battle::AI::Handlers::ScoreReplacement.add(:speed_advantage,
         score += 8
         PBDebug.log_score_change(8, "#{pkmn.name}: outspeeds #{b.name} (#{eff_speed} vs #{foe_speed}).")
         break
-      end
-    end
-    next score
-  }
-)
-
-#===============================================================================
-# [NEW] Tank foe's best move: prefer replacements that take less damage from
-# the foe's strongest move against the current battler
-#===============================================================================
-Battle::AI::Handlers::ScoreReplacement.add(:tank_foe_best_move,
-  proc { |idxBattler, pkmn, score, terrible_moves, battle, ai|
-    # Skip when current battler is fainted — no baseline to compare against
-    next score if ai.user.battler.fainted?
-    ai.each_foe_battler(ai.user.side) do |b, _i|
-      # Find the foe's strongest move against the current active battler
-      best_vs_current = ai.damage_moves(b, ai.user).values.max_by { |md| md[:dmg] }
-      next unless best_vs_current
-      next if best_vs_current[:dmg] <= 0
-
-      current_dmg = best_vs_current[:dmg]
-      best_move_id = best_vs_current[:move].id
-
-      # Simulate that same move against the replacement candidate
-      sim_move = Battle::Move.from_pokemon_move(battle, Pokemon::Move.new(best_move_id))
-      target   = Battle::AI::AIBattler.new(ai, idxBattler)
-      ai_move  = Battle::AI::AIMove.new(ai)
-      ai_move.set_up(sim_move)
-      replacement_dmg = ai_move.predicted_damage(user: b, target: target, target_pokemon: pkmn)
-
-      # Bonus if replacement takes less damage than the current battler
-      if replacement_dmg < current_dmg
-        ratio = 1.0 - (replacement_dmg.to_f / current_dmg.to_f)
-        bonus = (20 * ratio).round
-        if bonus > 0
-          score += bonus
-          PBDebug.log_score_change(bonus,
-            "#{pkmn.name}: tanks #{b.name}'s best move better " \
-            "(#{replacement_dmg} vs #{current_dmg} on current).")
-        end
       end
     end
     next score
