@@ -21,12 +21,6 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:predicted_damage,
           old_score = score
           score += 50
           PBDebug.log_score_change(score - old_score, "predicted to KO the target")
-          if move.move.multiHitMove? && target.hp == target.totalhp &&
-             (target.has_active_ability?(:STURDY) || target.has_active_item?(:FOCUSSASH))
-            old_score = score
-            score += 8
-            PBDebug.log_score_change(score - old_score, "predicted to overcome the target's Sturdy/Focus Sash")
-          end
         end
       end
     end

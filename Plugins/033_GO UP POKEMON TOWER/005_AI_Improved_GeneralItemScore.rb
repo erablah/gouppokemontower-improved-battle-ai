@@ -55,11 +55,7 @@ Battle::AI::Handlers::GeneralItemScore.add(
       dmg_ratio = max_foe_dmg.to_f / pkmn.totalhp
       PBDebug.log_ai("[item_ai] max_foe_dmg=#{max_foe_dmg}, totalhp=#{pkmn.totalhp}, dmg%=#{(dmg_ratio * 100).to_i}%, foe_outspeeds=#{foe_outspeeds}")
 
-      # Sturdy at full HP survives any single OHKO → downgrade to 2HKO scenario
-      has_sturdy = user_ai.has_active_ability?(:STURDY) && pkmn.hp == pkmn.totalhp
-      PBDebug.log_ai("[item_ai] Sturdy active at full HP: #{has_sturdy}") if has_sturdy
-
-      if dmg_ratio >= 1.0 && !has_sturdy
+      if dmg_ratio >= 1.0
         # --- Scenario 1: OHKO from full (no Sturdy) ---
         # AI heals to full → foe OHKOs this same turn → item wasted
         # Speed is irrelevant: items execute before moves, but foe still attacks this turn

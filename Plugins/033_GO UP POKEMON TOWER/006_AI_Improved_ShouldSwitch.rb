@@ -78,7 +78,7 @@ Battle::AI::Handlers::ShouldNotSwitch.add(:current_can_answer_boosted_foe,
     can_act_first = !foe_ohko_and_faster
 
     # 2–6. Move-based answers: only valid when we can act before being KO'd
-    if can_act_first || user.has_active_ability?(:STURDY) || user.has_active_item?(:FOCUSSASH)
+    if can_act_first
       # 2. Phazing (Whirlwind, Roar, Dragon Tail, Circle Throw)
       next true if user.check_for_move { |m|
         ["SwitchOutTargetStatusMove",

@@ -211,10 +211,8 @@ class Battle::AI
         PBDebug.log_ai("#{@user.name} won't switch after all")
       else
         # Doomed attacker: foe will OHKO, we can't KO back — consider switching
-        has_sash = @user.has_active_item?(:FOCUSSASH)
-        has_sturdy = @user.has_active_ability?(:STURDY)
         has_sub = @user.effects[PBEffects::Substitute] > 0
-        unless has_sash || has_sturdy || has_sub
+        unless has_sub
           summary = matchup_summary
           if summary[:foe_can_ohko] && !summary[:user_can_ko_any]
             PBDebug.log_ai("#{@user.name} is doomed (foe OHKOs, can't KO back). Considering switch.")
@@ -350,12 +348,20 @@ class Battle::AI
       break if @trainer.has_skill_flag?("UsePokemonInOrder") && reserves.length > 0
     end
     return -1 if reserves.length == 0
-    # Double KO: all opposing battlers are fainted, so we don't know what the
-    # player will send in — pick randomly instead of scoring against a fainted foe.
+    # Double KO: all opposing battlers are either fainted OR just sent in as
+    # replacements (turnCount == 0 mid-battle), meaning we shouldn't know what
+    # the player chose — pick randomly instead of scoring against them.
     if forced_switch
-      all_foes_fainted = true
-      @battle.allOtherSideBattlers(idxBattler).each { |b| all_foes_fainted = false if !b.fainted? }
-      if all_foes_fainted
+      foe_is_unknown = true
+      @battle.allOtherSideBattlers(idxBattler).each do |b|
+        # Foe is "known" if they have had at least one turn in battle
+        # (turnCount > 0 means they've been active before, so not a fresh replacement)
+        if !b.fainted? && b.turnCount > 0
+          foe_is_unknown = false
+          break
+        end
+      end
+      if foe_is_unknown
         chosen = reserves.sample
         PBDebug.log_ai("=> double KO: randomly choosing #{party[chosen[0]].name}")
         return chosen[0]

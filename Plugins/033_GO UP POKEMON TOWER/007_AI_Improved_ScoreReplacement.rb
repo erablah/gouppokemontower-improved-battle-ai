@@ -71,6 +71,18 @@ Battle::AI::Handlers::ScoreReplacement.add(:foe_predicted_damage,
 
       entry_hazard_damage = ai.calculate_entry_hazard_damage(pkmn, idxBattler & 1)
 
+      # Speed check (used by all scenarios)
+      pkmn_faster = false
+      if worst_move_priority <= 0
+        foe_speed = b.rough_stat(:SPEED)
+        eff_speed = pkmn.speed
+        if ai.user.pbOwnSide.effects[PBEffects::StickyWeb] &&
+           !pkmn.hasItem?(:HEAVYDUTYBOOTS) && !ai.pokemon_airborne?(pkmn)
+          eff_speed = (eff_speed * 2 / 3.0).to_i
+        end
+        pkmn_faster = eff_speed > foe_speed
+      end
+
       # --- Scenario 1: First-hit prediction logic ---
       scenario_1 = battle.command_phase && !foe_already_acted && !ai.user.battler.fainted?
       if scenario_1
@@ -96,7 +108,9 @@ Battle::AI::Handlers::ScoreReplacement.add(:foe_predicted_damage,
 
             # chance = probability foe uses move_C (the one targeting current)
             # Higher when move_R does little damage to current (foe wouldn't pick it)
-            chance = 0.2 + 0.8 * (dmg_A - dmg_B) / [dmg_A, 1].max
+            # Uses cubic ratio so chance stays high until move_R is nearly as good
+            ratio = dmg_B.to_f / [dmg_A, 1].max
+            chance = 1.0 - 0.8 * (ratio ** 3)
             chance = [[chance, 0.2].max, 1.0].min
 
             # Get cached roll from matchup_summary
@@ -124,25 +138,16 @@ Battle::AI::Handlers::ScoreReplacement.add(:foe_predicted_damage,
           subsequent_hit_dmg = worst_damage  # no hazards — already switched in
           dmg_priority = first_hit_priority
 
-          # Speed check for subsequent hits
-          pkmn_faster = false
-          if worst_move_priority <= 0
-            foe_speed = b.rough_stat(:SPEED)
-            eff_speed = pkmn.speed
-            if ai.user.pbOwnSide.effects[PBEffects::StickyWeb] &&
-               !pkmn.hasItem?(:HEAVYDUTYBOOTS) && !ai.pokemon_airborne?(pkmn)
-              eff_speed = (eff_speed * 2 / 3.0).to_i
-            end
-            pkmn_faster = eff_speed > foe_speed
-          end
-
           # Evaluate OHKO/2HKO
           if first_hit_dmg >= pkmn.hp
             score -= 100
             PBDebug.log_score_change(score - prev_score, "#{pkmn.name}: Scenario1 OHKO (first_hit=#{first_hit_dmg}/#{pkmn.hp}hp, foe_pending)")
           elsif first_hit_dmg + subsequent_hit_dmg >= pkmn.hp
-            score -= 100
-            PBDebug.log_score_change(score - prev_score, "#{pkmn.name}: Scenario1 2HKO (first=#{first_hit_dmg}+subsequent=#{subsequent_hit_dmg}=#{first_hit_dmg+subsequent_hit_dmg}/#{pkmn.hp}hp, foe_pending)")
+            # 2HKO: If pkmn is faster, it gets to attack first on turn 2 — reduced penalty
+            penalty = pkmn_faster ? 40 : 100
+            spd_tag = pkmn_faster ? "faster" : "slower"
+            score -= penalty
+            PBDebug.log_score_change(score - prev_score, "#{pkmn.name}: Scenario1 2HKO (first=#{first_hit_dmg}+subsequent=#{subsequent_hit_dmg}=#{first_hit_dmg+subsequent_hit_dmg}/#{pkmn.hp}hp, #{spd_tag})")
           else
             # Below 2HKO — ongoing threat bonus based on subsequent hit ratio
             dmg_ratio = (subsequent_hit_dmg / pkmn.hp.to_f) * 100
@@ -160,18 +165,6 @@ Battle::AI::Handlers::ScoreReplacement.add(:foe_predicted_damage,
       dmg_ratio = (worst_damage_with_hazards / pkmn.hp.to_f) * 100
 
       base_boost = 20
-
-      # Speed-aware check
-      pkmn_faster = false
-      if worst_move_priority <= 0
-        foe_speed = b.rough_stat(:SPEED)
-        eff_speed = pkmn.speed
-        if ai.user.pbOwnSide.effects[PBEffects::StickyWeb] &&
-           !pkmn.hasItem?(:HEAVYDUTYBOOTS) && !ai.pokemon_airborne?(pkmn)
-          eff_speed = (eff_speed * 2 / 3.0).to_i
-        end
-        pkmn_faster = eff_speed > foe_speed
-      end
 
       if dmg_ratio >= 100
         # === OHKO ===

@@ -354,6 +354,19 @@ class Battle::AI::AIMove
       dmg = apply_damage_corrections(dmg, sim[:eff_user], sim[:user_sim], calc_type)
       dmg -= check_immunities(dmg, calc_type, sim[:eff_user], sim[:eff_target])
 
+      # If target at full HP with Sturdy/Focus Sash and move would OHKO, cap at HP-1
+      # Multi-hit moves bypass this protection
+      if dmg >= sim[:eff_target].hp && sim[:eff_target].hp == sim[:eff_target].totalhp
+        has_endure = sim[:eff_target].abilityActive? &&
+                     sim[:eff_target].ability_id == :STURDY &&
+                     !@ai.battle.moldBreaker
+        has_sash = sim[:eff_target].itemActive? &&
+                   sim[:eff_target].item_id == :FOCUSSASH
+        if (has_endure || has_sash) && !@move.multiHitMove?
+          dmg = sim[:eff_target].hp - 1
+        end
+      end
+
       return dmg
     ensure
       @ai.instance_variable_set(:@move, prev_move)

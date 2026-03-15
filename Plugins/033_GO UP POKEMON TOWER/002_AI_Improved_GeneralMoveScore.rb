@@ -327,11 +327,8 @@ Battle::AI::Handlers::GeneralMoveScore.add(:tactical_substitute,
 
 Battle::AI::Handlers::GeneralMoveScore.add(:evade_knockout,
   proc { |score, move, user, ai, battle|
-    # Skip if user has Sturdy, Focus Sash, or an active Substitute
-    has_substitute = user.effects[PBEffects::Substitute] > 0
-    has_focus_sash = user.has_active_item?(:FOCUSSASH)
-    has_sturdy = user.has_active_ability?(:STURDY)
-    next score if has_substitute || has_focus_sash || has_sturdy
+    # Skip if user has an active Substitute
+    next score if user.effects[PBEffects::Substitute] > 0
 
     max_foe_speed   = 0
     foe_can_ko      = false
