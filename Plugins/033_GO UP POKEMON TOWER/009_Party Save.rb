@@ -110,7 +110,7 @@ def pbLoadPartySlot(slot);  BattlePartyStorage.load_party(slot);  end
 def pbClearPartySlot(slot); BattlePartyStorage.clear_slot(slot); end
 def pbClearAllPartySlots;   BattlePartyStorage.clear_all;         end
 
-def pbRemoveAllBannedSpecices; TowerParty.clear_all_banned_families; end
+def pbRemoveAllBannedSpecies; TowerParty.clear_all_banned_families; end
 
 #===============================================================================
 # 밴 시스템
