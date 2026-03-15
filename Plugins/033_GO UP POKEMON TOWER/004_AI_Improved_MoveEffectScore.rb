@@ -215,10 +215,17 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("BurnTarget",
       # Inherent preference scaled by effect chance
       score += AIEffectScoreHelper.get_inherent_preference(move, 20)
 
-      # Prefer if the target knows any physical moves that will be weaked by a burn
-      if !target.has_active_ability?(:GUTS) && target.check_for_move { |m| m.physicalMove? }
-        score += 8
-        score += 8 if !target.check_for_move { |m| m.specialMove? }
+      # Prefer if the target knows any physical moves that will be weakened by a burn
+      has_physical = target.check_for_move { |m| m.physicalMove? }
+      has_special = target.check_for_move { |m| m.specialMove? }
+      if !target.has_active_ability?(:GUTS)
+        if has_physical
+          score += 8
+          score += 8 if !has_special  # Only physical moves
+        elsif has_special
+          # Penalize if target is a pure special attacker (burn's attack drop is wasted)
+          score -= 15
+        end
       end
       # Prefer if the user or an ally has a move/ability that is better if the target is burned
       ai.each_same_side_battler(user.side) do |b, i|
