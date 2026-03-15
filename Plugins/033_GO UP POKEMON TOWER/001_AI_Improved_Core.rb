@@ -396,7 +396,8 @@ class Battle::AI
   def damage_moves(attacker, defender)
     mega = @battle.pbRegisteredMegaEvolution?(attacker.index) rescue false
     tera = (@battle.pbRegisteredTerastallize?(attacker.index) rescue false) || attacker.battler.tera?
-    key = [attacker.index, defender.index, @battle.turnCount, mega, tera]
+    key = [attacker.index, defender.index, @battle.turnCount, mega, tera,
+           attacker.battler.pokemon&.personalID, defender.battler.pokemon&.personalID]
     (@_ai_dmg_cache ||= {})[key] ||= begin
       PBDebug.log_ai("[damage_moves] computing #{attacker.name} → #{defender.name} (turn #{@battle.turnCount})")
       moves_by_id = {}
@@ -420,7 +421,9 @@ class Battle::AI
   def matchup_summary
     mega = @battle.pbRegisteredMegaEvolution?(@user.index) rescue false
     tera = (@battle.pbRegisteredTerastallize?(@user.index) rescue false) || @user.battler.tera?
-    key = [@user.index, @battle.turnCount, mega, tera]
+    foe_ids = []
+    each_foe_battler(@user.side) { |b, _| foe_ids << b.battler.pokemon&.personalID }
+    key = [@user.index, @battle.turnCount, mega, tera, @user.battler.pokemon&.personalID, foe_ids]
     (@_matchup_cache ||= {})[key] ||= begin
       summary = { foes: {} }
       user_speed = @user.rough_stat(:SPEED)
@@ -458,6 +461,7 @@ class Battle::AI
           foe_hp:      b.hp,
           foe_totalhp: b.battler.totalhp,
         }
+        foe_entry[:switch_prediction_roll] = pbAIRandom(100)
         summary[:foes][b.index] = foe_entry
         summary[:max_foe_dmg] = [summary[:max_foe_dmg], foe_best_dmg].max
         summary[:foe_can_ohko] = true if foe_entry[:can_ohko]
@@ -474,7 +478,7 @@ class Battle::AI
   # Result is cached per [battler.index, turnCount] for consistency.
   #---------------------------------------------------------------------------
   def known_foe_moves(foe_ai_battler)
-    cache_key = [foe_ai_battler.index, @battle.turnCount]
+    cache_key = [foe_ai_battler.index, @battle.turnCount, foe_ai_battler.battler.pokemon&.personalID]
     (@_known_foe_moves_cache ||= {})[cache_key] ||= begin
       all_moves = foe_ai_battler.battler.moves.compact
       acted_ids = @battle.instance_variable_get(:@_foe_acted_ids) || {}
