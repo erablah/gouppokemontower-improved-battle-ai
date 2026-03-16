@@ -31,7 +31,7 @@ ZA 메가진화 포켓몬 목록
 메가드래캄 (Dragalge)        - 재생력 (REGENERATOR): 지닌 포켓몬으로 돌아오면 HP를 조금 회복한다.
 메가치렁 (Chimecho)          - 아이언스킨 (IRONSKIN): 노말타입의 기술이 강철타입이 된다. 위력이 조금 올라간다.
 메가앱솔Z (Absol Z)          - 예리함 (SHARPNESS): 베는 기술의 위력이 올라간다.
-메가찌르호크 (Staraptor)     - 이판사판 (RECKLESS): 반동 데미지를 받는 기술의 위력이 올라간다.
+메가찌르호크 (Staraptor)     - 틀깨기 (MOLDBREAKER): 상대 특성에 방해받지 않고 상대에게 기술을 쓸 수 있다.
 메가한카리아스Z (Garchomp Z) - 자기과신 (MOXIE): 상대를 쓰러뜨리면 자신감이 붙어서 공격이 올라간다.
 메가루카리오Z (Lucario Z)    - 메가런처 (MEGALAUNCHER): 파동 기술의 위력이 올라간다.
 메가히드런 (Heatran)         - 타오르는불꽃 (FLASHFIRE): 불꽃타입의 기술로 공격받으면 자신의 불꽃타입 기술이 강해진다.
