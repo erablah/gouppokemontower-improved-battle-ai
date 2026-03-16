@@ -7,11 +7,19 @@ class Battle::AI::AIMove
 
   alias rough_damage_original rough_damage
 
+  #---------------------------------------------------------------------------
+  # Override rough_damage to fix crit handling:
+  # - Stage 2 (50% crit): RNG to decide crit yes/no
+  # - Stage 3+ (100% crit): Always crit
+  # - Stage 0-1: Ignore crit (chance too low)
+  #---------------------------------------------------------------------------
   def rough_damage
+    # Primal weather immunity
     case self.rough_type
     when :WATER then return 1 if @ai.battle.pbWeather == :HarshSun
     when :FIRE  then return 1 if @ai.battle.pbWeather == :HeavyRain
     end
+
     # Tera Blast / Tera Starstorm: set category based on higher offensive stat
     if ["CategoryDependsOnHigherDamageTera",
         "TerapagosCategoryDependsOnHigherDamage"].include?(function_code)
@@ -19,7 +27,82 @@ class Battle::AI::AIMove
       realAtk, realSpAtk = user_battler.getOffensiveStats
       @move.instance_variable_set(:@calcCategory, (realAtk > realSpAtk) ? 0 : 1)
     end
-    return rough_damage_original
+
+    base_dmg = base_power
+    return base_dmg if @move.is_a?(Battle::Move::FixedDamageMove)
+    max_stage = Battle::Battler::STAT_STAGE_MAXIMUM
+    stage_mul = Battle::Battler::STAT_STAGE_MULTIPLIERS
+    stage_div = Battle::Battler::STAT_STAGE_DIVISORS
+    user = @ai.user
+    target = @ai.target
+    calc_type = rough_type
+    crit_stage = rough_critical_hit_stage
+
+    # FIX: Determine crit based on actual chance
+    # Stage 2 = 50% (RNG), Stage 3+ = 100%, Stage 0-1 = ignore
+    is_critical = false
+    if crit_stage >= 0 && crit_stage < Battle::Move::CRITICAL_HIT_RATIOS.length
+      ratio = Battle::Move::CRITICAL_HIT_RATIOS[crit_stage]
+      if ratio == 1
+        is_critical = true  # 100% crit
+      elsif ratio == 2
+        is_critical = @ai.pbAIRandom(2) == 0  # 50% crit
+      end
+      # ratio > 2 (stages 0-1): ignore, is_critical stays false
+    elsif crit_stage >= Battle::Move::CRITICAL_HIT_RATIOS.length
+      is_critical = true  # Stage exceeds table = guaranteed crit
+    end
+
+    args = [user, target, is_critical, max_stage, stage_mul, stage_div]
+    ##### Calculate attack and defense stats #####
+    atk = calc_user_attack(*args)
+    defense = calc_target_defense(*args)
+    ##### Calculate all multiplier effects #####
+    args = [user, target, base_dmg, calc_type, is_critical]
+    multipliers = {
+      :power_multiplier        => 1.0,
+      :attack_multiplier       => 1.0,
+      :defense_multiplier      => 1.0,
+      :final_damage_multiplier => 1.0
+    }
+    ##### Abilities and Items #####
+    calc_global_ability_mults(*args, multipliers)
+    calc_ability_mults(*args, multipliers)
+    calc_item_mults(*args, multipliers)
+    if user.has_active_ability?(:PARENTALBOND)
+      multipliers[:power_multiplier] *= (Settings::MECHANICS_GENERATION >= 7) ? 1.25 : 1.5
+    end
+    ##### Field effects, Terrain, Badge boosts and miscellaneous effects #####
+    calc_other_mults(*args, multipliers)
+    calc_field_mults(*args, multipliers)
+    calc_badge_mults(*args, multipliers)
+    if @ai.trainer.high_skill? && targets_multiple_battlers?
+      multipliers[:final_damage_multiplier] *= 0.75
+    end
+    ##### Weather, critical hits, STAB, type effectiveness, and statuses #####
+    calc_weather_mults(*args, multipliers)
+    calc_random_mults(*args, multipliers)
+    calc_type_mults(*args, multipliers)
+    calc_status_condition_mults(*args, multipliers)
+    ##### Reflect/Light Screen/Aurora Veil, Minimize, and Glaive Rush #####
+    calc_screen_mults(*args, multipliers)
+    if @ai.trainer.medium_skill?
+      if target.effects[PBEffects::Minimize] && @move.tramplesMinimize?
+        multipliers[:final_damage_multiplier] *= 2
+      end
+      if defined?(PBEffects::GlaiveRush) && target.effects[PBEffects::GlaiveRush] > 0
+        multipliers[:final_damage_multiplier] *= 2
+      end
+    end
+    ##### Main damage calculation #####
+    base_dmg = [(base_dmg * multipliers[:power_multiplier]).round, 1].max
+    atk      = [(atk      * multipliers[:attack_multiplier]).round, 1].max
+    defense  = [(defense  * multipliers[:defense_multiplier]).round, 1].max
+    damage   = ((((2.0 * user.level / 5) + 2).floor * base_dmg * atk / defense).floor / 50).floor + 2
+    damage   = [(damage * multipliers[:final_damage_multiplier]).round, 1].max
+    ret = damage.floor
+    ret = target.hp - 1 if @move.nonLethal?(user.battler, target.battler) && ret >= target.hp
+    return ret
   end
 
   def simulated_field_weather(switch_in_pkmn, current)
@@ -81,7 +164,7 @@ class Battle::AI::AIMove
   #---------------------------------------------------------------------------
   def maybe_simulate_transform(battler, idx, override_pokemon, real_ai_user_idx = nil)
     sim = { mega: false, tera: false }
-    return sim if override_pokemon  # Skip in hypothetical matchups (ScoreReplacement)
+    return sim if override_pokemon  # Skip in hypothetical matchups (reserve evaluation)
 
     # Mega Evolution: already registered (decided before move scoring)
     if @ai.battle.pbRegisteredMegaEvolution?(idx) && !battler.mega?
@@ -373,6 +456,43 @@ class Battle::AI::AIMove
       @ai.instance_variable_set(:@move, prev_move)
       restore_simulation(sim)
     end
+  end
+
+  #---------------------------------------------------------------------------
+  # Predicted damage with setup boosts applied
+  # Used by KO race simulation to estimate boosted damage
+  #---------------------------------------------------------------------------
+  def predicted_damage_with_boosts(user:, target:, boost_stages:)
+    return 0 unless boost_stages && !boost_stages.empty?
+
+    # Check for Unaware - it ignores attacker's stat boosts
+    if target.has_active_ability?(:UNAWARE) && !@ai.has_mold_breaker?(user)
+      return predicted_damage(user: user, target: target)
+    end
+
+    # Get base damage
+    base_dmg = predicted_damage(user: user, target: target)
+    return 0 if base_dmg <= 0
+
+    # Determine which offensive stat matters for this move
+    is_physical = @move.physicalMove?
+    relevant_boost = is_physical ? (boost_stages[:atk] || 0) : (boost_stages[:spa] || 0)
+
+    return base_dmg if relevant_boost == 0
+
+    # Apply Simple/Contrary
+    effective_boost = relevant_boost
+    if user.has_active_ability?(:SIMPLE)
+      effective_boost *= 2
+    end
+    if user.has_active_ability?(:CONTRARY)
+      effective_boost = -effective_boost
+    end
+    effective_boost = effective_boost.clamp(-6, 6)
+
+    # Calculate boosted damage
+    mult = @ai.stat_stage_multiplier(effective_boost)
+    (base_dmg * mult).floor
   end
 
   # Calculate expected number of hits for multi-hit moves
