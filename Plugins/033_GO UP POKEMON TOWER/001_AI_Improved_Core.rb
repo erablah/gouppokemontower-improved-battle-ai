@@ -196,6 +196,49 @@ class Battle::AI
     return score
   end
 
+  #---------------------------------------------------------------------------
+  # Override: move item evaluation AFTER move scoring so the AI can compare
+  # item value against best available move before committing.
+  #---------------------------------------------------------------------------
+  def pbDefaultChooseEnemyCommand(idxBattler)
+    set_up(idxBattler)
+    # 1. Proactive switch check (unchanged)
+    ret = false
+    PBDebug.logonerr { ret = pbChooseToSwitchOut }
+    if ret
+      PBDebug.log("")
+      return
+    end
+    # 2. Special commands (Mega, Dynamax, etc.)
+    ret = false
+    PBDebug.logonerr { ret = pbChooseToUseSpecialCommand }
+    if ret
+      PBDebug.log("")
+      return
+    end
+    if @battle.pbAutoFightMenu(idxBattler)
+      PBDebug.log("")
+      return
+    end
+    pbRegisterEnemySpecialAction(idxBattler)
+    # 3. Score moves FIRST
+    choices = pbGetMoveScores
+    # 4. Try items only if best move score is mediocre
+    max_move_score = choices.map { |c| c[1] }.max || 0
+    if max_move_score < MOVE_BASE_SCORE
+      ret = false
+      PBDebug.logonerr { ret = pbChooseToUseItem }
+      if ret
+        PBDebug.log("")
+        return
+      end
+    end
+    # 5. Choose move as normal
+    pbChooseMove(choices)
+    PBDebug.log("")
+    pbRegisterEnemySpecialAction2(idxBattler)
+  end
+
   #override choose move - remove turn count limit
   def pbChooseMove(choices)
     user_battler = @user.battler
@@ -374,6 +417,10 @@ class Battle::AI
     end
     reserves.sort! { |a, b| b[1] <=> a[1] }   # Sort from highest to lowest rated
     threshold = terrible_moves ? REPLACEMENT_THRESHOLD_TERRIBLE_MOVES : REPLACEMENT_THRESHOLD_NORMAL
+    # Raise threshold if switching dooms current Pokemon to hazard death
+    unless forced_switch
+      threshold = [threshold + hazard_death_threshold_bonus(idxBattler, reserves), 120].min
+    end
     if reserves[0][1] < threshold
       if forced_switch
         # Must switch (faint/pivot) — just pick the highest-scored reserve
@@ -394,6 +441,35 @@ class Battle::AI
     return score.to_i
   end
 
+  # Returns a threshold bonus (0 or 20) if switching out would doom the current
+  # Pokemon to hazard death on re-entry, with no way to mitigate it.
+  def hazard_death_threshold_bonus(idxBattler, reserves)
+    current_pkmn = @battle.pbParty(idxBattler)[@battle.battlers[idxBattler].pokemonIndex]
+    own_side = idxBattler & 1
+    hazard_dmg = calculate_entry_hazard_damage(current_pkmn, own_side)
+    return 0 if hazard_dmg < current_pkmn.hp
+    # Current mon dies to hazards on re-entry — check for outs
+    party = @battle.pbParty(idxBattler)
+    hazard_clear_codes = [
+      "RemoveUserBindingAndEntryHazards",            # Rapid Spin
+      "RemoveUserBindingAndEntryHazardsPoisonTarget", # Mortal Spin
+      "LowerTargetEvasion1RemoveSideEffects"          # Defog
+    ]
+    reserves.each do |r|
+      rpkmn = party[r[0]]
+      rpkmn.moves.each do |m|
+        return 0 if hazard_clear_codes.include?(m.function_code)
+      end
+    end
+    # No hazard clearer — check for HP healing items
+    items = @battle.pbGetOwnerItems(idxBattler)
+    items.each do |itm|
+      return 0 if @battle.pbItemHealsHP?(itm)
+    end
+    PBDebug.log_ai("Hazard death: current mon dies to hazards, no clearer, no healing items — raising threshold by 20")
+    return 20
+  end
+
   # Returns {move_id => {move: Battle::Move, dmg: int}}
   # Computes predicted_damage for each of attacker's damaging moves against defender, cached per turn.
   # - attacker/defender are AIBattler instances (attacker.index and defender.index are Integers)
@@ -402,7 +478,8 @@ class Battle::AI
   def damage_moves(attacker, defender)
     mega = @battle.pbRegisteredMegaEvolution?(attacker.index) rescue false
     tera = (@battle.pbRegisteredTerastallize?(attacker.index) rescue false) || attacker.battler.tera?
-    key = [attacker.index, defender.index, @battle.turnCount, mega, tera,
+    def_tera = defender.battler.tera?
+    key = [attacker.index, defender.index, @battle.turnCount, mega, tera, def_tera,
            attacker.battler.pokemon&.personalID, defender.battler.pokemon&.personalID]
     (@_ai_dmg_cache ||= {})[key] ||= begin
       PBDebug.log_ai("[damage_moves] computing #{attacker.name} → #{defender.name} (turn #{@battle.turnCount})")
@@ -544,77 +621,256 @@ class Battle::AI::AIBattler
     return false
   end
 
-  # Override: always apply defensive tera score difference (not just when better)
+  #=============================================================================
+  # Scenario-based Tera scoring using predicted damage and 1v1 simulation
+  #=============================================================================
   alias total_tera_score_original get_total_tera_score
   def get_total_tera_score
-    score = 0
     tera_type = @battler.tera_type
-    lost_types = pbTypes(true).select { |t| t != tera_type }
     type_name = GameData::Type.get(tera_type).name
     PBDebug.log_ai("#{self.name} is considering Terastallizing into the #{type_name}-type...")
-    if can_attack? &&
-       (has_damaging_move_of_type?(tera_type) ||
-       has_move_with_function?("CategoryDependsOnHigherDamageTera",
-                               "TerapagosCategoryDependsOnHigherDamage"))
-      if lost_types.empty?
-        score = get_offensive_tera_score(score, tera_type, true)
-      else
-        old_score = 0
-        tera_score = get_offensive_tera_score(0, tera_type, true)
-        lost_types.each do |type|
-          type_score = get_offensive_tera_score(0, type)
-          old_score += type_score / lost_types.length
-        end
-        score += tera_score if tera_score > old_score
+    @ai.instance_variable_set(:@_computing_tera_score, true)
+    begin
+      score = -10  # tera is a limited resource, needs justification
+      PBDebug.log_ai("[Tera] Starting score: #{score} (base cost)")
+      @ai.each_foe_battler(@side) do |b, _i|
+        foe_score = compute_tera_score_vs_foe(b)
+        PBDebug.log_ai("[Tera] vs #{b.name}: #{foe_score > 0 ? '+' : ''}#{foe_score}")
+        score += foe_score
       end
+      context = get_tera_context_bonus(tera_type)
+      PBDebug.log_ai("[Tera] Context bonus: #{context > 0 ? '+' : ''}#{context}") if context != 0
+      score += context
+      PBDebug.log_ai("[Tera] Final score: #{score}")
+      return score
+    ensure
+      @ai.instance_variable_set(:@_computing_tera_score, false)
     end
-    offensive_score = score
-    PBDebug.log_score_change(offensive_score, "offensive advantage")
-    if @ai.trainer.high_skill?
-      contact = @battler.affectedByContactEffect? && check_for_move { |m| m.contactMove? }
-      if lost_types.empty?
-        score = get_defensive_tera_score(score, tera_type, contact)
-      else
-        old_score = 0
-        tera_score = get_defensive_tera_score(0, tera_type, contact)
-        lost_types.each do |type|
-          type_score = get_defensive_tera_score(0, type, contact)
-          old_score += type_score / lost_types.length
-        end
-        score += tera_score - old_score
-      end
-    end
-    PBDebug.log_score_change(score - offensive_score, "defensive advantage")
-    return score
   end
 
-  # Override defensive Tera scoring to increase type matchup weights
-  alias defensive_tera_score_original get_defensive_tera_score
-  def get_defensive_tera_score(score, type, contact)
-    # Run original for status/field/weather bonuses
-    score = defensive_tera_score_original(score, type, contact)
-    # Add extra defensive type matchup scoring on top
-    @ai.each_foe_battler(@side) do |b, i|
-      b.battler.eachMove do |move|
-        next if !move.damagingMove?
-        move_type = move.pbCalcType(b.battler)
-        if @ai.battle.pbCanTerastallize?(b.index)
-          if ["CategoryDependsOnHigherDamageTera",
-              "TerapagosCategoryDependsOnHigherDamage"].include?(move.function_code)
-            move_type = b.battler.tera_type
+  #---------------------------------------------------------------------------
+  # Per-foe scenario scoring
+  #---------------------------------------------------------------------------
+  def compute_tera_score_vs_foe(foe)
+    # --- Gather damage data WITHOUT tera ---
+    user_dmg_no_tera = @ai.damage_moves(self, foe)
+    foe_dmg_no_tera  = @ai.damage_moves(foe, self)
+
+    best_user_no_tera = user_dmg_no_tera.values.max_by { |md| md[:dmg] }
+    best_foe_no_tera  = foe_dmg_no_tera.values.max_by { |md| md[:dmg] }
+
+    u_dmg_no  = best_user_no_tera ? best_user_no_tera[:dmg] : 0
+    f_dmg_no  = best_foe_no_tera  ? best_foe_no_tera[:dmg]  : 0
+    foe_chosen_move_id = best_foe_no_tera ? best_foe_no_tera[:move].id : nil
+
+    # --- Temporarily simulate tera on self to get "with tera" damage ---
+    prev_tera = @battler.pokemon.instance_variable_get(:@terastallized)
+    prev_form = @battler.form
+    begin
+      @battler.pokemon.instance_variable_set(:@terastallized, true)
+      @battler.form = @battler.pokemon.form if @battler.form != @battler.pokemon.form
+      @battler.pbUpdate(true)
+
+      user_dmg_with_tera = @ai.damage_moves(self, foe)
+      foe_dmg_with_tera  = @ai.damage_moves(foe, self)
+    ensure
+      @battler.pokemon.instance_variable_set(:@terastallized, prev_tera)
+      @battler.form = prev_form
+      @battler.pbUpdate(true)
+    end
+
+    best_user_with_tera = user_dmg_with_tera.values.max_by { |md| md[:dmg] }
+    u_dmg_tera = best_user_with_tera ? best_user_with_tera[:dmg] : 0
+
+    # Foe damage with tera: use the SAME move the foe would choose pre-tera
+    if foe_chosen_move_id && foe_dmg_with_tera[foe_chosen_move_id]
+      f_dmg_tera = foe_dmg_with_tera[foe_chosen_move_id][:dmg]
+    else
+      # Foe has no damaging moves or move not found — use 0
+      f_dmg_tera = 0
+    end
+
+    # --- Speed / priority ---
+    user_speed = self.rough_stat(:SPEED)
+    foe_speed  = foe.rough_stat(:SPEED)
+    best_user_move_priority = best_user_no_tera ? best_user_no_tera[:move].priority : 0
+    best_user_tera_priority = best_user_with_tera ? best_user_with_tera[:move].priority : 0
+    user_priority = [best_user_move_priority, best_user_tera_priority].max
+    foe_priority  = best_foe_no_tera ? best_foe_no_tera[:move].priority : 0
+
+    if user_priority > foe_priority
+      user_outspeeds = true
+    elsif foe_priority > user_priority
+      user_outspeeds = false
+    else
+      user_outspeeds = user_speed >= foe_speed
+    end
+
+    PBDebug.log_ai("[Tera]   u_dmg=#{u_dmg_no}/#{u_dmg_tera} f_dmg=#{f_dmg_no}/#{f_dmg_tera} " \
+                   "spd=#{user_outspeeds ? 'user' : 'foe'} foe_hp=#{foe.hp} user_hp=#{self.hp}")
+
+    # --- Scenario 1: User outspeeds + KOs without tera ---
+    if user_outspeeds && u_dmg_no >= foe.hp
+      PBDebug.log_ai("[Tera]   Scenario 1: can KO without tera, skip")
+      return -30
+    end
+
+    # --- Scenario 2: User outspeeds + KOs only WITH tera ---
+    if user_outspeeds && u_dmg_no < foe.hp && u_dmg_tera >= foe.hp
+      PBDebug.log_ai("[Tera]   Scenario 2: tera enables KO")
+      return 50
+    end
+
+    # --- Scenario 3: Everything else → 1v1 simulation ---
+    return simulate_1v1_tera_value(
+      u_dmg_no, u_dmg_tera, f_dmg_no, f_dmg_tera,
+      foe.hp, self.hp, user_outspeeds
+    )
+  end
+
+  #---------------------------------------------------------------------------
+  # Turns-to-KO comparison: with and without tera
+  #---------------------------------------------------------------------------
+  def simulate_1v1_tera_value(u_dmg_no, u_dmg_tera, f_dmg_no, f_dmg_tera,
+                              foe_hp, user_hp, user_outspeeds)
+    # Turns to KO in each direction
+    u_turns_no   = u_dmg_no   > 0 ? (foe_hp.to_f  / u_dmg_no).ceil   : 999
+    u_turns_tera = u_dmg_tera > 0 ? (foe_hp.to_f  / u_dmg_tera).ceil : 999
+    f_turns_no   = f_dmg_no   > 0 ? (user_hp.to_f / f_dmg_no).ceil   : 999
+    f_turns_tera = f_dmg_tera > 0 ? (user_hp.to_f / f_dmg_tera).ceil : 999
+
+    # Who wins? If user outspeeds, user wins ties (acts first)
+    if user_outspeeds
+      win_no   = u_turns_no   <= f_turns_no
+      win_tera = u_turns_tera <= f_turns_tera
+    else
+      win_no   = u_turns_no   < f_turns_no
+      win_tera = u_turns_tera < f_turns_tera
+    end
+
+    PBDebug.log_ai("[Tera]   1v1: u_turns=#{u_turns_no}/#{u_turns_tera} f_turns=#{f_turns_no}/#{f_turns_tera} " \
+                   "win_no=#{win_no} win_tera=#{win_tera}")
+
+    # Tera flips losing → winning
+    if !win_no && win_tera
+      PBDebug.log_ai("[Tera]   Scenario 3a: tera flips losing matchup → winning")
+      return 60
+    end
+
+    # Tera makes winning → losing
+    if win_no && !win_tera
+      PBDebug.log_ai("[Tera]   Scenario 3b: tera makes winning → losing")
+      return -40
+    end
+
+    # Wins both
+    if win_no && win_tera
+      turns_saved = u_turns_no - u_turns_tera
+      survival_gained = f_turns_tera - f_turns_no
+      bonus = 0
+      if turns_saved > 0 || survival_gained > 0
+        bonus = [[turns_saved * 10 + survival_gained * 5, 30].min, 10].max
+        PBDebug.log_ai("[Tera]   Scenario 3c: wins both, saves #{turns_saved} turns / gains #{survival_gained} survival → +#{bonus}")
+      else
+        bonus = -5
+        PBDebug.log_ai("[Tera]   Scenario 3d: wins both, no improvement → #{bonus}")
+      end
+      return bonus
+    end
+
+    # Loses both
+    survival_gained = f_turns_tera - f_turns_no
+    if survival_gained > 0
+      bonus = [[survival_gained * 5, 15].min, 5].max
+      PBDebug.log_ai("[Tera]   Scenario 3e: loses both, survives longer with tera → +#{bonus}")
+      return bonus
+    else
+      PBDebug.log_ai("[Tera]   Scenario 3f: loses both, no improvement → -10")
+      return -10
+    end
+  end
+
+  #---------------------------------------------------------------------------
+  # Non-damage context bonuses for tera type
+  #---------------------------------------------------------------------------
+  def get_tera_context_bonus(tera_type)
+    bonus = 0
+    case tera_type
+    when :FLYING
+      # Immune to Spikes, Toxic Spikes, Sticky Web
+      if @battler.pbOwnSide.effects[PBEffects::Spikes] > 0 ||
+         @battler.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0 ||
+         @battler.pbOwnSide.effects[PBEffects::StickyWeb]
+        bonus += 10
+      end
+    when :POISON, :STEEL
+      # Immune to poison/toxic
+      if @battler.status == :NONE
+        @ai.each_foe_battler(@side) do |b, _|
+          b.battler.eachMove do |m|
+            if [:TOXIC, :POISONPOWDER, :TOXICSPIKES, :BANEFULBUNKER].include?(m.id) ||
+               m.function_code == "PoisonTarget" || m.function_code == "BadlyPoisonTarget"
+              bonus += 5
+              break
+            end
           end
         end
-        next if @ai.pokemon_can_absorb_move?(self, move, move_type)
-        effectiveness = self.effectiveness_of_type_against_single_battler_type(move_type, type, b)
-        if Effectiveness.super_effective?(effectiveness)
-          score -= 10
-        elsif Effectiveness.not_very_effective?(effectiveness)
-          score += 10
-        elsif Effectiveness.ineffective?(effectiveness)
-          score += 20
+      end
+    when :FIRE
+      # Immune to burn
+      if @battler.status == :NONE
+        @ai.each_foe_battler(@side) do |b, _|
+          b.battler.eachMove do |m|
+            if [:WILLOWISP, :SCALD, :STEAMERUPTION].include?(m.id) ||
+               m.function_code == "BurnTarget"
+              bonus += 5
+              break
+            end
+          end
+        end
+      end
+    when :ELECTRIC
+      # Immune to paralysis
+      if @battler.status == :NONE
+        @ai.each_foe_battler(@side) do |b, _|
+          b.battler.eachMove do |m|
+            if [:THUNDERWAVE, :STUNSPORE, :GLARE, :NUZZLE].include?(m.id) ||
+               m.function_code == "ParalyzeTarget"
+              bonus += 5
+              break
+            end
+          end
+        end
+      end
+    when :GHOST
+      # Escape trapping
+      if @battler.effects[PBEffects::Trapping] > 0 ||
+         @battler.effects[PBEffects::MeanLook] > 0
+        bonus += 15
+      end
+    when :DARK
+      # Prankster immunity
+      @ai.each_foe_battler(@side) do |b, _|
+        if b.has_active_ability?(:PRANKSTER)
+          bonus += 10
+          break
+        end
+      end
+    when :GRASS
+      # Leech Seed / powder immunity
+      if @battler.effects[PBEffects::LeechSeed] >= 0
+        bonus += 10
+      end
+      @ai.each_foe_battler(@side) do |b, _|
+        b.battler.eachMove do |m|
+          if [:LEECHSEED, :SLEEPPOWDER, :STUNSPORE, :POISONPOWDER, :SPORE].include?(m.id) ||
+             m.flags&.include?("Powder")
+            bonus += 5
+            break
+          end
         end
       end
     end
-    return score
+    bonus
   end
 end

@@ -109,9 +109,9 @@ Battle::AI::Handlers::GeneralItemScore.add(
 
     # Discourage if not an ace candidate
     unless ace_candidate
-      score -= 40
+      score -= 50
       PBDebug.log_score_change(
-        -40,
+        -50,
         "ITEM AI: Non-ace Pokémon, item discouraged."
       )
     end

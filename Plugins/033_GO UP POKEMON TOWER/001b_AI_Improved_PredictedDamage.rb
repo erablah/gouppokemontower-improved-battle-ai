@@ -63,6 +63,7 @@ class Battle::AI::AIMove
   # Terastallization pre-evaluation: evaluate once per turn and cache
   #---------------------------------------------------------------------------
   def should_simulate_tera?(idx, real_ai_user_idx = nil)
+    return false if @ai.instance_variable_get(:@_computing_tera_score)
     ai_user_idx = real_ai_user_idx || @ai.user.index
     return false unless idx == ai_user_idx
     return false unless @ai.battle.respond_to?(:pbCanTerastallize?)

@@ -1,4 +1,34 @@
 #===============================================================================
+# 0. Override: Choice Item scoring — exempt Trick/Switcheroo entirely
+#===============================================================================
+Battle::AI::Handlers::GeneralMoveScore.add(:good_move_for_choice_item,
+  proc { |score, move, user, ai, battle|
+    next score if move.move.powerMove?
+    next score if !ai.trainer.medium_skill?
+    next score if !user.has_active_item?([:CHOICEBAND, :CHOICESPECS, :CHOICESCARF]) &&
+                  !user.has_active_ability?(:GORILLATACTICS)
+    # Trick/Switcheroo removes the Choice item — no penalty
+    next score if move.function_code == "UserTargetSwapItems"
+    old_score = score
+    if move.statusMove?
+      score -= 25
+      PBDebug.log_score_change(score - old_score, "don't want to be Choiced into a status move")
+      next score
+    end
+    move_type = move.rough_type
+    GameData::Type.each do |type_data|
+      score -= 8 if type_data.immunities.include?(move_type)
+    end
+    if move.accuracy > 0
+      score -= (0.4 * (100 - move.accuracy)).to_i
+    end
+    score -= 10 if move.move.pp <= 5
+    PBDebug.log_score_change(score - old_score, "move is less suitable to be Choiced into")
+    next score
+  }
+)
+
+#===============================================================================
 # 1. GeneralMoveScore Handlers
 #===============================================================================
 Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
