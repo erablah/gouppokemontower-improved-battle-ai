@@ -105,6 +105,17 @@ module BattlePartyStorage
   end
 end
 
+#===============================================================================
+# 챔피언 배틀: 버전 7~10 중 존재하는 버전을 랜덤으로 선택
+#===============================================================================
+def pbChampionBattleRandomVersion(trainer_type, trainer_name)
+  valid_versions = (7..10).select { |v|
+    GameData::Trainer.try_get(trainer_type, trainer_name, v)
+  }
+  version = valid_versions.empty? ? 7 : valid_versions.sample
+  return TrainerBattle.start(trainer_type, trainer_name, version)
+end
+
 def pbSavePartySlot(slot);  BattlePartyStorage.save_party(slot);  end
 def pbLoadPartySlot(slot);  BattlePartyStorage.load_party(slot);  end
 def pbClearPartySlot(slot); BattlePartyStorage.clear_slot(slot); end
