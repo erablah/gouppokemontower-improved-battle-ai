@@ -74,13 +74,21 @@ Battle::AI::Handlers::ScoreReplacement.add(:foe_predicted_damage,
       # Speed check (used by all scenarios)
       pkmn_faster = false
       if worst_move_priority <= 0
-        foe_speed = b.rough_stat(:SPEED)
-        eff_speed = pkmn.speed
-        if ai.user.pbOwnSide.effects[PBEffects::StickyWeb] &&
-           !pkmn.hasItem?(:HEAVYDUTYBOOTS) && !ai.pokemon_airborne?(pkmn)
-          eff_speed = (eff_speed * 2 / 3.0).to_i
+        pkmn_lagging = LAGGING_TAIL_ITEMS.include?(pkmn.item_id)
+        foe_lagging  = LAGGING_TAIL_ITEMS.include?(b.battler.item_id) && b.battler.itemActive?
+        if pkmn_lagging && !foe_lagging
+          pkmn_faster = false
+        elsif foe_lagging && !pkmn_lagging
+          pkmn_faster = true
+        else
+          foe_speed = b.rough_stat(:SPEED)
+          eff_speed = pkmn.speed
+          if ai.user.pbOwnSide.effects[PBEffects::StickyWeb] &&
+             !pkmn.hasItem?(:HEAVYDUTYBOOTS) && !ai.pokemon_airborne?(pkmn)
+            eff_speed = (eff_speed * 2 / 3.0).to_i
+          end
+          pkmn_faster = eff_speed > foe_speed
         end
-        pkmn_faster = eff_speed > foe_speed
       end
 
       # --- Scenario 1: First-hit prediction logic ---
@@ -395,18 +403,29 @@ Battle::AI::Handlers::ScoreReplacement.add(:status_moves_value,
 #===============================================================================
 Battle::AI::Handlers::ScoreReplacement.add(:speed_advantage,
   proc { |idxBattler, pkmn, score, terrible_moves, battle, ai|
+    pkmn_lagging = LAGGING_TAIL_ITEMS.include?(pkmn.item_id)
     ai.each_foe_battler(ai.user.side) do |b, _i|
-      foe_speed = b.rough_stat(:SPEED)
-      eff_speed = pkmn.speed
-      # Sticky Web: -1 Speed stage on switch-in for grounded Pokémon
-      if ai.user.pbOwnSide.effects[PBEffects::StickyWeb] &&
-         !pkmn.hasItem?(:HEAVYDUTYBOOTS) && !ai.pokemon_airborne?(pkmn)
-        eff_speed = (eff_speed * 2 / 3.0).to_i
-      end
-      if eff_speed > foe_speed
+      foe_lagging = LAGGING_TAIL_ITEMS.include?(b.battler.item_id) && b.battler.itemActive?
+      # Lagging Tail: holder always moves last
+      if pkmn_lagging && !foe_lagging
+        next  # pkmn can't outspeed
+      elsif foe_lagging && !pkmn_lagging
         score += 8
-        PBDebug.log_score_change(8, "#{pkmn.name}: outspeeds #{b.name} (#{eff_speed} vs #{foe_speed}).")
+        PBDebug.log_score_change(8, "#{pkmn.name}: outspeeds #{b.name} (foe has Lagging Tail).")
         break
+      else
+        foe_speed = b.rough_stat(:SPEED)
+        eff_speed = pkmn.speed
+        # Sticky Web: -1 Speed stage on switch-in for grounded Pokémon
+        if ai.user.pbOwnSide.effects[PBEffects::StickyWeb] &&
+           !pkmn.hasItem?(:HEAVYDUTYBOOTS) && !ai.pokemon_airborne?(pkmn)
+          eff_speed = (eff_speed * 2 / 3.0).to_i
+        end
+        if eff_speed > foe_speed
+          score += 8
+          PBDebug.log_score_change(8, "#{pkmn.name}: outspeeds #{b.name} (#{eff_speed} vs #{foe_speed}).")
+          break
+        end
       end
     end
     next score

@@ -110,10 +110,14 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
 
       # Speed breakpoint check
       if raises_spd
+        # Lagging Tail: speed boosts are worthless, holder always moves last
+        user_has_lagging = LAGGING_TAIL_ITEMS.include?(battler.item_id) && battler.itemActive?
         user_speed = user.rough_stat(:SPEED)
         max_foe_speed = 0
+        any_foe_faster = false
         ai.each_foe_battler(user.side) do |b, _i|
           max_foe_speed = [max_foe_speed, b.rough_stat(:SPEED)].max
+          any_foe_faster = true if b.faster_than?(user)
         end
         spd_stages = 0
         (stat_up.length / 2).times do |i|
@@ -128,10 +132,12 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
         base_speed = user_speed / current_mult  # un-boost
         boosted_speed = base_speed * spd_mult
 
-        if user_speed < max_foe_speed && boosted_speed >= max_foe_speed
+        if user_has_lagging
+          # No bonus — Lagging Tail negates speed advantage
+        elsif any_foe_faster && boosted_speed >= max_foe_speed
           score += 20
           PBDebug.log_score_change(20, "Speed breakpoint: boost would outspeed foe (#{boosted_speed.to_i} >= #{max_foe_speed}).")
-        elsif user_speed >= max_foe_speed
+        elsif !any_foe_faster
           score += 5
           PBDebug.log_score_change(5, "Speed boost: already faster, slight bonus.")
         end
@@ -362,6 +368,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:evade_knockout,
 
     max_foe_speed   = 0
     foe_can_ko      = false
+    foe_outspeeds   = false
     priority_ko     = false
     priority_ko_move = nil   # save the threatening priority move for later
 
@@ -373,6 +380,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:evade_knockout,
       ko_moves.each do |ko_entry|
         PBDebug.log_ai("[evade_ko] #{b.name} #{ko_entry[:move].name}: #{ko_entry[:dmg]} >= #{user.hp}")
         foe_can_ko = true
+        foe_outspeeds = true if b.faster_than?(user)
         if ko_entry[:move].priority > move.move.priority
           priority_ko      = true
           priority_ko_move = ko_entry[:move]
@@ -392,7 +400,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:evade_knockout,
       end
       score -= 200
       PBDebug.log_score_change(-200, "Penalize move: foe can KO with a higher-priority move.")
-    elsif user_speed < max_foe_speed && foe_can_ko
+    elsif foe_outspeeds && foe_can_ko
       speed_ratio = max_foe_speed.to_f / user_speed.to_f
       chance = ((speed_ratio - 1.0) / 0.2 * 100).to_i.clamp(0, 100)
       PBDebug.log_ai("evade KO penalty chance is #{chance}%")

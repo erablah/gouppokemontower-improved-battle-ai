@@ -28,6 +28,26 @@ class Battle::Battler
   end
 end
 
+#-------------------------------------------------------------------------------
+# Lagging Tail / Full Incense: override faster_than? to account for
+# PriorityBracketChange items that force the holder to move last.
+#-------------------------------------------------------------------------------
+LAGGING_TAIL_ITEMS = [:LAGGINGTAIL, :FULLINCENSE]
+
+class Battle::AI::AIBattler
+  alias _tower_orig_faster_than? faster_than?
+  def faster_than?(other)
+    return false if other.nil?
+    self_lagging  = LAGGING_TAIL_ITEMS.include?(battler.item_id) && battler.itemActive?
+    other_lagging = LAGGING_TAIL_ITEMS.include?(other.battler.item_id) && other.battler.itemActive?
+    # If only one side has a lagging item, that side is always slower
+    return false if self_lagging && !other_lagging
+    return true  if other_lagging && !self_lagging
+    # Both or neither — fall through to normal speed comparison
+    _tower_orig_faster_than?(other)
+  end
+end
+
 class Battle::AI
   MOVE_FAIL_SCORE = -999
   REPLACEMENT_THRESHOLD_NORMAL = 120
@@ -257,7 +277,7 @@ class Battle::AI
         has_sub = @user.effects[PBEffects::Substitute] > 0
         unless has_sub
           summary = matchup_summary
-          if summary[:foe_can_ohko] && !summary[:user_can_ko_any]
+          if summary[:foe_can_ohko] && !summary[:user_can_ko_any] && max_score < MOVE_BASE_SCORE + 50
             PBDebug.log_ai("#{@user.name} is doomed (foe OHKOs, can't KO back). Considering switch.")
             if pbChooseToSwitchOut(false, skip_should_switch: true)
               @battle.pbUnregisterMegaEvolution(@user.index)
@@ -527,7 +547,7 @@ class Battle::AI
         foe_best_dmg = best_foe ? best_foe[:dmg] : 0
         user_best_dmg = best_user ? best_user[:dmg] : 0
 
-        foe_outspeeds = foe_speed > user_speed
+        foe_outspeeds = b.faster_than?(@user)
         foe_has_priority = best_foe && best_foe[:move].priority > 0
         foe_effectively_outspeeds = foe_outspeeds || foe_has_priority
 
@@ -703,7 +723,7 @@ class Battle::AI::AIBattler
     elsif foe_priority > user_priority
       user_outspeeds = false
     else
-      user_outspeeds = user_speed >= foe_speed
+      user_outspeeds = self.faster_than?(foe) || (!foe.faster_than?(self) && user_speed >= foe_speed)
     end
 
     PBDebug.log_ai("[Tera]   u_dmg=#{u_dmg_no}/#{u_dmg_tera} f_dmg=#{f_dmg_no}/#{f_dmg_tera} " \
