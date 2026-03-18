@@ -37,6 +37,22 @@ class Battle::AI::AIBattler
 end
 
 #===============================================================================
+# Custom Ability: IRONSKIN (아이언스킨)
+# - Normal-type moves become Steel-type with 1.2x power boost
+# (Same mechanic as Pixilate/Aerilate/Refrigerate/Galvanize)
+#===============================================================================
+
+Battle::AbilityEffects::ModifyMoveBaseType.add(:IRONSKIN,
+  proc { |ability, user, move, type|
+    next if type != :NORMAL || !GameData::Type.exists?(:STEEL)
+    move.powerBoost = true
+    next :STEEL
+  }
+)
+
+Battle::AbilityEffects::DamageCalcFromUser.copy(:AERILATE, :IRONSKIN)
+
+#===============================================================================
 # Custom Ability: GRUDGECANDLE (미움불꽃)
 # - Absorbs Dark-type moves (immune) and raises Speed by 1 stage
 #===============================================================================
