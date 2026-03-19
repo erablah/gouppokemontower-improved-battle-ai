@@ -21,48 +21,43 @@ def pbResetGameData
     end
   end
 
-#--- 3. 가방 초기화 (중요한 아이템 유지, 구조 완전 보존)
-if defined?($bag) && $bag
-  key_pocket_id     = 8
-  extra_keep_pocket = 10
-  upgrade_token     = :UPGRADETOKEN
+  #--- 3. 가방 초기화 (중요한 아이템 유지, 구조 완전 보존)
+  if defined?($bag) && $bag
+    key_pocket_id     = 8
+    extra_keep_pocket = 10
+    upgrade_token     = :UPGRADETOKEN
 
-  # ● 백업: 8번(Key Items)
-  important_items = $bag.pockets[key_pocket_id].map(&:clone)
+    # ● 백업: 8번(Key Items)
+    important_items = $bag.pockets[key_pocket_id].map(&:clone)
 
-  # ● 백업: 10번 포켓
-  extra_items = $bag.pockets[extra_keep_pocket].map(&:clone)
+    # ● 백업: 10번 포켓 
+    extra_items = $bag.pockets[extra_keep_pocket].map(&:clone)
 
-  # ● 1번 포켓: 업그레이드 토큰 "모든 슬롯" 유지
-  keep_tokens = []
-  if $bag.pockets[1]
-    keep_tokens = $bag.pockets[1]
-      .select { |entry| entry[0] == upgrade_token }
-      .map(&:clone)
-  end
+    # ● 1번 포켓: 업그레이드 토큰 "모든 슬롯" 유지
+    keep_tokens = []
+    if $bag.pockets[1]
+      keep_tokens = $bag.pockets[1]
+        .select { |entry| entry[0] == upgrade_token }
+        .map(&:clone)
+    end
 
-  # ● 전체 초기화
-  for i in 1...$bag.pockets.length
-    if i == key_pocket_id
-      $bag.pockets[i] = important_items.map(&:clone)
+    # ● 전체 초기화
+    for i in 1...$bag.pockets.length
+      if i == key_pocket_id
+        $bag.pockets[i] = important_items.map(&:clone)
 
-    elsif i == extra_keep_pocket
-      $bag.pockets[i] = extra_items.map(&:clone)
+      elsif i == extra_keep_pocket
+        $bag.pockets[i] = extra_items.map(&:clone)
 
-    elsif i == 1
-      # 업그레이드 토큰 전부 복원
-      $bag.pockets[i] = keep_tokens.map(&:clone)
+      elsif i == 1
+        # 업그레이드 토큰 전부 복원
+        $bag.pockets[i] = keep_tokens.map(&:clone)
 
-    else
-      $bag.pockets[i] = []
+      else
+        $bag.pockets[i] = []
+      end
     end
   end
-end
-
-
-
-
-
 end
 
 #===============================================================================
