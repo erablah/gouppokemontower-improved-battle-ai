@@ -28,9 +28,6 @@ Battle::AI::Handlers::GeneralMoveScore.add(:good_move_for_choice_item,
   }
 )
 
-#===============================================================================
-# 1. GeneralMoveScore Handlers
-#===============================================================================
 Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
   proc { |score, move, user, ai, battle|
     next score unless ai.trainer.high_skill?
@@ -39,6 +36,34 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
 
     battler = user.battler
     next score unless battler
+
+    # -----------------------------------------------------------------------
+    # A0. Skip setup bonus if a foe has an effective phazing move
+    #     (Good As Gold blocks status phazing; Ingrain prevents forced switch)
+    # -----------------------------------------------------------------------
+    immune_to_phazing = battler.hasActiveAbility?(:GOODASGOLD) ||
+                        battler.effects[PBEffects::Ingrain]
+    unless immune_to_phazing
+      foe_has_phazing = false
+      ai.each_foe_battler(user.side) do |b, _i|
+        ai.known_foe_moves(b).each do |m|
+          next unless ["SwitchOutTargetStatusMove", "SwitchOutTargetDamagingMove"].include?(m.function_code)
+          if m.statusMove?
+            foe_has_phazing = true
+          else
+            calc_type = m.pbCalcType(b.battler)
+            eff = Effectiveness.calculate(calc_type, *battler.pbTypes(true))
+            foe_has_phazing = true unless Effectiveness.ineffective?(eff)
+          end
+          break if foe_has_phazing
+        end
+        break if foe_has_phazing
+      end
+      if foe_has_phazing
+        PBDebug.log_ai("[smart_setup] Skipped: foe has effective phazing move.")
+        next Battle::AI::MOVE_FAIL_SCORE
+      end
+    end
 
     # -----------------------------------------------------------------------
     # A. Parse @statUp — determine which stats are raised and by how much
@@ -73,7 +98,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
     end
 
     # -----------------------------------------------------------------------
-    # D. Block setup if no move can deal >40% to any foe
+    # D. Block setup if no move can deal >30% to any foe
     # -----------------------------------------------------------------------
     has_good_damage = summary[:foes].values.any? { |f| f[:user_best_dmg].to_f / f[:foe_hp].to_f > 0.3 }
     if !has_good_damage
@@ -81,9 +106,6 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
       PBDebug.log_score_change(-50, "Setup blocked: No damaging move can do >30% of target HP.")
     end
 
-    # -----------------------------------------------------------------------
-    # E. Offensive stat boost cap: block further setup if any offensive stat is +3 or higher
-    # -----------------------------------------------------------------------
     OFFENSIVE_STATS = [:ATTACK, :SPECIAL_ATTACK, :SPEED]
     max_offensive_boost = 0
     OFFENSIVE_STATS.each do |s|
@@ -203,7 +225,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:boost_setup_synergy,
     end
 
     if has_stored_power && ai.safe_function_code(move)&.start_with?("RaiseUser")
-      score += 80
+      score += 10
       PBDebug.log_score_change(80, "2. Setup synergy with Stored Power.")
     end
     next score
@@ -225,14 +247,14 @@ Battle::AI::Handlers::GeneralMoveScore.add(:prevent_redundant_effects,
         penalty = -200
       elsif existing >= 1
         # Stacking penalty: -30 for 2nd layer, -60 for 3rd layer attempt
-        penalty = -(30 + (existing - 1) * 30)
+        penalty = -(20 + (existing - 1) * 20)
       end
     when "AddToxicSpikesToFoeSide"
       existing = user.pbOpposingSide.effects[PBEffects::ToxicSpikes]
       if existing >= 2
         penalty = -200
       elsif existing >= 1
-        penalty = -40  # 2nd layer of Toxic Spikes is significantly less useful
+        penalty = - 30  # 2nd layer of Toxic Spikes is significantly less useful
       end
     when "AddStickyWebToFoeSide"
       penalty = -200 if user.pbOpposingSide.effects[PBEffects::StickyWeb]
@@ -316,10 +338,6 @@ Battle::AI::Handlers::GeneralMoveScore.add(:tactical_substitute,
     # Don't use if Substitute is already active
     next Battle::AI::MOVE_USELESS_SCORE if battler.effects[PBEffects::Substitute] > 0
 
-    # Don't use if HP is insufficient (need at least ~60%)
-    hp_ratio = battler.hp.to_f / battler.totalhp
-    next Battle::AI::MOVE_USELESS_SCORE if hp_ratio < 0.60
-
     # -------------------------------------------------------------------------
     # B. Foe threat analysis — reject if any foe can deal >25% in one hit
     # -------------------------------------------------------------------------
@@ -353,7 +371,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:tactical_substitute,
     score += future_value
     PBDebug.log_score_change(
       future_value,
-      "Tactical Substitute (HP=#{(hp_ratio * 100).to_i}%)."
+      "Tactical Substitute (HP=#{(battler.hp * 100 / battler.totalhp)}%)."
     )
 
     next score
