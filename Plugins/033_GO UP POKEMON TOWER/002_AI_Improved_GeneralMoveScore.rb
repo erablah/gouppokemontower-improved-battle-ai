@@ -65,23 +65,12 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
       end
     end
 
-    # -----------------------------------------------------------------------
-    # A. Parse @statUp — determine which stats are raised and by how much
-    # -----------------------------------------------------------------------
     real_move = move.move
     stat_up = (real_move.respond_to?(:statUp) && real_move.statUp) ? real_move.statUp : nil
     PBDebug.log_ai("[smart_setup] statUp: #{stat_up}")
 
-    # -----------------------------------------------------------------------
-    # B. Assume stat boosts are inherently risky (-40)
-    # -----------------------------------------------------------------------
     score -= 40
     PBDebug.log_score_change(-40, "GLOBAL NERF: Setup moves are inherently risky.")
-
-    # -----------------------------------------------------------------------
-    # C. Free setup cancel: when foes can't threaten the user
-    #    → cancel the -50 penalty (+50)
-    # -----------------------------------------------------------------------
 
     summary = ai.matchup_summary
     foe_can_ohko = summary[:foe_can_ohko]
@@ -301,7 +290,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:penalize_hazards_vs_boosted_foe,
     if foe_boosts >= 2
       penalty = 10 + (foe_boosts * 10)
       score -= penalty
-      PBDebug.log_score_change(-penalty, "10. Hazard vs boosted foe (+#{foe_boosts} total boosts).")
+      PBDebug.log_score_change(-penalty, "Hazard vs boosted foe (+#{foe_boosts} total boosts).")
     end
     next score
   }
@@ -373,61 +362,6 @@ Battle::AI::Handlers::GeneralMoveScore.add(:tactical_substitute,
       future_value,
       "Tactical Substitute (HP=#{(battler.hp * 100 / battler.totalhp)}%)."
     )
-
-    next score
-  }
-)
-
-
-Battle::AI::Handlers::GeneralMoveScore.add(:evade_knockout,
-  proc { |score, move, user, ai, battle|
-    # Skip if user has an active Substitute
-    next score if user.effects[PBEffects::Substitute] > 0
-
-    max_foe_speed   = 0
-    foe_can_ko      = false
-    foe_outspeeds   = false
-    priority_ko     = false
-    priority_ko_move = nil   # save the threatening priority move for later
-
-    ai.each_foe_battler(user.side) do |b, _i|
-      next unless b.can_attack?
-      max_foe_speed = [max_foe_speed, b.rough_stat(:SPEED)].max
-      relevant = ai.damage_moves(b, user).values.reject { |md| move.move.priority > md[:move].priority }
-      ko_moves = relevant.select { |md| md[:dmg] >= user.hp * 1.05 }
-      ko_moves.each do |ko_entry|
-        PBDebug.log_ai("[evade_ko] #{b.name} #{ko_entry[:move].name}: #{ko_entry[:dmg]} >= #{user.hp}")
-        foe_can_ko = true
-        foe_outspeeds = true if b.faster_than?(user)
-        if ko_entry[:move].priority > move.move.priority
-          priority_ko      = true
-          priority_ko_move = ko_entry[:move]
-          PBDebug.log_ai("[evade_ko] #{b.name} has priority KO move: #{ko_entry[:move].name} (pri #{ko_entry[:move].priority} > #{move.move.priority})")
-        end
-      end
-    end
-
-    user_speed = [user.rough_stat(:SPEED), 1].max
-
-    # Priority KO moves bypass speed — always penalize
-    if priority_ko
-      # implement chance for sucker punch
-      if priority_ko_move&.is_a?(Battle::Move::FailsIfTargetActed) && ai.pbAIRandom(100) < 25
-        PBDebug.log_ai("[evade_ko] skip sucker punch penalty (25% chance it will fail)")
-        next score
-      end
-      score -= 200
-      PBDebug.log_score_change(-200, "Penalize move: foe can KO with a higher-priority move.")
-    elsif foe_outspeeds && foe_can_ko
-      speed_ratio = max_foe_speed.to_f / user_speed.to_f
-      chance = ((speed_ratio - 1.0) / 0.2 * 100).to_i.clamp(0, 100)
-      PBDebug.log_ai("evade KO penalty chance is #{chance}%")
-
-      if ai.pbAIRandom(100) < chance
-        score -= 200
-        PBDebug.log_score_change(-200, "Penalize move: user is slower than a foe who can KO. (Speed ratio: #{speed_ratio.round(2)}, Chance: #{chance}%)")
-      end
-    end
 
     next score
   }
@@ -554,47 +488,6 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_protect,
     next score
   }
 )
-
-# #===============================================================================
-# # [NEW] Early hazard setup priority (per-hazard tuning)
-# #===============================================================================
-# Battle::AI::Handlers::GeneralMoveScore.add(:prioritize_early_hazards,
-#   proc { |score, move, user, ai, battle|
-#     next score unless ai.trainer.high_skill?
-
-#     foe_reserves = battle.pbAbleNonActiveCount(user.idxOpposingSide)
-#     next score unless foe_reserves >= 2
-
-#     case ai.safe_function_code(move)
-#     when "AddStealthRocksToFoeSide"
-#       bonus = 3 + (foe_reserves * 3)   # +7 to +13
-#       bonus += 5 if user.turnCount < 2
-#       score += bonus
-#       PBDebug.log_score_change(bonus, "Hazard priority (SR): #{foe_reserves} foe reserves.")
-#     when "AddSpikesToFoeSide"
-#       # No early-game boost once any layer is already set
-#       next score if user.pbOpposingSide.effects[PBEffects::Spikes] >= 1
-#       bonus = 3 + (foe_reserves * 2)   
-#       bonus += 3 if user.turnCount < 2
-#       score += bonus
-#       PBDebug.log_score_change(bonus, "Hazard priority (Spikes): #{foe_reserves} foe reserves.")
-#     when "AddToxicSpikesToFoeSide"
-#       # No early-game boost once any layer is already set
-#       next score if user.pbOpposingSide.effects[PBEffects::ToxicSpikes] >= 1
-#       bonus = 3 + (foe_reserves * 3)  
-#       bonus += 3 if user.turnCount < 2
-#       score += bonus
-#       PBDebug.log_score_change(bonus, "Hazard priority (TSpikes): #{foe_reserves} foe reserves.")
-#     when "AddStickyWebToFoeSide"
-#       bonus = 3 + (foe_reserves * 3)  
-#       bonus += 3 if user.turnCount < 2
-#       score += bonus
-#       PBDebug.log_score_change(bonus, "Hazard priority (Web): #{foe_reserves} foe reserves.")
-#     end
-
-#     next score
-#   }
-# )
 
 #===============================================================================
 # [NEW] Smart Wish usage

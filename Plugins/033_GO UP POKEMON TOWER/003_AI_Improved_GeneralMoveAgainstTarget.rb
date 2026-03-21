@@ -2,28 +2,103 @@
 # 2. GeneralMoveAgainstTargetScore Handlers
 #===============================================================================
 
-#===============================================================================
-# override predicted_damage more score for predicted KO move
-#===============================================================================
+# overwrite existing :predicted_damage handler with a no-op since it's fully replaced by :one_v_one_move_score
 Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:predicted_damage,
   proc { |score, move, user, target, ai, battle|
-    if move.damagingMove?
-      dmg = ai.damage_moves(user, target)[move.id]&.dig(:dmg) ||
-            move.predicted_damage(user: user, target: target)
-      old_score = score
-      if target.effects[PBEffects::Substitute] > 0
-        score += ([15.0 * dmg / target.effects[PBEffects::Substitute], 20].min).to_i
-        PBDebug.log_score_change(score - old_score, "damaging move (predicted damage #{dmg} = #{100 * dmg / target.hp}% of target's Substitute)")
+    next score 
+  }
+)
+
+#===============================================================================
+# Unified 1v1 move scoring: damage scaling, OHKO bonus, weak-move penalty,
+# and survival check (replaces :predicted_damage, :penalize_useless_moves,
+# and :evade_knockout)
+#===============================================================================
+Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:one_v_one_move_score,
+  proc { |score, move, user, target, ai, battle|
+    next score unless ai.trainer.has_skill_flag?("HPAware")
+
+    # --- Foe threat data (shared by damaging and status paths) ---
+    summary   = ai.matchup_summary
+    foe_entry = summary[:foes][target.index]
+    next score unless foe_entry
+
+    foe_dmg      = foe_entry[:best_dmg]
+    foe_best_pri = foe_entry[:best_priority]
+
+    # Priority-aware speed: who acts first?
+    if move.move.priority > foe_best_pri
+      user_outspeeds = true
+    elsif foe_best_pri > move.move.priority
+      user_outspeeds = false
+    else
+      user_outspeeds = user.faster_than?(target)
+    end
+
+    # --- Universal survival check (all move types) ---
+    # If foe can OHKO and acts first, any move is likely wasted
+    if foe_dmg >= user.hp && !user_outspeeds && user.effects[PBEffects::Substitute] <= 0
+      foe_move = foe_entry[:best_move]
+      if foe_move&.is_a?(Battle::Move::FailsIfTargetActed) && ai.pbAIRandom(100) < 25
+        PBDebug.log_ai("[1v1] skip Sucker Punch KO penalty (25% chance it fails)")
       else
-        score += ([30.0 * dmg / target.hp, 30].min).to_i
-        PBDebug.log_score_change(score - old_score, "damaging move (predicted damage #{dmg} = #{100 * dmg / target.hp}% of target's HP)")
-        if ai.trainer.has_skill_flag?("HPAware") && dmg >= target.hp   # Predicted to KO the target
-          old_score = score
-          score += 50
-          PBDebug.log_score_change(score - old_score, "predicted to KO the target")
-        end
+        score -= 200
+        PBDebug.log_score_change(-200, "1v1: foe can OHKO and outspeeds")
       end
     end
+
+    # --- Status moves: survival check only, no damage scoring ---
+    next score unless move.damagingMove?
+
+    # --- Damaging moves below ---
+    pivot_codes = ["SwitchOutUserDamagingMove", "LowerTargetAtkSpAtk1SwitchOutUser"]
+    is_pivot = pivot_codes.include?(ai.safe_function_code(move)) &&
+               battle.pbCanChooseNonActive?(user.battler.index)
+
+    user_dmg = ai.damage_moves(user, target)[move.id]&.dig(:dmg) ||
+               move.predicted_damage(user: user, target: target)
+
+    # Substitute: use Sub HP for damage calculations (move hits Sub first)
+    effective_hp = target.effects[PBEffects::Substitute] > 0 ? target.effects[PBEffects::Substitute] : target.hp
+
+    # --- 1v1 result (use effective_hp so OHKO/win checks respect Substitute) ---
+    result = ai.one_v_one_result(
+      user_dmg: user_dmg, foe_dmg: foe_dmg,
+      user_hp: user.hp, foe_hp: effective_hp,
+      user_outspeeds: user_outspeeds
+    )
+
+    # A) Base damage scaling: 0 to +30 based on damage relative to effective HP
+    base = ([30.0 * user_dmg / effective_hp, 30].min).to_i
+    score += base
+    PBDebug.log_score_change(base, "1v1: base damage (#{user_dmg}/#{effective_hp})")
+
+    next score if is_pivot  # pivot moves: base damage + survival check only
+
+    # B) Weak move penalty (applied regardless of win/loss — encourage switching or setup)
+    pct = user_dmg.to_f / target.totalhp
+    if !result[:user_can_ohko] && pct < 0.20
+      score -= 40
+      PBDebug.log_score_change(-40, "1v1: move very weak (#{(pct * 100).round(1)}%)")
+    elsif !result[:user_can_ohko] && pct < 0.40
+      penalty = (40 * [(0.40 - pct) / 0.20, 1.0].min).round
+      score -= penalty
+      PBDebug.log_score_change(-penalty, "1v1: move weak (#{(pct * 100).round(1)}%)")
+    end
+
+    # C) OHKO bonus (only if user actually wins — foe OHKO + faster means user dies first)
+    if result[:user_can_ohko] && result[:user_wins]
+      bonus = user_outspeeds ? 30 : 15
+      score += bonus
+      PBDebug.log_score_change(bonus, "1v1: can OHKO target#{user_outspeeds ? ' (outspeeds)' : ''}")
+
+    # D) User wins in multiple turns (capped so it never fully overrides weak-move penalty)
+    elsif result[:user_wins]
+      bonus = (20.0 / result[:u_turns]).to_i.clamp(5, 15)  # 2HKO->10, 3HKO->6, 4HKO->5...
+      score += bonus
+      PBDebug.log_score_change(bonus, "1v1: user wins in #{result[:u_turns]} turns")
+    end
+
     next score
   }
 )
@@ -41,7 +116,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:boost_pivot_moves,
     ].include?(ai.safe_function_code(move))
     next score unless is_pivot
 
-    score += 10
+    score += 5
 
     # Prefer if target is slower than a foe
     if !user.faster_than?(target)
@@ -54,37 +129,8 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:boost_pivot_moves,
   }
 )
 
-#-------------------------------------------------------------------------------
-# [NEW] Penalize useless moves (low damage)
-#-------------------------------------------------------------------------------
-Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:penalize_useless_moves,
-  proc { |score, move, user, target, ai, battle|
-    if move.damagingMove?
-      # Skip penalty for damaging pivot moves (U-turn, Volt Switch, etc.)
-      pivot_codes = ["SwitchOutUserDamagingMove", "LowerTargetAtkSpAtk1SwitchOutUser"]
-      next score if pivot_codes.include?(ai.safe_function_code(move)) && battle.pbCanChooseNonActive?(user.battler.index)
-
-      dmg     = ai.damage_moves(user, target)[move.id]&.dig(:dmg) ||
-                move.predicted_damage(user: user, target: target)
-      pct_dmg = dmg.to_f / target.totalhp.to_f
-      will_ko = dmg.to_f >= target.hp.to_f
-      next score if will_ko
-
-      if pct_dmg < 0.20
-        score -= 40
-        PBDebug.log_score_change(-40, "Penalize useless move: very low predicted damage (#{(pct_dmg * 100).round(1)}%).")
-      elsif pct_dmg < 0.40
-        penalty = (40 * [(0.40 - pct_dmg) / 0.20, 1.0].min).round
-        score -= penalty
-        PBDebug.log_score_change(-penalty, "Penalize weak move: consider switching (#{(pct_dmg * 100).round(1)}%).")
-      end
-    end
-    next score
-  }
-)
-
 #===============================================================================
-# [NEW] Forced switch + hazard synergy
+# [NEW] reset enemy boosts
 #===============================================================================
 Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:phaze_with_hazards,
   proc { |score, move, user, target, ai, battle|
@@ -94,17 +140,6 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:phaze_with_hazards,
       "SwitchOutTargetDamagingMove"
     ]
     next score unless phaze_codes.include?(ai.safe_function_code(move))
-
-    foe_side = target.pbOwnSide
-    hazard_value = 0
-    hazard_value += 10 if foe_side.effects[PBEffects::StealthRock]
-    hazard_value += 5 * foe_side.effects[PBEffects::Spikes]
-    hazard_value += 5 * foe_side.effects[PBEffects::ToxicSpikes]
-
-    if hazard_value > 0
-      score += hazard_value
-      PBDebug.log_score_change(hazard_value, "Phaze synergy with hazards.")
-    end
 
     # Boost if target has set up
     target_boosts = 0

@@ -50,16 +50,79 @@ end
 
 class Battle::AI
   MOVE_FAIL_SCORE = -999
-  REPLACEMENT_THRESHOLD_NORMAL = 120
-  REPLACEMENT_THRESHOLD_TERRIBLE_MOVES = 60
+  REPLACEMENT_THRESHOLD_NORMAL = 105
+  REPLACEMENT_THRESHOLD_TERRIBLE_MOVES = 80
 
-  #---------------------------------------------------------------------------
-  # [Helper] Convert effectiveness multiplier to float
-  #---------------------------------------------------------------------------
   def pbGetEffectivenessMult(effectiveness_id)
     return effectiveness_id.to_f / 100.0
   end
 
+  #---------------------------------------------------------------------------
+  # [Helper] Ceiling division: how many hits of `dmg` to KO `hp`?
+  #---------------------------------------------------------------------------
+  def turns_to_ko(dmg, hp, heal_per_turn: 0, self_dmg_per_turn: 0)
+    net_dmg = dmg - heal_per_turn + self_dmg_per_turn
+    net_dmg > 0 ? (hp.to_f / net_dmg).ceil.to_i : 999
+  end
+
+  #---------------------------------------------------------------------------
+  # [Helper] Core 1v1 calculation between two combatants.
+  # Returns a hash with KO-turn counts, win flag, and OHKO/2HKO booleans.
+  # Optional per-turn modifiers:
+  #   heal_per_turn:     Leftovers/Black Sludge recovery (reduces effective incoming damage)
+  #   self_dmg_per_turn: Life Orb recoil (increases effective incoming damage)
+  #---------------------------------------------------------------------------
+  def one_v_one_result(user_dmg:, foe_dmg:, user_hp:, foe_hp:, user_outspeeds:,
+                       user_heal_per_turn: 0, user_self_dmg_per_turn: 0,
+                       foe_heal_per_turn: 0, foe_self_dmg_per_turn: 0)
+    u_turns = turns_to_ko(user_dmg, foe_hp,
+                           heal_per_turn: foe_heal_per_turn,
+                           self_dmg_per_turn: foe_self_dmg_per_turn)
+    f_turns = turns_to_ko(foe_dmg, user_hp,
+                           heal_per_turn: user_heal_per_turn,
+                           self_dmg_per_turn: user_self_dmg_per_turn)
+    user_wins = user_outspeeds ? (u_turns <= f_turns) : (u_turns < f_turns)
+    {
+      u_turns:          u_turns,
+      f_turns:          f_turns,
+      user_wins:        user_wins,
+      user_outspeeds:   user_outspeeds,
+      foe_can_ohko:     foe_dmg >= user_hp,
+      foe_can_2hko:     foe_dmg * 2 >= user_hp,
+      user_can_ohko:    user_dmg >= foe_hp,
+      user_can_2hko:    user_dmg * 2 >= foe_hp,
+      dmg_ratio:        foe_dmg.to_f / [user_hp, 1].max,
+    }
+  end
+
+  #---------------------------------------------------------------------------
+  # [Helper] Does a reserve (party) Pokemon outspeed an on-field foe AIBattler?
+  # Creates a temporary Battler so pbSpeed accounts for abilities (Swift Swim,
+  # Chlorophyll, Sand Rush, etc.), items (Choice Scarf), paralysis, Tailwind,
+  # and other battle modifiers. Sticky Web's -1 Speed stage is pre-applied
+  # since the reserve hasn't switched in yet.
+  #---------------------------------------------------------------------------
+  def reserve_outspeeds_foe?(pkmn, foe_battler)
+    pkmn_lagging = LAGGING_TAIL_ITEMS.include?(pkmn.item_id)
+    foe_lagging  = LAGGING_TAIL_ITEMS.include?(foe_battler.battler.item_id) && foe_battler.battler.itemActive?
+    if pkmn_lagging && !foe_lagging
+      return false
+    elsif foe_lagging && !pkmn_lagging
+      return true
+    end
+    # Build a temporary battler to get a full pbSpeed calculation
+    temp = Battle::Battler.new(@battle, @user.index)
+    temp.pbInitialize(pkmn, 0)
+    # Pre-apply Sticky Web's -1 Speed stage for grounded non-boots pkmn
+    if @user.pbOwnSide.effects[PBEffects::StickyWeb] &&
+       !pkmn.hasItem?(:HEAVYDUTYBOOTS) && !pokemon_airborne?(pkmn)
+      temp.stages[:SPEED] = -1
+    end
+    pkmn_speed = temp.pbSpeed
+    foe_speed  = foe_battler.rough_stat(:SPEED)
+    trick_room = @battle.field.effects[PBEffects::TrickRoom] > 0
+    return (pkmn_speed > foe_speed) ^ trick_room
+  end
 
   # Override: replace -1 sentinel with MOVE_FAIL_SCORE for failed moves,
   # so negative penalty scores aren't confused with move failures.
@@ -132,10 +195,7 @@ class Battle::AI
   def pbPredictMoveFailure
     # User is awake and can't use moves that are only usable when asleep
     return true if !@user.battler.asleep? && @move.move.usableWhenAsleep?
-    # NOTE: Truanting is not considered, because if it is, a Pokémon with Truant
-    #       will want to switch due to terrible moves every other round (because
-    #       all of its moves will fail), and this is disruptive and shouldn't be
-    #       how such Pokémon behave.
+
     # Primal weather
     return true if @battle.pbWeather == :HeavyRain && @move.rough_type == :FIRE
     return true if @battle.pbWeather == :HarshSun && @move.rough_type == :WATER
@@ -440,7 +500,7 @@ class Battle::AI
     threshold = terrible_moves ? REPLACEMENT_THRESHOLD_TERRIBLE_MOVES : REPLACEMENT_THRESHOLD_NORMAL
     # Raise threshold if switching dooms current Pokemon to hazard death
     unless forced_switch
-      threshold = [threshold + hazard_death_threshold_bonus(idxBattler, reserves), 120].min
+      threshold = [threshold + hazard_death_threshold_bonus(idxBattler, reserves), 110].min
     end
     if reserves[0][1] < threshold
       if forced_switch
@@ -552,6 +612,12 @@ class Battle::AI
         foe_has_priority = best_foe && best_foe[:move].priority > 0
         foe_effectively_outspeeds = foe_outspeeds || foe_has_priority
 
+        one_v_one = one_v_one_result(
+          user_dmg: user_best_dmg, foe_dmg: foe_best_dmg,
+          user_hp: @user.hp, foe_hp: b.hp,
+          user_outspeeds: !foe_outspeeds
+        )
+
         foe_entry = {
           best_dmg:    foe_best_dmg,
           best_move:   best_foe&.dig(:move),
@@ -564,6 +630,7 @@ class Battle::AI
           dmg_ratio:   foe_best_dmg.to_f / [@user.battler.totalhp, 1].max,
           foe_hp:      b.hp,
           foe_totalhp: b.battler.totalhp,
+          one_v_one:   one_v_one,
         }
         foe_entry[:switch_prediction_roll] = pbAIRandom(100)
         summary[:foes][b.index] = foe_entry
@@ -754,22 +821,15 @@ class Battle::AI::AIBattler
   #---------------------------------------------------------------------------
   def simulate_1v1_tera_value(u_dmg_no, u_dmg_tera, f_dmg_no, f_dmg_tera,
                               foe_hp, user_hp, user_outspeeds)
-    # Turns to KO in each direction
-    u_turns_no   = u_dmg_no   > 0 ? (foe_hp.to_f  / u_dmg_no).ceil   : 999
-    u_turns_tera = u_dmg_tera > 0 ? (foe_hp.to_f  / u_dmg_tera).ceil : 999
-    f_turns_no   = f_dmg_no   > 0 ? (user_hp.to_f / f_dmg_no).ceil   : 999
-    f_turns_tera = f_dmg_tera > 0 ? (user_hp.to_f / f_dmg_tera).ceil : 999
+    r_no   = @ai.one_v_one_result(user_dmg: u_dmg_no,   foe_dmg: f_dmg_no,
+                                   user_hp: user_hp, foe_hp: foe_hp, user_outspeeds: user_outspeeds)
+    r_tera = @ai.one_v_one_result(user_dmg: u_dmg_tera, foe_dmg: f_dmg_tera,
+                                   user_hp: user_hp, foe_hp: foe_hp, user_outspeeds: user_outspeeds)
 
-    # Who wins? If user outspeeds, user wins ties (acts first)
-    if user_outspeeds
-      win_no   = u_turns_no   <= f_turns_no
-      win_tera = u_turns_tera <= f_turns_tera
-    else
-      win_no   = u_turns_no   < f_turns_no
-      win_tera = u_turns_tera < f_turns_tera
-    end
+    win_no   = r_no[:user_wins]
+    win_tera = r_tera[:user_wins]
 
-    PBDebug.log_ai("[Tera]   1v1: u_turns=#{u_turns_no}/#{u_turns_tera} f_turns=#{f_turns_no}/#{f_turns_tera} " \
+    PBDebug.log_ai("[Tera]   1v1: u_turns=#{r_no[:u_turns]}/#{r_tera[:u_turns]} f_turns=#{r_no[:f_turns]}/#{r_tera[:f_turns]} " \
                    "win_no=#{win_no} win_tera=#{win_tera}")
 
     # Tera flips losing → winning
@@ -786,8 +846,8 @@ class Battle::AI::AIBattler
 
     # Wins both
     if win_no && win_tera
-      turns_saved = u_turns_no - u_turns_tera
-      survival_gained = f_turns_tera - f_turns_no
+      turns_saved = r_no[:u_turns] - r_tera[:u_turns]
+      survival_gained = r_tera[:f_turns] - r_no[:f_turns]
       bonus = 0
       if turns_saved > 0 || survival_gained > 0
         bonus = [[turns_saved * 10 + survival_gained * 5, 30].min, 10].max
@@ -800,7 +860,7 @@ class Battle::AI::AIBattler
     end
 
     # Loses both
-    survival_gained = f_turns_tera - f_turns_no
+    survival_gained = r_tera[:f_turns] - r_no[:f_turns]
     if survival_gained > 0
       bonus = [[survival_gained * 5, 15].min, 5].max
       PBDebug.log_ai("[Tera]   Scenario 3e: loses both, survives longer with tera → +#{bonus}")
