@@ -62,11 +62,11 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:one_v_one_move_score,
     effective_hp = target.effects[PBEffects::Substitute] > 0 ? target.effects[PBEffects::Substitute] : target.hp
 
     # --- 1v1 result (use effective_hp so OHKO/win checks respect Substitute) ---
-    result = ai.one_v_one_result(
-      user_dmg: user_dmg, foe_dmg: foe_dmg,
-      user_hp: user.hp, foe_hp: effective_hp,
-      user_outspeeds: user_outspeeds
-    )
+    # priority_dmg: only count THIS move's priority, not the best priority move
+    move_pri_dmg = move.move.priority > 0 ? user_dmg : 0
+    user_c = ai.make_combatant(user, target).merge(dmg: user_dmg, move: move.move, priority_dmg: move_pri_dmg)
+    foe_c  = ai.make_combatant(target, user).merge(hp: effective_hp)
+    result = ai.one_v_one_result(user_c, foe_c, user_outspeeds)
 
     # A) Base damage scaling: 0 to +30 based on damage relative to effective HP
     base = ([30.0 * user_dmg / effective_hp, 30].min).to_i
@@ -162,12 +162,14 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:phaze_with_hazards,
 Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:boost_knock_off,
   proc { |score, move, user, target, ai, battle|
     next score unless ai.safe_function_code(move) == "RemoveTargetItem"
-    next score unless target.item_active?
+    next score unless target.item && target.item_active?
+    next score if target.battler.unlosableItem?(target.item)
+    next score if target.effects[PBEffects::Substitute] > 0
     next score if target.has_active_ability?(:STICKYHOLD)
 
     # Base bonus for item removal
     score += 5
-    PBDebug.log_score_change(10, "Knock Off: removing target's item.")
+    PBDebug.log_score_change(5, "Knock Off: removing target's item.")
 
     # Extra bonus for high-value items
     high_value_items = [
@@ -175,7 +177,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:boost_knock_off,
     ]
     if target.has_active_item?(high_value_items)
       score += 10
-      PBDebug.log_score_change(5, "Knock Off: target has high-value item.")
+      PBDebug.log_score_change(10, "Knock Off: target has high-value item.")
     end
 
     next score

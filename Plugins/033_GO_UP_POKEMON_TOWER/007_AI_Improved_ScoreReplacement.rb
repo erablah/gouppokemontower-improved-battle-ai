@@ -57,6 +57,8 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
       worst_damage = 0
       worst_move_id = nil
       worst_move_priority = 0
+      worst_move_obj = nil
+      worst_priority_dmg = 0
       known_damaging.each do |m|
         PBDebug.log_ai("move_id: #{m.id}")
         sim_move = Battle::Move.from_pokemon_move(battle, Pokemon::Move.new(m.id))
@@ -68,6 +70,10 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
           worst_damage = predicted_damage
           worst_move_id = m.id
           worst_move_priority = sim_move.priority
+          worst_move_obj = sim_move
+        end
+        if sim_move.priority > 0 && predicted_damage > worst_priority_dmg
+          worst_priority_dmg = predicted_damage
         end
       end
 
@@ -77,6 +83,8 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
       best_user_damage = 0
       best_move_name = ""
       best_move_priority = 0
+      best_user_move_obj = nil
+      best_user_priority_dmg = 0
       pkmn.moves.each do |m|
         next if m.power == 0 || (m.pp == 0 && m.total_pp > 0)
         next if ai.pokemon_can_absorb_move?(b.pokemon, m, m.type)
@@ -89,6 +97,10 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
           best_user_damage = predicted_damage
           best_move_name = m.name
           best_move_priority = simulated_move.priority
+          best_user_move_obj = simulated_move
+        end
+        if simulated_move.priority > 0 && predicted_damage > best_user_priority_dmg
+          best_user_priority_dmg = predicted_damage
         end
       end
 
@@ -121,6 +133,12 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
       else
         pkmn_faster = ai.reserve_outspeeds_foe?(pkmn, b)
       end
+
+      # --- Build base combatant hashes for 1v1 simulation ---
+      user_c = { dmg: best_user_damage, move: best_user_move_obj, hp: pkmn.hp,
+                 priority_dmg: best_user_priority_dmg, heal_per_turn: user_heal, self_dmg_per_turn: user_self_dmg }
+      foe_c  = { dmg: worst_damage, move: worst_move_obj, hp: b.hp,
+                 priority_dmg: worst_priority_dmg, heal_per_turn: foe_heal, self_dmg_per_turn: foe_self_dmg }
 
       # --- Scenario 1: First-hit prediction logic ---
       # Asymmetric first hit (first_hit_dmg ≠ subsequent_hit_dmg) due to move
@@ -171,22 +189,17 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
             PBDebug.log_score_change(score - prev_score, "#{pkmn.name}: Scenario1 instant death (first_hit=#{first_hit_dmg}/#{pkmn.hp}hp)")
           else
             # 1v1 from remaining HP (subsequent turns use worst_damage, no hazards)
-            result = ai.one_v_one_result(
-              user_dmg: best_user_damage, foe_dmg: worst_damage,
-              user_hp: remaining_hp, foe_hp: b.hp, user_outspeeds: pkmn_faster,
-              user_heal_per_turn: user_heal, user_self_dmg_per_turn: user_self_dmg,
-              foe_heal_per_turn: foe_heal, foe_self_dmg_per_turn: foe_self_dmg
-            )
+            result = ai.one_v_one_result(user_c.merge(hp: remaining_hp), foe_c, pkmn_faster)
             turn_advantage = result[:f_turns] - result[:u_turns]
             user_dmg_ratio = best_user_damage.to_f / [b.hp, 1].max
-            foe_dmg_ratio  = result[:dmg_ratio]
+            user_dmg_taken = 1.0 - result[:user_hp_pct]
 
             if result[:user_wins]
               bonus = 5 + [turn_advantage * 5, 10].min + [user_dmg_ratio * 10, 10].min.to_i
               score += bonus
               PBDebug.log_score_change(bonus, "#{pkmn.name}: Scenario1 wins 1v1 (turns=#{result[:u_turns]}v#{result[:f_turns]}, user_dmg=#{best_user_damage}/#{b.hp}hp, remaining_hp=#{remaining_hp}/#{pkmn.hp})")
             else
-              penalty = [foe_dmg_ratio * 25, 25].min.to_i
+              penalty = [(user_dmg_taken * 25).to_i, 25].min
               penalty += 25 if result[:foe_can_ohko] && !pkmn_faster
               score -= penalty
               spd_tag = pkmn_faster ? "faster" : "slower"
@@ -200,25 +213,20 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
 
       # --- Scenarios 2 & 3 (and Scenario 1 fallback): 1v1 evaluation ---
       worst_damage_with_hazards = worst_damage + entry_hazard_damage
-      result = ai.one_v_one_result(
-        user_dmg: best_user_damage, foe_dmg: worst_damage_with_hazards,
-        user_hp: pkmn.hp, foe_hp: b.hp, user_outspeeds: pkmn_faster,
-        user_heal_per_turn: user_heal, user_self_dmg_per_turn: user_self_dmg,
-        foe_heal_per_turn: foe_heal, foe_self_dmg_per_turn: foe_self_dmg
-      )
+      result = ai.one_v_one_result(user_c, foe_c.merge(dmg: worst_damage_with_hazards), pkmn_faster)
 
       spd_tag = pkmn_faster ? "faster" : "slower"
       scenario_tag = faint_replacement ? "faint_repl" : "foe_acted"
       turn_advantage = result[:f_turns] - result[:u_turns]
       user_dmg_ratio = best_user_damage.to_f / [b.hp, 1].max
-      foe_dmg_ratio  = result[:dmg_ratio]
+      user_dmg_taken = 1.0 - result[:user_hp_pct]
 
       if result[:user_wins]
         bonus = 5 + [turn_advantage * 5, 10].min + [user_dmg_ratio * 10, 10].min.to_i
         score += bonus
         PBDebug.log_score_change(bonus, "#{pkmn.name}: wins 1v1 (turns=#{result[:u_turns]}v#{result[:f_turns]}, user_dmg=#{best_user_damage}/#{b.hp}hp, #{spd_tag}, #{scenario_tag})")
       else
-        penalty = [foe_dmg_ratio * 25, 25].min.to_i
+        penalty = [(user_dmg_taken * 25).to_i, 25].min
         penalty += 25 if result[:foe_can_ohko] && !pkmn_faster
         score -= penalty
         PBDebug.log_score_change(-penalty, "#{pkmn.name}: loses 1v1 (foe_dmg=#{worst_damage_with_hazards}/#{pkmn.hp}hp, #{spd_tag}, #{scenario_tag})")
