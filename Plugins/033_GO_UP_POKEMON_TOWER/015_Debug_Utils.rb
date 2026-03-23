@@ -135,3 +135,38 @@ MenuHandlers.add(:debug_menu, :give_demo_party, {
     end
   }
 })
+
+#===============================================================================
+# ■ Debug Menu: Search trainer by name and start a battle
+#===============================================================================
+MenuHandlers.add(:debug_menu, :search_trainer_battle, {
+  "name"        => _INTL("Search trainer battle"),
+  "parent"      => :battle_menu,
+  "description" => _INTL("Search trainers by name and start a single battle."),
+  "effect"      => proc {
+    query = pbMessageFreeText(_INTL("Enter trainer name:"), "", false, 30)
+    query = query.strip.downcase
+    next false if query == ""
+    matches = []
+    GameData::Trainer.each do |tr|
+      next unless tr.name.downcase.include?(query)
+      matches.push(tr)
+    end
+    matches.sort_by! { |tr| [tr.trainer_type.to_s, tr.name.downcase, tr.version] }
+    if matches.empty?
+      pbMessage(_INTL("No trainers found matching \"{1}\".", query))
+      next false
+    end
+    commands = matches.map { |tr|
+      type_name = GameData::TrainerType.get(tr.trainer_type).name rescue tr.trainer_type.to_s
+      sprintf("%s %s (v%d, x%d)", type_name, tr.name, tr.version, tr.party.length)
+    }
+    cmd = pbShowCommands(nil, commands, -1)
+    if cmd >= 0
+      tr = matches[cmd]
+      setBattleRule("canLose")
+      TrainerBattle.start(tr.trainer_type, tr.name, tr.version)
+    end
+    next false
+  }
+})
