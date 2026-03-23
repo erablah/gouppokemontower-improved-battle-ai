@@ -57,6 +57,28 @@ Battle::AbilityEffects::DamageCalcFromUser.copy(:AERILATE, :IRONSKIN)
 # - Absorbs Dark-type moves (immune) and raises Speed by 1 stage
 #===============================================================================
 
+#===============================================================================
+# Good as Gold fix: Mycelium Might bypasses the immunity
+#===============================================================================
+Battle::AbilityEffects::MoveImmunity.add(:GOODASGOLD,
+  proc { |ability, user, target, move, type, battle, show_message|
+    next false if !move.statusMove?
+    next false if user.index == target.index
+    next false if user.hasActiveAbility?(:MYCELIUMMIGHT)
+    if show_message
+      battle.pbShowAbilitySplash(target)
+      if Battle::Scene::USE_ABILITY_SPLASH
+        battle.pbDisplay(_INTL("It doesn't affect {1}...", target.pbThis(true)))
+      else
+        battle.pbDisplay(_INTL("{1}'s {2} blocks {3}!",
+           target.pbThis, target.abilityName, move.name))
+      end
+      battle.pbHideAbilitySplash(target)
+    end
+    next true
+  }
+)
+
 Battle::AbilityEffects::MoveImmunity.add(:GRUDGECANDLE,
   proc { |ability, user, target, move, type, battle, show_message|
     next target.pbMoveImmunityStatRaisingAbility(user, move, type,

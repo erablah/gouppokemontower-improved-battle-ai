@@ -42,8 +42,8 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:one_v_one_move_score,
       if foe_move&.is_a?(Battle::Move::FailsIfTargetActed) && ai.pbAIRandom(100) < 25
         PBDebug.log_ai("[1v1] skip Sucker Punch KO penalty (25% chance it fails)")
       else
-        score -= 200
-        PBDebug.log_score_change(-200, "1v1: foe can OHKO and outspeeds")
+        score -= 100
+        PBDebug.log_score_change(-100, "1v1: foe can OHKO and outspeeds")
       end
     end
 
@@ -68,32 +68,40 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:one_v_one_move_score,
     foe_c  = ai.make_combatant(target, user).merge(hp: effective_hp)
     result = ai.one_v_one_result(user_c, foe_c, user_outspeeds)
 
-    # A) Base damage scaling: 0 to +30 based on damage relative to effective HP
-    base = ([30.0 * user_dmg / effective_hp, 30].min).to_i
+    # A) Base damage scaling: 0 to +20 based on damage relative to effective HP
+    base = ([20.0 * user_dmg / effective_hp, 20].min).to_i
     score += base
     PBDebug.log_score_change(base, "1v1: base damage (#{user_dmg}/#{effective_hp})")
 
     next score if is_pivot  # pivot moves: base damage + survival check only
 
-    # B) Weak move penalty (applied regardless of win/loss — encourage switching or setup)
-    pct = user_dmg.to_f / target.totalhp
-    if !result[:user_can_ohko] && pct < 0.20
+    # B) User loses the 1v1 — early return with penalty
+    unless result[:user_wins]
       score -= 40
-      PBDebug.log_score_change(-40, "1v1: move very weak (#{(pct * 100).round(1)}%)")
-    elsif !result[:user_can_ohko] && pct < 0.40
-      penalty = (40 * [(0.40 - pct) / 0.20, 1.0].min).round
-      score -= penalty
-      PBDebug.log_score_change(-penalty, "1v1: move weak (#{(pct * 100).round(1)}%)")
+      PBDebug.log_score_change(-40, "1v1: user loses matchup")
+      next score
     end
 
-    # C) OHKO bonus (only if user actually wins — foe OHKO + faster means user dies first)
-    if result[:user_can_ohko] && result[:user_wins]
+    # C) Weak move penalty based on turns to KO
+    if !result[:user_can_ohko] && result[:u_turns] >= 5
+      score -= 40
+      PBDebug.log_score_change(-40, "1v1: move very weak (#{result[:u_turns]}+ turns to KO)")
+    elsif !result[:user_can_ohko] && result[:u_turns] >= 4
+      score -= 30
+      PBDebug.log_score_change(-30, "1v1: move weak (#{result[:u_turns]} turns to KO)")
+    elsif !result[:user_can_ohko] && result[:u_turns] >= 3
+      score -= 15
+      PBDebug.log_score_change(-15, "1v1: move mediocre (#{result[:u_turns]} turns to KO)")
+    end
+
+    # D) OHKO bonus
+    if result[:user_can_ohko]
       bonus = user_outspeeds ? 30 : 15
       score += bonus
       PBDebug.log_score_change(bonus, "1v1: can OHKO target#{user_outspeeds ? ' (outspeeds)' : ''}")
 
-    # D) User wins in multiple turns (capped so it never fully overrides weak-move penalty)
-    elsif result[:user_wins]
+    # E) User wins in multiple turns
+    else
       bonus = (20.0 / result[:u_turns]).to_i.clamp(5, 15)  # 2HKO->10, 3HKO->6, 4HKO->5...
       score += bonus
       PBDebug.log_score_change(bonus, "1v1: user wins in #{result[:u_turns]} turns")
@@ -192,14 +200,6 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:boost_priority_when_slo
     next score unless move.damagingMove?
     next score unless move.move.priority > 0
     next score if user.faster_than?(target)
-
-    # FailsIfTargetActed moves (e.g. Sucker Punch) only go first if the foe
-    # actually uses an attacking move — skip the bonus 50% of the time since
-    # it's not guaranteed to beat the foe's speed.
-    if move.move.is_a?(Battle::Move::FailsIfTargetActed) && ai.pbAIRandom(100) < 50
-      PBDebug.log_ai("[boost_priority] skip FailsIfTargetActed priority bonus (uncertain)")
-      next score
-    end
 
     score += 8
     PBDebug.log_score_change(8, "Priority move bonus: user is slower than target.")

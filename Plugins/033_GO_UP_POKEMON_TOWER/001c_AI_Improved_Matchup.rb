@@ -164,12 +164,17 @@ class Battle::AI
       eff_u_dmg = compute_effective_dmg(user_dmg, u_mods, u_stages, f_stages)
       eff_f_dmg = compute_effective_dmg(foe_dmg, f_mods, f_stages, u_stages)
 
-      # Priority KO check: if one side can KO with priority this turn, they act first
+      # Priority check: use priority move to go first when it KOs, or when
+      # the side is slower and would die to the opponent's attack this turn.
       u_can_pri_ko = user_priority_dmg > 0 && user_priority_dmg >= cur_f_hp
       f_can_pri_ko = foe_priority_dmg > 0 && foe_priority_dmg >= cur_u_hp
-      if u_can_pri_ko && !f_can_pri_ko
+      u_pri_desperation = user_priority_dmg > 0 && !user_outspeeds && eff_f_dmg >= cur_u_hp
+      f_pri_desperation = foe_priority_dmg > 0 && user_outspeeds && eff_u_dmg >= cur_f_hp
+      u_uses_pri = u_can_pri_ko || u_pri_desperation
+      f_uses_pri = f_can_pri_ko || f_pri_desperation
+      if u_uses_pri && !f_uses_pri
         turn_user_first = true
-      elsif f_can_pri_ko && !u_can_pri_ko
+      elsif f_uses_pri && !u_uses_pri
         turn_user_first = false
       else
         turn_user_first = user_outspeeds
@@ -177,7 +182,7 @@ class Battle::AI
 
       if turn_user_first
         # --- User attacks ---
-        actual_u_dmg = u_can_pri_ko ? user_priority_dmg : eff_u_dmg
+        actual_u_dmg = u_uses_pri ? user_priority_dmg : eff_u_dmg
         cur_f_hp -= actual_u_dmg
         cur_u_hp = [cur_u_hp + (u_mods[:drain_factor] * actual_u_dmg).round, user_hp].min
         if cur_f_hp <= 0
@@ -185,7 +190,7 @@ class Battle::AI
           break
         end
         # --- Foe attacks ---
-        actual_f_dmg = f_can_pri_ko ? foe_priority_dmg : eff_f_dmg
+        actual_f_dmg = f_uses_pri ? foe_priority_dmg : eff_f_dmg
         cur_u_hp -= actual_f_dmg
         cur_f_hp = [cur_f_hp + (f_mods[:drain_factor] * actual_f_dmg).round, foe_hp].min
         if cur_u_hp <= 0
@@ -194,7 +199,7 @@ class Battle::AI
         end
       else
         # --- Foe attacks first ---
-        actual_f_dmg = f_can_pri_ko ? foe_priority_dmg : eff_f_dmg
+        actual_f_dmg = f_uses_pri ? foe_priority_dmg : eff_f_dmg
         cur_u_hp -= actual_f_dmg
         cur_f_hp = [cur_f_hp + (f_mods[:drain_factor] * actual_f_dmg).round, foe_hp].min
         if cur_u_hp <= 0
@@ -202,7 +207,7 @@ class Battle::AI
           break
         end
         # --- User attacks ---
-        actual_u_dmg = u_can_pri_ko ? user_priority_dmg : eff_u_dmg
+        actual_u_dmg = u_uses_pri ? user_priority_dmg : eff_u_dmg
         cur_f_hp -= actual_u_dmg
         cur_u_hp = [cur_u_hp + (u_mods[:drain_factor] * actual_u_dmg).round, user_hp].min
         if cur_f_hp <= 0
@@ -250,7 +255,7 @@ class Battle::AI
   # and other battle modifiers. Sticky Web's -1 Speed stage is pre-applied
   # since the reserve hasn't switched in yet.
   #---------------------------------------------------------------------------
-  def reserve_outspeeds_foe?(pkmn, foe_battler)
+  def reserve_outspeeds_foe?(pkmn, foe_battler, extra_stages: nil)
     pkmn_lagging = LAGGING_TAIL_ITEMS.include?(pkmn.item_id)
     foe_lagging  = LAGGING_TAIL_ITEMS.include?(foe_battler.battler.item_id) && foe_battler.battler.itemActive?
     if pkmn_lagging && !foe_lagging
@@ -261,10 +266,14 @@ class Battle::AI
     # Build a temporary battler to get a full pbSpeed calculation
     temp = Battle::Battler.new(@battle, @user.index)
     temp.pbInitialize(pkmn, 0)
-    # Pre-apply Sticky Web's -1 Speed stage for grounded non-boots pkmn
+    # Apply passed-in stages (e.g. Baton Pass boosts)
+    if extra_stages
+      extra_stages.each { |stat, stage| temp.stages[stat] = stage.clamp(-6, 6) }
+    end
+    # Pre-apply Sticky Web's -1 Speed stage for grounded non-boots pkmn (stacks)
     if @user.pbOwnSide.effects[PBEffects::StickyWeb] &&
        !pkmn.hasItem?(:HEAVYDUTYBOOTS) && !pokemon_airborne?(pkmn)
-      temp.stages[:SPEED] = -1
+      temp.stages[:SPEED] = [(temp.stages[:SPEED] || 0) - 1, -6].max
     end
     pkmn_speed = temp.pbSpeed
     foe_speed  = foe_battler.rough_stat(:SPEED)

@@ -137,6 +137,51 @@ MenuHandlers.add(:debug_menu, :give_demo_party, {
 })
 
 #===============================================================================
+# ■ Filtered TrainerBattleLister — filters by name substring
+#===============================================================================
+class FilteredTrainerBattleLister < TrainerBattleLister
+  def initialize(filter, selection = 0)
+    super(selection, false)
+    @filter = filter.downcase
+  end
+
+  def commands
+    @commands.clear
+    @ids.clear
+    cmds = []
+    idx = 1
+    GameData::Trainer.each do |trainer|
+      next unless trainer.real_name.downcase.include?(@filter)
+      cmds.push([idx, trainer.trainer_type, trainer.real_name, trainer.version])
+      idx += 1
+    end
+    cmds.sort! do |a, b|
+      if a[1] == b[1]
+        (a[2] == b[2]) ? a[3] <=> b[3] : a[2].downcase <=> b[2].downcase
+      else
+        a[1].to_s.downcase <=> b[1].to_s.downcase
+      end
+    end
+    cmds.each do |t|
+      if t[3] > 0
+        @commands.push(_INTL("{1} {2} ({3}) x{4}",
+                             GameData::TrainerType.get(t[1]).name, t[2], t[3],
+                             GameData::Trainer.get(t[1], t[2], t[3]).pokemon.length))
+      else
+        @commands.push(_INTL("{1} {2} x{3}",
+                             GameData::TrainerType.get(t[1]).name, t[2],
+                             GameData::Trainer.get(t[1], t[2], t[3]).pokemon.length))
+      end
+      @ids.push([t[1], t[2], t[3]])
+    end
+    @index = @selection
+    @index = @commands.length - 1 if @index >= @commands.length
+    @index = 0 if @index < 0
+    return @commands
+  end
+end
+
+#===============================================================================
 # ■ Debug Menu: Search trainer by name and start a battle
 #===============================================================================
 MenuHandlers.add(:debug_menu, :search_trainer_battle, {
@@ -145,27 +190,29 @@ MenuHandlers.add(:debug_menu, :search_trainer_battle, {
   "description" => _INTL("Search trainers by name and start a single battle."),
   "effect"      => proc {
     query = pbMessageFreeText(_INTL("Enter trainer name:"), "", false, 30)
-    query = query.strip.downcase
+    query = query.strip
     next false if query == ""
-    matches = []
-    GameData::Trainer.each do |tr|
-      next unless tr.name.downcase.include?(query)
-      matches.push(tr)
-    end
-    matches.sort_by! { |tr| [tr.trainer_type.to_s, tr.name.downcase, tr.version] }
-    if matches.empty?
-      pbMessage(_INTL("No trainers found matching \"{1}\".", query))
-      next false
-    end
-    commands = matches.map { |tr|
-      type_name = GameData::TrainerType.get(tr.trainer_type).name rescue tr.trainer_type.to_s
-      sprintf("%s %s (v%d, x%d)", type_name, tr.name, tr.version, tr.party.length)
-    }
-    cmd = pbShowCommands(nil, commands, -1)
-    if cmd >= 0
-      tr = matches[cmd]
+    trainerdata = pbListScreen(_INTL("TRAINERS: \"{1}\"", query), FilteredTrainerBattleLister.new(query))
+    if trainerdata
       setBattleRule("canLose")
-      TrainerBattle.start(tr.trainer_type, tr.name, tr.version)
+      # Normalize all levels to 50
+      EventHandlers.add(:on_trainer_load, :debug_level_normalize,
+        proc { |trainer|
+          next if !trainer
+          trainer.party.each { |p| p.level = 50; p.calc_stats }
+        }
+      )
+      orig_levels = $player.party.map { |p| p.level }
+      $player.party.each { |p| p.level = 50; p.calc_stats; p.heal }
+      begin
+        TrainerBattle.start(trainerdata[0], trainerdata[1], trainerdata[2])
+      ensure
+        EventHandlers.remove(:on_trainer_load, :debug_level_normalize)
+        $player.party.each_with_index do |p, i|
+          p.level = orig_levels[i] if orig_levels[i]
+          p.calc_stats
+        end
+      end
     end
     next false
   }

@@ -632,3 +632,15 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("UserStealTargetPositiveS
     next score
   }
 )
+
+#===============================================================================
+# FailsIfTargetActed (Sucker Punch, Upper Hand)
+# Overrides base handler which incorrectly gates on speed instead of priority.
+#===============================================================================
+Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("FailsIfTargetActed",
+  proc { |score, move, user, target, ai, battle|
+    # Fail if target has no damaging moves
+    next Battle::AI::MOVE_FAIL_SCORE if !target.check_for_move { |m| m.damagingMove? }
+    next score
+  }
+)

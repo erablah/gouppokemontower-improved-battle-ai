@@ -33,8 +33,10 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
     next score unless ai.trainer.high_skill?
 
     real_move = move.move
-    stat_up = (real_move.respond_to?(:statUp) && real_move.statUp) ? real_move.statUp : nil
     fc = ai.safe_function_code(move) || ""
+    # Ghost Curse sacrifices HP to curse — not a setup move
+    next score if fc == "CurseTargetOrLowerUserSpd1RaiseUserAtkDef1" && user.has_type?(:GHOST)
+    stat_up = (real_move.respond_to?(:statUp) && real_move.statUp) ? real_move.statUp : nil
     stat_up_from_fc = false
 
     # Fallback: parse stat_up from function code if @statUp is nil
@@ -100,28 +102,24 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
     next score unless battler
 
     # -----------------------------------------------------------------------
-    # Phazing check (status moves only)
+    # Phazing check (status setup moves only): skip if foe has a phazing
+    # move that won't fail against the AI's battler.
     # -----------------------------------------------------------------------
     if is_status
-      immune_to_phazing = battler.hasActiveAbility?(:GOODASGOLD) ||
-                          battler.effects[PBEffects::Ingrain]
-      unless immune_to_phazing
-        phaze_codes = ["SwitchOutTargetStatusMove", "SwitchOutTargetDamagingMove"]
-        foe_has_phazing = false
-        ai.each_foe_battler(user.side) do |b, _i|
-          foe_has_phazing = ai.known_foe_moves(b).any? do |m|
-            next false unless phaze_codes.include?(m.function_code)
-            next true if m.statusMove?
-            calc_type = m.pbCalcType(b.battler)
-            eff = Effectiveness.calculate(calc_type, *battler.pbTypes(true))
-            !Effectiveness.ineffective?(eff)
-          end
-          break if foe_has_phazing
+      phaze_codes = ["SwitchOutTargetStatusMove", "SwitchOutTargetDamagingMove"]
+      foe_has_phazing = false
+      sim_move = Battle::AI::AIMove.new(ai)
+      ai.each_foe_battler(user.side) do |b, _i|
+        foe_has_phazing = ai.known_foe_moves(b).any? do |m|
+          next false unless phaze_codes.include?(m.function_code)
+          sim_move.set_up(m)
+          !ai.pbPredictMoveFailureAgainstTarget(sim_move, b, user)
         end
-        if foe_has_phazing
-          PBDebug.log_ai("[smart_setup] Skipped: foe has effective phazing move.")
-          next Battle::AI::MOVE_FAIL_SCORE
-        end
+        break if foe_has_phazing
+      end
+      if foe_has_phazing
+        PBDebug.log_ai("[smart_setup] Skipped: foe has effective phazing move.")
+        next Battle::AI::MOVE_FAIL_SCORE
       end
     end
 
@@ -407,6 +405,25 @@ Battle::AI::Handlers::GeneralMoveScore.add(:tactical_substitute,
     next Battle::AI::MOVE_USELESS_SCORE if battler.effects[PBEffects::Substitute] > 0
 
     # -------------------------------------------------------------------------
+    # Phazing check: Substitute doesn't block phazing moves
+    # -------------------------------------------------------------------------
+    phaze_codes = ["SwitchOutTargetStatusMove", "SwitchOutTargetDamagingMove"]
+    foe_has_phazing = false
+    sim_move = Battle::AI::AIMove.new(ai)
+    ai.each_foe_battler(user.side) do |b, _i|
+      foe_has_phazing = ai.known_foe_moves(b).any? do |m|
+        next false unless phaze_codes.include?(m.function_code)
+        sim_move.set_up(m)
+        !ai.pbPredictMoveFailureAgainstTarget(sim_move, b, user)
+      end
+      break if foe_has_phazing
+    end
+    if foe_has_phazing
+      PBDebug.log_ai("[tactical_substitute] Skipped: foe has effective phazing move.")
+      next Battle::AI::MOVE_FAIL_SCORE
+    end
+
+    # -------------------------------------------------------------------------
     # B. Foe threat analysis — reject if any foe can deal >25% in one hit
     # -------------------------------------------------------------------------
     summary = ai.matchup_summary
@@ -530,10 +547,12 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_protect,
     battler = user.battler
     next score unless battler
 
-    # Consecutive Protect will fail
+    # Consecutive Protect — exponentially less likely to succeed
     if battler.effects[PBEffects::ProtectRate] > 1
-      score -= 100
-      PBDebug.log_score_change(-100, "Protect likely to fail (consecutive).")
+      rate = battler.effects[PBEffects::ProtectRate]
+      penalty = rate * 100
+      score -= penalty
+      PBDebug.log_score_change(-penalty, "Protect likely to fail (consecutive, rate=#{rate}).")
       next score
     end
 
@@ -544,6 +563,12 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_protect,
       stall_value += 10 if b.status == :POISON && b.statusCount > 0  # Toxic
       stall_value += 8  if b.status == :BURN
       stall_value += 5  if b.status == :POISON && b.statusCount == 0
+
+      # Foe has setup moves — Protect gives them a free turn to boost
+      if b.check_for_move { |m| ai.safe_function_code(m)&.start_with?("RaiseUser") }
+        stall_value -= 15
+        PBDebug.log_ai("[smart_protect] Foe #{b.name} has setup moves → -15 stall value.")
+      end
     end
 
     # Speed Boost synergy
@@ -560,8 +585,8 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_protect,
       score += stall_value
       PBDebug.log_score_change(stall_value, "Protect stall value.")
     else
-      score -= 20
-      PBDebug.log_score_change(-20, "Protect has no stall value.")
+      score -= 40
+      PBDebug.log_score_change(-40, "Protect has no stall value.")
     end
 
     next score

@@ -60,74 +60,6 @@ class Battle::AI::AIMove
   end
 
   #---------------------------------------------------------------------------
-  # Terastallization pre-evaluation: evaluate once per turn and cache
-  #---------------------------------------------------------------------------
-  def should_simulate_tera?(idx, real_ai_user_idx = nil)
-    return false if @ai.instance_variable_get(:@_computing_tera_score)
-    ai_user_idx = real_ai_user_idx || @ai.user.index
-    return false unless idx == ai_user_idx
-    return false unless @ai.battle.respond_to?(:pbCanTerastallize?)
-    return false unless @ai.battle.pbCanTerastallize?(idx)
-    return false if @ai.battle.battlers[idx]&.tera?
-    key = [ai_user_idx, @ai.battle.turnCount]
-    @ai.instance_variable_set(:@_tera_cache, {}) unless @ai.instance_variable_get(:@_tera_cache)
-    cache = @ai.instance_variable_get(:@_tera_cache)
-    return cache[key] if cache.key?(key)
-    cache[key] = @ai.pbEnemyShouldTerastallize?
-  end
-
-  #---------------------------------------------------------------------------
-  # Mega Evolution / Terastallization simulation (AI's own battler only)
-  #---------------------------------------------------------------------------
-  def maybe_simulate_transform(battler, idx, override_pokemon, real_ai_user_idx = nil)
-    sim = { mega: false, tera: false }
-    return sim if override_pokemon  # Skip in hypothetical matchups (ScoreReplacement)
-
-    # Mega Evolution: already registered (decided before move scoring)
-    if @ai.battle.pbRegisteredMegaEvolution?(idx) && !battler.mega?
-      sim[:prev_form] = battler.form
-      battler.pokemon.makeMega
-      battler.form = battler.pokemon.form
-      battler.pbUpdate(true)
-      sim[:mega] = true
-      PBDebug.log_ai("[predicted_damage] Mega Evolution simulation applied: #{battler.name} (idx=#{idx})")
-      return sim  # Cannot Mega + Tera simultaneously
-    end
-
-    # Terastallization: use cached pre-evaluation
-    if should_simulate_tera?(idx, real_ai_user_idx)
-      sim[:prev_tera] = battler.pokemon.instance_variable_get(:@terastallized)
-      sim[:prev_form] = battler.form
-      battler.pokemon.instance_variable_set(:@terastallized, true)
-      # form_update includes scene calls, so only use pbUpdate(true)
-      if battler.form != battler.pokemon.form
-        battler.form = battler.pokemon.form
-      end
-      battler.pbUpdate(true)
-      sim[:tera] = true
-      PBDebug.log_ai("[predicted_damage] Terastallization simulation applied: #{battler.name} (idx=#{idx}, type=#{battler.pokemon.tera_type})")
-    end
-
-    sim
-  end
-
-  #---------------------------------------------------------------------------
-  # Restore simulation state
-  #---------------------------------------------------------------------------
-  def restore_transform(battler, sim)
-    if sim[:mega]
-      battler.pokemon.makeUnmega
-      battler.form = sim[:prev_form]
-      battler.pbUpdate(true)
-    end
-    if sim[:tera]
-      battler.pokemon.instance_variable_set(:@terastallized, sim[:prev_tera])
-      battler.form = sim[:prev_form]
-      battler.pbUpdate(true)
-    end
-  end
-
-  #---------------------------------------------------------------------------
   # Tera STAB correction: compensate for the difference between rough_damage's
   # simple STAB and the actual Tera STAB multiplier.
   # rough_damage applies 1.5x/2.0x(Adaptability) based on pbTypes, but
@@ -173,7 +105,7 @@ class Battle::AI::AIMove
   # Simulation setup: swap battlers, apply Intimidate, field, Mega/Tera
   # Returns a state hash used by restore_simulation to undo everything.
   #---------------------------------------------------------------------------
-  def setup_simulation(user, target, user_pokemon, target_pokemon)
+  def setup_simulation(user, target, user_pokemon, target_pokemon, switch_in_stages = nil)
     sim = {}
     user_idx   = user.index
     target_idx = target.index
@@ -191,12 +123,18 @@ class Battle::AI::AIMove
       sim[:prev_user_battler] = @ai.battle.battlers[user_idx]
       temp = Battle::Battler.new(@ai.battle, user_idx)
       temp.pbInitialize(user_pokemon, 0)
+      if switch_in_stages
+        switch_in_stages.each { |stat, stage| temp.stages[stat] = stage.clamp(-6, 6) }
+      end
       @ai.battle.battlers[user_idx] = temp
     end
     if target_pokemon
       sim[:prev_target_battler] = @ai.battle.battlers[target_idx]
       temp = Battle::Battler.new(@ai.battle, target_idx)
       temp.pbInitialize(target_pokemon, 0)
+      if switch_in_stages
+        switch_in_stages.each { |stat, stage| temp.stages[stat] = stage.clamp(-6, 6) }
+      end
       @ai.battle.battlers[target_idx] = temp
     end
 
@@ -208,14 +146,8 @@ class Battle::AI::AIMove
     # Simulate Intimidate
     sim[:intimidate] = simulate_intimidate(user_idx, target_idx, user_pokemon, target_pokemon)
 
-    # Mega Evolution / Terastallization simulation
-    # Pass the original AI user index so Tera simulation works for both
-    # offensive (attacker) and defensive (defender) damage calculations.
-    real_ai_user_idx = sim[:prev_user].index
     sim[:eff_user]   = @ai.battle.battlers[user_idx]
     sim[:eff_target] = @ai.battle.battlers[target_idx]
-    sim[:user_sim]   = maybe_simulate_transform(sim[:eff_user], user_idx, user_pokemon, real_ai_user_idx)
-    sim[:target_sim] = maybe_simulate_transform(sim[:eff_target], target_idx, target_pokemon, real_ai_user_idx)
 
     # Field weather/terrain override
     switch_in_pkmn = user_pokemon || target_pokemon
@@ -269,9 +201,6 @@ class Battle::AI::AIMove
     # Restore battler slots
     @ai.battle.battlers[sim[:user_idx]]   = sim[:prev_user_battler]   if sim[:prev_user_battler]
     @ai.battle.battlers[sim[:target_idx]] = sim[:prev_target_battler] if sim[:prev_target_battler]
-    # Restore transforms
-    restore_transform(sim[:eff_user], sim[:user_sim]) if sim[:user_sim]
-    restore_transform(sim[:eff_target], sim[:target_sim]) if sim[:target_sim]
     # Restore AI references
     @ai.instance_variable_set(:@user, sim[:prev_user])
     @ai.instance_variable_set(:@target, sim[:prev_target])
@@ -324,14 +253,11 @@ class Battle::AI::AIMove
   #---------------------------------------------------------------------------
   # Apply Tera STAB damage corrections
   #---------------------------------------------------------------------------
-  def apply_damage_corrections(dmg, eff_user, user_sim, calc_type)
-    # Tera STAB correction (only when attacker is Tera-simulated)
-    if user_sim[:tera]
-      correction = tera_stab_correction(eff_user, calc_type)
-      if correction != 1.0
-        PBDebug.log_ai("[predicted_damage] Tera STAB correction: #{correction.round(3)}x (#{calc_type})")
-        dmg = (dmg * correction).round
-      end
+  def apply_damage_corrections(dmg, eff_user, calc_type)
+    correction = tera_stab_correction(eff_user, calc_type)
+    if correction != 1.0
+      PBDebug.log_ai("[predicted_damage] Tera STAB correction: #{correction.round(3)}x (#{calc_type})")
+      dmg = (dmg * correction).round
     end
     dmg
   end
@@ -339,11 +265,11 @@ class Battle::AI::AIMove
   #---------------------------------------------------------------------------
   # predicted_damage: orchestrator
   #---------------------------------------------------------------------------
-  def predicted_damage(user:, target:, user_pokemon: nil, target_pokemon: nil)
+  def predicted_damage(user:, target:, user_pokemon: nil, target_pokemon: nil, switch_in_stages: nil)
     sim = nil
     prev_move = @ai.instance_variable_get(:@move)
     begin
-      sim = setup_simulation(user, target, user_pokemon, target_pokemon)
+      sim = setup_simulation(user, target, user_pokemon, target_pokemon, switch_in_stages)
       # Early return 0 for moves predicted to fail
       @ai.instance_variable_set(:@move, self)
       will_fail = (@ai.pbPredictMoveFailure rescue false) ||
@@ -352,7 +278,7 @@ class Battle::AI::AIMove
 
       calc_type = self.rough_type
       dmg = self.rough_damage
-      dmg = apply_damage_corrections(dmg, sim[:eff_user], sim[:user_sim], calc_type)
+      dmg = apply_damage_corrections(dmg, sim[:eff_user], calc_type)
       dmg -= check_immunities(dmg, calc_type, sim[:eff_user], sim[:eff_target])
 
       # If target at full HP with Sturdy/Focus Sash and move would OHKO, cap at HP-1
