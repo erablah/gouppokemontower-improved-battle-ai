@@ -29,30 +29,158 @@ class Battle::Battler
 end
 
 #-------------------------------------------------------------------------------
-# Lagging Tail / Full Incense: override faster_than? to account for
-# PriorityBracketChange items that force the holder to move last.
+# Lagging Tail / Full Incense constant (used by SimBattler)
 #-------------------------------------------------------------------------------
 LAGGING_TAIL_ITEMS = [:LAGGINGTAIL, :FULLINCENSE]
-
-class Battle::AI::AIBattler
-  alias _tower_orig_faster_than? faster_than?
-  def faster_than?(other)
-    return false if other.nil?
-    self_lagging  = LAGGING_TAIL_ITEMS.include?(battler.item_id) && battler.itemActive?
-    other_lagging = LAGGING_TAIL_ITEMS.include?(other.battler.item_id) && other.battler.itemActive?
-    # If only one side has a lagging item, that side is always slower
-    return false if self_lagging && !other_lagging
-    return true  if other_lagging && !self_lagging
-    # Both or neither — fall through to normal speed comparison
-    _tower_orig_faster_than?(other)
-  end
-end
 
 class Battle::AI
   MOVE_FAIL_SCORE = -999
   REPLACEMENT_THRESHOLD_NORMAL = 105
   REPLACEMENT_THRESHOLD_TERRIBLE_MOVES = 80
   REPLACEMENT_THRESHOLD_SHOULD_SWITCH = 70
+
+  attr_reader :party_ai_battlers
+
+  #---------------------------------------------------------------------------
+  # Override create_ai_objects: use SimBattler instead of AIBattler entirely.
+  # Also creates persistent reserve SimBattlers for all party Pokémon.
+  #---------------------------------------------------------------------------
+  def create_ai_objects
+    # Initialize AI trainers (same as base)
+    @trainers = [[], []]
+    @battle.player.each_with_index do |trainer, i|
+      @trainers[0][i] = AITrainer.new(self, 0, i, trainer)
+    end
+    if @battle.wildBattle?
+      @trainers[1][0] = AITrainer.new(self, 1, 0, nil)
+    else
+      @battle.opponent.each_with_index do |trainer, i|
+        @trainers[1][i] = AITrainer.new(self, 1, i, trainer)
+      end
+    end
+    # Initialize AI battlers using SimBattler instead of AIBattler
+    @battlers = []
+    @battle.battlers.each_with_index do |battler, i|
+      @battlers[i] = SimBattler.new(self, battler) if battler
+    end
+    # Initialize SimBattle for full battle simulation
+    @sim_battle = SimBattle.new(self)
+    @sim_battle.battlers = @battlers
+    # Initialize AI move object
+    @move = AIMove.new(self)
+    # Build reserve SimBattler pool
+    _build_party_ai_battlers
+  end
+
+  attr_reader :sim_battle
+
+  # Reset all simulation state to match current real battle
+  def reset_simulation!
+    @sim_battle.reset!
+    @battlers.each { |b| b&.reset_sim_state! }
+    @party_ai_battlers.each_value do |side_battlers|
+      side_battlers.each_value { |b| b&.reset_sim_state! }
+    end
+  end
+
+  # Override SOS Battles' create_new_ai_battler to use SimBattler
+  def create_new_ai_battler(idxBattler)
+    @battlers[idxBattler] = SimBattler.new(self, @battle.battlers[idxBattler])
+  end
+
+  # Build/rebuild the reserve SimBattler pool.
+  # Active battlers get SimBattler wrapping real battler; reserves get SimBattler from Pokemon.
+  def _build_party_ai_battlers
+    @party_ai_battlers = { 0 => {}, 1 => {} }
+    2.times do |side|
+      # Determine which party indices are currently active on this side
+      active_party_indices = {}
+      @battle.battlers.each do |b|
+        next unless b && !b.fainted?
+        b_side = @battle.opposes?(b.index) ? 1 : 0
+        next unless b_side == side
+        active_party_indices[b.pokemonIndex] = b.index
+      end
+      # Get the party for this side
+      party = (side == 0) ? @battle.pbParty(0) : @battle.pbParty(1)
+      # Determine a valid battler index for this side (for reserve SimBattlers)
+      side_index = (side == 0) ? 0 : 1
+      party.each_with_index do |pkmn, i|
+        next unless pkmn && !pkmn.egg? && pkmn.hp > 0
+        if active_party_indices[i]
+          # Active — create SimBattler wrapping the real battler
+          real_battler = @battle.battlers[active_party_indices[i]]
+          @party_ai_battlers[side][i] = SimBattler.new(self, real_battler)
+        else
+          # Reserve — create SimBattler from raw Pokemon
+          @party_ai_battlers[side][i] = SimBattler.from_pokemon(self, side_index, pkmn)
+        end
+      end
+    end
+  end
+
+  # Refresh the reserve pool when a switch happens (called from set_up).
+  # Active battlers get SimBattler wrapping real battler; reserves get reset.
+  def refresh_party_ai_battlers
+    return unless @party_ai_battlers
+    2.times do |side|
+      active_party_indices = {}
+      @battle.battlers.each do |b|
+        next unless b && !b.fainted?
+        b_side = @battle.opposes?(b.index) ? 1 : 0
+        next unless b_side == side
+        active_party_indices[b.pokemonIndex] = b.index
+      end
+      party = (side == 0) ? @battle.pbParty(0) : @battle.pbParty(1)
+      side_index = (side == 0) ? 0 : 1
+      party.each_with_index do |pkmn, i|
+        next unless pkmn && !pkmn.egg? && pkmn.hp > 0
+        if active_party_indices[i]
+          # Active — create fresh SimBattler wrapping the real battler
+          real_battler = @battle.battlers[active_party_indices[i]]
+          @party_ai_battlers[side][i] = SimBattler.new(self, real_battler)
+        else
+          existing = @party_ai_battlers[side][i]
+          if existing && existing.source_pokemon == pkmn
+            # Same Pokemon, just reset sim state (HP may have changed, etc.)
+            existing.reset_sim_state!
+          else
+            @party_ai_battlers[side][i] = SimBattler.from_pokemon(self, side_index, pkmn)
+          end
+        end
+      end
+      # Remove entries for fainted/gone Pokemon
+      @party_ai_battlers[side].delete_if { |i, _| !party[i] || party[i].egg? || party[i].hp <= 0 }
+    end
+  end
+
+  #---------------------------------------------------------------------------
+  # Override set_up completely to ensure SimBattler is used for @user.
+  # The base Essentials set_up may recreate AIBattlers; we prevent that.
+  #---------------------------------------------------------------------------
+  def set_up(idxBattler)
+    # Get the SimBattler from our @battlers array
+    @user = @battlers[idxBattler]
+    # Refresh the SimBattler to sync with current battler state
+    @user.refresh_battler if @user.respond_to?(:refresh_battler)
+    # Set up trainer reference
+    side = @battle.opposes?(idxBattler) ? 1 : 0
+    owner = @battle.pbGetOwnerIndexFromBattlerIndex(idxBattler)
+    @trainer = @trainers[side][owner]
+    # Refresh reserve SimBattlers
+    refresh_party_ai_battlers
+  end
+
+  #---------------------------------------------------------------------------
+  # Look up a reserve SimBattler by side and party index
+  #---------------------------------------------------------------------------
+  def get_reserve_sim_battler(idxBattler, party_index)
+    side = @battle.opposes?(idxBattler) ? 1 : 0
+    @party_ai_battlers&.dig(side, party_index)
+  end
+
+  # Alias for backwards compatibility
+  alias get_reserve_ai_battler get_reserve_sim_battler
 
   #---------------------------------------------------------------------------
   # Simulate registered transforms (mega/tera/dynamax) on the AI's own battler
@@ -141,10 +269,10 @@ class Battle::AI
     # Move effect-specific checks
     return true if Battle::AI::Handlers.move_will_fail_against_target?(move.function_code, move, user, target, self, @battle)
     # Psychic Terrain blocks priority moves against grounded targets
-    return true if @battle.field.terrain == :Psychic && target.battler.affectedByTerrain? &&
+    return true if @battle.field.terrain == :Psychic && target.affectedByTerrain? &&
                    target.opposes?(user) && move.rough_priority(user) > 0
     # Ability immunity (Volt Absorb, Flash Fire, Levitate, Good as Gold, etc.)
-    return true if move.move.pbImmunityByAbility(user.battler, target.battler, false)
+    return true if move.move.pbImmunityByAbility(user, target, false)
     # Dazzling / Queenly Majesty / Armor Tail — ally-side priority block
     if move.rough_priority(user) > 0 && target.opposes?(user)
       each_same_side_battler(target.side) do |b, _i|
@@ -152,22 +280,22 @@ class Battle::AI
       end
     end
     # Commander immunity (conditional on form state)
-    return true if target.has_active_ability?(:COMMANDER) && target.battler.respond_to?(:isCommander?) && target.battler.isCommander?
+    return true if target.has_active_ability?(:COMMANDER) && target.isCommander?
     # Type immunity
-    calc_type = move.rough_type
-    typeMod = move.move.pbCalcTypeMod(calc_type, user.battler, target.battler)
+    calc_type = move.rough_type(user)
+    typeMod = move.move.pbCalcTypeMod(calc_type, user, target)
     return true if move.move.pbDamagingMove? && Effectiveness.ineffective?(typeMod)
     # Dark-type immunity to Prankster-boosted status moves
     return true if Settings::MECHANICS_GENERATION >= 7 && move.statusMove? &&
                    user.has_active_ability?(:PRANKSTER) && target.has_type?(:DARK) && target.opposes?(user)
     # Airborne immunity to Ground moves
     return true if move.damagingMove? && calc_type == :GROUND &&
-                   target.battler.airborne? && !move.move.hitsFlyingTargets?
+                   target.airborne? && !move.move.hitsFlyingTargets?
     # Powder move immunity
-    return true if move.move.powderMove? && !target.battler.affectedByPowder?
+    return true if move.move.powderMove? && !target.affectedByPowder?
     # Substitute blocks non-ignoring status moves
     return true if target.effects[PBEffects::Substitute] > 0 && move.statusMove? &&
-                   !move.move.ignoresSubstitute?(user.battler) && user.index != target.index
+                   !move.move.ignoresSubstitute?(user) && user.index != target.index
     return false
   end
 
@@ -188,7 +316,7 @@ class Battle::AI
       score = Battle::AI::Handlers.apply_general_move_against_target_score_modifiers(
         score, @move, @user, @target, self, @battle)
     end
-    target_data = @move.pbTarget(@user.battler)
+    target_data = @move.pbTarget(@user)
     if pbShouldInvertScore?(target_data)
       if score == MOVE_USELESS_SCORE
         PBDebug.log("     move is useless against #{@target.name}")
@@ -241,7 +369,7 @@ class Battle::AI
   # change between now and using the move).
   def pbPredictMoveFailure
     # User is awake and can't use moves that are only usable when asleep
-    return true if !@user.battler.asleep? && @move.move.usableWhenAsleep?
+    return true if !@user.asleep? && @move.move.usableWhenAsleep?
 
     # Primal weather
     return true if @battle.pbWeather == :HeavyRain && @move.rough_type == :FIRE
@@ -569,7 +697,8 @@ class Battle::AI
     end
     # Rate each possible replacement Pokémon
     reserves.each_with_index do |reserve, i|
-      reserves[i][1] = rate_replacement_pokemon(idxBattler, party[reserve[0]], reserve[1])
+      reserve_ai = get_reserve_ai_battler(idxBattler, reserve[0])
+      reserves[i][1] = rate_replacement_pokemon(idxBattler, party[reserve[0]], reserve[1], reserve_ai)
       PBDebug.log_ai("pokemon #{party[reserve[0]].name} has switch score #{reserves[i][1]}")
     end
     reserves.sort! { |a, b| b[1] <=> a[1] }   # Sort from highest to lowest rated
@@ -609,9 +738,9 @@ class Battle::AI
   end
 
   #override
-  def rate_replacement_pokemon(idxBattler, pkmn, score)
+  def rate_replacement_pokemon(idxBattler, pkmn, score, reserve_ai = nil)
     # The actual calculations are deferred to handlers
-    score = Battle::AI::Handlers.score_replacement(idxBattler, pkmn, score, @battle, self)
+    score = Battle::AI::Handlers.score_replacement(idxBattler, pkmn, score, @battle, self, reserve_ai)
     return score.to_i
   end
 
@@ -649,26 +778,11 @@ end
 module Battle::AI::Handlers
   ScoreReplacement = HandlerHash.new
 
-  def self.score_replacement(idxBattler, pkmn, score, battle, user_ai)
+  def self.score_replacement(idxBattler, pkmn, score, battle, user_ai, reserve_ai = nil)
     ScoreReplacement.each do |id, score_proc|
-      new_score = score_proc.call(idxBattler, pkmn, score, battle, user_ai)
+      new_score = score_proc.call(idxBattler, pkmn, score, battle, user_ai, reserve_ai)
       score = new_score if new_score
     end
     return score
-  end
-end
-
-#===============================================================================
-# AIBattler compatibility patch (prevent NoMethodError)
-#===============================================================================
-class Battle::AI::AIBattler
-  def unstoppableAbility?(ability_id)
-    return self.battler.unstoppableAbility?(ability_id) if self.battler.respond_to?(:unstoppableAbility?)
-    return false
-  end
-
-  def isRaidBoss?
-    return self.battler.isRaidBoss? if self.battler.respond_to?(:isRaidBoss?)
-    return false
   end
 end

@@ -40,21 +40,22 @@ Battle::AI::Handlers::ScoreReplacement.add(:toxics_spikes_and_sticky_web,
 # first-hit prediction; scenarios 2 & 3 use the standard 1v1 method.
 #===============================================================================
 Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
-  proc { |idxBattler, pkmn, score, battle, ai|
+  proc { |idxBattler, pkmn, score, battle, ai, reserve_ai|
     prev_score = score
+    next score unless reserve_ai   # safety: can't score without AIBattler
     faint_replacement = !battle.command_phase
 
     # --- Compute switch-in stat stages (Baton Pass + Sticky Web) ---
     bp_stages = {}
-    if !faint_replacement && !ai.user.battler.fainted? &&
-       ai.user.battler.moves.any? { |m| m&.function_code == "SwitchOutUserPassOnEffects" }
+    if !faint_replacement && !ai.user.fainted? &&
+       ai.user.moves.any? { |m| m&.function_code == "SwitchOutUserPassOnEffects" }
       GameData::Stat.each_battle do |s|
         bp_stages[s.id] = ai.user.stages[s.id] if ai.user.stages[s.id] != 0
       end
     end
     sw_stages = {}
     if ai.user.pbOwnSide.effects[PBEffects::StickyWeb] &&
-       !pkmn.hasItem?(:HEAVYDUTYBOOTS) && !ai.pokemon_airborne?(pkmn)
+       !reserve_ai.has_active_item?(:HEAVYDUTYBOOTS) && !reserve_ai.airborne?
       sw_stages[:SPEED] = -1
     end
     # Combined stages for predicted_damage (BP + Sticky Web)
@@ -68,11 +69,11 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
       #   Scenario 1: Command phase, foe has NOT acted yet — hit is imminent
       #   Scenario 2: Command phase, foe HAS acted — safe this turn
       #   Scenario 3: Faint replacement (not command phase) — foe gets fresh turn
-      foe_already_acted = b.battler.movedThisRound? ||
-                          (!battle.command_phase && battle.choices[b.battler.index][0] != :UseMove)
+      foe_already_acted = (b.battler&.movedThisRound? rescue false) ||
+                          (!battle.command_phase && battle.choices[b.index][0] != :UseMove)
 
       # --- Foe's worst-case damage vs reserve ---
-      known_damaging = ai.known_foe_moves(b).select { |m| m&.damagingMove? && b.battler.pbCanChooseMove?(m, false, false) }
+      known_damaging = ai.known_foe_moves(b).select { |m| m&.damagingMove? && b.pbCanChooseMove?(m, false, false) }
       next if known_damaging.empty?
 
       worst_damage = 0
@@ -83,10 +84,9 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
       known_damaging.each do |m|
         PBDebug.log_ai("move_id: #{m.id}")
         sim_move = Battle::Move.from_pokemon_move(battle, Pokemon::Move.new(m.id))
-        target = Battle::AI::AIBattler.new(ai, idxBattler)
         move = Battle::AI::AIMove.new(ai)
         move.set_up(sim_move)
-        predicted_damage = move.predicted_damage(user: b, target: target, target_pokemon: pkmn, switch_in_stages: switch_in_stages)
+        predicted_damage = move.predicted_damage(user: b, target: reserve_ai, switch_in: :target, switch_in_stages: switch_in_stages)
         if predicted_damage > worst_damage
           worst_damage = predicted_damage
           worst_move_id = m.id
@@ -109,11 +109,10 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
       pkmn.moves.each do |m|
         next if m.power == 0 || (m.pp == 0 && m.total_pp > 0)
         next if ai.pokemon_can_absorb_move?(b.pokemon, m, m.type)
-        user = Battle::AI::AIBattler.new(ai, idxBattler)
         move = Battle::AI::AIMove.new(ai)
         simulated_move = Battle::Move.from_pokemon_move(battle, m)
         move.set_up(simulated_move)
-        predicted_damage = move.predicted_damage(user: user, target: b, user_pokemon: pkmn, switch_in_stages: switch_in_stages)
+        predicted_damage = move.predicted_damage(user: reserve_ai, target: b, switch_in: :user, switch_in_stages: switch_in_stages)
         if predicted_damage > best_user_damage
           best_user_damage = predicted_damage
           best_move_name = m.name
@@ -128,12 +127,12 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
       # --- Per-turn item effects (Leftovers/Black Sludge/Life Orb) ---
       user_heal = 0
       user_self_dmg = 0
-      if pkmn.hasItem?(:LEFTOVERS) ||
-         (pkmn.hasItem?(:BLACKSLUDGE) && pkmn.types.include?(:POISON))
-        user_heal = (pkmn.totalhp / 16.0).floor
+      if reserve_ai.has_active_item?(:LEFTOVERS) ||
+         (reserve_ai.has_active_item?(:BLACKSLUDGE) && reserve_ai.has_type?(:POISON))
+        user_heal = (reserve_ai.totalhp / 16.0).floor
       end
-      if pkmn.hasItem?(:LIFEORB) && !pkmn.hasAbility?(:MAGICGUARD)
-        user_self_dmg = (pkmn.totalhp / 10.0).floor
+      if reserve_ai.has_active_item?(:LIFEORB) && !reserve_ai.has_active_ability?(:MAGICGUARD)
+        user_self_dmg = (reserve_ai.totalhp / 10.0).floor
       end
 
       foe_heal = 0
@@ -152,11 +151,11 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
       elsif worst_move_priority > best_move_priority
         pkmn_faster = false
       else
-        pkmn_faster = ai.reserve_outspeeds_foe?(pkmn, b, extra_stages: bp_stages.empty? ? nil : bp_stages)
+        pkmn_faster = ai.reserve_outspeeds_foe?(reserve_ai, b, extra_stages: bp_stages.empty? ? nil : bp_stages)
       end
 
       # --- Build base combatant hashes for 1v1 simulation ---
-      user_c = { dmg: best_user_damage, move: best_user_move_obj, hp: pkmn.hp,
+      user_c = { dmg: best_user_damage, move: best_user_move_obj, hp: reserve_ai.hp,
                  priority_dmg: best_user_priority_dmg, heal_per_turn: user_heal, self_dmg_per_turn: user_self_dmg }
       foe_c  = { dmg: worst_damage, move: worst_move_obj, hp: b.hp,
                  priority_dmg: worst_priority_dmg, heal_per_turn: foe_heal, self_dmg_per_turn: foe_self_dmg }
@@ -164,7 +163,7 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
       # --- Scenario 1: First-hit prediction logic ---
       # Asymmetric first hit (first_hit_dmg ≠ subsequent_hit_dmg) due to move
       # prediction, so one_v_one_result doesn't apply to the first hit.
-      scenario_1 = !foe_already_acted && !ai.user.battler.fainted?
+      scenario_1 = !foe_already_acted && !ai.user.fainted?
       if scenario_1
         foe_vs_current = ai.damage_moves(b, ai.user)
         best_vs_current = foe_vs_current.values.max_by { |md| md[:dmg] }
@@ -190,10 +189,9 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
 
             if roll < (chance * 100).to_i
               sim_move = Battle::Move.from_pokemon_move(battle, Pokemon::Move.new(move_C_id))
-              target = Battle::AI::AIBattler.new(ai, idxBattler)
               ai_move = Battle::AI::AIMove.new(ai)
               ai_move.set_up(sim_move)
-              first_hit_dmg = ai_move.predicted_damage(user: b, target: target, target_pokemon: pkmn, switch_in_stages: switch_in_stages)
+              first_hit_dmg = ai_move.predicted_damage(user: b, target: reserve_ai, switch_in: :target, switch_in_stages: switch_in_stages)
               first_hit_dmg += entry_hazard_damage
               PBDebug.log_ai("  [Scenario1] #{pkmn.name} vs #{b.name}: predicted move_C=#{move_C_id} (chance=#{(chance*100).to_i}%, roll=#{roll}), first_hit=#{first_hit_dmg}")
             else
@@ -202,12 +200,12 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
             end
           end
 
-          remaining_hp = pkmn.hp - first_hit_dmg
+          remaining_hp = reserve_ai.hp - first_hit_dmg
 
           if remaining_hp <= 0
             # Reserve dies on entry — only extreme score in the system
             score -= 100
-            PBDebug.log_score_change(score - prev_score, "#{pkmn.name}: Scenario1 instant death (first_hit=#{first_hit_dmg}/#{pkmn.hp}hp)")
+            PBDebug.log_score_change(score - prev_score, "#{pkmn.name}: Scenario1 instant death (first_hit=#{first_hit_dmg}/#{reserve_ai.hp}hp)")
           else
             # 1v1 from remaining HP (subsequent turns use worst_damage, no hazards)
             result = ai.one_v_one_result(user_c.merge(hp: remaining_hp), foe_c, pkmn_faster)
@@ -246,12 +244,12 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
       if result[:user_wins]
         bonus = 5 + [turn_advantage * 5, 10].min + [user_dmg_ratio * 10, 10].min.to_i
         score += bonus
-        PBDebug.log_score_change(bonus, "#{pkmn.name}: wins 1v1 (turns=#{result[:u_turns]}v#{result[:f_turns]}, user_dmg=#{best_user_damage}/#{b.hp}hp, foe_dmg=#{worst_damage_with_hazards}/#{pkmn.hp}hp, #{spd_tag}, #{scenario_tag}, foe_remaining=#{(result[:foe_hp_pct] * 100).round(1)}%)")
+        PBDebug.log_score_change(bonus, "#{pkmn.name}: wins 1v1 (turns=#{result[:u_turns]}v#{result[:f_turns]}, user_dmg=#{best_user_damage}/#{b.hp}hp, foe_dmg=#{worst_damage_with_hazards}/#{reserve_ai.hp}hp, #{spd_tag}, #{scenario_tag}, foe_remaining=#{(result[:foe_hp_pct] * 100).round(1)}%)")
       else
         penalty = [(user_dmg_taken * 25).to_i, 25].min
         penalty += 25 if result[:foe_can_ohko] && !pkmn_faster
         score -= penalty
-        PBDebug.log_score_change(-penalty, "#{pkmn.name}: loses 1v1 (user_dmg=#{best_user_damage}/#{b.hp}hp, foe_dmg=#{worst_damage_with_hazards}/#{pkmn.hp}hp, #{spd_tag}, #{scenario_tag}, foe_remaining=#{(result[:foe_hp_pct] * 100).round(1)}%)")
+        PBDebug.log_score_change(-penalty, "#{pkmn.name}: loses 1v1 (user_dmg=#{best_user_damage}/#{b.hp}hp, foe_dmg=#{worst_damage_with_hazards}/#{reserve_ai.hp}hp, #{spd_tag}, #{scenario_tag}, foe_remaining=#{(result[:foe_hp_pct] * 100).round(1)}%)")
       end
     end
     next score
@@ -377,10 +375,8 @@ Battle::AI::Handlers::ScoreReplacement.add(:utility_switch_in,
 # E.g. Thunder Wave vs fast sweeper, Will-O-Wisp vs physical attacker
 #===============================================================================
 Battle::AI::Handlers::ScoreReplacement.add(:status_moves_value,
-  proc { |idxBattler, pkmn, score, battle, ai|
-    # Create a temporary battler for the reserve so ability checks work (e.g. Corrosion)
-    temp_user = Battle::Battler.new(battle, idxBattler)
-    temp_user.pbInitialize(pkmn, 0)
+  proc { |idxBattler, pkmn, score, battle, ai, reserve_ai|
+    next score unless reserve_ai   # safety: can't score without AIBattler
 
     ai.each_foe_battler(ai.user.side) do |b, i|
       foe_speed = b.rough_stat(:SPEED)
@@ -393,19 +389,19 @@ Battle::AI::Handlers::ScoreReplacement.add(:status_moves_value,
         case m.function_code
         when "ParalyzeTarget"
           # Thunder Wave vs fast sweeper
-          if foe_speed >= 100 && b.battler.pbCanParalyze?(temp_user, false)
+          if foe_speed >= 100 && b.battler.pbCanParalyze?(reserve_ai, false)
             score += 8
             PBDebug.log_score_change(8, "Status value: #{m.name} vs fast foe (spd=#{foe_speed})")
           end
         when "BurnTarget"
           # Will-O-Wisp vs physical attacker
-          if foe_is_physical && b.battler.pbCanBurn?(temp_user, false)
+          if foe_is_physical && b.battler.pbCanBurn?(reserve_ai, false)
             score += 8
             PBDebug.log_score_change(8, "Status value: #{m.name} vs physical foe")
           end
         when "PoisonTarget", "BadPoisonTarget"
           # Toxic vs bulky foe
-          if b.hp >= b.totalhp * 0.7 && b.battler.pbCanPoison?(temp_user, false)
+          if b.hp >= b.totalhp * 0.7 && b.battler.pbCanPoison?(reserve_ai, false)
             score += 5
             PBDebug.log_score_change(5, "Status value: #{m.name} vs healthy foe")
           end
@@ -426,7 +422,7 @@ Battle::AI::Handlers::ScoreReplacement.add(:intimidate_switch_in,
     next score unless pkmn.hasAbility?(:INTIMIDATE)
     ai.each_foe_battler(ai.user.side) do |b, _i|
       # Skip if foe is immune to Intimidate
-      next if b.battler.hasActiveAbility?(Battle::AI::AIMove::INTIMIDATE_IMMUNE)
+      next if b.has_active_ability?(Battle::AI::AIMove::INTIMIDATE_IMMUNE)
       next if battle.moldBreaker
       # Skip if foe's Attack is already at -6
       next if b.stages[:ATTACK] <= -6

@@ -249,60 +249,58 @@ class Battle::AI
   end
 
   #---------------------------------------------------------------------------
-  # [Helper] Does a reserve (party) Pokemon outspeed an on-field foe AIBattler?
-  # Creates a temporary Battler so pbSpeed accounts for abilities (Swift Swim,
-  # Chlorophyll, Sand Rush, etc.), items (Choice Scarf), paralysis, Tailwind,
-  # and other battle modifiers. Sticky Web's -1 Speed stage is pre-applied
-  # since the reserve hasn't switched in yet.
+  # [Helper] Does a reserve outspeed an on-field foe?
+  # Uses the reserve's persistent SimBattler for pbSpeed (accounts for abilities,
+  # items, paralysis, Tailwind, etc.). Sticky Web is pre-applied.
+  # Resets sim state after computation.
   #---------------------------------------------------------------------------
-  def reserve_outspeeds_foe?(pkmn, foe_battler, extra_stages: nil)
-    pkmn_lagging = LAGGING_TAIL_ITEMS.include?(pkmn.item_id)
-    foe_lagging  = LAGGING_TAIL_ITEMS.include?(foe_battler.battler.item_id) && foe_battler.battler.itemActive?
-    if pkmn_lagging && !foe_lagging
-      return false
-    elsif foe_lagging && !pkmn_lagging
-      return true
-    end
-    # Build a temporary battler to get a full pbSpeed calculation
-    temp = Battle::Battler.new(@battle, @user.index)
-    temp.pbInitialize(pkmn, 0)
+  def reserve_outspeeds_foe?(reserve_ai, foe_battler, extra_stages: nil)
+    reserve_lagging = LAGGING_TAIL_ITEMS.include?(reserve_ai.item_id) && reserve_ai.item_active?
+    foe_lagging     = LAGGING_TAIL_ITEMS.include?(foe_battler.item_id) && foe_battler.item_active?
+    return false if reserve_lagging && !foe_lagging
+    return true  if foe_lagging && !reserve_lagging
     # Apply passed-in stages (e.g. Baton Pass boosts)
     if extra_stages
-      extra_stages.each { |stat, stage| temp.stages[stat] = stage.clamp(-6, 6) }
+      extra_stages.each { |stat, stage| reserve_ai.sim_stages[stat] = stage.clamp(-6, 6) }
     end
     # Pre-apply Sticky Web's -1 Speed stage for grounded non-boots pkmn (stacks)
     if @user.pbOwnSide.effects[PBEffects::StickyWeb] &&
-       !pkmn.hasItem?(:HEAVYDUTYBOOTS) && !pokemon_airborne?(pkmn)
-      temp.stages[:SPEED] = [(temp.stages[:SPEED] || 0) - 1, -6].max
+       !reserve_ai.has_active_item?(:HEAVYDUTYBOOTS) && !reserve_ai.airborne?
+      reserve_ai.sim_stages[:SPEED] = [(reserve_ai.sim_stages[:SPEED] || 0) - 1, -6].max
     end
-    pkmn_speed = temp.pbSpeed
+    pkmn_speed = reserve_ai.pbSpeed
     foe_speed  = foe_battler.rough_stat(:SPEED)
     trick_room = @battle.field.effects[PBEffects::TrickRoom] > 0
+    reserve_ai.reset_sim_state!
     return (pkmn_speed > foe_speed) ^ trick_room
   end
 
   # Returns {move_id => {move: Battle::Move, dmg: int}}
-  # Computes predicted_damage for each of attacker's damaging moves against defender, cached per turn.
-  # - attacker/defender are AIBattler instances (attacker.index and defender.index are Integers)
+  # Simulates damage for each of attacker's damaging moves against defender, cached per turn.
+  # - attacker/defender can be AIBattler, SimBattler, or Battle::Battler
   # - keyed by move ID (symbol) for O(1) lookup of a specific move's damage
   # - cache key uses battler indexes; both directions stored separately (e.g. [0,1] != [1,0])
   def damage_moves(attacker, defender)
     mega = @battle.pbRegisteredMegaEvolution?(attacker.index) rescue false
-    tera = (@battle.pbRegisteredTerastallize?(attacker.index) rescue false) || attacker.battler.tera?
-    def_tera = defender.battler.tera?
+    tera = (@battle.pbRegisteredTerastallize?(attacker.index) rescue false) || attacker.tera?
+    def_tera = defender.tera?
     key = [attacker.index, defender.index, @battle.turnCount, mega, tera, def_tera,
-           attacker.battler.pokemon&.personalID, defender.battler.pokemon&.personalID]
+           attacker.pokemon&.personalID, defender.pokemon&.personalID]
     (@_ai_dmg_cache ||= {})[key] ||= begin
       PBDebug.log_ai("[damage_moves] computing #{attacker.name} → #{defender.name} (turn #{@battle.turnCount})")
       moves_by_id = {}
-      moves_list = (attacker.side != @user.side) ? known_foe_moves(attacker) : attacker.battler.moves
+      moves_list = (attacker.side != @user.side) ? known_foe_moves(attacker) : attacker.moves
       moves_list.each do |m|
         next unless m&.damagingMove?
-        next unless attacker.battler.pbCanChooseMove?(m, false, false)
+        next unless attacker.pbCanChooseMove?(m, false, false)
+        # Reset simulation state before each move calculation
+        @sim_battle.reset!
+        attacker.reset_sim_state!
+        defender.reset_sim_state!
         sim = Battle::AI::AIMove.new(self)
         sim.set_up(m)
         dmg = sim.predicted_damage(user: attacker, target: defender) || 0
-        pct_total = (100.0 * dmg / [1, defender.battler.totalhp].max).round(1)
+        pct_total = (100.0 * dmg / [1, defender.totalhp].max).round(1)
         pct_hp    = (100.0 * dmg / [1, defender.hp].max).round(1)
         PBDebug.log_ai("  #{m.name}: #{dmg} dmg (#{pct_total}% totalhp / #{pct_hp}% curhp)")
         moves_by_id[m.id] = { move: m, dmg: dmg }
@@ -315,10 +313,10 @@ class Battle::AI
   # Reuses damage_moves cache — no redundant computation.
   def matchup_summary
     mega = @battle.pbRegisteredMegaEvolution?(@user.index) rescue false
-    tera = (@battle.pbRegisteredTerastallize?(@user.index) rescue false) || @user.battler.tera?
+    tera = (@battle.pbRegisteredTerastallize?(@user.index) rescue false) || @user.tera?
     foe_ids = []
-    each_foe_battler(@user.side) { |b, _| foe_ids << b.battler.pokemon&.personalID }
-    key = [@user.index, @battle.turnCount, mega, tera, @user.battler.pokemon&.personalID, foe_ids]
+    each_foe_battler(@user.side) { |b, _| foe_ids << b.pokemon&.personalID }
+    key = [@user.index, @battle.turnCount, mega, tera, @user.pokemon&.personalID, foe_ids]
     (@_matchup_cache ||= {})[key] ||= begin
       summary = { foes: {} }
       user_speed = @user.rough_stat(:SPEED)
@@ -349,7 +347,7 @@ class Battle::AI
           effectively_outspeeds: foe_effectively_outspeeds,
           can_ohko:    one_v_one[:foe_can_ohko],
           foe_hp:      b.hp,
-          foe_totalhp: b.battler.totalhp,
+          foe_totalhp: b.totalhp,
           one_v_one:   one_v_one,
         }
         foe_entry[:switch_prediction_roll] = pbAIRandom(100)
@@ -369,18 +367,18 @@ class Battle::AI
   # Result is cached per [battler.index, turnCount] for consistency.
   #---------------------------------------------------------------------------
   def known_foe_moves(foe_ai_battler)
-    cache_key = [foe_ai_battler.index, @battle.turnCount, foe_ai_battler.battler.pokemon&.personalID]
+    cache_key = [foe_ai_battler.index, @battle.turnCount, foe_ai_battler.pokemon&.personalID]
     (@_known_foe_moves_cache ||= {})[cache_key] ||= begin
-      all_moves = foe_ai_battler.battler.moves.compact
+      all_moves = foe_ai_battler.moves.compact
       acted_ids = @battle.instance_variable_get(:@_foe_acted_ids) || {}
-      pkmn = foe_ai_battler.battler.pokemon
+      pkmn = foe_ai_battler.pokemon
 
       if pkmn && acted_ids[pkmn.personalID]
         # Foe has acted before — full knowledge
         all_moves
       else
         # Foe has never acted — protect best STAB moves, maybe hide one other
-        foe_types = foe_ai_battler.battler.pbTypes(true)
+        foe_types = foe_ai_battler.pbTypes(true)
         # For each type, find the highest-power STAB move
         protected_moves = []
         foe_types.each do |t|

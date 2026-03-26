@@ -7,16 +7,15 @@ class Battle::AI
   # override: only one tera available per team.
   alias wants_to_terastallize_original wants_to_terastallize?
   def wants_to_terastallize?
-        return true if @user.battler.isSpecies?(:TERAPAGOS)
+        return true if @user.isSpecies?(:TERAPAGOS)
         return @user.get_total_tera_score >= 0
   end
 end
 
-class Battle::AI::AIBattler
+class Battle::AI::SimBattler
   #=============================================================================
   # Scenario-based Tera scoring using predicted damage and 1v1 simulation
   #=============================================================================
-  alias total_tera_score_original get_total_tera_score
   def get_total_tera_score
     tera_type = @battler.tera_type
     type_name = GameData::Type.get(tera_type).name
