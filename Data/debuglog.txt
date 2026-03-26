@@ -1,1759 +1,206 @@
-[AI] DEBUG: [랜덤 파티] 트레이너 엘리트 트레이너 test의 팀은 6마리이므로 랜덤 파티가 적용되지 않았습니다.
+[AI] DEBUG: [랜덤 파티] 트레이너 챔피언 테사의 팀은 6마리이므로 랜덤 파티가 적용되지 않았습니다.
 
 ================================================================
 
 [Started battle] Single trainer battle (1 trainer(s) vs. 1 trainer(s))
-"\j[엘리트 트레이너 test,이,가] 승부를 걸어왔다!"
-"\j[엘리트 트레이너 test,은,는] \j[킬라플로르,을,를] 내보냈다!"
-"가랏! 너트령!"
+"\j[챔피언 테사,이,가] 승부를 걸어왔다!"
+"\j[챔피언 테사,은,는] \j[킬라플로르,을,를] 내보냈다!"
+"가랏! 오롱털!"
+"\j[상대 킬라플로르,은,는] \j[풍선,으로,로] 인해 공중에 떠 있다!"
 
 ===== Round 1 =====
 
-[AI] 킬라플로르 (1) is considering using 에너지볼 against 너트령 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 10% = 1
-     +  1: function code modifier (against target)
-     -  8: can trigger the target's ability
-[AI] [damage_moves] computing 너트령 (0) → 킬라플로르 (1) (turn 0)
-[AI] [known_foe_moves] Hiding 탁쳐서떨구기 from 너트령 (0) (never acted)
-[AI] [damage_moves] computing 킬라플로르 (1) → 너트령 (0) (turn 0)
-[AI]   에너지볼: 12 dmg (6.6% totalhp / 6.6% curhp)
-[AI]   대지의힘: 47 dmg (26.0% totalhp / 26.0% curhp)
-[AI]   킬러스핀: 0 dmg (0.0% totalhp / 0.0% curhp)
-     +  1: 1v1: base damage (12/181)
-     - 40: 1v1: move very weak (6.6%)
-     +  5: 1v1: user wins in 16 turns
 [AI] 킬라플로르 (1) is considering using 스텔스록...
      + 30: function code modifier (generic)
      +  5: 5. General Status Move Boost.
-[AI] 킬라플로르 (1) is considering using 대지의힘 against 너트령 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 10% = 1
-     +  1: function code modifier (against target)
-     -  8: can trigger the target's ability
-     +  7: 1v1: base damage (47/181)
-     - 28: 1v1: move weak (26.0%)
-     +  5: 1v1: user wins in 4 turns
+[AI] 킬라플로르 (1) is considering using 파워젬 against 오롱털 (0)...
+[AI] [damage_moves] computing 킬라플로르 (1) → 오롱털 (0) (turn 0)
+
+**Exception: undefined method `pbCheckGlobalAbility' for #<Battle::AI::SimBattle>
+[Charms Compilation] 043_07_-_DrDoom76's_Charms_STAB_Charm.rb:8:in `pbCalcDamageMultipliers'
+[[DBK] Dynamax] 014_[013]_Battle_Move.rb:72:in `pbCalcDamageMultipliers'
+[Deluxe Battle Kit] 004_[000]_Essentials_Patches_[002]_Damage_Calc_Refactor.rb:340:in `pbCalcDamage'
+[GO UP POKEMON TOWER] 001c_AI_MoveSimulation.rb:67:in `simulate_move'
+[GO UP POKEMON TOWER] 001d_AI_Improved_PredictedDamage.rb:82:in `predicted_damage'
+[GO UP POKEMON TOWER] 001e_AI_Improved_Matchup.rb:302:in `block in damage_moves'
+[GO UP POKEMON TOWER] 001e_AI_Improved_Matchup.rb:293:in `each'
+[GO UP POKEMON TOWER] 001e_AI_Improved_Matchup.rb:293:in `damage_moves'
+[GO UP POKEMON TOWER] 001e_AI_Improved_Matchup.rb:86:in `make_combatant'
+[GO UP POKEMON TOWER] 001e_AI_Improved_Matchup.rb:330:in `block in matchup_summary'
+205:AI_Utilities:19:in `block in each_foe_battler'
+205:AI_Utilities:17:in `each'
+205:AI_Utilities:17:in `each_with_index'
+205:AI_Utilities:17:in `each_foe_battler'
+[GO UP POKEMON TOWER] 001e_AI_Improved_Matchup.rb:329:in `matchup_summary'
+[GO UP POKEMON TOWER] 003_AI_Improved_GeneralMoveAgainstTarget.rb:22:in `block in <main>'
+198:Battle_AI:130:in `block in apply_general_move_against_target_score_modifiers'
+035:Event_Handlers:129:in `block in each'
+035:Event_Handlers:129:in `each_pair'
+035:Event_Handlers:129:in `each'
+198:Battle_AI:129:in `apply_general_move_against_target_score_modifiers'
+[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:316:in `pbGetMoveScoreAgainstTarget'
+[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:393:in `block in pbGetMoveScore'
+[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:390:in `each'
+[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:390:in `pbGetMoveScore'
+[Deluxe Battle Kit] 005_[000]_Essentials_Patches_[003]_Command_Menu_Refactor.rb:522:in `block (3 levels) in pbGetMoveScores'
+012:PBDebug:6:in `logonerr'
+[Deluxe Battle Kit] 005_[000]_Essentials_Patches_[003]_Command_Menu_Refactor.rb:522:in `block (2 levels) in pbGetMoveScores'
+[Deluxe Battle Kit] 005_[000]_Essentials_Patches_[003]_Command_Menu_Refactor.rb:517:in `each'
+[Deluxe Battle Kit] 005_[000]_Essentials_Patches_[003]_Command_Menu_Refactor.rb:517:in `block in pbGetMoveScores'
+[Deluxe Battle Kit] 005_[000]_Essentials_Patches_[003]_Command_Menu_Refactor.rb:481:in `each'
+[Deluxe Battle Kit] 005_[000]_Essentials_Patches_[003]_Command_Menu_Refactor.rb:481:in `each_with_index'
+[Deluxe Battle Kit] 005_[000]_Essentials_Patches_[003]_Command_Menu_Refactor.rb:481:in `pbGetMoveScores'
+[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:470:in `pbDefaultChooseEnemyCommand'
+155:Battle_CommandPhase:215:in `block in pbCommandPhaseLoop'
+155:Battle_CommandPhase:203:in `loop'
+155:Battle_CommandPhase:203:in `pbCommandPhaseLoop'
+[Deluxe Battle Kit] 005_[000]_Essentials_Patches_[003]_Command_Menu_Refactor.rb:381:in `pbCommandPhase'
+[Delta Speed Up] 001__Main_Script.rb:73:in `pbCommandPhase'
+148:Battle_StartAndEnd:336:in `block (2 levels) in pbBattleLoop'
+012:PBDebug:6:in `logonerr'
+148:Battle_StartAndEnd:336:in `block in pbBattleLoop'
+148:Battle_StartAndEnd:324:in `loop'
+148:Battle_StartAndEnd:324:in `pbBattleLoop'
+[Generation 9 Pack] 010_[001]_Battle_[003]_Weather_and_Status.rb:98:in `pbStartBattleCore'
+148:Battle_StartAndEnd:271:in `pbStartBattle'
+[GO UP POKEMON TOWER] 015_Debug_Utils.rb:69:in `pbStartBattle'
+256:Overworld_BattleStarting:521:in `block (2 levels) in start_core'
+257:Overworld_BattleIntroAnim:55:in `pbSceneStandby'
+256:Overworld_BattleStarting:521:in `block in start_core'
+257:Overworld_BattleIntroAnim:126:in `pbBattleAnimation'
+256:Overworld_BattleStarting:520:in `start_core'
+256:Overworld_BattleStarting:486:in `start'
+[GO UP POKEMON TOWER] 015_Debug_Utils.rb:208:in `block in <main>'
+036:Event_HandlerCollections:121:in `call'
+385:Debug_Menus:138:in `block in pbDebugMenu'
+385:Debug_Menus:100:in `loop'
+385:Debug_Menus:100:in `pbDebugMenu'
+[Following Pokemon EX] 015_Script_Additions_Refresh.rb:111:in `pbDebugMenu'
+293:UI_PauseMenu:323:in `block (2 levels) in <main>'
+079:MessageConfig:575:in `pbFadeOutIn'
+293:UI_PauseMenu:322:in `block in <main>'
+[Voltseon's Pause Menu] 003_003_VoltseonMenu_Menu.rb:54:in `update'
+[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:222:in `block in update'
+[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `loop'
+[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `update'
+[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:297:in `pbStartPokemonMenu'
+[[MUI] Enhanced Pokemon UI] 003_[002]_Legacy_Data.rb:323:in `pbStartPokemonMenu'
+[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:288:in `call_menu'
+032:Scene_Map:207:in `update'
+400:Unreal Time:299:in `update'
+[Following Pokemon EX] 015_Script_Additions_Refresh.rb:178:in `update'
+[Sun Script] 001_Main.rb:26:in `update'
+032:Scene_Map:238:in `block in main'
+032:Scene_Map:235:in `loop'
+032:Scene_Map:235:in `main'
+[Sun Script] 001_Main.rb:20:in `main'
+412:Main:35:in `mainFunctionDebug'
+412:Main:18:in `block in mainFunction'
+014:Errors:80:in `pbCriticalCode'
+412:Main:18:in `mainFunction'
+412:Main:45:in `block in <main>'
+412:Main:44:in `loop'
+412:Main:44:in `<main>'
+-e:in `eval'
+
+
+[AI] 킬라플로르 (1) is considering using 니들가드...
+     + 12: function code modifier (generic)
+     +  5: 5. General Status Move Boost.
+     - 40: Protect has no stall value.
 [AI] 킬라플로르 (1) is considering using 킬러스핀...
-     move will not affect 너트령 (0)
-     -1099: move will fail
-     -999: move will fail
+[AI] [damage_moves] computing 킬라플로르 (1) → 오롱털 (0) (turn 0)
+
+**Exception: undefined method `pbCheckGlobalAbility' for #<Battle::AI::SimBattle>
+[Charms Compilation] 043_07_-_DrDoom76's_Charms_STAB_Charm.rb:8:in `pbCalcDamageMultipliers'
+[[DBK] Dynamax] 014_[013]_Battle_Move.rb:72:in `pbCalcDamageMultipliers'
+[Deluxe Battle Kit] 004_[000]_Essentials_Patches_[002]_Damage_Calc_Refactor.rb:340:in `pbCalcDamage'
+[GO UP POKEMON TOWER] 001c_AI_MoveSimulation.rb:67:in `simulate_move'
+[GO UP POKEMON TOWER] 001d_AI_Improved_PredictedDamage.rb:82:in `predicted_damage'
+[GO UP POKEMON TOWER] 001e_AI_Improved_Matchup.rb:302:in `block in damage_moves'
+[GO UP POKEMON TOWER] 001e_AI_Improved_Matchup.rb:293:in `each'
+[GO UP POKEMON TOWER] 001e_AI_Improved_Matchup.rb:293:in `damage_moves'
+[GO UP POKEMON TOWER] 001e_AI_Improved_Matchup.rb:86:in `make_combatant'
+[GO UP POKEMON TOWER] 001e_AI_Improved_Matchup.rb:330:in `block in matchup_summary'
+205:AI_Utilities:19:in `block in each_foe_battler'
+205:AI_Utilities:17:in `each'
+205:AI_Utilities:17:in `each_with_index'
+205:AI_Utilities:17:in `each_foe_battler'
+[GO UP POKEMON TOWER] 001e_AI_Improved_Matchup.rb:329:in `matchup_summary'
+[GO UP POKEMON TOWER] 003_AI_Improved_GeneralMoveAgainstTarget.rb:22:in `block in <main>'
+198:Battle_AI:130:in `block in apply_general_move_against_target_score_modifiers'
+035:Event_Handlers:129:in `block in each'
+035:Event_Handlers:129:in `each_pair'
+035:Event_Handlers:129:in `each'
+198:Battle_AI:129:in `apply_general_move_against_target_score_modifiers'
+[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:316:in `pbGetMoveScoreAgainstTarget'
+[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:393:in `block in pbGetMoveScore'
+[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:390:in `each'
+[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:390:in `pbGetMoveScore'
+[Deluxe Battle Kit] 005_[000]_Essentials_Patches_[003]_Command_Menu_Refactor.rb:535:in `block (2 levels) in pbGetMoveScores'
+012:PBDebug:6:in `logonerr'
+[Deluxe Battle Kit] 005_[000]_Essentials_Patches_[003]_Command_Menu_Refactor.rb:535:in `block in pbGetMoveScores'
+[Deluxe Battle Kit] 005_[000]_Essentials_Patches_[003]_Command_Menu_Refactor.rb:481:in `each'
+[Deluxe Battle Kit] 005_[000]_Essentials_Patches_[003]_Command_Menu_Refactor.rb:481:in `each_with_index'
+[Deluxe Battle Kit] 005_[000]_Essentials_Patches_[003]_Command_Menu_Refactor.rb:481:in `pbGetMoveScores'
+[GO UP POKEMON TOWER] 001_AI_Improved_Core.rb:470:in `pbDefaultChooseEnemyCommand'
+155:Battle_CommandPhase:215:in `block in pbCommandPhaseLoop'
+155:Battle_CommandPhase:203:in `loop'
+155:Battle_CommandPhase:203:in `pbCommandPhaseLoop'
+[Deluxe Battle Kit] 005_[000]_Essentials_Patches_[003]_Command_Menu_Refactor.rb:381:in `pbCommandPhase'
+[Delta Speed Up] 001__Main_Script.rb:73:in `pbCommandPhase'
+148:Battle_StartAndEnd:336:in `block (2 levels) in pbBattleLoop'
+012:PBDebug:6:in `logonerr'
+148:Battle_StartAndEnd:336:in `block in pbBattleLoop'
+148:Battle_StartAndEnd:324:in `loop'
+148:Battle_StartAndEnd:324:in `pbBattleLoop'
+[Generation 9 Pack] 010_[001]_Battle_[003]_Weather_and_Status.rb:98:in `pbStartBattleCore'
+148:Battle_StartAndEnd:271:in `pbStartBattle'
+[GO UP POKEMON TOWER] 015_Debug_Utils.rb:69:in `pbStartBattle'
+256:Overworld_BattleStarting:521:in `block (2 levels) in start_core'
+257:Overworld_BattleIntroAnim:55:in `pbSceneStandby'
+256:Overworld_BattleStarting:521:in `block in start_core'
+257:Overworld_BattleIntroAnim:126:in `pbBattleAnimation'
+256:Overworld_BattleStarting:520:in `start_core'
+256:Overworld_BattleStarting:486:in `start'
+[GO UP POKEMON TOWER] 015_Debug_Utils.rb:208:in `block in <main>'
+036:Event_HandlerCollections:121:in `call'
+385:Debug_Menus:138:in `block in pbDebugMenu'
+385:Debug_Menus:100:in `loop'
+385:Debug_Menus:100:in `pbDebugMenu'
+[Following Pokemon EX] 015_Script_Additions_Refresh.rb:111:in `pbDebugMenu'
+293:UI_PauseMenu:323:in `block (2 levels) in <main>'
+079:MessageConfig:575:in `pbFadeOutIn'
+293:UI_PauseMenu:322:in `block in <main>'
+[Voltseon's Pause Menu] 003_003_VoltseonMenu_Menu.rb:54:in `update'
+[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:222:in `block in update'
+[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `loop'
+[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:219:in `update'
+[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:297:in `pbStartPokemonMenu'
+[[MUI] Enhanced Pokemon UI] 003_[002]_Legacy_Data.rb:323:in `pbStartPokemonMenu'
+[Voltseon's Pause Menu] 002_002_VoltseonMenu_Main.rb:288:in `call_menu'
+032:Scene_Map:207:in `update'
+400:Unreal Time:299:in `update'
+[Following Pokemon EX] 015_Script_Additions_Refresh.rb:178:in `update'
+[Sun Script] 001_Main.rb:26:in `update'
+032:Scene_Map:238:in `block in main'
+032:Scene_Map:235:in `loop'
+032:Scene_Map:235:in `main'
+[Sun Script] 001_Main.rb:20:in `main'
+412:Main:35:in `mainFunctionDebug'
+412:Main:18:in `block in mainFunction'
+014:Errors:80:in `pbCriticalCode'
+412:Main:18:in `mainFunction'
+412:Main:45:in `block in <main>'
+412:Main:44:in `loop'
+412:Main:44:in `<main>'
+-e:in `eval'
+
+
 [AI] Move choices for 킬라플로르 (1) with threshold: 115: 
-[AI]    *   0.0% to use 에너지볼 (target 0): score 59
 [AI]    * 100.0% to use 스텔스록: score 135
-[AI]    *   0.0% to use 대지의힘 (target 0): score 77
-[AI]    *   0.0% to use 킬러스핀: score -999
+[AI]    *   0.0% to use 파워젬 (target 0): score 100
+[AI]    *   0.0% to use 니들가드: score 77
+[AI]    *   0.0% to use 킬러스핀: score 100
+[AI] [Sucker Punch mind game] chosen=Battle::Move::AddStealthRocksToFoeSide (스텔스록)
 [AI] => will use 스텔스록
-
-
-[Use move] 상대 킬라플로르 (1) used 스텔스록
-"상대 킬라플로르의 스텔스록!"
-"우리편 주위로 뾰족한 돌이 떠다닌다!"
-[Use move] 너트령 (0) used 스텔스록
-"너트령의 스텔스록!"
-"상대편 주위로 뾰족한 돌이 떠다닌다!"
-
-[End of round 1]
-
-===== Round 2 =====
-
-[AI] 킬라플로르 (1) is considering using 에너지볼 against 너트령 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 10% = 1
-     +  1: function code modifier (against target)
-     -  8: can trigger the target's ability
-[AI] [damage_moves] computing 너트령 (0) → 킬라플로르 (1) (turn 1)
-[AI]   탁쳐서떨구기: 46 dmg (26.9% totalhp / 26.9% curhp)
-[AI] [damage_moves] computing 킬라플로르 (1) → 너트령 (0) (turn 1)
-[AI]   에너지볼: 12 dmg (6.6% totalhp / 6.6% curhp)
-[AI]   대지의힘: 47 dmg (26.0% totalhp / 26.0% curhp)
-[AI]   킬러스핀: 0 dmg (0.0% totalhp / 0.0% curhp)
-     +  1: 1v1: base damage (12/181)
-     - 40: 1v1: move very weak (6.6%)
-[AI] 킬라플로르 (1) is considering using 스텔스록...
-     -1099: move will fail
-[AI] 킬라플로르 (1) is considering using 대지의힘 against 너트령 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 10% = 1
-     +  1: function code modifier (against target)
-     -  8: can trigger the target's ability
-     +  7: 1v1: base damage (47/181)
-     - 28: 1v1: move weak (26.0%)
-     +  5: 1v1: user wins in 4 turns
-[AI] 킬라플로르 (1) is considering using 킬러스핀...
-     move will not affect 너트령 (0)
-     -1099: move will fail
-     -999: move will fail
-[AI] 킬라플로르 (1) couldn't find any usable items
-[AI] 킬라플로르 (1) wants to switch due to terrible moves [에너지볼=54, 스텔스록=-999, 대지의힘=77, 킬러스핀=-999]
-[AI] 킬라플로르 (1) is being forced to switch out
-     -  6: 클레스퍼트라: entry hazard damage 25.125
-[AI] move_id: KNOCKOFF
-[AI]   [Scenario1] 클레스퍼트라 vs 너트령 (0): same worst move (KNOCKOFF), first_hit=109.125
-     - 22: 클레스퍼트라: Scenario1 loses 1v1 (foe_dmg=84/91.875hp, faster, remaining_hp=91.875/201)
-     +  8: 클레스퍼트라: outspeeds 너트령 (0).
-[AI] pokemon 클레스퍼트라 has switch score 79
-     -  3: 브리가론: entry hazard damage 12.1875
-[AI] move_id: KNOCKOFF
-[AI]   [Scenario1] 브리가론 vs 너트령 (0): same worst move (KNOCKOFF), first_hit=24.1875
-     + 19: 브리가론: Scenario1 wins 1v1 (turns=3v15, user_dmg=90/181hp, remaining_hp=170.8125/195)
-     +  8: 브리가론: outspeeds 너트령 (0).
-[AI] pokemon 브리가론 has switch score 123
-     - 12: 위유이: entry hazard damage 32.75
-[AI] move_id: KNOCKOFF
-[AI]   [Scenario1] 위유이 vs 너트령 (0): same worst move (KNOCKOFF), first_hit=51.75
-     + 25: 위유이: Scenario1 wins 1v1 (turns=1v5, user_dmg=456/181hp, remaining_hp=79.25/131)
-     +  8: Status value: 도깨비불 vs physical foe
-     +  8: 위유이: outspeeds 너트령 (0).
-[AI] pokemon 위유이 has switch score 128
-     -  6: 테라파고스: entry hazard damage 21.375
-[AI] move_id: KNOCKOFF
-[AI]   [Scenario1] 테라파고스 vs 너트령 (0): same worst move (KNOCKOFF), first_hit=69.375
-     - 11: 테라파고스: Scenario1 loses 1v1 (foe_dmg=48/101.625hp, faster, remaining_hp=101.625/171)
-     +  8: 테라파고스: outspeeds 너트령 (0).
-[AI] pokemon 테라파고스 has switch score 90
-     -  3: 대도각참: entry hazard damage 12.9375
-[AI] move_id: KNOCKOFF
-[AI]   [Scenario1] 대도각참 vs 너트령 (0): same worst move (KNOCKOFF), first_hit=31.9375
-     + 19: 대도각참: Scenario1 wins 1v1 (turns=3v10, user_dmg=80/181hp, remaining_hp=175.0625/207)
-     +  8: 대도각참: outspeeds 너트령 (0).
-[AI] pokemon 대도각참 has switch score 123
-[AI] => will switch with 위유이
-
-
-"\j[엘리트 트레이너 test,이,가] \j[킬라플로르,을,를] 넣었다!"
-"\j[엘리트 트레이너 test,은,는] \j[위유이,을,를] 내보냈다!"
-[HP change] 상대 위유이 lost 33 HP (131 -> 98)
-"상대 위유이에게 뾰족한 바위가 박혔다!"
-[Ability triggered] 상대 위유이's 재앙의구슬
-"상대 위유이의 \j[재앙의구슬,이,가] 주위의 모든 포켓몬의 \j[특수방어,을,를] 약하게 했다!"
-[Use move] 너트령 (0) used 씨뿌리기
-"너트령의 씨뿌리기!"
-"\j[상대 위유이,은,는] 씨앗이 심겼다!"
-
-[End of round 2]
-[HP change] 상대 위유이 lost 16 HP (98 -> 82)
-"\j[상대 위유이,이,가] 뿌린 씨를 통해 체력을 흡수했다!"
-
-===== Round 3 =====
-
-[AI] 위유이 (1) wants to switch to get rid of its Leech Seed
-[AI] [damage_moves] computing 너트령 (0) → 위유이 (1) (turn 2)
-[AI]   탁쳐서떨구기: 19 dmg (14.5% totalhp / 23.2% curhp)
-[AI] 위유이 (1) is considering using 악의파동 against 너트령 (0)...
-     +  6: function code modifier (against target)
-     -  8: can trigger the target's ability
-[AI] [damage_moves] computing 위유이 (1) → 너트령 (0) (turn 2)
-[AI]   악의파동: 71 dmg (39.2% totalhp / 39.2% curhp)
-[AI]   오버히트: 456 dmg (251.9% totalhp / 251.9% curhp)
-[AI]   사이코키네시스: 27 dmg (14.9% totalhp / 14.9% curhp)
-     + 11: 1v1: base damage (71/181)
-     -  2: 1v1: move weak (39.2%)
-     +  6: 1v1: user wins in 3 turns
-[AI] 위유이 (1) is considering using 오버히트 against 너트령 (0)...
-     -  8: can trigger the target's ability
-     + 30: 1v1: base damage (456/181)
-     + 30: 1v1: can OHKO target (outspeeds)
-     - 12: lowering the user's 특수공격 by 2
-     - 12: function code modifier (generic)
-[AI] 위유이 (1) is considering using 사이코키네시스 against 너트령 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 10% = 1
-     +  1: function code modifier (against target)
-     -  8: can trigger the target's ability
-     +  4: 1v1: base damage (27/181)
-     - 40: 1v1: move very weak (14.9%)
-[AI] 위유이 (1) is considering using 도깨비불 against 너트령 (0)...
-     + 33: function code modifier (against target)
-     -  3: accuracy (predicted 85%)
-     +  5: 5. General Status Move Boost.
-[AI] 위유이 (1) is considering using 다이내믹풀플레임 against 너트령 (0)...
-     -  8: can trigger the target's ability
-     + 30: 1v1: base damage (684/181)
-     + 30: 1v1: can OHKO target (outspeeds)
-[AI] 위유이 (1) is considering using Z-도깨비불 against 너트령 (0)...
-     + 33: function code modifier (against target)
-     -  3: accuracy (predicted 85%)
-     raising the user's 공격 isn't worthwhile
-     +  5: 5. General Status Move Boost.
-[AI] Move choices for 위유이 (1) with threshold: 132: 
-[AI]    *   0.0% to use 악의파동 (target 0): score 113
-[AI]    *  25.8% to use 오버히트 (target 0): score 140
-[AI]    *   0.0% to use 사이코키네시스 (target 0): score 57
-[AI]    *   9.7% to use 도깨비불 (target 0): score 135
-[AI]    *  64.5% to use 다이내믹풀플레임 (target 0): score 152
-[AI]    *   0.0% to use Z-도깨비불 (target 0): score 125
-[AI] => will use 오버히트 (target 0)
-
-
-"너트령, 돌아와!"
-"힘내, 한카리아스!"
-[HP change] 한카리아스 lost 11 HP (183 -> 172)
-"한카리아스에게 뾰족한 바위가 박혔다!"
-[Use move] 상대 위유이 (1) used 오버히트
-"상대 위유이의 오버히트!"
-[HP change] 한카리아스 lost 81 HP (172 -> 91)
-"효과가 별로인 것 같다..."
-[Stat change] 상대 위유이's 특수공격 changed by -2 (0 -> -2)
-"상대 위유이의 \j[특수공격,이,가] 크게 떨어졌다!"
-
-[End of round 3]
-[HP change] 상대 위유이 lost 16 HP (82 -> 66)
-"\j[상대 위유이,이,가] 뿌린 씨를 통해 체력을 흡수했다!"
-[HP change] 한카리아스 gained 16 HP (91 -> 107)
-
-===== Round 4 =====
-
-[AI] 위유이 (1) is considering using 악의파동 against 한카리아스 (0)...
-[AI] [damage_moves] computing 한카리아스 (0) → 위유이 (1) (turn 3)
-[AI] [known_foe_moves] Hiding 테라버스트 from 한카리아스 (0) (never acted)
-[AI]   지진: 270 dmg (206.1% totalhp / 409.1% curhp)
-[AI]   역린: 162 dmg (123.7% totalhp / 245.5% curhp)
-[AI] [damage_moves] computing 위유이 (1) → 한카리아스 (0) (turn 3)
-[AI]   악의파동: 53 dmg (29.0% totalhp / 49.5% curhp)
-[AI]   오버히트: 43 dmg (23.5% totalhp / 40.2% curhp)
-[AI]   사이코키네시스: 40 dmg (21.9% totalhp / 37.4% curhp)
-     -200: 1v1: foe can OHKO and outspeeds
-     + 14: 1v1: base damage (53/107)
-     - 22: 1v1: move weak (29.0%)
-[AI] 위유이 (1) is considering using 오버히트 against 한카리아스 (0)...
-     -200: 1v1: foe can OHKO and outspeeds
-     + 12: 1v1: base damage (43/107)
-     - 33: 1v1: move weak (23.5%)
-     -  6: lowering the user's 특수공격 by 2
-     -  6: function code modifier (generic)
-[AI] 위유이 (1) is considering using 사이코키네시스 against 한카리아스 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 10% = 1
-     +  1: function code modifier (against target)
-     -200: 1v1: foe can OHKO and outspeeds
-     + 11: 1v1: base damage (40/107)
-     - 36: 1v1: move weak (21.9%)
-[AI] 위유이 (1) is considering using 도깨비불 against 한카리아스 (0)...
-     + 25: function code modifier (against target)
-     -  3: accuracy (predicted 85%)
-     -200: 1v1: foe can OHKO and outspeeds
-     +  5: 5. General Status Move Boost.
-[AI] 위유이 (1) is considering using 다이내믹풀플레임 against 한카리아스 (0)...
-     -200: 1v1: foe can OHKO and outspeeds
-     + 17: 1v1: base damage (63/107)
-     - 11: 1v1: move weak (34.4%)
-[AI] 위유이 (1) is considering using Z-도깨비불 against 한카리아스 (0)...
-     + 25: function code modifier (against target)
-     -  3: accuracy (predicted 85%)
-     -200: 1v1: foe can OHKO and outspeeds
-     raising the user's 공격 isn't worthwhile
-     +  5: 5. General Status Move Boost.
-[AI] 위유이 (1) is considering using item 풀회복약 on party 위유이 (party index 3)...
-     + 13: healing 위유이 by 130 HP (66 -> 131) (65 over heal)
-     -  8: prefers not to use item because it's last in stock
-[AI] [item_ai] idxPkmn=3, battler.pokemonIndex=3
-[AI] [item_ai] max_foe_dmg=270, totalhp=131, dmg%=206%, foe_outspeeds=true
-     -200: ITEM AI: Healing futile [OHKO] — foe deals 206% per hit, item wasted regardless of speed.
-[AI] 위유이 (1) is considering using item 회복약 on party 위유이 (party index 3)...
-     + 13: healing 위유이 by 130 HP (66 -> 131) (65 over heal)
-     - 40: useless because 위유이 (1) has no condition to heal
-     - 10: prefers basic healing items
-     -  8: prefers not to use item because it's last in stock
-[AI] [item_ai] idxPkmn=3, battler.pokemonIndex=3
-[AI] [item_ai] max_foe_dmg=270, totalhp=131, dmg%=206%, foe_outspeeds=true
-     -200: ITEM AI: Healing futile [OHKO] — foe deals 206% per hit, item wasted regardless of speed.
-[AI] 위유이 (1) couldn't find any usable items
-[AI] 위유이 (1) wants to switch due to terrible moves [악의파동=-108, 오버히트=-127, 사이코키네시스=-124, 도깨비불=-73, 다이내믹풀플레임=-94, Z-도깨비불=-83]
-[AI] 위유이 (1) is being forced to switch out
-     -  6: 킬라플로르: entry hazard damage 21.375
-[AI] move_id: EARTHQUAKE
-[AI] move_id: OUTRAGE
-[AI]   [Scenario1] 킬라플로르 vs 한카리아스 (0): same worst move (EARTHQUAKE), first_hit=465.375
-     -100: 킬라플로르: Scenario1 instant death (first_hit=465.375/171hp)
-[AI] pokemon 킬라플로르 has switch score -6
-     -  6: 클레스퍼트라: entry hazard damage 25.125
-[AI] move_id: EARTHQUAKE
-[AI] move_id: OUTRAGE
-[AI]   [Scenario1] 클레스퍼트라 vs 한카리아스 (0): predicted move_C=EARTHQUAKE (chance=82%, roll=65), first_hit=127.125
-     - 50: 클레스퍼트라: Scenario1 loses 1v1 (foe_dmg=122/73.875hp, slower, remaining_hp=73.875/201)
-[AI] pokemon 클레스퍼트라 has switch score 43
-     -  3: 브리가론: entry hazard damage 12.1875
-[AI] move_id: EARTHQUAKE
-[AI] move_id: OUTRAGE
-[AI]   [Scenario1] 브리가론 vs 한카리아스 (0): predicted move_C=EARTHQUAKE (chance=82%, roll=65), first_hit=56.1875
-     - 18: 브리가론: Scenario1 loses 1v1 (foe_dmg=104/138.8125hp, slower, remaining_hp=138.8125/195)
-[AI] pokemon 브리가론 has switch score 78
-     -  6: 테라파고스: entry hazard damage 21.375
-[AI] move_id: EARTHQUAKE
-[AI] move_id: OUTRAGE
-[AI]   [Scenario1] 테라파고스 vs 한카리아스 (0): predicted move_C=EARTHQUAKE (chance=82%, roll=65), first_hit=137.375
-     - 50: 테라파고스: Scenario1 loses 1v1 (foe_dmg=138/33.625hp, slower, remaining_hp=33.625/171)
-[AI] pokemon 테라파고스 has switch score 43
-     -  3: 대도각참: entry hazard damage 12.9375
-[AI] move_id: EARTHQUAKE
-[AI] move_id: OUTRAGE
-[AI]   [Scenario1] 대도각참 vs 한카리아스 (0): same worst move (EARTHQUAKE), first_hit=189.9375
-     - 50: 대도각참: Scenario1 loses 1v1 (foe_dmg=177/17.0625hp, slower, remaining_hp=17.0625/207)
-[AI] pokemon 대도각참 has switch score 46
-[AI] => staying in: all reserves scored < 80 (best: 78), not switching
-[AI]    => no good replacement Pokémon, will not switch after all
-[AI] 위유이 (1) won't switch after all
-[AI] Move choices for 위유이 (1) with threshold: -93: 
-[AI]    *   0.0% to use 악의파동 (target 0): score -108
-[AI]    *   0.0% to use 오버히트 (target 0): score -127
-[AI]    *   0.0% to use 사이코키네시스 (target 0): score -124
-[AI]    *  66.7% to use 도깨비불 (target 0): score -73
-[AI]    *   0.0% to use 다이내믹풀플레임 (target 0): score -94
-[AI]    *  33.3% to use Z-도깨비불 (target 0): score -83
-[AI] => will use 도깨비불 (target 0)
-
-
-[Use move] 한카리아스 (0) used 칼춤
-"한카리아스의 칼춤!"
-[Stat change] 한카리아스's 공격 changed by +2 (0 -> 2)
-"한카리아스의 \j[공격,이,가] 크게 올랐다!"
-[Use move] 상대 위유이 (1) used 도깨비불
-"상대 위유이의 도깨비불!"
-"\j[한카리아스,은,는] 화상을 입었다!"
-
-[End of round 4]
-[HP change] 상대 위유이 lost 16 HP (66 -> 50)
-"\j[상대 위유이,이,가] 뿌린 씨를 통해 체력을 흡수했다!"
-[HP change] 한카리아스 gained 16 HP (107 -> 123)
-[HP change] 한카리아스 lost 11 HP (123 -> 112)
-"\j[한카리아스,은,는] 화상의 데미지를 받았다!"
-
-===== Round 5 =====
-
-[AI] 위유이 (1) wants to switch to get rid of its Leech Seed
-[AI] [damage_moves] computing 한카리아스 (0) → 위유이 (1) (turn 4)
-[AI]   지진: 269 dmg (205.3% totalhp / 538.0% curhp)
-[AI]   테라버스트: 72 dmg (55.0% totalhp / 144.0% curhp)
-[AI]   역린: 161 dmg (122.9% totalhp / 322.0% curhp)
-[AI] [damage_moves] computing 위유이 (1) → 한카리아스 (0) (turn 4)
-[AI]   악의파동: 53 dmg (29.0% totalhp / 47.3% curhp)
-[AI]   오버히트: 43 dmg (23.5% totalhp / 38.4% curhp)
-[AI]   사이코키네시스: 40 dmg (21.9% totalhp / 35.7% curhp)
-     -  6: 킬라플로르: entry hazard damage 21.375
-[AI] move_id: EARTHQUAKE
-[AI] move_id: TERABLAST
-[AI] move_id: OUTRAGE
-[AI]   [Scenario1] 킬라플로르 vs 한카리아스 (0): same worst move (EARTHQUAKE), first_hit=459.375
-     -100: 킬라플로르: Scenario1 instant death (first_hit=459.375/171hp)
-[AI] pokemon 킬라플로르 has switch score -6
-     -  6: 클레스퍼트라: entry hazard damage 25.125
-[AI] move_id: EARTHQUAKE
-[AI] move_id: TERABLAST
-[AI] move_id: OUTRAGE
-[AI]   [Scenario1] 클레스퍼트라 vs 한카리아스 (0): predicted move_C=EARTHQUAKE (chance=82%, roll=35), first_hit=126.125
-     - 50: 클레스퍼트라: Scenario1 loses 1v1 (foe_dmg=120/74.875hp, slower, remaining_hp=74.875/201)
-[AI] pokemon 클레스퍼트라 has switch score 43
-     -  3: 브리가론: entry hazard damage 12.1875
-[AI] move_id: EARTHQUAKE
-[AI] move_id: TERABLAST
-[AI] move_id: OUTRAGE
-[AI]   [Scenario1] 브리가론 vs 한카리아스 (0): predicted move_C=EARTHQUAKE (chance=82%, roll=35), first_hit=55.1875
-     - 18: 브리가론: Scenario1 loses 1v1 (foe_dmg=102/139.8125hp, slower, remaining_hp=139.8125/195)
-     + 29: Utility: 울부짖기 (phaze) vs +2 boosts
-[AI] pokemon 브리가론 has switch score 107
-     -  6: 테라파고스: entry hazard damage 21.375
-[AI] move_id: EARTHQUAKE
-[AI] move_id: TERABLAST
-[AI] move_id: OUTRAGE
-[AI]   [Scenario1] 테라파고스 vs 한카리아스 (0): predicted move_C=EARTHQUAKE (chance=82%, roll=35), first_hit=136.375
-     - 50: 테라파고스: Scenario1 loses 1v1 (foe_dmg=137/34.625hp, slower, remaining_hp=34.625/171)
-[AI] pokemon 테라파고스 has switch score 43
-     -  3: 대도각참: entry hazard damage 12.9375
-[AI] move_id: EARTHQUAKE
-[AI] move_id: TERABLAST
-[AI] move_id: OUTRAGE
-[AI]   [Scenario1] 대도각참 vs 한카리아스 (0): same worst move (EARTHQUAKE), first_hit=186.9375
-     - 50: 대도각참: Scenario1 loses 1v1 (foe_dmg=174/20.0625hp, slower, remaining_hp=20.0625/207)
-[AI] pokemon 대도각참 has switch score 46
-[AI] => will switch with 브리가론
-
-
-"\j[엘리트 트레이너 test,이,가] \j[위유이,을,를] 넣었다!"
-"\j[엘리트 트레이너 test,은,는] \j[브리가론,을,를] 내보냈다!"
-[HP change] 상대 브리가론 lost 12 HP (195 -> 183)
-"상대 브리가론에게 뾰족한 바위가 박혔다!"
-[Use move] 한카리아스 (0) used 칼춤
-"한카리아스의 칼춤!"
-[Stat change] 한카리아스's 공격 changed by +2 (2 -> 4)
-"한카리아스의 \j[공격,이,가] 크게 올랐다!"
-
-[End of round 5]
-[HP change] 한카리아스 lost 11 HP (112 -> 101)
-"\j[한카리아스,은,는] 화상의 데미지를 받았다!"
-
-===== Round 6 =====
-
-[AI] 브리가론 (1): foe has 4 positive boosts — should switch.
-[AI] [damage_moves] computing 한카리아스 (0) → 브리가론 (1) (turn 5)
-[AI]   지진: 64 dmg (32.8% totalhp / 35.0% curhp)
-[AI]   테라버스트: 68 dmg (34.9% totalhp / 37.2% curhp)
-[AI]   역린: 152 dmg (77.9% totalhp / 83.1% curhp)
-[AI] [damage_moves] computing 브리가론 (1) → 한카리아스 (0) (turn 5)
-[AI]   바디프레스: 68 dmg (37.2% totalhp / 67.3% curhp)
-[AI] 브리가론 (1) will Mega Evolve
-[AI] 브리가론 (1) is considering using 울부짖기 against 한카리아스 (0)...
-     + 10: function code modifier (against target)
-[AI] [damage_moves] computing 브리가론 (1) → 한카리아스 (0) (turn 5)
-[AI] [predicted_damage] Mega Evolution simulation applied: 브리가론 (idx=1)
-[AI]   바디프레스: 92 dmg (50.3% totalhp / 91.1% curhp)
-     + 30: Phaze to reset target's +4 boosts.
-     +  5: 5. General Status Move Boost.
-[AI] 브리가론 (1) is considering using 압정뿌리기...
-     + 30: function code modifier (generic)
-     - 50: Hazard vs boosted foe (+4 total boosts).
-     +  5: 5. General Status Move Boost.
-[AI] 브리가론 (1) is considering using 광합성...
-     - 10: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-[AI] [smart_recovery] max foe dmg = 152 (77.9% totalhp, threshold 55%)
-     - 60: Recovery futile: foe can 2HKO (77% per hit).
-[AI] 브리가론 (1) is considering using 바디프레스 against 한카리아스 (0)...
-     + 27: 1v1: base damage (92/101)
-[AI] Move choices for 브리가론 (1) with threshold: 125: 
-[AI]    *  90.9% to use 울부짖기 (target 0): score 145
-[AI]    *   0.0% to use 압정뿌리기: score 85
-[AI]    *   0.0% to use 광합성: score 35
-[AI]    *   9.1% to use 바디프레스 (target 0): score 127
-[AI] => will use 울부짖기 (target 0)
-
-
-"상대 브리가론의 \j[브리가론나이트,이,가] 엘리트 트레이너 test의 메가링에 반응하고 있다!"
-"\j[상대 브리가론,은,는] 메가진화하여 \j[메가브리가론,이,가] 되었다!"
-"\j[한카리아스,은,는] 불꽃타입으로 테라스탈하였다!"
-[Use move] 한카리아스 (0) used 테라버스트
-"한카리아스의 테라버스트!"
-[HP change] 상대 브리가론 lost 142 HP (183 -> 41)
-"효과가 굉장했다!"
-[Use move] 상대 브리가론 (1) used 울부짖기
-"상대 브리가론의 울부짖기!"
-"\j[무장조,은,는] 끌려 나왔다!"
-[HP change] 무장조 lost 22 HP (172 -> 150)
-"무장조에게 뾰족한 바위가 박혔다!"
-
-[End of round 6]
-
-===== Round 7 =====
-
-[AI] 브리가론 (1) is considering using 울부짖기 against 무장조 (0)...
-     + 10: function code modifier (against target)
-[AI] [damage_moves] computing 무장조 (0) → 브리가론 (1) (turn 6)
-[AI] [known_foe_moves] Hiding 압정뿌리기 from 무장조 (0) (never acted)
-[AI]   바디프레스: 40 dmg (20.5% totalhp / 97.6% curhp)
-[AI] [damage_moves] computing 브리가론 (1) → 무장조 (0) (turn 6)
-[AI]   바디프레스: 51 dmg (29.7% totalhp / 34.0% curhp)
-     +  5: 5. General Status Move Boost.
-[AI] 브리가론 (1) is considering using 압정뿌리기...
-     + 30: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-[AI] 브리가론 (1) is considering using 광합성...
-     + 23: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-[AI] [smart_recovery] max foe dmg = 40 (20.5% totalhp, threshold 55%)
-[AI] 브리가론 (1) is considering using 바디프레스 against 무장조 (0)...
-     -  8: can trigger the target's item
-     + 10: 1v1: base damage (51/150)
-     - 21: 1v1: move weak (29.7%)
-[AI] Move choices for 브리가론 (1) with threshold: 115: 
-[AI]    *   0.0% to use 울부짖기 (target 0): score 115
-[AI]    *  60.6% to use 압정뿌리기: score 135
-[AI]    *  39.4% to use 광합성: score 128
-[AI]    *   0.0% to use 바디프레스 (target 0): score 81
-[AI] => will use 압정뿌리기
-
-
-[Use move] 무장조 (0) used 압정뿌리기
-"무장조의 압정뿌리기!"
-"상대편 주위로 압정이 뿌려졌다!"
-[Use move] 상대 브리가론 (1) used 압정뿌리기
-"상대 브리가론의 압정뿌리기!"
-"우리편 주위로 압정이 뿌려졌다!"
-
-[End of round 7]
-
-===== Round 8 =====
-
-[AI] 브리가론 (1) is considering using 울부짖기 against 무장조 (0)...
-     + 20: function code modifier (against target)
-[AI] [damage_moves] computing 무장조 (0) → 브리가론 (1) (turn 7)
-[AI]   바디프레스: 40 dmg (20.5% totalhp / 97.6% curhp)
-[AI] [damage_moves] computing 브리가론 (1) → 무장조 (0) (turn 7)
-[AI]   바디프레스: 51 dmg (29.7% totalhp / 34.0% curhp)
-     +  5: 5. General Status Move Boost.
-[AI] 브리가론 (1) is considering using 압정뿌리기...
-     + 28: function code modifier (generic)
-     - 20: 9. Hazard stack penalty / redundant setup prevention.
-     +  5: 5. General Status Move Boost.
-[AI] 브리가론 (1) is considering using 광합성...
-     + 23: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-[AI] [smart_recovery] max foe dmg = 40 (20.5% totalhp, threshold 55%)
-[AI] 브리가론 (1) is considering using 바디프레스 against 무장조 (0)...
-     -  8: can trigger the target's item
-     + 10: 1v1: base damage (51/150)
-     - 21: 1v1: move weak (29.7%)
-[AI] Move choices for 브리가론 (1) with threshold: 108: 
-[AI]    *  40.5% to use 울부짖기 (target 0): score 125
-[AI]    *  11.9% to use 압정뿌리기: score 113
-[AI]    *  47.6% to use 광합성: score 128
-[AI]    *   0.0% to use 바디프레스 (target 0): score 81
-[AI] => will use 울부짖기 (target 0)
-
-
-[Use move] 무장조 (0) used 바디프레스
-"무장조의 바디프레스!"
-[HP change] 상대 브리가론 lost 36 HP (41 -> 5)
-[Use move] 상대 브리가론 (1) used 울부짖기
-"상대 브리가론의 울부짖기!"
-"\j[파오젠,은,는] 끌려 나왔다!"
-[HP change] 파오젠 lost 39 HP (155 -> 116)
-"파오젠에게 뾰족한 바위가 박혔다!"
-[HP change] 파오젠 lost 19 HP (116 -> 97)
-"\j[파오젠,은,는] 압정에 찔렸다!"
-[Ability triggered] 파오젠's 재앙의검
-"파오젠의 \j[재앙의검,이,가] 주위의 모든 포켓몬의 \j[방어,을,를] 약하게 했다!"
-
-[End of round 8]
-
-===== Round 9 =====
-
-[AI] 브리가론 (1) is considering using 울부짖기 against 파오젠 (0)...
-     + 20: function code modifier (against target)
-[AI] [damage_moves] computing 파오젠 (0) → 브리가론 (1) (turn 8)
-[AI] [known_foe_moves] Hiding 도발 from 파오젠 (0) (never acted)
-[AI]   고드름떨구기: 105 dmg (53.8% totalhp / 2100.0% curhp)
-[AI]   기습: 22 dmg (11.3% totalhp / 440.0% curhp)
-[AI] [damage_moves] computing 브리가론 (1) → 파오젠 (0) (turn 8)
-[AI]   바디프레스: 414 dmg (267.1% totalhp / 426.8% curhp)
-     -200: 1v1: foe can OHKO and outspeeds
-     +  5: 5. General Status Move Boost.
-[AI] 브리가론 (1) is considering using 압정뿌리기...
-     + 21: function code modifier (generic)
-     - 20: 9. Hazard stack penalty / redundant setup prevention.
-     +  5: 5. General Status Move Boost.
-[AI] 브리가론 (1) is considering using 광합성...
-     + 29: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-[AI] [smart_recovery] max foe dmg = 105 (53.8% totalhp, threshold 55%)
-[AI] 브리가론 (1) is considering using 바디프레스 against 파오젠 (0)...
-     -200: 1v1: foe can OHKO and outspeeds
-     + 30: 1v1: base damage (414/97)
-[AI] Move choices for 브리가론 (1) with threshold: 114: 
-[AI]    *   0.0% to use 울부짖기 (target 0): score -75
-[AI]    *   0.0% to use 압정뿌리기: score 106
-[AI]    * 100.0% to use 광합성: score 134
-[AI]    *   0.0% to use 바디프레스 (target 0): score -70
-[AI] => will use 광합성
-
-
-[Use move] 파오젠 (0) used 고드름떨구기
-"파오젠의 고드름떨구기!"
-[HP change] 상대 브리가론 lost 5 HP (5 -> 0)
-"효과가 굉장했다!"
-"\j[상대 브리가론,은,는] 쓰러졌다!"
-"\j[한카리아스,이,가] 4639의 많은 경험치를 얻었다!"
-"\j[무장조,이,가] 4639의 많은 경험치를 얻었다!"
-"\j[파오젠,이,가] 4639의 많은 경험치를 얻었다!"
-"다른 포켓몬들도 학습장치를 통해 경험치를 얻었다!"
-
-[End of round 9]
-     - 12: 킬라플로르: entry hazard damage 42.375
-[AI] move_id: ICICLECRASH
-[AI] move_id: SUCKERPUNCH
-     - 19: 킬라플로르: loses 1v1 (foe_dmg=131.375/171hp, slower, faint_repl)
-[AI] pokemon 킬라플로르 has switch score 68
-     - 12: 클레스퍼트라: entry hazard damage 50.125
-[AI] move_id: ICICLECRASH
-[AI] move_id: SUCKERPUNCH
-     - 23: 클레스퍼트라: loses 1v1 (foe_dmg=185.125/201hp, slower, faint_repl)
-[AI] pokemon 클레스퍼트라 has switch score 64
-     - 48: 위유이: entry hazard damage 48.75
-[AI] move_id: ICICLECRASH
-[AI] move_id: SUCKERPUNCH
-     - 50: 위유이: loses 1v1 (foe_dmg=103.75/50hp, slower, faint_repl)
-     +  8: Status value: 도깨비불 vs physical foe
-[AI] pokemon 위유이 has switch score 9
-     - 12: 테라파고스: entry hazard damage 42.375
-[AI] move_id: ICICLECRASH
-[AI] move_id: SUCKERPUNCH
-     + 20: 테라파고스: wins 1v1 (turns=1v2, user_dmg=114/97hp, slower, faint_repl)
-[AI] pokemon 테라파고스 has switch score 107
-     -  9: 대도각참: entry hazard damage 37.9375
-[AI] move_id: ICICLECRASH
-[AI] move_id: SUCKERPUNCH
-     + 25: 대도각참: wins 1v1 (turns=1v3, user_dmg=276/97hp, slower, faint_repl)
-[AI] pokemon 대도각참 has switch score 115
-"\j[엘리트 트레이너 test,은,는] \j[대도각참,을,를] 내보냈다!"
-[HP change] 상대 대도각참 lost 13 HP (207 -> 194)
-"상대 대도각참에게 뾰족한 바위가 박혔다!"
-[HP change] 상대 대도각참 lost 25 HP (194 -> 169)
-"\j[상대 대도각참,은,는] 압정에 찔렸다!"
-[Ability triggered] 상대 대도각참's 총대장
-"\j[상대 대도각참,은,는] 쓰러진 동료로부터 힘을 받았다!"
-
-===== Round 10 =====
-
-[AI] 대도각참 (1) is considering using 깨트리기 against 파오젠 (0)...
-[AI] [damage_moves] computing 파오젠 (0) → 대도각참 (1) (turn 9)
-[AI]   고드름떨구기: 35 dmg (16.9% totalhp / 20.7% curhp)
-[AI]   기습: 29 dmg (14.0% totalhp / 17.2% curhp)
-[AI] [damage_moves] computing 대도각참 (1) → 파오젠 (0) (turn 9)
-[AI]   깨트리기: 304 dmg (196.1% totalhp / 313.4% curhp)
-[AI]   아이언헤드: 243 dmg (156.8% totalhp / 250.5% curhp)
-[AI]   도각참: 65 dmg (41.9% totalhp / 67.0% curhp)
-[AI]   기습: 53 dmg (34.2% totalhp / 54.6% curhp)
-     + 30: 1v1: base damage (304/97)
-     + 15: 1v1: can OHKO target
-[AI] 대도각참 (1) is considering using 아이언헤드 against 파오젠 (0)...
-     + 30: 1v1: base damage (243/97)
-     + 15: 1v1: can OHKO target
-[AI] 대도각참 (1) is considering using 도각참 against 파오젠 (0)...
-     + 20: 1v1: base damage (65/97)
-     + 10: 1v1: user wins in 2 turns
-[AI] 대도각참 (1) is considering using 기습 against 파오젠 (0)...
-     - 40: function code modifier (against target)
-     + 16: 1v1: base damage (53/97)
-     - 12: 1v1: move weak (34.2%)
-     + 10: 1v1: user wins in 2 turns
-[AI] [boost_priority] skip FailsIfTargetActed priority bonus (uncertain)
-[AI] Move choices for 대도각참 (1) with threshold: 125: 
-[AI]    *  44.4% to use 깨트리기 (target 0): score 145
-[AI]    *  44.4% to use 아이언헤드 (target 0): score 145
-[AI]    *  11.1% to use 도각참 (target 0): score 130
-[AI]    *   0.0% to use 기습 (target 0): score 74
-[AI] => will use 아이언헤드 (target 0)
-
-
-"파오젠, 돌아와!"
-"힘내, 무장조!"
-[HP change] 무장조 lost 22 HP (150 -> 128)
-"무장조에게 뾰족한 바위가 박혔다!"
-[Use move] 상대 대도각참 (1) used 아이언헤드
-"상대 대도각참의 아이언헤드!"
-[HP change] 무장조 lost 25 HP (128 -> 103)
-"효과가 별로인 것 같다..."
-[HP change] 상대 대도각참 lost 34 HP (169 -> 135)
-"상대 대도각참은 울퉁불퉁멧으로 인해 데미지를 입었다!"
-
-[End of round 10]
-
-===== Round 11 =====
-
-[AI] 대도각참 (1) is considering using 깨트리기 against 무장조 (0)...
-     -  8: can trigger the target's item
-[AI] [damage_moves] computing 무장조 (0) → 대도각참 (1) (turn 10)
-[AI]   바디프레스: 220 dmg (106.3% totalhp / 163.0% curhp)
-[AI] [damage_moves] computing 대도각참 (1) → 무장조 (0) (turn 10)
-[AI]   깨트리기: 37 dmg (21.5% totalhp / 35.9% curhp)
-[AI]   아이언헤드: 29 dmg (16.9% totalhp / 28.2% curhp)
-[AI]   도각참: 63 dmg (36.6% totalhp / 61.2% curhp)
-[AI]   기습: 51 dmg (29.7% totalhp / 49.5% curhp)
-     -200: 1v1: foe can OHKO and outspeeds
-     + 10: 1v1: base damage (37/103)
-     - 37: 1v1: move weak (21.5%)
-[AI] 대도각참 (1) is considering using 아이언헤드 against 무장조 (0)...
-     -  8: can trigger the target's item
-     -200: 1v1: foe can OHKO and outspeeds
-     +  8: 1v1: base damage (29/103)
-     - 40: 1v1: move very weak (16.9%)
-[AI] 대도각참 (1) is considering using 도각참 against 무장조 (0)...
-     -  8: can trigger the target's item
-     -200: 1v1: foe can OHKO and outspeeds
-     + 18: 1v1: base damage (63/103)
-     -  7: 1v1: move weak (36.6%)
-[AI] 대도각참 (1) is considering using 기습 against 무장조 (0)...
-     - 40: function code modifier (against target)
-     -  8: can trigger the target's item
-     + 14: 1v1: base damage (51/103)
-     - 21: 1v1: move weak (29.7%)
-     +  8: Priority move bonus: user is slower than target.
-[AI] 대도각참 (1) is considering using item 풀회복약 on party 위유이 (party index 3)...
-     + 24: healing 위유이 by 130 HP (50 -> 131) (49 over heal)
-     -  8: prefers not to use item because it's last in stock
-[AI] [item_ai] idxPkmn=3, battler.pokemonIndex=5
-     + 30: ITEM AI: Ace Pokémon preservation priority.
-[AI] 대도각참 (1) is considering using item 풀회복약 on party 대도각참 (party index 5)...
-     - 40: useless because 대도각참's HP isn't worth healing
-     -  8: prefers not to use item because it's last in stock
-     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
-[AI] [item_ai] idxPkmn=5, battler.pokemonIndex=5
-[AI] [item_ai] max_foe_dmg=220, totalhp=207, dmg%=106%, foe_outspeeds=true
-     -200: ITEM AI: Healing futile [OHKO] — foe deals 106% per hit, item wasted regardless of speed.
-[AI] 대도각참 (1) is considering using item 회복약 on party 위유이 (party index 3)...
-     + 24: healing 위유이 by 130 HP (50 -> 131) (49 over heal)
-     - 40: useless because 대도각참 (1) has no condition to heal
-     - 10: prefers basic healing items
-     -  8: prefers not to use item because it's last in stock
-[AI] [item_ai] idxPkmn=3, battler.pokemonIndex=5
-     + 30: ITEM AI: Ace Pokémon preservation priority.
-[AI] 대도각참 (1) is considering using item 회복약 on party 대도각참 (party index 5)...
-     - 40: useless because 대도각참's HP isn't worth healing
-     - 40: useless because 대도각참 (1) has no condition to heal
-     -  8: prefers not to use item because it's last in stock
-     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
-[AI] [item_ai] idxPkmn=5, battler.pokemonIndex=5
-[AI] [item_ai] max_foe_dmg=220, totalhp=207, dmg%=106%, foe_outspeeds=true
-     -200: ITEM AI: Healing futile [OHKO] — foe deals 106% per hit, item wasted regardless of speed.
-   => will use 풀회복약 (party index 3)
-[AI] 대도각참 (1) will use item 풀회복약
-
-
-"\j[엘리트 트레이너 test,은,는] 위유이에게 \j[풀회복약,을,를] 사용했다."
-"위유이의 HP가 회복되었다."
-[Use move] 무장조 (0) used 날개쉬기
-"무장조의 날개쉬기!"
-[HP change] 무장조 gained 69 HP (103 -> 172)
-"무장조의 HP가 회복되었다."
-
-[End of round 11]
-
-===== Round 12 =====
-
-[AI] 대도각참 (1) is considering using 깨트리기 against 무장조 (0)...
-     -  8: can trigger the target's item
-[AI] [damage_moves] computing 무장조 (0) → 대도각참 (1) (turn 11)
-[AI]   바디프레스: 220 dmg (106.3% totalhp / 163.0% curhp)
-[AI] [damage_moves] computing 대도각참 (1) → 무장조 (0) (turn 11)
-[AI]   깨트리기: 37 dmg (21.5% totalhp / 21.5% curhp)
-[AI]   아이언헤드: 29 dmg (16.9% totalhp / 16.9% curhp)
-[AI]   도각참: 63 dmg (36.6% totalhp / 36.6% curhp)
-[AI]   기습: 51 dmg (29.7% totalhp / 29.7% curhp)
-     -200: 1v1: foe can OHKO and outspeeds
-     +  6: 1v1: base damage (37/172)
-     - 37: 1v1: move weak (21.5%)
-[AI] 대도각참 (1) is considering using 아이언헤드 against 무장조 (0)...
-     -  8: can trigger the target's item
-     -200: 1v1: foe can OHKO and outspeeds
-     +  5: 1v1: base damage (29/172)
-     - 40: 1v1: move very weak (16.9%)
-[AI] 대도각참 (1) is considering using 도각참 against 무장조 (0)...
-     -  8: can trigger the target's item
-     -200: 1v1: foe can OHKO and outspeeds
-     + 10: 1v1: base damage (63/172)
-     -  7: 1v1: move weak (36.6%)
-[AI] 대도각참 (1) is considering using 기습 against 무장조 (0)...
-     - 40: function code modifier (against target)
-     -  8: can trigger the target's item
-     +  8: 1v1: base damage (51/172)
-     - 21: 1v1: move weak (29.7%)
-[AI] [boost_priority] skip FailsIfTargetActed priority bonus (uncertain)
-[AI] 대도각참 (1) is considering using item 회복약 on party 대도각참 (party index 5)...
-     - 40: useless because 대도각참's HP isn't worth healing
-     - 40: useless because 대도각참 (1) has no condition to heal
-     -  8: prefers not to use item because it's last in stock
-     - 60: prefers not to use items on successive turns
-     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
-[AI] [item_ai] idxPkmn=5, battler.pokemonIndex=5
-[AI] [item_ai] max_foe_dmg=220, totalhp=207, dmg%=106%, foe_outspeeds=true
-     -200: ITEM AI: Healing futile [OHKO] — foe deals 106% per hit, item wasted regardless of speed.
-[AI] 대도각참 (1) couldn't find any usable items
-[AI] 대도각참 (1) wants to switch due to terrible moves [깨트리기=-139, 아이언헤드=-143, 도각참=-105, 기습=39]
-[AI] 대도각참 (1) is being forced to switch out
-     - 12: 킬라플로르: entry hazard damage 42.375
-[AI] move_id: BODYPRESS
-[AI]   [Scenario1] 킬라플로르 vs 무장조 (0): same worst move (BODYPRESS), first_hit=110.375
-     - 25: 킬라플로르: Scenario1 loses 1v1 (foe_dmg=68/60.625hp, faster, remaining_hp=60.625/171)
-     +  8: 킬라플로르: outspeeds 무장조 (0).
-[AI] pokemon 킬라플로르 has switch score 70
-     - 12: 클레스퍼트라: entry hazard damage 50.125
-[AI] move_id: BODYPRESS
-[AI]   [Scenario1] 클레스퍼트라 vs 무장조 (0): same worst move (BODYPRESS), first_hit=82.125
-     + 12: 클레스퍼트라: Scenario1 wins 1v1 (turns=5v6, user_dmg=37/172hp, remaining_hp=118.875/201)
-     +  8: 클레스퍼트라: outspeeds 무장조 (0).
-[AI] pokemon 클레스퍼트라 has switch score 107
-     - 18: 위유이: entry hazard damage 48.75
-[AI] move_id: BODYPRESS
-[AI]   [Scenario1] 위유이 vs 무장조 (0): same worst move (BODYPRESS), first_hit=216.75
-     -100: 위유이: Scenario1 instant death (first_hit=216.75/131hp)
-     +  8: Status value: 도깨비불 vs physical foe
-     +  8: 위유이: outspeeds 무장조 (0).
-[AI] pokemon 위유이 has switch score -2
-     - 12: 테라파고스: entry hazard damage 42.375
-[AI] move_id: BODYPRESS
-[AI]   [Scenario1] 테라파고스 vs 무장조 (0): same worst move (BODYPRESS), first_hit=186.375
-     -100: 테라파고스: Scenario1 instant death (first_hit=186.375/171hp)
-     +  8: 테라파고스: outspeeds 무장조 (0).
-[AI] pokemon 테라파고스 has switch score -4
-[AI] => will switch with 클레스퍼트라
-
-
-"\j[엘리트 트레이너 test,이,가] \j[대도각참,을,를] 넣었다!"
-"\j[엘리트 트레이너 test,은,는] \j[클레스퍼트라,을,를] 내보냈다!"
-[HP change] 상대 클레스퍼트라 lost 25 HP (201 -> 176)
-"상대 클레스퍼트라에게 뾰족한 바위가 박혔다!"
-[HP change] 상대 클레스퍼트라 lost 25 HP (176 -> 151)
-"\j[상대 클레스퍼트라,은,는] 압정에 찔렸다!"
-[Use move] 무장조 (0) used 날려버리기
-"무장조의 날려버리기!"
-"\j[상대 테라파고스,은,는] 끌려 나왔다!"
-[HP change] 상대 테라파고스 lost 21 HP (171 -> 150)
-"상대 테라파고스에게 뾰족한 바위가 박혔다!"
-[HP change] 상대 테라파고스 lost 21 HP (150 -> 129)
-"\j[상대 테라파고스,은,는] 압정에 찔렸다!"
-[Ability triggered] 상대 테라파고스's 테라체인지
-"상대 테라파고스의 모습이 변했다!"
-[Form changed] 상대 테라파고스 changed from form 0 to form 1
-
-[End of round 12]
-
-===== Round 13 =====
-
-[AI] 테라파고스 (1) will Terastallize
-[AI] 테라파고스 (1) is considering using 명상...
-     + 11: raising the user's 특수공격 by 1
-     + 10: raising the user's 특수방어 by 1
-     + 21: function code modifier (generic)
-[AI] [smart_setup] Skipped: foe has effective phazing move.
-     + 80: 2. Setup synergy with Stored Power.
-     +  5: 5. General Status Move Boost.
-[AI] 테라파고스 (1) is considering using 어시스트파워 against 무장조 (0)...
-     -  8: can trigger the target's item
-[AI] [damage_moves] computing 무장조 (0) → 테라파고스 (1) (turn 12)
-[AI]   바디프레스: 116 dmg (65.9% totalhp / 86.6% curhp)
-[AI] [damage_moves] computing 테라파고스 (1) → 무장조 (0) (turn 12)
-[AI]   어시스트파워: 9 dmg (5.2% totalhp / 5.2% curhp)
-[AI]   대지의힘: 0 dmg (0.0% totalhp / 0.0% curhp)
-[AI]   테라클러스터: 74 dmg (43.0% totalhp / 43.0% curhp)
-     +  1: 1v1: base damage (9/172)
-     - 40: 1v1: move very weak (5.2%)
-[AI] 테라파고스 (1) is considering using 대지의힘 against 무장조 (0)...
-     move will not affect 무장조 (0)
-     -1099: move will fail
-     -999: move will fail
-[AI] 테라파고스 (1) is considering using 테라클러스터 against 무장조 (0)...
-     -  8: can trigger the target's item
-     + 12: 1v1: base damage (74/172)
-[AI] Move choices for 테라파고스 (1) with threshold: 84: 
-[AI]    *   0.0% to use 명상: score -984
-[AI]    *   0.0% to use 어시스트파워 (target 0): score 53
-[AI]    *   0.0% to use 대지의힘 (target 0): score -999
-[AI]    * 100.0% to use 테라클러스터 (target 0): score 104
-[AI] => will use 테라클러스터 (target 0)
-
-
-"\j[상대 테라파고스,은,는] 스텔라타입으로 테라스탈하였다!"
-[Use move] 상대 테라파고스 (1) used 테라클러스터
-"상대 테라파고스의 테라클러스터!"
-[HP change] 무장조 lost 117 HP (172 -> 55)
-[Use move] 무장조 (0) used 날려버리기
-"무장조의 날려버리기!"
-"\j[상대 클레스퍼트라,은,는] 끌려 나왔다!"
-[HP change] 상대 클레스퍼트라 lost 25 HP (151 -> 126)
-"상대 클레스퍼트라에게 뾰족한 바위가 박혔다!"
-[HP change] 상대 클레스퍼트라 lost 25 HP (126 -> 101)
-"\j[상대 클레스퍼트라,은,는] 압정에 찔렸다!"
-
-[End of round 13]
-[HP change] 상대 클레스퍼트라 gained 12 HP (101 -> 113)
-"상대 클레스퍼트라는 먹다남은음식으로 약간의 HP를 회복했다!"
-
-===== Round 14 =====
-
-[AI] 클레스퍼트라 (1) is considering using 루미나콜리전 against 무장조 (0)...
-     + 10: lowering the target's 특수방어 by 2
-     + 10: function code modifier (against target)
-     -  8: can trigger the target's item
-[AI] [damage_moves] computing 무장조 (0) → 클레스퍼트라 (1) (turn 13)
-[AI]   바디프레스: 32 dmg (15.9% totalhp / 28.3% curhp)
-[AI] [damage_moves] computing 클레스퍼트라 (1) → 무장조 (0) (turn 13)
-[AI]   루미나콜리전: 37 dmg (21.5% totalhp / 67.3% curhp)
-     + 20: 1v1: base damage (37/55)
-     - 37: 1v1: move weak (21.5%)
-     + 10: 1v1: user wins in 2 turns
-[AI] 클레스퍼트라 (1) is considering using 대타출동...
-     +  6: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-     + 35: Tactical Substitute (HP=56%).
-[AI] 클레스퍼트라 (1) is considering using 명상...
-     +  6: raising the user's 특수공격 by 1
-     +  5: raising the user's 특수방어 by 1
-     + 11: function code modifier (generic)
-[AI] [smart_setup] Skipped: foe has effective phazing move.
-     +  5: 5. General Status Move Boost.
-[AI] 클레스퍼트라 (1) is considering using 배턴터치...
-     - 35: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-[AI] Move choices for 클레스퍼트라 (1) with threshold: 126: 
-[AI]    *   0.0% to use 루미나콜리전 (target 0): score 95
-[AI]    * 100.0% to use 대타출동: score 146
-[AI]    *   0.0% to use 명상: score -994
-[AI]    *   0.0% to use 배턴터치: score 70
-[AI] => will use 대타출동
-
-
-[Use move] 상대 클레스퍼트라 (1) used 대타출동
-"상대 클레스퍼트라의 대타출동!"
-[HP change] 상대 클레스퍼트라 lost 50 HP (113 -> 63)
-"상대 클레스퍼트라는 대타를 집어넣었다!"
-[Use move] 무장조 (0) used 날개쉬기
-"무장조의 날개쉬기!"
-[HP change] 무장조 gained 86 HP (55 -> 141)
-"무장조의 HP가 회복되었다."
-
-[End of round 14]
-[HP change] 상대 클레스퍼트라 gained 12 HP (63 -> 75)
-"상대 클레스퍼트라는 먹다남은음식으로 약간의 HP를 회복했다!"
-[Ability triggered] 상대 클레스퍼트라's 가속
-[Stat change] 상대 클레스퍼트라's 스피드 changed by +1 (0 -> 1)
-"상대 클레스퍼트라의 \j[스피드,이,가] 올랐다!"
-
-===== Round 15 =====
-
-[AI] 클레스퍼트라 (1) is considering using 루미나콜리전 against 무장조 (0)...
-     + 10: lowering the target's 특수방어 by 2
-     + 10: function code modifier (against target)
-     -  8: can trigger the target's item
-[AI] [damage_moves] computing 무장조 (0) → 클레스퍼트라 (1) (turn 14)
-[AI]   바디프레스: 32 dmg (15.9% totalhp / 42.7% curhp)
-[AI] [damage_moves] computing 클레스퍼트라 (1) → 무장조 (0) (turn 14)
-[AI]   루미나콜리전: 37 dmg (21.5% totalhp / 26.2% curhp)
-     +  7: 1v1: base damage (37/141)
-     - 37: 1v1: move weak (21.5%)
-[AI] 클레스퍼트라 (1) is considering using 대타출동...
-     -1099: move will fail
-[AI] 클레스퍼트라 (1) is considering using 명상...
-     +  6: raising the user's 특수공격 by 1
-     +  5: raising the user's 특수방어 by 1
-     + 11: function code modifier (generic)
-[AI] [smart_setup] Skipped: foe has effective phazing move.
-     +  5: 5. General Status Move Boost.
-[AI] 클레스퍼트라 (1) is considering using 배턴터치...
-     - 25: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-[AI] 클레스퍼트라 (1) is considering using item 회복약 on party 클레스퍼트라 (party index 1)...
-     + 24: healing 클레스퍼트라 by 200 HP (75 -> 201) (74 over heal)
-     - 40: useless because 클레스퍼트라 (1) has no condition to heal
-     -  8: prefers not to use item because it's last in stock
-[AI] [item_ai] idxPkmn=1, battler.pokemonIndex=1
-[AI] [item_ai] max_foe_dmg=32, totalhp=201, dmg%=15%, foe_outspeeds=false
-     - 50: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 클레스퍼트라 (1) is considering using item 회복약 on party 테라파고스 (party index 4)...
-     - 40: useless because 테라파고스's HP isn't worth healing
-     - 40: useless because 클레스퍼트라 (1) has no condition to heal
-     -  8: prefers not to use item because it's last in stock
-     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
-[AI] [item_ai] idxPkmn=4, battler.pokemonIndex=1
-     + 30: ITEM AI: Ace Pokémon preservation priority.
-[AI] 클레스퍼트라 (1) is considering using item 회복약 on party 대도각참 (party index 5)...
-     - 40: useless because 대도각참's HP isn't worth healing
-     - 40: useless because 클레스퍼트라 (1) has no condition to heal
-     -  8: prefers not to use item because it's last in stock
-     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
-[AI] [item_ai] idxPkmn=5, battler.pokemonIndex=1
-     + 30: ITEM AI: Ace Pokémon preservation priority.
-[AI] 클레스퍼트라 (1) doesn't want to use any items
-[AI] Move choices for 클레스퍼트라 (1) with threshold: 60: 
-[AI]    *  37.5% to use 루미나콜리전 (target 0): score 72
-[AI]    *   0.0% to use 대타출동: score -999
-[AI]    *   0.0% to use 명상: score -994
-[AI]    *  62.5% to use 배턴터치: score 80
-[AI] => will use 루미나콜리전 (target 0)
-
-
-[Use move] 상대 클레스퍼트라 (1) used 루미나콜리전
-"상대 클레스퍼트라의 루미나콜리전!"
-[HP change] 무장조 lost 32 HP (141 -> 109)
-"효과가 별로인 것 같다..."
-[Stat change] 무장조's 특수방어 changed by -2 (0 -> -2)
-"무장조의 \j[특수방어,이,가] 크게 떨어졌다!"
-[Use move] 무장조 (0) used 날려버리기
-"무장조의 날려버리기!"
-"\j[상대 테라파고스,은,는] 끌려 나왔다!"
-[HP change] 상대 테라파고스 lost 30 HP (199 -> 169)
-"상대 테라파고스에게 뾰족한 바위가 박혔다!"
-[HP change] 상대 테라파고스 lost 30 HP (169 -> 139)
-"\j[상대 테라파고스,은,는] 압정에 찔렸다!"
-
-[End of round 15]
-
-===== Round 16 =====
-
-[AI] 테라파고스 (1) is considering using 명상...
-     + 11: raising the user's 특수공격 by 1
-     + 10: raising the user's 특수방어 by 1
-     + 21: function code modifier (generic)
-[AI] [smart_setup] Skipped: foe has effective phazing move.
-     + 80: 2. Setup synergy with Stored Power.
-     +  5: 5. General Status Move Boost.
-[AI] 테라파고스 (1) is considering using 어시스트파워 against 무장조 (0)...
-     -  8: can trigger the target's item
-[AI] [damage_moves] computing 무장조 (0) → 테라파고스 (1) (turn 15)
-[AI]   바디프레스: 116 dmg (48.1% totalhp / 83.5% curhp)
-[AI] [damage_moves] computing 테라파고스 (1) → 무장조 (0) (turn 15)
-[AI]   어시스트파워: 69 dmg (40.1% totalhp / 63.3% curhp)
-[AI]   대지의힘: 0 dmg (0.0% totalhp / 0.0% curhp)
-[AI]   테라클러스터: 274 dmg (159.3% totalhp / 251.4% curhp)
-     + 18: 1v1: base damage (69/109)
-     + 10: 1v1: user wins in 2 turns
-[AI] 테라파고스 (1) is considering using 대지의힘 against 무장조 (0)...
-     move will not affect 무장조 (0)
-     -1099: move will fail
-     -999: move will fail
-[AI] 테라파고스 (1) is considering using 테라클러스터...
-     -  8: can trigger the target's item
-     + 30: 1v1: base damage (274/109)
-     + 30: 1v1: can OHKO target (outspeeds)
-[AI] Move choices for 테라파고스 (1) with threshold: 132: 
-[AI]    *   0.0% to use 명상: score -984
-[AI]    *   0.0% to use 어시스트파워 (target 0): score 120
-[AI]    *   0.0% to use 대지의힘 (target 0): score -999
-[AI]    * 100.0% to use 테라클러스터: score 152
-[AI] => will use 테라클러스터
-
-
-"무장조, 잘했어! 돌아와!"
-"힘내, 너트령!"
-[HP change] 너트령 lost 11 HP (181 -> 170)
-"너트령에게 뾰족한 바위가 박혔다!"
-[HP change] 너트령 lost 22 HP (170 -> 148)
-"\j[너트령,은,는] 압정에 찔렸다!"
-[Use move] 상대 테라파고스 (1) used 테라클러스터
-"상대 테라파고스의 테라클러스터!"
-[HP change] 너트령 lost 72 HP (148 -> 76)
-
-[End of round 16]
-[HP change] 너트령 gained 11 HP (76 -> 87)
-"너트령은 먹다남은음식으로 약간의 HP를 회복했다!"
-
-===== Round 17 =====
-
-[AI] 테라파고스 (1) is considering using 명상...
-     + 11: raising the user's 특수공격 by 1
-     + 10: raising the user's 특수방어 by 1
-     + 21: function code modifier (generic)
-[AI] [smart_setup] statUp: [:SPECIAL_ATTACK, 1, :SPECIAL_DEFENSE, 1]
-     - 40: GLOBAL NERF: Setup moves are inherently risky.
-[AI] [damage_moves] computing 너트령 (0) → 테라파고스 (1) (turn 16)
-[AI]   탁쳐서떨구기: 39 dmg (16.2% totalhp / 28.1% curhp)
-[AI] [damage_moves] computing 테라파고스 (1) → 너트령 (0) (turn 16)
-[AI]   어시스트파워: 20 dmg (11.0% totalhp / 23.0% curhp)
-[AI]   대지의힘: 60 dmg (33.1% totalhp / 69.0% curhp)
-[AI]   테라클러스터: 79 dmg (43.6% totalhp / 90.8% curhp)
-     + 50: Free setup: foes can't threaten (>40%).
-     + 15: Setup bonus: SpA +1, SpD +1.
-     + 80: 2. Setup synergy with Stored Power.
-     +  5: 5. General Status Move Boost.
-[AI] 테라파고스 (1) is considering using 어시스트파워 against 너트령 (0)...
-     -  8: can trigger the target's ability
-     +  6: 1v1: base damage (20/87)
-     - 40: 1v1: move very weak (11.0%)
-[AI] 테라파고스 (1) is considering using 대지의힘 against 너트령 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 10% = 1
-     +  1: function code modifier (against target)
-     -  8: can trigger the target's ability
-     + 20: 1v1: base damage (60/87)
-     - 14: 1v1: move weak (33.1%)
-     + 10: 1v1: user wins in 2 turns
-[AI] 테라파고스 (1) is considering using 테라클러스터...
-     -  8: can trigger the target's ability
-     + 27: 1v1: base damage (79/87)
-     + 10: 1v1: user wins in 2 turns
-[AI] Move choices for 테라파고스 (1) with threshold: 141: 
-[AI]    * 100.0% to use 명상: score 161
-[AI]    *   0.0% to use 어시스트파워 (target 0): score 58
-[AI]    *   0.0% to use 대지의힘 (target 0): score 109
-[AI]    *   0.0% to use 테라클러스터: score 129
-[AI] => will use 명상
-
-
-[Use move] 상대 테라파고스 (1) used 명상
-"상대 테라파고스의 명상!"
-[Stat change] 상대 테라파고스's 특수공격 changed by +1 (0 -> 1)
-"상대 테라파고스의 \j[특수공격,이,가] 올랐다!"
-[Stat change] 상대 테라파고스's 특수방어 changed by +1 (0 -> 1)
-"상대 테라파고스의 \j[특수방어,이,가] 올랐다!"
-[Use move] 너트령 (0) used 씨뿌리기
-"너트령의 씨뿌리기!"
-"\j[상대 테라파고스,은,는] 씨앗이 심겼다!"
-
-[End of round 17]
-[HP change] 너트령 gained 11 HP (87 -> 98)
-"너트령은 먹다남은음식으로 약간의 HP를 회복했다!"
-[HP change] 상대 테라파고스 lost 30 HP (139 -> 109)
-"\j[상대 테라파고스,이,가] 뿌린 씨를 통해 체력을 흡수했다!"
-[HP change] 너트령 gained 30 HP (98 -> 128)
-
-===== Round 18 =====
-
-[AI] 테라파고스 (1) wants to switch to get rid of its Leech Seed
-[AI] [damage_moves] computing 너트령 (0) → 테라파고스 (1) (turn 17)
-[AI]   탁쳐서떨구기: 39 dmg (16.2% totalhp / 35.8% curhp)
-[AI] 테라파고스 (1) is considering using 명상...
-     +  9: raising the user's 특수공격 by 1
-     +  8: raising the user's 특수방어 by 1
-     + 17: function code modifier (generic)
-[AI] [smart_setup] statUp: [:SPECIAL_ATTACK, 1, :SPECIAL_DEFENSE, 1]
-     - 40: GLOBAL NERF: Setup moves are inherently risky.
-[AI] [damage_moves] computing 테라파고스 (1) → 너트령 (0) (turn 17)
-[AI]   어시스트파워: 30 dmg (16.6% totalhp / 23.4% curhp)
-[AI]   대지의힘: 89 dmg (49.2% totalhp / 69.5% curhp)
-[AI]   테라클러스터: 119 dmg (65.7% totalhp / 93.0% curhp)
-     + 50: Free setup: foes can't threaten (>40%).
-     + 15: Setup bonus: SpA +1, SpD +1.
-     + 80: 2. Setup synergy with Stored Power.
-     +  5: 5. General Status Move Boost.
-[AI] 테라파고스 (1) is considering using 어시스트파워 against 너트령 (0)...
-     -  8: can trigger the target's ability
-     +  7: 1v1: base damage (30/128)
-     - 40: 1v1: move very weak (16.6%)
-[AI] 테라파고스 (1) is considering using 대지의힘 against 너트령 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 10% = 1
-     +  1: function code modifier (against target)
-     -  8: can trigger the target's ability
-     + 20: 1v1: base damage (89/128)
-     + 10: 1v1: user wins in 2 turns
-[AI] 테라파고스 (1) is considering using 테라클러스터...
-     -  8: can trigger the target's ability
-     + 27: 1v1: base damage (119/128)
-     + 10: 1v1: user wins in 2 turns
-[AI] Move choices for 테라파고스 (1) with threshold: 137: 
-[AI]    * 100.0% to use 명상: score 157
-[AI]    *   0.0% to use 어시스트파워 (target 0): score 59
-[AI]    *   0.0% to use 대지의힘 (target 0): score 123
-[AI]    *   0.0% to use 테라클러스터: score 129
-[AI] => will use 명상
-
-
-[Use move] 상대 테라파고스 (1) used 명상
-"상대 테라파고스의 명상!"
-[Stat change] 상대 테라파고스's 특수공격 changed by +1 (1 -> 2)
-"상대 테라파고스의 \j[특수공격,이,가] 올랐다!"
-[Stat change] 상대 테라파고스's 특수방어 changed by +1 (1 -> 2)
-"상대 테라파고스의 \j[특수방어,이,가] 올랐다!"
-[Use move] 너트령 (0) used 압정뿌리기
-"너트령의 압정뿌리기!"
-"상대편 주위로 압정이 뿌려졌다!"
-
-[End of round 18]
-[HP change] 너트령 gained 11 HP (128 -> 139)
-"너트령은 먹다남은음식으로 약간의 HP를 회복했다!"
-[HP change] 상대 테라파고스 lost 30 HP (109 -> 79)
-"\j[상대 테라파고스,이,가] 뿌린 씨를 통해 체력을 흡수했다!"
-[HP change] 너트령 gained 30 HP (139 -> 169)
-
-===== Round 19 =====
-
-[AI] 테라파고스 (1) wants to switch to get rid of its Leech Seed
-[AI] 테라파고스 (1) won't switch after all because it has a lot of raised stats
-[AI] 테라파고스 (1) is considering using 명상...
-     -  5: raising the user's 특수공격 by 1
-     -  5: raising the user's 특수방어 by 1
-     - 10: function code modifier (generic)
-[AI] [smart_setup] statUp: [:SPECIAL_ATTACK, 1, :SPECIAL_DEFENSE, 1]
-     - 40: GLOBAL NERF: Setup moves are inherently risky.
-[AI] [damage_moves] computing 너트령 (0) → 테라파고스 (1) (turn 18)
-[AI]   탁쳐서떨구기: 39 dmg (16.2% totalhp / 49.4% curhp)
-[AI] [damage_moves] computing 테라파고스 (1) → 너트령 (0) (turn 18)
-[AI]   어시스트파워: 66 dmg (36.5% totalhp / 39.1% curhp)
-[AI]   대지의힘: 119 dmg (65.7% totalhp / 70.4% curhp)
-[AI]   테라클러스터: 157 dmg (86.7% totalhp / 92.9% curhp)
-     + 15: Setup bonus: SpA +1, SpD +1.
-     + 80: 2. Setup synergy with Stored Power.
-     +  5: 5. General Status Move Boost.
-[AI] 테라파고스 (1) is considering using 어시스트파워 against 너트령 (0)...
-     -  8: can trigger the target's ability
-     + 11: 1v1: base damage (66/169)
-     -  7: 1v1: move weak (36.5%)
-     +  6: 1v1: user wins in 3 turns
-[AI] 테라파고스 (1) is considering using 대지의힘 against 너트령 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 10% = 1
-     +  1: function code modifier (against target)
-     -  8: can trigger the target's ability
-     + 21: 1v1: base damage (119/169)
-     + 10: 1v1: user wins in 2 turns
-[AI] 테라파고스 (1) is considering using 테라클러스터...
-     -  8: can trigger the target's ability
-     + 27: 1v1: base damage (157/169)
-     + 10: 1v1: user wins in 2 turns
-[AI] Move choices for 테라파고스 (1) with threshold: 109: 
-[AI]    *   0.0% to use 명상: score 80
-[AI]    *   0.0% to use 어시스트파워 (target 0): score 102
-[AI]    *  42.9% to use 대지의힘 (target 0): score 124
-[AI]    *  57.1% to use 테라클러스터: score 129
-[AI] => will use 테라클러스터
-
-
-[Use move] 상대 테라파고스 (1) used 테라클러스터
-"상대 테라파고스의 테라클러스터!"
-[HP change] 너트령 lost 151 HP (169 -> 18)
-[Use move] 너트령 (0) used 탁쳐서떨구기
-"너트령의 탁쳐서떨구기!"
-[HP change] 상대 테라파고스 lost 37 HP (79 -> 42)
-"\j[상대 테라파고스,은,는] \j[테라피스,을,를] 떨어뜨렸다!"
-
-[End of round 19]
-[HP change] 너트령 gained 11 HP (18 -> 29)
-"너트령은 먹다남은음식으로 약간의 HP를 회복했다!"
-[HP change] 상대 테라파고스 lost 30 HP (42 -> 12)
-"\j[상대 테라파고스,이,가] 뿌린 씨를 통해 체력을 흡수했다!"
-[HP change] 너트령 gained 30 HP (29 -> 59)
-
-===== Round 20 =====
-
-[AI] 테라파고스 (1) wants to switch because it will take a lot of EOR damage
-[AI] 테라파고스 (1) won't switch after all because it will faint from entry hazards if it switches back in
-[AI] 테라파고스 (1) is considering using 명상...
-     ignore stat change (target predicted to faint this round)
-     - 40: function code modifier (generic)
-[AI] [smart_setup] statUp: [:SPECIAL_ATTACK, 1, :SPECIAL_DEFENSE, 1]
-     - 40: GLOBAL NERF: Setup moves are inherently risky.
-[AI] [damage_moves] computing 너트령 (0) → 테라파고스 (1) (turn 19)
-[AI]   탁쳐서떨구기: 26 dmg (10.8% totalhp / 216.7% curhp)
-[AI] [damage_moves] computing 테라파고스 (1) → 너트령 (0) (turn 19)
-[AI]   어시스트파워: 66 dmg (36.5% totalhp / 111.9% curhp)
-[AI]   대지의힘: 119 dmg (65.7% totalhp / 201.7% curhp)
-[AI]   테라클러스터: 157 dmg (86.7% totalhp / 266.1% curhp)
-     -200: Setup blocked: foe can OHKO.
-     + 80: 2. Setup synergy with Stored Power.
-     +  5: 5. General Status Move Boost.
-[AI] 테라파고스 (1) is considering using 어시스트파워 against 너트령 (0)...
-     -  8: can trigger the target's ability
-     + 30: 1v1: base damage (66/59)
-     + 30: 1v1: can OHKO target (outspeeds)
-[AI] 테라파고스 (1) is considering using 대지의힘 against 너트령 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 10% = 1
-     +  1: function code modifier (against target)
-     -  8: can trigger the target's ability
-     + 30: 1v1: base damage (119/59)
-     + 30: 1v1: can OHKO target (outspeeds)
-[AI] 테라파고스 (1) is considering using 테라클러스터...
-     -  8: can trigger the target's ability
-     + 30: 1v1: base damage (157/59)
-     + 30: 1v1: can OHKO target (outspeeds)
-[AI] Move choices for 테라파고스 (1) with threshold: 133: 
-[AI]    *   0.0% to use 명상: score -165
-[AI]    *  32.8% to use 어시스트파워 (target 0): score 152
-[AI]    *  34.5% to use 대지의힘 (target 0): score 153
-[AI]    *  32.8% to use 테라클러스터: score 152
-[AI] => will use 어시스트파워 (target 0)
-
-
-[Use move] 상대 테라파고스 (1) used 어시스트파워
-"상대 테라파고스의 어시스트파워!"
-[HP change] 너트령 lost 56 HP (59 -> 3)
-"효과가 별로인 것 같다..."
-[Use move] 너트령 (0) used 압정뿌리기
-"너트령의 압정뿌리기!"
-"상대편 주위로 압정이 뿌려졌다!"
-
-[End of round 20]
-[HP change] 너트령 gained 11 HP (3 -> 14)
-"너트령은 먹다남은음식으로 약간의 HP를 회복했다!"
-[HP change] 상대 테라파고스 lost 12 HP (12 -> 0)
-"\j[상대 테라파고스,이,가] 뿌린 씨를 통해 체력을 흡수했다!"
-[HP change] 너트령 gained 12 HP (14 -> 26)
-"\j[상대 테라파고스,은,는] 쓰러졌다!"
-"\j[너트령,이,가] 1576의 많은 경험치를 얻었다!"
-"\j[무장조,이,가] 1576의 많은 경험치를 얻었다!"
-"다른 포켓몬들도 학습장치를 통해 경험치를 얻었다!"
-     - 18: 킬라플로르: entry hazard damage 63.375
-[AI] move_id: KNOCKOFF
-     + 20: 킬라플로르: wins 1v1 (turns=1v2, user_dmg=47/26hp, faster, faint_repl)
-     +  8: 킬라플로르: outspeeds 너트령 (0).
-[AI] pokemon 킬라플로르 has switch score 109
-     - 50: 클레스퍼트라: entry hazard damage 75.125
-[AI] move_id: KNOCKOFF
-     - 25: 클레스퍼트라: loses 1v1 (foe_dmg=159.125/75hp, faster, faint_repl)
-     +  8: 클레스퍼트라: outspeeds 너트령 (0).
-[AI] pokemon 클레스퍼트라 has switch score 33
-     - 24: 위유이: entry hazard damage 64.75
-[AI] move_id: KNOCKOFF
-     + 20: 위유이: wins 1v1 (turns=1v2, user_dmg=456/26hp, faster, faint_repl)
-     +  8: Status value: 도깨비불 vs physical foe
-     +  8: 위유이: outspeeds 너트령 (0).
-[AI] pokemon 위유이 has switch score 111
-     - 23: 대도각참: entry hazard damage 63.9375
-[AI] move_id: KNOCKOFF
-     + 20: 대도각참: wins 1v1 (turns=1v2, user_dmg=80/26hp, faster, faint_repl)
-     +  8: 대도각참: outspeeds 너트령 (0).
-[AI] pokemon 대도각참 has switch score 104
-"\j[엘리트 트레이너 test,은,는] \j[위유이,을,를] 내보냈다!"
-[HP change] 상대 위유이 lost 33 HP (131 -> 98)
-"상대 위유이에게 뾰족한 바위가 박혔다!"
-[HP change] 상대 위유이 lost 32 HP (98 -> 66)
-"\j[상대 위유이,은,는] 압정에 찔렸다!"
-[Ability triggered] 상대 위유이's 재앙의구슬
-"상대 위유이의 \j[재앙의구슬,이,가] 주위의 모든 포켓몬의 \j[특수방어,을,를] 약하게 했다!"
-
-===== Round 21 =====
-
-[AI] 위유이 (1) is considering using 악의파동 against 너트령 (0)...
-     +  6: function code modifier (against target)
-     -  8: can trigger the target's ability
-[AI] [damage_moves] computing 너트령 (0) → 위유이 (1) (turn 20)
-[AI]   탁쳐서떨구기: 19 dmg (14.5% totalhp / 28.8% curhp)
-[AI] [damage_moves] computing 위유이 (1) → 너트령 (0) (turn 20)
-[AI]   악의파동: 71 dmg (39.2% totalhp / 273.1% curhp)
-[AI]   오버히트: 456 dmg (251.9% totalhp / 1753.8% curhp)
-[AI]   사이코키네시스: 27 dmg (14.9% totalhp / 103.8% curhp)
-     + 30: 1v1: base damage (71/26)
-     + 30: 1v1: can OHKO target (outspeeds)
-[AI] 위유이 (1) is considering using 오버히트 against 너트령 (0)...
-     -  8: can trigger the target's ability
-     + 30: 1v1: base damage (456/26)
-     + 30: 1v1: can OHKO target (outspeeds)
-     - 12: lowering the user's 특수공격 by 2
-     - 12: function code modifier (generic)
-[AI] 위유이 (1) is considering using 사이코키네시스 against 너트령 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 10% = 1
-     +  1: function code modifier (against target)
-     -  8: can trigger the target's ability
-     + 30: 1v1: base damage (27/26)
-     + 30: 1v1: can OHKO target (outspeeds)
-[AI] 위유이 (1) is considering using 도깨비불 against 너트령 (0)...
-     + 33: function code modifier (against target)
-     -  3: accuracy (predicted 85%)
-     +  5: 5. General Status Move Boost.
-[AI] 위유이 (1) is considering using 다이내믹풀플레임 against 너트령 (0)...
-     -  8: can trigger the target's ability
-     + 30: 1v1: base damage (684/26)
-     + 30: 1v1: can OHKO target (outspeeds)
-[AI] 위유이 (1) is considering using Z-도깨비불 against 너트령 (0)...
-     + 33: function code modifier (against target)
-     -  3: accuracy (predicted 85%)
-     raising the user's 공격 isn't worthwhile
-     +  5: 5. General Status Move Boost.
-[AI] Move choices for 위유이 (1) with threshold: 138: 
-[AI]    *  39.2% to use 악의파동 (target 0): score 158
-[AI]    *   3.9% to use 오버히트 (target 0): score 140
-[AI]    *  29.4% to use 사이코키네시스 (target 0): score 153
-[AI]    *   0.0% to use 도깨비불 (target 0): score 135
-[AI]    *  27.5% to use 다이내믹풀플레임 (target 0): score 152
-[AI]    *   0.0% to use Z-도깨비불 (target 0): score 125
-[AI] => will use 다이내믹풀플레임 (target 0)
-
-
-[Use move] 상대 위유이 (1) used 다이내믹풀플레임
-"\j[상대 위유이,은,는] Z파워로 둘러싸여있다!"
-"상대 위유이가 Z파워로 전력을 발휘한다!"
-"상대 위유이의 다이내믹풀플레임!"
-[HP change] 너트령 lost 26 HP (26 -> 0)
-"효과가 굉장했다!"
-"\j[너트령,은,는] 쓰러졌다!"
-
-[End of round 21]
-"힘내, 한카리아스!"
-[HP change] 한카리아스 lost 46 HP (101 -> 55)
-"한카리아스에게 뾰족한 바위가 박혔다!"
-[HP change] 한카리아스 lost 22 HP (55 -> 33)
-"\j[한카리아스,은,는] 압정에 찔렸다!"
-
-===== Round 22 =====
-
-[AI] 위유이 (1) is considering using 악의파동 against 한카리아스 (0)...
-[AI] [damage_moves] computing 한카리아스 (0) → 위유이 (1) (turn 21)
-[AI]   지진: 135 dmg (103.1% totalhp / 204.5% curhp)
-[AI]   테라버스트: 27 dmg (20.6% totalhp / 40.9% curhp)
-[AI]   역린: 81 dmg (61.8% totalhp / 122.7% curhp)
-[AI] [damage_moves] computing 위유이 (1) → 한카리아스 (0) (turn 21)
-[AI]   악의파동: 105 dmg (57.4% totalhp / 318.2% curhp)
-[AI]   오버히트: 84 dmg (45.9% totalhp / 254.5% curhp)
-[AI]   사이코키네시스: 78 dmg (42.6% totalhp / 236.4% curhp)
-     -200: 1v1: foe can OHKO and outspeeds
-     + 30: 1v1: base damage (105/33)
-[AI] 위유이 (1) is considering using 오버히트 against 한카리아스 (0)...
-     -200: 1v1: foe can OHKO and outspeeds
-     + 30: 1v1: base damage (84/33)
-     - 12: lowering the user's 특수공격 by 2
-     - 12: function code modifier (generic)
-[AI] 위유이 (1) is considering using 사이코키네시스 against 한카리아스 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 10% = 1
-     +  1: function code modifier (against target)
-     -200: 1v1: foe can OHKO and outspeeds
-     + 30: 1v1: base damage (78/33)
-[AI] 위유이 (1) is considering using 도깨비불 against 한카리아스 (0)...
-     move will not affect 한카리아스 (0)
-     -1099: move will fail
-     -999: move will fail
-[AI] 위유이 (1) is considering using item 회복약 on party 클레스퍼트라 (party index 1)...
-     + 24: healing 클레스퍼트라 by 200 HP (75 -> 201) (74 over heal)
-     - 40: useless because 위유이 (1) has no condition to heal
-     -  8: prefers not to use item because it's last in stock
-[AI] [item_ai] idxPkmn=1, battler.pokemonIndex=3
-     - 50: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 위유이 (1) is considering using item 회복약 on party 위유이 (party index 3)...
-     + 13: healing 위유이 by 130 HP (66 -> 131) (65 over heal)
-     - 40: useless because 위유이 (1) has no condition to heal
-     -  8: prefers not to use item because it's last in stock
-[AI] [item_ai] idxPkmn=3, battler.pokemonIndex=3
-[AI] [item_ai] max_foe_dmg=135, totalhp=131, dmg%=103%, foe_outspeeds=true
-     -200: ITEM AI: Healing futile [OHKO] — foe deals 103% per hit, item wasted regardless of speed.
-[AI] 위유이 (1) is considering using item 회복약 on party 대도각참 (party index 5)...
-     - 40: useless because 대도각참's HP isn't worth healing
-     - 40: useless because 위유이 (1) has no condition to heal
-     -  8: prefers not to use item because it's last in stock
-     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
-[AI] [item_ai] idxPkmn=5, battler.pokemonIndex=3
-     + 30: ITEM AI: Ace Pokémon preservation priority.
-[AI] 위유이 (1) doesn't want to use any items
-[AI] 위유이 (1) wants to switch due to terrible moves [악의파동=-70, 오버히트=-82, 사이코키네시스=-69, 도깨비불=-999]
-[AI] 위유이 (1) is being forced to switch out
-     - 18: 킬라플로르: entry hazard damage 63.375
-[AI] move_id: EARTHQUAKE
-[AI] move_id: TERABLAST
-[AI] move_id: OUTRAGE
-[AI]   [Scenario1] 킬라플로르 vs 한카리아스 (0): same worst move (EARTHQUAKE), first_hit=285.375
-     -100: 킬라플로르: Scenario1 instant death (first_hit=285.375/171hp)
-[AI] pokemon 킬라플로르 has switch score -18
-     - 50: 클레스퍼트라: entry hazard damage 75.125
-[AI] move_id: EARTHQUAKE
-[AI] move_id: TERABLAST
-[AI] move_id: OUTRAGE
-[AI]   [Scenario1] 클레스퍼트라 vs 한카리아스 (0): predicted move_C=EARTHQUAKE (chance=82%, roll=64), first_hit=126.125
-     -100: 클레스퍼트라: Scenario1 instant death (first_hit=126.125/75hp)
-[AI] pokemon 클레스퍼트라 has switch score -50
-     - 23: 대도각참: entry hazard damage 63.9375
-[AI] move_id: EARTHQUAKE
-[AI] move_id: TERABLAST
-[AI] move_id: OUTRAGE
-[AI]   [Scenario1] 대도각참 vs 한카리아스 (0): same worst move (EARTHQUAKE), first_hit=152.9375
-     -100: 대도각참: Scenario1 instant death (first_hit=152.9375/135hp)
-[AI] pokemon 대도각참 has switch score -23
-[AI] => staying in: all reserves scored < 80 (best: -18), not switching
-[AI]    => no good replacement Pokémon, will not switch after all
-[AI] 위유이 (1) won't switch after all
-[AI] Move choices for 위유이 (1) with threshold: -89: 
-[AI]    *  41.3% to use 악의파동 (target 0): score -70
-[AI]    *  15.2% to use 오버히트 (target 0): score -82
-[AI]    *  43.5% to use 사이코키네시스 (target 0): score -69
-[AI]    *   0.0% to use 도깨비불 (target 0): score -999
-[AI] => will use 사이코키네시스 (target 0)
-
-
-[Use move] 한카리아스 (0) used 지진
-"한카리아스의 지진!"
-[HP change] 상대 위유이 lost 66 HP (66 -> 0)
-"효과가 굉장했다!"
-"\j[상대 위유이,은,는] 쓰러졌다!"
-"\j[한카리아스,이,가] 4989의 많은 경험치를 얻었다!"
-"\j[한카리아스,은,는] Lv. 51이 되었다!"
-"다른 포켓몬들도 학습장치를 통해 경험치를 얻었다!"
-
-[End of round 22]
-[HP change] 한카리아스 lost 11 HP (36 -> 25)
-"\j[한카리아스,은,는] 화상의 데미지를 받았다!"
-     - 18: 킬라플로르: entry hazard damage 63.375
-[AI] move_id: EARTHQUAKE
-[AI] move_id: TERABLAST
-[AI] move_id: OUTRAGE
-     - 50: 킬라플로르: loses 1v1 (foe_dmg=288.375/171hp, slower, faint_repl)
-[AI] pokemon 킬라플로르 has switch score 31
-     - 50: 클레스퍼트라: entry hazard damage 75.125
-[AI] move_id: EARTHQUAKE
-[AI] move_id: TERABLAST
-[AI] move_id: OUTRAGE
-     - 50: 클레스퍼트라: loses 1v1 (foe_dmg=137.125/75hp, slower, faint_repl)
-[AI] pokemon 클레스퍼트라 has switch score 0
-     - 23: 대도각참: entry hazard damage 63.9375
-[AI] move_id: EARTHQUAKE
-[AI] move_id: TERABLAST
-[AI] move_id: OUTRAGE
-     - 50: 대도각참: loses 1v1 (foe_dmg=153.9375/135hp, slower, faint_repl)
-[AI] pokemon 대도각참 has switch score 26
-[AI] => forced switch: sacking 킬라플로르 (best score 31)
-"\j[엘리트 트레이너 test,은,는] \j[킬라플로르,을,를] 내보냈다!"
-[HP change] 상대 킬라플로르 lost 21 HP (171 -> 150)
-"상대 킬라플로르에게 뾰족한 바위가 박혔다!"
-[HP change] 상대 킬라플로르 lost 42 HP (150 -> 108)
-"\j[상대 킬라플로르,은,는] 압정에 찔렸다!"
-
-===== Round 23 =====
-
-[AI] 킬라플로르 (1) is considering using 에너지볼 against 한카리아스 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 10% = 1
-     +  1: function code modifier (against target)
-[AI] [damage_moves] computing 한카리아스 (0) → 킬라플로르 (1) (turn 22)
-[AI]   지진: 225 dmg (131.6% totalhp / 208.3% curhp)
-[AI]   테라버스트: 23 dmg (13.5% totalhp / 21.3% curhp)
-[AI]   역린: 68 dmg (39.8% totalhp / 63.0% curhp)
-[AI] [damage_moves] computing 킬라플로르 (1) → 한카리아스 (0) (turn 22)
-[AI]   에너지볼: 34 dmg (18.3% totalhp / 136.0% curhp)
-[AI]   대지의힘: 136 dmg (73.1% totalhp / 544.0% curhp)
-[AI]   킬러스핀: 14 dmg (7.5% totalhp / 56.0% curhp)
-     -200: 1v1: foe can OHKO and outspeeds
-     + 30: 1v1: base damage (34/25)
-[AI] 킬라플로르 (1) is considering using 스텔스록...
-     -1099: move will fail
-[AI] 킬라플로르 (1) is considering using 대지의힘 against 한카리아스 (0)...
-     +  5: lowering the target's 특수방어 by 1
-     [additional effect scaling] stat drop: 5.0 * 10% = 1
-     +  1: function code modifier (against target)
-     -200: 1v1: foe can OHKO and outspeeds
-     + 30: 1v1: base damage (136/25)
-[AI] 킬라플로르 (1) is considering using 킬러스핀...
-     -200: 1v1: foe can OHKO and outspeeds
-     + 16: 1v1: base damage (14/25)
-     - 40: 1v1: move very weak (7.5%)
-     + 35: function code modifier (generic)
-[AI] 킬라플로르 (1) is considering using item 회복약 on party 킬라플로르 (party index 0)...
-     - 40: useless because 킬라플로르's HP isn't worth healing
-     - 40: useless because 킬라플로르 (1) has no condition to heal
-     -  8: prefers not to use item because it's last in stock
-     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
-[AI] [item_ai] idxPkmn=0, battler.pokemonIndex=0
-[AI] [item_ai] max_foe_dmg=225, totalhp=171, dmg%=131%, foe_outspeeds=true
-     -200: ITEM AI: Healing futile [OHKO] — foe deals 131% per hit, item wasted regardless of speed.
-[AI] 킬라플로르 (1) is considering using item 회복약 on party 클레스퍼트라 (party index 1)...
-     + 24: healing 클레스퍼트라 by 200 HP (75 -> 201) (74 over heal)
-     - 40: useless because 킬라플로르 (1) has no condition to heal
-     -  8: prefers not to use item because it's last in stock
-[AI] [item_ai] idxPkmn=1, battler.pokemonIndex=0
-     - 50: ITEM AI: Non-ace Pokémon, item discouraged.
-[AI] 킬라플로르 (1) is considering using item 회복약 on party 대도각참 (party index 5)...
-     - 40: useless because 대도각참's HP isn't worth healing
-     - 40: useless because 킬라플로르 (1) has no condition to heal
-     -  8: prefers not to use item because it's last in stock
-     -100: ITEM AI: HP is healthy (>60%), healing discouraged.
-[AI] [item_ai] idxPkmn=5, battler.pokemonIndex=0
-     + 30: ITEM AI: Ace Pokémon preservation priority.
-   => will use 회복약 (party index 1)
-[AI] 킬라플로르 (1) will use item 회복약
-
-
-"\j[엘리트 트레이너 test,은,는] 클레스퍼트라에게 \j[회복약,을,를] 사용했다."
-"클레스퍼트라의 HP가 회복되었다."
-[Use move] 한카리아스 (0) used 지진
-"한카리아스의 지진!"
-[HP change] 상대 킬라플로르 lost 108 HP (108 -> 0)
-"효과가 굉장했다!"
-[Ability triggered] 상대 킬라플로르's 독치장
-"우리편 주위에 독압적이 흩뿌려졌다!"
-"\j[상대 킬라플로르,은,는] 쓰러졌다!"
-"\j[한카리아스,이,가] 3148의 많은 경험치를 얻었다!"
-"다른 포켓몬들도 학습장치를 통해 경험치를 얻었다!"
-"\j[무장조,은,는] Lv. 51이 되었다!"
-
-[End of round 23]
-[HP change] 한카리아스 lost 11 HP (25 -> 14)
-"\j[한카리아스,은,는] 화상의 데미지를 받았다!"
-     - 18: 클레스퍼트라: entry hazard damage 75.125
-[AI] move_id: EARTHQUAKE
-[AI] move_id: TERABLAST
-[AI] move_id: OUTRAGE
-     + 20: 클레스퍼트라: wins 1v1 (turns=1v2, user_dmg=62/14hp, slower, faint_repl)
-[AI] pokemon 클레스퍼트라 has switch score 101
-     - 23: 대도각참: entry hazard damage 63.9375
-[AI] move_id: EARTHQUAKE
-[AI] move_id: TERABLAST
-[AI] move_id: OUTRAGE
-     - 50: 대도각참: loses 1v1 (foe_dmg=153.9375/135hp, slower, faint_repl)
-[AI] pokemon 대도각참 has switch score 26
-[AI] => forced switch: sacking 클레스퍼트라 (best score 101)
-"\j[엘리트 트레이너 test,은,는] \j[클레스퍼트라,을,를] 내보냈다!"
-[HP change] 상대 클레스퍼트라 lost 25 HP (201 -> 176)
-"상대 클레스퍼트라에게 뾰족한 바위가 박혔다!"
-[HP change] 상대 클레스퍼트라 lost 50 HP (176 -> 126)
-"\j[상대 클레스퍼트라,은,는] 압정에 찔렸다!"
-
-===== Round 24 =====
-
-[AI] 클레스퍼트라 (1) is considering using 루미나콜리전 against 한카리아스 (0)...
-     + 10: lowering the target's 특수방어 by 2
-     + 10: function code modifier (against target)
-[AI] [damage_moves] computing 한카리아스 (0) → 클레스퍼트라 (1) (turn 23)
-[AI]   지진: 52 dmg (25.9% totalhp / 41.3% curhp)
-[AI]   테라버스트: 41 dmg (20.4% totalhp / 32.5% curhp)
-[AI]   역린: 62 dmg (30.8% totalhp / 49.2% curhp)
-[AI] [damage_moves] computing 클레스퍼트라 (1) → 한카리아스 (0) (turn 23)
-[AI]   루미나콜리전: 62 dmg (33.3% totalhp / 442.9% curhp)
-     + 30: 1v1: base damage (62/14)
-     + 15: 1v1: can OHKO target
-[AI] 클레스퍼트라 (1) is considering using 대타출동...
-     + 11: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-[AI] 클레스퍼트라 (1) is considering using 명상...
-     +  6: raising the user's 특수공격 by 1
-     +  5: raising the user's 특수방어 by 1
-     + 11: function code modifier (generic)
-[AI] [smart_setup] statUp: [:SPECIAL_ATTACK, 1, :SPECIAL_DEFENSE, 1]
-     - 40: GLOBAL NERF: Setup moves are inherently risky.
-     + 15: Setup bonus: SpA +1, SpD +1.
-     +  5: 5. General Status Move Boost.
-[AI] 클레스퍼트라 (1) is considering using 배턴터치...
-     - 35: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-[AI] Move choices for 클레스퍼트라 (1) with threshold: 135: 
-[AI]    * 100.0% to use 루미나콜리전 (target 0): score 155
-[AI]    *   0.0% to use 대타출동: score 60
-[AI]    *   0.0% to use 명상: score 91
-[AI]    *   0.0% to use 배턴터치: score 70
-[AI] => will use 루미나콜리전 (target 0)
-
-
-[Use move] 한카리아스 (0) used 역린
-"한카리아스의 역린!"
-[HP change] 상대 클레스퍼트라 lost 62 HP (126 -> 64)
-[Use move] 상대 클레스퍼트라 (1) used 루미나콜리전
-"상대 클레스퍼트라의 루미나콜리전!"
-[HP change] 한카리아스 lost 14 HP (14 -> 0)
-"\j[한카리아스,은,는] 쓰러졌다!"
-
-[End of round 24]
-[HP change] 상대 클레스퍼트라 gained 12 HP (64 -> 76)
-"상대 클레스퍼트라는 먹다남은음식으로 약간의 HP를 회복했다!"
-[Ability triggered] 상대 클레스퍼트라's 가속
-[Stat change] 상대 클레스퍼트라's 스피드 changed by +1 (0 -> 1)
-"상대 클레스퍼트라의 \j[스피드,이,가] 올랐다!"
-"조금 남았어! 힘내, 팬텀!"
-[HP change] 팬텀 lost 17 HP (135 -> 118)
-"팬텀에게 뾰족한 바위가 박혔다!"
-[HP change] 팬텀 lost 16 HP (118 -> 102)
-"\j[팬텀,은,는] 압정에 찔렸다!"
-"\j[팬텀,은,는] 독압정에 찔렸다!"
-
-===== Round 25 =====
-
-[AI] 클레스퍼트라 (1) is considering using 루미나콜리전 against 팬텀 (0)...
-     + 10: lowering the target's 특수방어 by 2
-     + 10: function code modifier (against target)
-     -  8: can trigger the target's ability
-[AI] [damage_moves] computing 팬텀 (0) → 클레스퍼트라 (1) (turn 24)
-[AI] [predicted_damage] Mega Evolution simulation applied: 팬텀 (idx=0)
-[AI]   섀도볼: 294 dmg (146.3% totalhp / 386.8% curhp)
-[AI] [predicted_damage] Mega Evolution simulation applied: 팬텀 (idx=0)
-[AI]   오물폭탄: 165 dmg (82.1% totalhp / 217.1% curhp)
-[AI] [predicted_damage] Mega Evolution simulation applied: 팬텀 (idx=0)
-[AI]   기합구슬: 73 dmg (36.3% totalhp / 96.1% curhp)
-[AI] [damage_moves] computing 클레스퍼트라 (1) → 팬텀 (0) (turn 24)
-[AI] [predicted_damage] Mega Evolution simulation applied: 팬텀 (idx=0)
-[AI]   루미나콜리전: 117 dmg (86.7% totalhp / 114.7% curhp)
-     + 30: 1v1: base damage (117/102)
-     + 30: 1v1: can OHKO target (outspeeds)
-[AI] 클레스퍼트라 (1) is considering using 대타출동...
-     +  9: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-[AI] 클레스퍼트라 (1) is considering using 명상...
-     +  6: raising the user's 특수공격 by 1
-     +  5: raising the user's 특수방어 by 1
-     + 11: function code modifier (generic)
-[AI] [smart_setup] statUp: [:SPECIAL_ATTACK, 1, :SPECIAL_DEFENSE, 1]
-     - 40: GLOBAL NERF: Setup moves are inherently risky.
-     -200: Setup blocked: foe can OHKO.
-     +  5: 5. General Status Move Boost.
-[AI] 클레스퍼트라 (1) is considering using 배턴터치...
-     - 35: function code modifier (generic)
-     +  5: 5. General Status Move Boost.
-[AI] Move choices for 클레스퍼트라 (1) with threshold: 142: 
-[AI]    * 100.0% to use 루미나콜리전 (target 0): score 162
-[AI]    *   0.0% to use 대타출동: score 60
-[AI]    *   0.0% to use 명상: score -124
-[AI]    *   0.0% to use 배턴터치: score 70
-[AI] => will use 루미나콜리전 (target 0)
-
-
-"팬텀의 \j[팬텀나이트,이,가] test의 메가링에 반응하고 있다!"
-"\j[팬텀,은,는] 메가진화하여 \j[메가 팬텀,이,가] 되었다!"
-[Use move] 팬텀 (0) used 섀도볼
-"팬텀의 섀도볼!"
-[HP change] 상대 클레스퍼트라 lost 76 HP (76 -> 0)
-"효과가 굉장했다!"
-"\j[상대 클레스퍼트라,은,는] 쓰러졌다!"
-"\j[팬텀,이,가] 2941의 많은 경험치를 얻었다!"
-"\j[팬텀,은,는] Lv. 51이 되었다!"
-"다른 포켓몬들도 학습장치를 통해 경험치를 얻었다!"
-"\j[파오젠,은,는] Lv. 51이 되었다!"
-
-[End of round 25]
-     - 23: 대도각참: entry hazard damage 63.9375
-[AI] move_id: SHADOWBALL
-[AI] move_id: SLUDGEBOMB
-[AI] move_id: FOCUSBLAST
-     - 50: 대도각참: loses 1v1 (foe_dmg=371.9375/135hp, slower, faint_repl)
-[AI] pokemon 대도각참 has switch score 26
-[AI] => forced switch: sacking 대도각참 (best score 26)
-"\j[엘리트 트레이너 test,은,는] \j[대도각참,을,를] 내보냈다!"
-[HP change] 상대 대도각참 lost 13 HP (135 -> 122)
-"상대 대도각참에게 뾰족한 바위가 박혔다!"
-[HP change] 상대 대도각참 lost 51 HP (122 -> 71)
-"\j[상대 대도각참,은,는] 압정에 찔렸다!"
-[Ability triggered] 상대 대도각참's 총대장
-"\j[상대 대도각참,은,는] 쓰러진 동료로부터 힘을 받았다!"
-
-===== Round 26 =====
-
-[AI] 대도각참 (1) is considering using 깨트리기 against 팬텀 (0)...
-     move will not affect 팬텀 (0)
-     -1099: move will fail
-     -999: move will fail
-[AI] 대도각참 (1) is considering using 아이언헤드 against 팬텀 (0)...
-[AI] [damage_moves] computing 팬텀 (0) → 대도각참 (1) (turn 25)
-[AI]   섀도볼: 39 dmg (18.8% totalhp / 54.9% curhp)
-[AI]   오물폭탄: 0 dmg (0.0% totalhp / 0.0% curhp)
-[AI]   기합구슬: 308 dmg (148.8% totalhp / 433.8% curhp)
-[AI] [damage_moves] computing 대도각참 (1) → 팬텀 (0) (turn 25)
-[AI]   깨트리기: 0 dmg (0.0% totalhp / 0.0% curhp)
-[AI]   아이언헤드: 162 dmg (117.4% totalhp / 154.3% curhp)
-[AI]   도각참: 345 dmg (250.0% totalhp / 328.6% curhp)
-[AI]   기습: 282 dmg (204.3% totalhp / 268.6% curhp)
-     -200: 1v1: foe can OHKO and outspeeds
-     + 30: 1v1: base damage (162/105)
-[AI] 대도각참 (1) is considering using 도각참 against 팬텀 (0)...
-     -200: 1v1: foe can OHKO and outspeeds
-     + 30: 1v1: base damage (345/105)
-[AI] 대도각참 (1) is considering using 기습 against 팬텀 (0)...
-     - 40: function code modifier (against target)
-     +  8: target at low HP and move has priority over faster target
-     + 30: 1v1: base damage (282/105)
-     + 30: 1v1: can OHKO target (outspeeds)
-[AI] [boost_priority] skip FailsIfTargetActed priority bonus (uncertain)
-[AI] Move choices for 대도각참 (1) with threshold: 108: 
-[AI]    *   0.0% to use 깨트리기 (target 0): score -999
-[AI]    *   0.0% to use 아이언헤드 (target 0): score -70
-[AI]    *   0.0% to use 도각참 (target 0): score -70
-[AI]    * 100.0% to use 기습 (target 0): score 128
-[AI] => will use 기습 (target 0)
-
-
-[Use move] 상대 대도각참 (1) used 기습
-"상대 대도각참의 기습!"
-[HP change] 팬텀 lost 105 HP (105 -> 0)
-"효과가 굉장했다!"
-"\j[팬텀,은,는] 쓰러졌다!"
-
-[End of round 26]
-"조금 남았어! 힘내, 레쿠쟈!"
-[HP change] 레쿠쟈 lost 45 HP (180 -> 135)
-"레쿠쟈에게 뾰족한 바위가 박혔다!"
-[Ability triggered] 레쿠쟈's 에어록
-"날씨의 효과가 사라졌다!"
-
-===== Round 27 =====
-
-[AI] 대도각참 (1) is considering using 깨트리기 against 레쿠쟈 (0)...
-[AI] [damage_moves] computing 레쿠쟈 (0) → 대도각참 (1) (turn 26)
-[AI] [known_foe_moves] Hiding 지진 from 레쿠쟈 (0) (never acted)
-[AI]   화룡점정: 76 dmg (36.7% totalhp / 107.0% curhp)
-[AI]   신속: 34 dmg (16.4% totalhp / 47.9% curhp)
-[AI]   오버히트: 164 dmg (79.2% totalhp / 231.0% curhp)
-[AI] [damage_moves] computing 대도각참 (1) → 레쿠쟈 (0) (turn 26)
-[AI]   깨트리기: 47 dmg (26.1% totalhp / 34.8% curhp)
-[AI]   아이언헤드: 150 dmg (83.3% totalhp / 111.1% curhp)
-[AI]   도각참: 159 dmg (88.3% totalhp / 117.8% curhp)
-[AI]   기습: 132 dmg (73.3% totalhp / 97.8% curhp)
-     -200: 1v1: foe can OHKO and outspeeds
-     + 10: 1v1: base damage (47/135)
-     - 28: 1v1: move weak (26.1%)
-[AI] 대도각참 (1) is considering using 아이언헤드 against 레쿠쟈 (0)...
-     -200: 1v1: foe can OHKO and outspeeds
-     + 30: 1v1: base damage (150/135)
-[AI] 대도각참 (1) is considering using 도각참 against 레쿠쟈 (0)...
-     -200: 1v1: foe can OHKO and outspeeds
-     + 30: 1v1: base damage (159/135)
-[AI] 대도각참 (1) is considering using 기습 against 레쿠쟈 (0)...
-     - 40: function code modifier (against target)
-     + 29: 1v1: base damage (132/135)
-[AI] [boost_priority] skip FailsIfTargetActed priority bonus (uncertain)
-[AI] 대도각참 (1) couldn't find any usable items
-[AI] Move choices for 대도각참 (1) with threshold: 69: 
-[AI]    *   0.0% to use 깨트리기 (target 0): score -118
-[AI]    *   0.0% to use 아이언헤드 (target 0): score -70
-[AI]    *   0.0% to use 도각참 (target 0): score -70
-[AI]    * 100.0% to use 기습 (target 0): score 89
-[AI] => will use 기습 (target 0)
