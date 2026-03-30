@@ -1,158 +1,181 @@
 #===============================================================================
-# SimBattle: Full battle simulation wrapper for AI calculations.
-# Wraps a real Battle with mutable simulated state that can be reset.
+# Battle Simulation: Deep-copy based sim reuse.
+#
+# We deep-copy the real Battle (minus its scene) once at the start of the
+# AI turn and cache it.  Each create_battle_copy call deep-copies from
+# that cached clean copy, giving each simulation a fresh independent state.
 #===============================================================================
 
 class Battle::AI
-  #=============================================================================
-  # SimField: Simulated field state (weather, terrain, effects)
-  #=============================================================================
-  class SimField
-    attr_accessor :weather, :weatherDuration
-    attr_accessor :terrain, :terrainDuration
-    attr_accessor :effects
+  # Symbol used with throw/catch to abort simulation on forced switch attempts.
+  SIM_SWITCH_TRIGGERED = :sim_switch_triggered
 
-    def initialize(real_field)
-      @real_field = real_field
-      reset!
-    end
+  # Minimum interval between scene ticks during AI computation (~7 FPS).
+  TICK_INTERVAL = 0.15
 
-    def reset!
-      @weather = @real_field.weather
-      @weatherDuration = @real_field.weatherDuration
-      @terrain = @real_field.terrain
-      @terrainDuration = @real_field.terrainDuration
-      @effects = @real_field.effects.dup
-    end
+  #=============================================================================
+  # SilentScene: No-op scene for simulation.
+  #=============================================================================
+  class SilentScene
+    def method_missing(_method, *_args, &_block); nil; end
+    def respond_to_missing?(_method, _include_private = false); true; end
   end
 
-  #=============================================================================
-  # SimSide: Simulated side effects (Reflect, Spikes, etc.)
-  #=============================================================================
-  class SimSide
-    attr_accessor :effects
-
-    def initialize(real_side)
-      @real_side = real_side
-      reset!
-    end
-
-    def reset!
-      @effects = @real_side.effects.dup
-    end
+  #---------------------------------------------------------------------------
+  # Tick the battle scene to keep sprites and animations alive during AI.
+  # Throttled so Graphics.update overhead doesn't dominate computation.
+  #---------------------------------------------------------------------------
+  def tick_scene
+    now = System.uptime
+    return if @_last_tick && (now - @_last_tick) < TICK_INTERVAL
+    @_last_tick = now
+    scene = @battle.scene
+    return unless scene.is_a?(Battle::Scene)
+    scene.pbGraphicsUpdate
+    scene.pbFrameUpdate
   end
 
-  #=============================================================================
-  # SimPosition: Simulated position effects
-  #=============================================================================
-  class SimPosition
-    attr_accessor :effects
-
-    def initialize(real_position)
-      @real_position = real_position
-      reset!
-    end
-
-    def reset!
-      @effects = @real_position ? @real_position.effects.dup : {}
-    end
+  #---------------------------------------------------------------------------
+  # Show/hide a "..." thinking indicator in the message window.
+  #---------------------------------------------------------------------------
+  def show_thinking_indicator
+    scene = @battle.scene
+    return unless scene.is_a?(Battle::Scene)
+    scene.pbShowWindow(Battle::Scene::MESSAGE_BOX)
+    msgw = scene.sprites["messageWindow"]
+    return unless msgw
+    msgw.letterbyletter = false
+    msgw.setText("...")
+    msgw.letterbyletter = true
+    @_thinking_shown = true
+    tick_scene
   end
 
-  #=============================================================================
-  # SimBattle: Wraps a real Battle with simulated mutable state.
-  # Self-contained - no delegation to real battle.
-  #=============================================================================
-  class SimBattle
-    attr_accessor :field, :sides, :positions, :battlers, :choices
-    attr_accessor :turnCount, :lastMoveUsed, :lastMoveUser, :moldBreaker
-    attr_accessor :deterministic
-    attr_reader   :real_battle
+  def hide_thinking_indicator
+    return unless @_thinking_shown
+    scene = @battle.scene
+    return unless scene.is_a?(Battle::Scene)
+    scene.sprites["messageBox"]&.visible = false
+    msgw = scene.sprites["messageWindow"]
+    if msgw
+      msgw.text = ""
+      msgw.visible = false
+    end
+    @_thinking_shown = false
+  end
 
-    def initialize(ai)
-      @ai = ai
-      @real_battle = ai.battle
-      @deterministic = true
-      @field = SimField.new(@real_battle.field)
-      @sides = [SimSide.new(@real_battle.sides[0]), SimSide.new(@real_battle.sides[1])]
-      @positions = @real_battle.positions.map { |p| SimPosition.new(p) }
-      @battlers = []  # Populated with SimBattlers by caller
-      @choices = []
-      reset!
+  #---------------------------------------------------------------------------
+  # Return a fresh deep copy of the real battle for simulation.
+  #---------------------------------------------------------------------------
+  def create_battle_copy
+    saved_scene = @battle.instance_variable_get(:@scene)
+    @battle.instance_variable_set(:@scene, nil)
+    begin
+      sim = deep_copy(@battle)
+    ensure
+      @battle.instance_variable_set(:@scene, saved_scene)
+    end
+    sim.instance_variable_set(:@scene, SilentScene.new)
+    sim.instance_variable_set(:@is_simulation, true)
+    # Abort simulation on any forced switch attempt (U-turn, Eject Pack, etc.)
+    def sim.pbSwitchInBetween(idxBattler, checkLaxOnly = false, canCancel = false)
+      throw Battle::AI::SIM_SWITCH_TRIGGERED
+    end
+    sim
+  end
+
+  private
+
+  #---------------------------------------------------------------------------
+  # Custom recursive deep copy.
+  # Uses an identity map (`seen`) to preserve shared references and avoid
+  # infinite recursion on circular object graphs.
+  #---------------------------------------------------------------------------
+  def deep_copy(obj, seen = {})
+    # Immutable types — return as-is
+    case obj
+    when nil, true, false, Numeric, Symbol, Method, Proc
+      return obj
+    when String
+      return obj.dup
     end
 
-    def reset!
-      @field.reset!
-      @sides.each(&:reset!)
-      @positions.each(&:reset!)
-      @turnCount = @real_battle.turnCount
-      @lastMoveUsed = @real_battle.lastMoveUsed
-      @lastMoveUser = @real_battle.lastMoveUser
-      @moldBreaker = @real_battle.moldBreaker
-      @choices = @real_battle.choices.map { |c| c.dup rescue c }
-    end
+    # Already copied this exact object — return the same copy
+    return seen[obj.object_id] if seen.key?(obj.object_id)
 
-    #---------------------------------------------------------------------------
-    # Deterministic random for simulation
-    #---------------------------------------------------------------------------
-    def pbRandom(x)
-      return x / 2 if @deterministic
-      rand(x)
-    end
-
-    def damage_roll
-      @deterministic ? 92 : (85 + rand(16))
-    end
-
-    #---------------------------------------------------------------------------
-    # Methods using simulated battler state
-    #---------------------------------------------------------------------------
-    def allBattlers
-      @battlers.select { |b| b && !b.fainted? }
-    end
-
-    def allSameSideBattlers(idx)
-      @battlers.select { |b| b && !b.fainted? && !opposes?(b.index, idx) }
-    end
-
-    def allOtherSideBattlers(idx)
-      @battlers.select { |b| b && !b.fainted? && opposes?(b.index, idx) }
-    end
-
-    def pbAllFainted?(idx = 0)
-      @battlers.each do |b|
-        next if !b || opposes?(b.index, idx)
-        return false if !b.fainted?
+    case obj
+    when Array
+      copy = []
+      seen[obj.object_id] = copy
+      obj.each { |e| copy << deep_copy(e, seen) }
+    when Hash
+      copy = {}
+      seen[obj.object_id] = copy
+      obj.each { |k, v| copy[deep_copy(k, seen)] = deep_copy(v, seen) }
+    else
+      # Generic object: allocate a bare instance, then deep-copy each ivar
+      copy = obj.class.allocate
+      seen[obj.object_id] = copy
+      obj.instance_variables.each do |ivar|
+        copy.instance_variable_set(ivar, deep_copy(obj.instance_variable_get(ivar), seen))
       end
-      true
     end
-
-    def opposes?(idx1, idx2 = 0)
-      idx1.even? != idx2.even?
-    end
-
-    #---------------------------------------------------------------------------
-    # Silent scene for simulation
-    #---------------------------------------------------------------------------
-    def scene
-      SilentScene.new
-    end
-
-    def showAnims
-      false
-    end
-
-    #---------------------------------------------------------------------------
-    # Display methods (no-op in simulation)
-    #---------------------------------------------------------------------------
-    def pbDisplay(_msg); end
-    def pbDisplayBrief(_msg); end
-    def pbDisplayPaused(_msg); end
-    def pbShowAbilitySplash(*); end
-    def pbHideAbilitySplash(*); end
+    copy
   end
 end
 
 #===============================================================================
-# Primal weather constants (shared with SimBattler/simulation code)
+# Primal weather constants
 #===============================================================================
 PRIMAL_WEATHERS = [:HarshSun, :HeavyRain, :StrongWinds].freeze
+
+#===============================================================================
+# Simulation support: expose is_simulation flag on Battle.
+#===============================================================================
+class Battle
+  attr_accessor :is_simulation
+end
+
+#===============================================================================
+# Suppress low-chance crits during AI simulations.
+# Only allow crits when the crit rate is >= 50% (ratio <= 2, i.e. stage 2+).
+# This prevents lucky RNG from skewing AI damage predictions.
+#===============================================================================
+class Battle::Move
+  alias _orig_pbIsCritical pbIsCritical?
+  def pbIsCritical?(user, target)
+    if @battle.is_simulation
+      return false if target.pokemon.immunities.include?(:CRITICALHIT)
+      return false if target.pbOwnSide.effects[PBEffects::LuckyChant] > 0
+      c = 0
+      if c >= 0 && user.abilityActive?
+        c = Battle::AbilityEffects.triggerCriticalCalcFromUser(user.ability, user, target, c)
+      end
+      if c >= 0 && target.abilityActive? && !@battle.moldBreaker
+        c = Battle::AbilityEffects.triggerCriticalCalcFromTarget(target.ability, user, target, c)
+      end
+      if c >= 0 && user.itemActive?
+        c = Battle::ItemEffects.triggerCriticalCalcFromUser(user.item, user, target, c)
+      end
+      if c >= 0 && target.itemActive?
+        c = Battle::ItemEffects.triggerCriticalCalcFromTarget(target.item, user, target, c)
+      end
+      return false if c < 0
+      # Move-specific overrides (always/never crit)
+      case pbCritialOverride(user, target)
+      when 1  then return true
+      when -1 then return false
+      end
+      # Guaranteed-crit effects
+      return true if c > 50   # Merciless
+      return true if user.effects[PBEffects::LaserFocus] > 0
+      # Compute final crit stage (DBK uses crit_stage_bonuses)
+      c += crit_stage_bonuses(user)
+      ratios = CRITICAL_HIT_RATIOS
+      c = ratios.length - 1 if c >= ratios.length
+      # Only crit if chance >= 50% (ratio <= 2)
+      return ratios[c] <= 2
+    end
+    _orig_pbIsCritical(user, target)
+  end
+end

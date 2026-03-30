@@ -16,3 +16,5 @@ class Game_Character
     _fix_stale_wait_update_command
   end
 end
+
+
