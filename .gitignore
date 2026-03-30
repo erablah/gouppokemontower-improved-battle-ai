@@ -1,0 +1,12 @@
+# Ignore everything
+*
+
+# But track .txt and .rb files
+!*.txt
+!*.rb
+
+# Allow directories to be traversed (so Git can find files inside them)
+!*/
+
+# But specifically ignore debuglog.txt
+Data/debuglog.txt
