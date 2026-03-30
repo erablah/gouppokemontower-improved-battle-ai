@@ -153,10 +153,11 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
     end
 
     # -----------------------------------------------------------------------
-    # Per-foe 1v1 comparison: current vs boosted
+    # Per-foe 1v1 comparison: current vs boosted (using actual simulation)
     # -----------------------------------------------------------------------
     summary = ai.matchup_summary
     total_bonus = 0
+    setup_move_id = move.id
 
     ai.each_foe_battler(user.side) do |b, _i|
       foe_entry = summary[:foes][b.index]
@@ -170,92 +171,30 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
         next
       end
 
-      current_result = foe_entry[:one_v_one]
-      foe_best_dmg  = foe_entry[:best_dmg]
       foe_best_move = foe_entry[:best_move]
+      next unless foe_best_move
 
-      user_c = ai.make_combatant(user, b)
-      foe_c  = ai.make_combatant(b, user)
+      user_best = ai.best_damage_move(user, b)
+      next unless user_best
 
-      # --- Boosted user damage (pick best move and best priority after boost) ---
-      user_dmg_data = ai.damage_moves(user, b)
-      boosted_user_dmg = 0
-      boosted_user_move = nil
-      boosted_user_pri_dmg = 0
-      user_dmg_data.each_value do |md|
-        d = md[:dmg]
-        if md[:move].physicalMove?
-          d = (d * atk_mult).round
-        elsif md[:move].specialMove?
-          d = (d * spa_mult).round
-        end
-        if d > boosted_user_dmg
-          boosted_user_dmg = d
-          boosted_user_move = md[:move]
-        end
-        if md[:move].priority > 0 && d > boosted_user_pri_dmg
-          boosted_user_pri_dmg = d
-        end
-      end
+      user_best_move_id = user_best[:move].id
+      foe_best_move_id = foe_best_move.id
 
-      # --- Boosted foe damage (reduced by our defensive boosts) ---
-      boosted_foe_dmg = foe_best_dmg
-      if foe_best_move
-        if foe_best_move.physicalMove?
-          boosted_foe_dmg = (foe_best_dmg / def_mult).round
-        elsif foe_best_move.specialMove?
-          boosted_foe_dmg = (foe_best_dmg / spdef_mult).round
-        end
-      end
+      # Current: user attacks with best move, foe attacks with best move
+      current_result = foe_entry[:sim_result]
+      next unless current_result
 
-      # --- Speed after boost ---
-      if spd_boost > 0
-        user_has_lagging = LAGGING_TAIL_ITEMS.include?(battler.item_id) && battler.itemActive?
-        foe_has_lagging = LAGGING_TAIL_ITEMS.include?(b.battler.item_id) && b.battler.itemActive?
-        if user_has_lagging && !foe_has_lagging
-          boosted_outspeeds = false
-        elsif foe_has_lagging && !user_has_lagging
-          boosted_outspeeds = true
-        else
-          user_speed = user.rough_stat(:SPEED)
-          cur_spd_stage = battler.stages[:SPEED]
-          new_spd_stage = [cur_spd_stage + spd_boost, 6].min
-          base_speed = user_speed / ai.stat_stage_mult(cur_spd_stage)
-          boosted_speed = base_speed * ai.stat_stage_mult(new_spd_stage)
-          trick_room = battle.field.effects[PBEffects::TrickRoom] > 0
-          boosted_outspeeds = (boosted_speed > foe_entry[:speed]) ^ trick_room
-        end
-      else
-        boosted_outspeeds = !foe_entry[:outspeeds]
-      end
-
-      # --- Status moves: user takes one hit during setup turn ---
-      if is_status
-        boosted_user_hp = user.hp - foe_best_dmg
-        if boosted_user_hp <= 0
-          total_bonus -= 200
-          PBDebug.log_ai("[smart_setup] vs #{b.name}: would die during setup → -200")
-          next
-        end
-        # Foe heals from drain during setup turn
-        foe_mods = ai.move_sim_modifiers(foe_best_move)
-        boosted_foe_hp = [b.hp + (foe_mods[:drain_factor] * foe_best_dmg).round, b.battler.totalhp].min
-      else
-        boosted_user_hp = user.hp
-        boosted_foe_hp = b.hp
-      end
-
-      # --- Run boosted 1v1 ---
-      boosted_result = ai.one_v_one_result(
-        user_c.merge(dmg: boosted_user_dmg, move: boosted_user_move,
-                     hp: boosted_user_hp, priority_dmg: boosted_user_pri_dmg),
-        foe_c.merge(dmg: boosted_foe_dmg, hp: boosted_foe_hp),
-        boosted_outspeeds
+      # Boosted: user uses setup move first, then best attack; foe keeps attacking
+      boosted_result = ai.simulate_battle(
+        user.index, b.index,
+        [setup_move_id, user_best_move_id],
+        [foe_best_move_id],
+        max_turns: 10
       )
 
       # --- Score comparison ---
-      cur_wins = current_result[:user_wins]
-      bst_wins = boosted_result[:user_wins]
+      cur_wins = current_result.user_wins?
+      bst_wins = boosted_result.user_wins?
       foe_bonus = 0
 
       if !cur_wins && bst_wins
@@ -265,29 +204,32 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
         # Boost makes winning → losing (HP cost too high for status)
         foe_bonus = is_status ? -40 : -20
       elsif cur_wins && bst_wins
-        # Both win — score by absolute HP saved (normalized to user's actual HP)
-        current_remaining = current_result[:user_hp_pct] * user.hp
-        boosted_remaining = boosted_result[:user_hp_pct] * boosted_user_hp
-        dmg_saved_pct = (boosted_remaining - current_remaining) / [user.hp, 1].max.to_f
+        # Both win — compare turns to KO and remaining HP
+        cur_turns = current_result.target_ko_turn || 999
+        bst_turns = boosted_result.target_ko_turn || 999
+        # Boosted takes longer due to setup turn, but should deal more damage per hit
+        # Score based on HP remaining after winning
+        cur_hp_pct = current_result.user_hp.to_f / [user.totalhp, 1].max
+        bst_hp_pct = boosted_result.user_hp.to_f / [user.totalhp, 1].max
+        hp_saved = bst_hp_pct - cur_hp_pct
         # Base value: you win AND end up boosted for future matchups
-        base = [current_result[:f_turns] * 3, 15].min + 10
-        if dmg_saved_pct > 0
-          # Saved HP on top of being boosted
-          foe_bonus = base + (dmg_saved_pct * 40).round.clamp(0, 25)
-        elsif dmg_saved_pct >= -0.01
-          # Same damage — still good, you're boosted
+        base = [cur_turns * 3, 15].min + 10
+        if hp_saved > 0
+          foe_bonus = base + (hp_saved * 40).round.clamp(0, 25)
+        elsif hp_saved >= -0.05
           foe_bonus = base
         else
-          # Costs more HP but still winning and boosted — reduce base
-          foe_bonus = [base + (dmg_saved_pct * 30).round, 0].max
+          foe_bonus = [base + (hp_saved * 30).round, 0].max
         end
       else
         # Both lose — status wastes a turn, damaging still deals damage
         foe_bonus = is_status ? -40 : 0
       end
 
-      PBDebug.log_ai("[smart_setup] vs #{b.name}: cur=#{cur_wins ? 'W' : 'L'}(#{current_result[:u_turns]}T) " \
-                     "bst=#{bst_wins ? 'W' : 'L'}(#{boosted_result[:u_turns]}T) → #{foe_bonus > 0 ? '+' : ''}#{foe_bonus}")
+      cur_turns = current_result.target_ko_turn || 999
+      bst_turns = boosted_result.target_ko_turn || 999
+      PBDebug.log_ai("[smart_setup] vs #{b.name}: cur=#{cur_wins ? 'W' : 'L'}(#{cur_turns}T) " \
+                     "bst=#{bst_wins ? 'W' : 'L'}(#{bst_turns}T) → #{foe_bonus > 0 ? '+' : ''}#{foe_bonus}")
       total_bonus += foe_bonus
     end
 

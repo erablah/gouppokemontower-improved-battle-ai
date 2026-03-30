@@ -12,7 +12,7 @@ class Battle::AI
   end
 end
 
-class Battle::AI::SimBattler
+class Battle::AI::AIBattler
   #=============================================================================
   # Scenario-based Tera scoring using predicted damage and 1v1 simulation
   #=============================================================================
@@ -101,8 +101,10 @@ class Battle::AI::SimBattler
                    "spd=#{user_outspeeds ? 'user' : 'foe'} foe_hp=#{foe.hp} user_hp=#{self.hp}")
 
     # --- 1v1 simulation: compare with and without tera ---
-    user_c = { battler: self, target: foe, dmg: u_dmg_no, move: best_user_no_tera&.dig(:move), hp: self.hp }
-    foe_c  = { battler: foe, target: self, dmg: f_dmg_no, move: best_foe_no_tera&.dig(:move), hp: foe.hp }
+    user_c = { battler: self, index: self.index, target: foe, target_index: foe.index,
+               dmg: u_dmg_no, move: best_user_no_tera&.dig(:move), hp: self.hp }
+    foe_c  = { battler: foe, index: foe.index, target: self, target_index: self.index,
+               dmg: f_dmg_no, move: best_foe_no_tera&.dig(:move), hp: foe.hp }
     foe_tera_move = foe_chosen_move_id && foe_dmg_with_tera[foe_chosen_move_id] ?
                     foe_dmg_with_tera[foe_chosen_move_id][:move] : best_foe_no_tera&.dig(:move)
     return simulate_1v1_tera_value(

@@ -8,7 +8,7 @@ Battle::AI::Handlers::ShouldSwitch.add(:high_damage_from_foe,
   }
 )
 
-# Override: EOR damage is now handled by one_v_one_result via make_combatant.
+# Override: EOR damage is now handled by simulate_battle.
 # Keep switching to remove harmful effects (Leech Seed, Nightmare, Curse, Toxic).
 Battle::AI::Handlers::ShouldSwitch.add(:significant_eor_damage,
   proc { |battler, reserves, ai, battle|

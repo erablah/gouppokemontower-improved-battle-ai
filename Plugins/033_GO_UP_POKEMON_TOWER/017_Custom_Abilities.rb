@@ -18,7 +18,7 @@ class Battle::Move
 end
 
 # AI type effectiveness awareness for Eerie Chill
-class Battle::AI::SimBattler
+class Battle::AI::AIBattler
   alias eeriechill_effectiveness effectiveness_of_type_against_battler
   def effectiveness_of_type_against_battler(type, user = nil, move = nil)
     ret = eeriechill_effectiveness(type, user, move)
