@@ -193,3 +193,19 @@ class Battle::Move
     return acc
   end
 end
+
+#===============================================================================
+# Allow Sucker Punch (FailsIfTargetActed) to succeed during pure damage checks
+# where the opponent's action is forced to [:None] in the simulation.
+#===============================================================================
+class Battle::Move::FailsIfTargetActed < Battle::Move
+  if !method_defined?(:_orig_pbFailsAgainstTarget?)
+    alias _orig_pbFailsAgainstTarget? pbFailsAgainstTarget?
+    def pbFailsAgainstTarget?(user, target, show_message)
+      if @battle && @battle.is_simulation && @battle.choices[target.index][0] == :None
+        return false
+      end
+      return _orig_pbFailsAgainstTarget?(user, target, show_message)
+    end
+  end
+end
