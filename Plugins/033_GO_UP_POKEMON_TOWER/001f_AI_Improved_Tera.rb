@@ -10,6 +10,30 @@ class Battle::AI
         return true if @user.isSpecies?(:TERAPAGOS)
         return @user.get_total_tera_score >= 0
   end
+
+  #---------------------------------------------------------------------------
+  # Evaluates a 1v1 simulated matchup between two battlers
+  # returns { user_wins: bool, u_turns: int, f_turns: int }
+  #---------------------------------------------------------------------------
+  def one_v_one_result(user_c, foe_c, user_outspeeds)
+    u_hp = user_c[:hp]
+    u_dmg = user_c[:dmg] || 0
+    f_hp = foe_c[:hp]
+    f_dmg = foe_c[:dmg] || 0
+
+    u_turns = (u_dmg > 0) ? (f_hp.to_f / u_dmg).ceil : 999
+    f_turns = (f_dmg > 0) ? (u_hp.to_f / f_dmg).ceil : 999
+
+    if u_turns < f_turns
+      user_wins = true
+    elsif f_turns < u_turns
+      user_wins = false
+    else
+      user_wins = user_outspeeds
+    end
+
+    { user_wins: user_wins, u_turns: u_turns, f_turns: f_turns }
+  end
 end
 
 class Battle::AI::AIBattler

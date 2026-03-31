@@ -60,32 +60,37 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
       # Foe's best move vs the reserve (actual damage via pre_switch sim)
       foe_vs_reserve = ai.best_damage_move_with_switch(b.index, idxBattler, pre_switch)
       foe_vs_reserve_id = foe_vs_reserve ? foe_vs_reserve[:move].id : foe_vs_current_id
-      # For forced switches, if we couldn't determine any foe move, skip
-      next unless foe_vs_reserve_id
-
       # Reserve's best damaging moves vs foe (top 2 by actual damage)
       reserve_dmg = ai.damage_moves_with_switch(idxBattler, b.index, pre_switch)
       reserve_candidates = reserve_dmg.values.sort_by { |md| -md[:dmg] }.first(1)
-      next if reserve_candidates.empty?
+      status_moves = pkmn.moves.select { |m| m.is_a?(Pokemon::Move) && m.power == 0 }
+
+      # For forced switches, if we couldn't determine any foe move, skip
+      next if !foe_vs_reserve_id || (reserve_candidates.empty? && status_moves.empty?)
 
       best_result = nil
       reserve_candidates.each do |md|
         if voluntary_switch
           # Turn 1: switch in, foe uses best move vs current battler
           # Turn 2+: reserve attacks, foe uses best move vs reserve
-          result = ai.simulate_battle(
-            idxBattler, b.index,
-            [[:switch, party_index], md[:move].id],
-            [foe_vs_current_id, foe_vs_reserve_id],
-            max_turns: 10
+          sim = ai.create_switched_sim(
+             pre_switch, 
+             voluntary_switch: true, 
+             target_index: b.index, 
+             foe_move_id: foe_vs_current_id
           )
-        else
-          # Faint replacement or pivot: entry effects applied, no free hit
           result = ai.simulate_battle(
             idxBattler, b.index,
             [md[:move].id], [foe_vs_reserve_id],
-            max_turns: 10,
-            pre_switch: { idxBattler => party_index }
+            sim: sim, max_turns: 10
+          )
+        else
+          # Faint replacement or pivot: entry effects applied, no free hit
+          sim = ai.create_switched_sim(pre_switch)
+          result = ai.simulate_battle(
+            idxBattler, b.index,
+            [md[:move].id], [foe_vs_reserve_id],
+            sim: sim, max_turns: 10
           )
         end
 
@@ -97,13 +102,23 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
           best_result = result
         end
       end
-      next unless best_result
 
       # --- Scoring ---
-      if best_result.user_fainted && best_result.turns <= 1
-        # Dies on entry (hazards or immediate OHKO)
+      died_on_entry = best_result.nil? || (best_result.user_fainted && best_result.turns <= 1)
+
+      status_survives = false
+      if died_on_entry && !status_moves.empty?
+        status_survives = status_moves.any? { |m| ai.reserve_status_move_survives?(idxBattler, pkmn, b, m.id) }
+      end
+
+      if died_on_entry && !status_survives
+        # Dies on entry (hazards or immediate OHKO) and no status move survives
         score -= 50
         PBDebug.log_score_change(-50, "#{pkmn.name} vs #{b.name}: dies on entry")
+      elsif died_on_entry && status_survives
+        # Only surviving moves are status moves; useful but passive
+        score -= 10
+        PBDebug.log_score_change(-10, "#{pkmn.name} vs #{b.name}: relies on status move survival")
       elsif best_result.user_wins?
         u_turns = best_result.target_ko_turn || 999
         f_turns = best_result.user_ko_turn || 999
@@ -172,6 +187,17 @@ Battle::AI::Handlers::ScoreReplacement.add(:utility_switch_in,
       foe_has_status_moves = true if status_count >= 2
     end
 
+    survives_move = proc { |m_id|
+      s_val = true
+      ai.each_foe_battler(ai.user.side) do |fb, _|
+        if !ai.reserve_status_move_survives?(idxBattler, pkmn, fb, m_id)
+          s_val = false
+          break
+        end
+      end
+      s_val
+    }
+
     # Unaware vs boosted foe
     if foe_total_boosts >= 2 && pkmn.hasAbility?(:UNAWARE)
       bonus = 25 + (foe_total_boosts * 3)
@@ -183,6 +209,7 @@ Battle::AI::Handlers::ScoreReplacement.add(:utility_switch_in,
     if foe_total_boosts >= 2
       pkmn.moves.each do |m|
         if ["ResetAllBattlersStatStages", "ResetTargetStatStages"].include?(m.function_code)
+          next unless survives_move.call(m.id)
           bonus = 20 + (foe_total_boosts * 2)
           score += bonus
           PBDebug.log_score_change(bonus, "Utility: #{m.name} vs +#{foe_total_boosts} boosts")
@@ -195,6 +222,7 @@ Battle::AI::Handlers::ScoreReplacement.add(:utility_switch_in,
     if foe_total_boosts >= 2
       pkmn.moves.each do |m|
         if ["SwitchOutTargetStatusMove", "SwitchOutTargetDamagingMove"].include?(m.function_code)
+          next unless survives_move.call(m.id)
           bonus = 20 + (foe_total_boosts * 2)
           ai.each_foe_battler(ai.user.side) do |b, _|
             foe_side = b.pbOwnSide
@@ -213,6 +241,7 @@ Battle::AI::Handlers::ScoreReplacement.add(:utility_switch_in,
     if foe_has_status_moves
       pkmn.moves.each do |m|
         if m.function_code == "DisableTargetStatusMoves"
+          next unless survives_move.call(m.id)
           score += 10
           PBDebug.log_score_change(10, "Utility: Taunt vs status-heavy foe")
           break
@@ -224,6 +253,7 @@ Battle::AI::Handlers::ScoreReplacement.add(:utility_switch_in,
     if foe_has_screens
       pkmn.moves.each do |m|
         if m.function_code == "RemoveScreens"
+          next unless survives_move.call(m.id)
           score += 10
           PBDebug.log_score_change(10, "Utility: Brick Break vs screens")
           break

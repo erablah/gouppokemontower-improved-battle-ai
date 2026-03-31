@@ -37,50 +37,61 @@ Battle::AI::Handlers::GeneralItemScore.add(
 
     # -------------------------------------------------------------------------
     # 3. Scenario-based damage-threat check for active Pokémon
-    #    Items execute BEFORE moves, so: AI heals → foe attacks (this turn)
-    #    Next turn: whoever is faster acts first
+    #    Simulate a battle between foe and AI with AI healed to full HP.
+    #    Uses sim results to decide if the item would be wasted.
     # -------------------------------------------------------------------------
     PBDebug.log_ai("[item_ai] idxPkmn=#{idxPkmn.inspect}, battler.pokemonIndex=#{battler.pokemonIndex}")
     if idxPkmn == battler.pokemonIndex
       summary = ai.matchup_summary
-      max_foe_dmg = 0
-      foe_outspeeds = false
-      summary[:foes].each_value do |foe|
-        if foe[:best_dmg] > max_foe_dmg
-          max_foe_dmg = foe[:best_dmg]
-          foe_outspeeds = foe[:effectively_outspeeds]
+      worst_penalty = 0
+      worst_reason = nil
+
+      summary[:foes].each do |foe_idx, foe|
+        foe_best_move = foe[:best_move]
+        next unless foe_best_move
+        user_best = foe[:move_results]&.keys&.first
+        next unless user_best
+
+        # Simulate: AI at full HP vs foe using best moves
+        sim_result = ai.simulate_battle(
+          battler.index, foe_idx,
+          [user_best], [foe_best_move.id],
+          max_turns: 10, heal_user_full: true
+        )
+
+        foe_outspeeds = foe[:effectively_outspeeds]
+        PBDebug.log_ai("[item_ai] sim vs foe #{foe_idx}: user_fainted=#{sim_result.user_fainted}, target_fainted=#{sim_result.target_fainted}, foe_ohko=#{sim_result.target_can_ohko?}, foe_outspeeds=#{foe_outspeeds}")
+
+        penalty = 0
+        reason = nil
+
+        if sim_result.target_can_ohko?
+          # Foe OHKOs AI even from full HP — item is futile
+          penalty = -200
+          reason = "ITEM AI: Healing futile [OHKO from full] — foe KOs in 1 hit even at full HP."
+        elsif sim_result.target_wins?
+          if foe_outspeeds
+            # Foe wins the 1v1 and outspeeds — item is wasted
+            penalty = -150
+            reason = "ITEM AI: Healing futile [foe wins 1v1 + outspeeds] — foe wins from full HP and acts first."
+          elsif is_healing_item
+            # Foe wins but AI is faster — healing is questionable
+            penalty = -50
+            reason = "ITEM AI: Healing questionable [foe wins 1v1 + slower] — foe wins from full HP but AI acts first."
+          end
+        end
+
+        if penalty < worst_penalty
+          worst_penalty = penalty
+          worst_reason = reason
         end
       end
 
-      dmg_ratio = max_foe_dmg.to_f / pkmn.totalhp
-      PBDebug.log_ai("[item_ai] max_foe_dmg=#{max_foe_dmg}, totalhp=#{pkmn.totalhp}, dmg%=#{(dmg_ratio * 100).to_i}%, foe_outspeeds=#{foe_outspeeds}")
-
-      if dmg_ratio >= 1.0
-        # --- Scenario 1: OHKO from full (no Sturdy) ---
-        # AI heals to full → foe OHKOs this same turn → item wasted
-        # Speed is irrelevant: items execute before moves, but foe still attacks this turn
-        score -= 200
-        PBDebug.log_score_change(-200, "ITEM AI: Healing futile [OHKO] — foe deals #{(dmg_ratio * 100).to_i}% per hit, item wasted regardless of speed.")
-        next score
-      elsif dmg_ratio >= 0.5
-        # --- Scenario 2: 2HKO from full (or OHKO with Sturdy) ---
-        if foe_outspeeds
-          # 2a: Foe outspeeds or has priority
-          # AI heals → foe hits (~50%+) → next turn foe goes first → KO
-          # All items are wasted
-          score -= 150
-          PBDebug.log_score_change(-150, "ITEM AI: Healing futile [2HKO+outsped] — foe deals #{(dmg_ratio * 100).to_i}% and outspeeds, item wasted.")
-          next score
-        elsif is_healing_item
-          # 2b: AI is faster, healing items only
-          # Healing is questionable since foe still chunks ~50%+ per hit,
-          # but AI gets to act first next turn (attack/switch/heal again)
-          score -= 50
-          PBDebug.log_score_change(-50, "ITEM AI: Healing questionable [2HKO+faster] — foe deals #{(dmg_ratio * 100).to_i}% but AI acts first next turn.")
-        end
-        # Non-healing items (stat boosters, status cures) in 2b: no penalty
+      if worst_penalty != 0
+        score += worst_penalty
+        PBDebug.log_score_change(worst_penalty, worst_reason)
+        next score if worst_penalty <= -150
       end
-      # Scenario 3: Below 2HKO — no damage-threat penalty
     end
 
     can_switch = battle.pbCanChooseNonActive?(battler.index)

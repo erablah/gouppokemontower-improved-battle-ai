@@ -36,19 +36,21 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:one_v_one_move_score,
       user_outspeeds = user.faster_than?(target)
     end
 
-    # --- Universal survival check (all move types) ---
-    # If foe can OHKO and acts first, any move is likely wasted
-    if foe_dmg >= user.hp && !user_outspeeds && user.effects[PBEffects::Substitute] <= 0
-      if foe_move&.is_a?(Battle::Move::FailsIfTargetActed) && ai.pbAIRandom(100) < 25
-        PBDebug.log_ai("[1v1] skip Sucker Punch KO penalty (25% chance it fails)")
-      else
-        score -= 100
-        PBDebug.log_score_change(-100, "1v1: foe can OHKO and outspeeds")
+    # --- Universal survival check (Damaging moves only) ---
+    if move.damagingMove?
+      # If foe can OHKO and acts first, any move is likely wasted
+      if foe_dmg >= user.hp && !user_outspeeds && user.effects[PBEffects::Substitute] <= 0
+        if foe_move&.is_a?(Battle::Move::FailsIfTargetActed) && ai.pbAIRandom(100) < 25
+          PBDebug.log_ai("[1v1] skip Sucker Punch KO penalty (25% chance it fails)")
+        else
+          score -= 100
+          PBDebug.log_score_change(-100, "1v1: foe can OHKO and outspeeds")
+        end
       end
+    else
+      # Status move survival/fail checks are handled globally in GeneralMoveScore.
+      next score
     end
-
-    # --- Status moves: survival check only, no damage scoring ---
-    next score unless move.damagingMove?
 
     # --- Damaging moves below ---
     pivot_codes = ["SwitchOutUserDamagingMove", "LowerTargetAtkSpAtk1SwitchOutUser"]

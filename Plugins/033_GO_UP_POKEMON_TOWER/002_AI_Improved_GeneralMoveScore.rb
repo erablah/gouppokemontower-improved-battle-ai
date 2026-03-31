@@ -630,3 +630,38 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_rest,
   }
 )
 
+#===============================================================================
+# [NEW] Status Move Survival / Fail Check (Global)
+#===============================================================================
+Battle::AI::Handlers::GeneralMoveScore.add(:status_survival_check_global,
+  proc { |score, move, user, ai, battle|
+    next score if move.damagingMove?
+
+    summary = ai.matchup_summary
+    
+    # We evaluate if the status move fails across all active foes.
+    # If the move fails against EVERY foe (whether by KO or mechanical failure),
+    # it is a universally bad move and should be heavily penalized.
+    all_failed = true
+    has_foes = false
+    
+    ai.each_foe_battler(user.side) do |b, _i|
+      has_foes = true
+      foe_entry = summary[:foes][b.index]
+      next unless foe_entry
+
+      survives = foe_entry[:status_survival]&.dig(move.id)
+      if survives == true
+        all_failed = false
+        break
+      end
+    end
+
+    if has_foes && all_failed
+      score -= 100
+      PBDebug.log_score_change(-100, "Global survival: status move fails or user KO'd before acting vs all foes")
+    end
+
+    next score
+  }
+)

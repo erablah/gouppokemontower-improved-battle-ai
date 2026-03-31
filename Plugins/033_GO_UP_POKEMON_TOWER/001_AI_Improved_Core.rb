@@ -531,7 +531,6 @@ class Battle::AI
   end
 
   def choose_best_replacement_pokemon(idxBattler, forced_switch = false, threshold: REPLACEMENT_THRESHOLD_NORMAL)
-
     # Clear caches only on forced switches (faints/pivots) where a different
     # Pokémon now occupies the battler index, invalidating cached results.
     if forced_switch

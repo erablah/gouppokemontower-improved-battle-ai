@@ -179,3 +179,17 @@ class Battle::Move
     _orig_pbIsCritical(user, target)
   end
 end
+
+#===============================================================================
+# Suppress misses for moves with >= 70% accuracy during AI simulations.
+#===============================================================================
+class Battle::Move
+  alias _orig_pbBaseAccuracy pbBaseAccuracy
+  def pbBaseAccuracy(user, target)
+    acc = _orig_pbBaseAccuracy(user, target)
+    if @battle && @battle.is_simulation && acc >= 70
+      return 0
+    end
+    return acc
+  end
+end

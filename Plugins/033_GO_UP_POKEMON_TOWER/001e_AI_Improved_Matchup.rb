@@ -47,23 +47,18 @@ class Battle::AI
   #---------------------------------------------------------------------------
   # Compute damage for each of attacker's moves with a pre_switch applied.
   # pre_switch: { battler_index => party_index } — can be on either side.
-  # If the attacker is being switched, iterates the switch-in's moves.
-  # If the target is being switched, iterates the attacker's moves.
+  # Creates ONE base sim with switch + form changes, then forks per move.
   # Returns {move_id => {move:, dmg:}}
   #---------------------------------------------------------------------------
   def damage_moves_with_switch(attacker_index, target_index, pre_switch)
-    # Determine move source and cache IDs
+    # Cache IDs
     if pre_switch[attacker_index]
       pkmn = @battle.pbParty(attacker_index)[pre_switch[attacker_index]]
       return {} unless pkmn
-      move_source = pkmn.moves
       atk_id = pkmn.personalID
     else
-      attacker_ai = @battlers[attacker_index]
-      move_source = (attacker_ai.side != @user.side) ? known_foe_moves(attacker_ai) : attacker_ai.moves
-      atk_id = attacker_ai.pokemon&.personalID
+      atk_id = @battle.battlers[attacker_index].pokemon&.personalID
     end
-
     if pre_switch[target_index]
       tgt_pkmn = @battle.pbParty(target_index)[pre_switch[target_index]]
       return {} unless tgt_pkmn
@@ -74,16 +69,22 @@ class Battle::AI
 
     key = [:dmg_switch, attacker_index, target_index, @battle.turnCount, atk_id, tgt_id]
     (@_ai_dmg_cache ||= {})[key] ||= begin
+      if pre_switch[attacker_index]
+        pkmn = @battle.pbParty(attacker_index)[pre_switch[attacker_index]]
+        move_source = pkmn.moves.compact
+      else
+        attacker_ai = @battlers[attacker_index]
+        move_source = (attacker_ai.side != @user.side) ? known_foe_moves(attacker_ai) : attacker_ai.moves.compact
+      end
+
+      # Loop all damaging moves, remaking the sim each time
       moves_by_id = {}
       move_source.each do |m|
-        if m.is_a?(Pokemon::Move)
-          next unless m.power > 0 && (m.pp > 0 || m.total_pp == 0)
-        else
-          next unless m&.damagingMove?
-          next unless @battle.battlers[attacker_index].pbCanChooseMove?(m, false, false)
-        end
-        result = simulate_battle(attacker_index, target_index, [m.id], [], max_turns: 1, pre_switch: pre_switch)
-        dmg = result.turn_log[0] ? result.turn_log[0][:target_hp_before] - result.turn_log[0][:target_hp_after] : 0
+        is_damaging = m.is_a?(Pokemon::Move) ? GameData::Move.get(m.id).damaging? : m.damagingMove?
+        next unless is_damaging
+        sim = create_switched_sim(pre_switch)
+        res = simulate_battle(attacker_index, target_index, [m.id], [], sim: sim, max_turns: 1)
+        dmg = res.turn_log[0] ? res.turn_log[0][:target_hp_before] - res.turn_log[0][:target_hp_after] : 0
         moves_by_id[m.id] = { move: m, dmg: [dmg, 0].max }
         tick_scene
       end
@@ -141,8 +142,33 @@ class Battle::AI
         end
         sim_result = user_best ? move_results[user_best[:move].id] : nil
 
+        status_survival = {}
+        foe_best_dmg = foe_best&.dig(:dmg) || 0
+        foe_action_id = nil
+        
+        if foe_best_dmg >= @user.hp
+          lethal_moves = damage_moves(b, @user).values.select { |d| d[:dmg] >= @user.hp }
+          foe_lethal_move = lethal_moves.max_by { |d| d[:move].priority }&.dig(:move)
+          foe_action_id = foe_lethal_move.id if foe_lethal_move
+        else
+          foe_action_id = foe_best_move.id if foe_best_move
+        end
+
+        foe_actions = foe_action_id ? [foe_action_id] : []
+        @user.moves.each do |m|
+          next if m.damagingMove?
+          res = simulate_battle(
+            @user.index, b.index,
+            [m.id], foe_actions,
+            max_turns: 1
+          )
+          # A status move is successful if it was used and did NOT fail
+          status_survival[m.id] = res.user_succeeded
+          tick_scene
+        end
+
         foe_entry = {
-          best_dmg:      foe_best&.dig(:dmg) || 0,
+          best_dmg:      foe_best_dmg,
           best_move:     foe_best_move,
           best_priority: foe_best_move ? foe_best_move.priority : 0,
           user_best_dmg: user_best&.dig(:dmg) || 0,
@@ -154,10 +180,11 @@ class Battle::AI
           foe_totalhp:   b.totalhp,
           sim_result:    sim_result,
           move_results:  move_results,
+          status_survival: status_survival
         }
         foe_entry[:switch_prediction_roll] = pbAIRandom(100)
         summary[:foes][b.index] = foe_entry
-        summary[:max_foe_dmg] = [summary[:max_foe_dmg], foe_entry[:best_dmg]].max
+        summary[:max_foe_dmg] = [summary[:max_foe_dmg], foe_best_dmg].max
         summary[:foe_can_ohko] = true if foe_entry[:can_ohko]
         summary[:foe_can_ohko_and_outspeeds] = true if foe_entry[:can_ohko] && foe_effectively_outspeeds
         summary[:user_can_ko_any] = true if sim_result&.user_can_ohko?
@@ -200,4 +227,97 @@ class Battle::AI
       end
     end
   end
+
+  #---------------------------------------------------------------------------
+  # [NEW] Caches 1-turn status move survival checks for reserve switch-ins.
+  #---------------------------------------------------------------------------
+  def status_moves_survival_with_switch(attacker_index, target_index, pre_switch, foe_lethal_move_id, foe_vs_current_id)
+    if pre_switch[attacker_index]
+      pkmn = @battle.pbParty(attacker_index)[pre_switch[attacker_index]]
+      return {} unless pkmn
+      atk_id = pkmn.personalID
+    else
+      atk_id = @battle.battlers[attacker_index].pokemon&.personalID
+    end
+
+    tgt_id = pre_switch[target_index] ? @battle.pbParty(target_index)[pre_switch[target_index]].personalID : @battle.battlers[target_index].pokemon&.personalID
+
+    key = [:status_switch, attacker_index, target_index, @battle.turnCount, atk_id, tgt_id, foe_lethal_move_id, foe_vs_current_id]
+    (@_ai_dmg_cache ||= {})[key] ||= begin
+      res_cache = {}
+      voluntary_switch = @battle.command_phase
+      party_index = pre_switch[attacker_index]
+
+      if pre_switch[attacker_index]
+        pkmn = @battle.pbParty(attacker_index)[pre_switch[attacker_index]]
+        move_source = pkmn.moves.compact
+      else
+        attacker_ai = @battlers[attacker_index]
+        move_source = (attacker_ai.side != @user.side) ? known_foe_moves(attacker_ai) : attacker_ai.moves.compact
+      end
+
+      move_source.each do |m|
+        is_damaging = m.is_a?(Pokemon::Move) ? GameData::Move.get(m.id).damaging? : m.damagingMove?
+        next if is_damaging
+        m_id = m.id
+
+        if voluntary_switch && party_index
+          # Voluntary switch: Remake sim with foe hitting on switch-in
+          sim = create_switched_sim(
+             pre_switch, 
+             voluntary_switch: true, 
+             target_index: target_index, 
+             foe_move_id: foe_vs_current_id
+          )
+          sim_foe_actions = foe_lethal_move_id ? [foe_lethal_move_id] : []
+          res = simulate_battle(
+            attacker_index, target_index,
+            [m_id], sim_foe_actions,
+            sim: sim, max_turns: 1
+          )
+          res_cache[m_id] = res.user_succeeded
+        else
+          # Faint replacement: Remake base sim (already switched + transformed)
+          sim = create_switched_sim(pre_switch)
+          sim_foe_actions = foe_lethal_move_id ? [foe_lethal_move_id] : []
+          res = simulate_battle(
+            attacker_index, target_index,
+            [m_id], sim_foe_actions,
+            sim: sim, max_turns: 1
+          )
+          res_cache[m_id] = res.user_succeeded
+        end
+        tick_scene
+      end
+      res_cache
+    end
+  end
+
+  #---------------------------------------------------------------------------
+  # [NEW] Exposes whether a specific reserve status move survives its switch-in
+  #---------------------------------------------------------------------------
+  def reserve_status_move_survives?(idxBattler, pkmn, target_battler, m_id)
+    party_index = @battle.pbParty(idxBattler).index(pkmn)
+    return true unless party_index
+    
+    pre_switch = { idxBattler => party_index }
+    
+    foe_dmg_hash = damage_moves_with_switch(target_battler.index, idxBattler, pre_switch)
+    lethal_moves = foe_dmg_hash.values.select { |d| d[:dmg] >= pkmn.hp }
+    return true if lethal_moves.empty?
+    
+    foe_lethal_move = lethal_moves.max_by { |d| d[:move].priority }&.dig(:move)
+    return true unless foe_lethal_move
+    
+    foe_vs_current = best_damage_move(target_battler, @user) unless @user.fainted?
+    foe_vs_current_id = foe_vs_current ? foe_vs_current[:move].id : foe_lethal_move.id
+    
+    status_cache = status_moves_survival_with_switch(
+      idxBattler, target_battler.index, pre_switch, 
+      foe_lethal_move.id, foe_vs_current_id
+    )
+    
+    return status_cache[m_id] == true
+  end
+
 end
