@@ -107,23 +107,31 @@ class Battle::AI
         user_action = user_action_idx >= 0 ? user_actions[user_action_idx] : nil
         user_move = user.moves.find { |m| m.id == user_action }
         next unless user_move
-        # Priority move KO interception
-        user_priority_moves.each do |pm|
-          next unless pm[:dmg] >= target.hp
-          pri_move = user.moves.find { |m| m.id == pm[:id] }
-          if pri_move
-            user_move = pri_move
-            break
+        # Priority move KO interception (skip turn 1: test the actual move first)
+        if turn > 1
+          user_priority_moves.each do |pm|
+            next unless pm[:dmg] >= target.hp
+            pri_move = user.moves.find { |m| m.id == pm[:id] }
+            if pri_move
+              user_move = pri_move
+              break
+            end
           end
         end
-        user_move_idx = user.moves.index(user_move) || 0
-        sim.choices[user_index] = [:UseMove, user_move_idx, user_move, target_index, 0]
+        if user.usingMultiTurnAttack?
+          PBDebug.log_ai("AI SIM: User #{user.pbThis} locked into a multi-turn attack") if $DEBUG
+        else
+          user_move_idx = user.moves.index(user_move) || 0
+          sim.choices[user_index] = [:UseMove, user_move_idx, user_move, target_index, 0]
+        end
 
         # --- Resolve target action ---
         # Clamp to last action instead of cycling
         target_action_idx = target_actions.empty? ? nil : [turn - 1, target_actions.length - 1].min
         target_action = target_action_idx ? target_actions[target_action_idx] : nil
-        if target_action.is_a?(Symbol)
+        if target.usingMultiTurnAttack?
+          PBDebug.log_ai("AI SIM: Target #{target.pbThis} locked into a multi-turn attack") if $DEBUG
+        elsif target_action.is_a?(Symbol)
           target_move = target.moves.find { |m| m.id == target_action }
           if target_move
             # Priority move KO interception
@@ -237,33 +245,32 @@ class Battle::AI
     pre_switch.each do |battler_idx, party_idx|
       sim.pbRecallAndReplace(battler_idx, party_idx)
       sim.pbOnBattlerEnteringBattle(battler_idx)
+      if options[:voluntary_switch] && options[:foe_move_id]
+        # Simulate the foe hitting the incoming pokemon
+        target_idx = options[:target_index]
+        user_idx = pre_switch.keys.first
+        foe_move_id = options[:foe_move_id]
+        
+        atk = sim.battlers[target_idx]
+        foe_move = atk.moves.find { |m| m.id == foe_move_id }
+        if foe_move
+          sim.choices[target_idx] = [:UseMove, atk.moves.index(foe_move) || 0, foe_move, user_idx, 0]
+        else
+          sim.choices[target_idx] = [:None]
+        end
+        sim.choices[user_idx] = [:None]
+        
+        sim.instance_variable_set(:@turnCount, @battle.turnCount + 1)
+        catch(SIM_SWITCH_TRIGGERED) do
+          sim.pbAttackPhase
+          tick_scene
+          sim.pbEndOfRoundPhase
+          tick_scene
+        end
+      end
+      
       apply_sim_form_changes(sim, battler_idx)
     end
-    
-    if options[:voluntary_switch] && options[:foe_move_id]
-      # Simulate the foe hitting the incoming pokemon
-      target_idx = options[:target_index]
-      user_idx = pre_switch.keys.first
-      foe_move_id = options[:foe_move_id]
-      
-      atk = sim.battlers[target_idx]
-      foe_move = atk.moves.find { |m| m.id == foe_move_id }
-      if foe_move
-        sim.choices[target_idx] = [:UseMove, atk.moves.index(foe_move) || 0, foe_move, user_idx, 0]
-      else
-        sim.choices[target_idx] = [:None]
-      end
-      sim.choices[user_idx] = [:None]
-      
-      sim.instance_variable_set(:@turnCount, @battle.turnCount + 1)
-      catch(SIM_SWITCH_TRIGGERED) do
-        sim.pbAttackPhase
-        tick_scene
-        sim.pbEndOfRoundPhase
-        tick_scene
-      end
-    end
-    
     sim
   end
 end
