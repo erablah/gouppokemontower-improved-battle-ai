@@ -18,3 +18,12 @@ class Game_Character
 end
 
 
+class Battle::AI::AITrainer
+  alias remove_flags_best_traniner set_up_skill_flags
+  def set_up_skill_flags
+    remove_flags_best_traniner
+    if best_skill?
+      @skill_flags.delete("ReserveLastPokemon")
+    end
+  end
+end

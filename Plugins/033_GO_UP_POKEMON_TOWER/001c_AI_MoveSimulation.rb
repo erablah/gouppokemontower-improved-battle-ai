@@ -55,9 +55,6 @@ class Battle::AI
     sim = options[:sim] || create_battle_copy
     result = SimulationResult.new
 
-    # saved_debug = $DEBUG
-    # $DEBUG = false
-
     # Heal user to full HP before simulation (used by item scoring)
     if heal_user_full
       sim_user = sim.battlers[user_index]
@@ -203,8 +200,6 @@ class Battle::AI
     result.user_ko_turn = result.turns if user.fainted?
     result.target_ko_turn = result.turns if target.fainted?
     result
-  ensure
-    # $DEBUG = saved_debug
   end
 
   #-----------------------------------------------------------------------------
@@ -243,7 +238,9 @@ class Battle::AI
   def create_switched_sim(pre_switch, options = {})
     sim = create_battle_copy
     pre_switch.each do |battler_idx, party_idx|
+      tick_scene
       sim.pbRecallAndReplace(battler_idx, party_idx)
+      tick_scene
       sim.pbOnBattlerEnteringBattle(battler_idx)
       if options[:voluntary_switch] && options[:foe_move_id]
         # Simulate the foe hitting the incoming pokemon

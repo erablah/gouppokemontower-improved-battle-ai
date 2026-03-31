@@ -11,7 +11,7 @@ class Battle::AI
   SIM_SWITCH_TRIGGERED = :sim_switch_triggered
 
   # Minimum interval between scene ticks during AI computation (~7 FPS).
-  TICK_INTERVAL = 0.15
+  TICK_INTERVAL = 0.05
 
   #=============================================================================
   # SilentScene: No-op scene for simulation.
@@ -68,6 +68,7 @@ class Battle::AI
   # Return a fresh deep copy of the real battle for simulation.
   #---------------------------------------------------------------------------
   def create_battle_copy
+    tick_scene
     saved_scene = @battle.instance_variable_get(:@scene)
     @battle.instance_variable_set(:@scene, nil)
     begin
@@ -81,6 +82,7 @@ class Battle::AI
     def sim.pbSwitchInBetween(idxBattler, checkLaxOnly = false, canCancel = false)
       throw Battle::AI::SIM_SWITCH_TRIGGERED
     end
+    tick_scene
     sim
   end
 
@@ -117,9 +119,11 @@ class Battle::AI
       copy = obj.class.allocate
       seen[obj.object_id] = copy
       obj.instance_variables.each do |ivar|
+        tick_scene
         copy.instance_variable_set(ivar, deep_copy(obj.instance_variable_get(ivar), seen))
       end
     end
+    tick_scene
     copy
   end
 end

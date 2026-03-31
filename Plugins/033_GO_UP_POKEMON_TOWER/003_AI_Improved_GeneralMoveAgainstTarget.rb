@@ -201,8 +201,8 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:boost_priority_when_slo
     next score unless move.move.priority > 0
     next score if user.faster_than?(target)
 
-    score += 8
-    PBDebug.log_score_change(8, "Priority move bonus: user is slower than target.")
+    score += 5
+    PBDebug.log_score_change(5, "Priority move bonus: user is slower than target.")
     next score
   }
 )
