@@ -11,12 +11,9 @@ class Battle::Battler
   def pbProcessTurn(choice, tryFlee = true)
     ret = _tower_fog_pbProcessTurn(choice, tryFlee)
     if @battle.is_simulation
-      sim_action_results = @battle.instance_variable_get(:@_sim_action_results) || {}
-      sim_action_results[@index] = {
-        acted: @lastRoundMoved == @battle.turnCount,
-        succeeded: (@lastRoundMoved == @battle.turnCount && !@lastMoveFailed)
-      }
-      @battle.instance_variable_set(:@_sim_action_results, sim_action_results)
+      acted_this_turn = @lastRoundMoved == @battle.turnCount
+      @_sim_action_turn = (acted_this_turn ? @battle.turnCount : nil)
+      @_sim_action_succeeded = (acted_this_turn && !@lastMoveFailed)
     end
     if choice[0] == :UseMove && self.pokemon
       acted = @battle.instance_variable_get(:@_foe_acted_ids) || {}

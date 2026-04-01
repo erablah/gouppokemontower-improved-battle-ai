@@ -149,7 +149,6 @@ class Battle::AI
 
         user_hp_before = user.hp
         target_hp_before = target.hp
-        sim.instance_variable_set(:@_sim_action_results, {})
 
         # Run attack phase first and snapshot action results before EOR faint
         # cleanup can reset move-tracking fields on battlers that acted.
@@ -162,16 +161,17 @@ class Battle::AI
         # Update battler references after the attack phase (or abrupt switch throw)
         user = sim.battlers[user_index]
         target = sim.battlers[target_index]
-        sim_action_results = sim.instance_variable_get(:@_sim_action_results) || {}
-        user_result = sim_action_results[user_index]
-        target_result = sim_action_results[target_index]
+        user_action_turn = user.instance_variable_get(:@_sim_action_turn)
+        target_action_turn = target.instance_variable_get(:@_sim_action_turn)
+        user_succeeded_on_action = user.instance_variable_get(:@_sim_action_succeeded)
+        target_succeeded_on_action = target.instance_variable_get(:@_sim_action_succeeded)
 
         # Determine if each side got an action from attack-phase state, before a
         # later faint can call pbInitEffects(false) and wipe lastRoundMoved.
-        user_acted = user_result ? user_result[:acted] : (user.lastRoundMoved == turn + turn_offset)
-        target_acted = target_result ? target_result[:acted] : (target.lastRoundMoved == turn + turn_offset)
-        user_failed = user_result ? !user_result[:succeeded] : user.lastMoveFailed
-        target_failed = target_result ? !target_result[:succeeded] : target.lastMoveFailed
+        user_acted = (user_action_turn == turn + turn_offset)
+        target_acted = (target_action_turn == turn + turn_offset)
+        user_failed = user_acted ? !user_succeeded_on_action : user.lastMoveFailed
+        target_failed = target_acted ? !target_succeeded_on_action : target.lastMoveFailed
 
         unless switch_triggered
           switch_triggered = catch(SIM_SWITCH_TRIGGERED) do
