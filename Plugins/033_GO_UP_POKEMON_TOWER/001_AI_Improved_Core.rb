@@ -49,6 +49,10 @@ end
 class Battle::AI
   MOVE_FAIL_SCORE = -999
 
+  INTIMIDATE_IMMUNE = [:CLEARBODY, :WHITESMOKE, :FULLMETALBODY,
+                       :HYPERCUTTER, :INNERFOCUS, :OBLIVIOUS,
+                       :OWNTEMPO, :SCRAPPY, :GUARDDOG].freeze
+
   # Returns the stat multiplier for a given stage (-6 to +6)
   def stat_stage_mult(stage)
     stage = stage.clamp(-6, 6)
@@ -327,53 +331,62 @@ class Battle::AI
   # item value against best available move before committing.
   #---------------------------------------------------------------------------
   def pbDefaultChooseEnemyCommand(idxBattler)
-    show_thinking_indicator
-    set_up(idxBattler)
-    # 1. Special commands (Mega, Dynamax, etc.)
-    ret = false
-    PBDebug.logonerr { ret = pbChooseToUseSpecialCommand }
-    if ret
-      PBDebug.log("")
-      return
-    end
-    if @battle.pbAutoFightMenu(idxBattler)
-      PBDebug.log("")
-      return
-    end
-    pbRegisterEnemySpecialAction(idxBattler)
-    # Simulate registered transforms so all scoring sees post-transform stats
-    sim = simulate_registered_transforms(idxBattler)
-    begin
-      # 2. Score moves
-      choices = pbGetMoveScores
-      max_move_score = choices.map { |c| c[1] }.max || 0
-      # 3. Terrible moves: try switching
-      if max_move_score < REPLACEMENT_THRESHOLD_TERRIBLE_MOVES
-        ret = false
-        PBDebug.logonerr { ret = pbChooseToSwitchOut(true) }
-        if ret
-          PBDebug.log("")
-          return
-        end
+    with_decision_cache do
+      show_thinking_indicator
+      set_up(idxBattler)
+      # 1. Special commands (Mega, Dynamax, etc.)
+      ret = false
+      PBDebug.logonerr { ret = pbChooseToUseSpecialCommand }
+      if ret
+        PBDebug.log("")
+        return
       end
-      # 4. Try items only if best move score is mediocre
-      if max_move_score < MOVE_BASE_SCORE
-        ret = false
-        PBDebug.logonerr { ret = pbChooseToUseItem }
-        if ret
-          PBDebug.log("")
-          return
-        end
+      if @battle.pbAutoFightMenu(idxBattler)
+        PBDebug.log("")
+        return
       end
-      # 5. Choose move as normal
-      pbChooseMove(choices)
-      PBDebug.log("")
-      pbRegisterEnemySpecialAction2(idxBattler)
+      pbRegisterEnemySpecialAction(idxBattler)
+      # Simulate registered transforms so all scoring sees post-transform stats
+      sim = simulate_registered_transforms(idxBattler)
+      begin
+        # 2. Score moves
+        choices = pbGetMoveScores
+        max_move_score = choices.map { |c| c[1] }.max || 0
+        # 3. Terrible moves: try switching
+        if max_move_score < REPLACEMENT_THRESHOLD_TERRIBLE_MOVES
+          ret = false
+          PBDebug.logonerr { ret = pbChooseToSwitchOut(true) }
+          if ret
+            PBDebug.log("")
+            return
+          end
+        end
+        # 4. Try items only if best move score is mediocre
+        if max_move_score < MOVE_BASE_SCORE
+          ret = false
+          PBDebug.logonerr { ret = pbChooseToUseItem }
+          if ret
+            PBDebug.log("")
+            return
+          end
+        end
+        # 5. Choose move as normal
+        pbChooseMove(choices)
+        PBDebug.log("")
+        pbRegisterEnemySpecialAction2(idxBattler)
+      ensure
+        restore_registered_transforms(sim)
+      end
     ensure
-      restore_registered_transforms(sim)
+      hide_thinking_indicator
     end
-  ensure
-    hide_thinking_indicator
+  end
+
+  def pbDefaultChooseNewEnemy(idxBattler)
+    with_decision_cache do
+      set_up(idxBattler)
+      choose_best_replacement_pokemon(idxBattler, true)
+    end
   end
 
   # Sucker Punch mind games: 20% chance to swap to a OHKO damaging move

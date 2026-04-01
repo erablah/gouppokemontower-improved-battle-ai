@@ -106,6 +106,25 @@ class Battle::AI
     @_sim_cache_key = nil
   end
 
+  # Scope AI-only caches to a single decision so they don't accumulate across
+  # the whole battle while still being shared by nested simulations.
+  def with_decision_cache
+    @_decision_cache_depth ||= 0
+    reset_decision_caches if @_decision_cache_depth == 0
+    @_decision_cache_depth += 1
+    yield
+  ensure
+    @_decision_cache_depth = [(@_decision_cache_depth || 1) - 1, 0].max
+    reset_decision_caches if @_decision_cache_depth == 0
+  end
+
+  def reset_decision_caches
+    @_ai_dmg_cache = nil
+    @_matchup_cache = nil
+    @_known_foe_moves_cache = nil
+    invalidate_sim_cache
+  end
+
   private
 
   #---------------------------------------------------------------------------
@@ -258,8 +277,9 @@ class Battle::Move
       c += crit_stage_bonuses(user)
       ratios = CRITICAL_HIT_RATIOS
       c = ratios.length - 1 if c >= ratios.length
-      # Only crit if chance >= 50% (ratio <= 2)
-      return ratios[c] <= 2
+      return true if ratios[c] == 1
+      r = @battle.pbRandom(ratios[c])
+      return true if r == 0
     end
     _orig_pbIsCritical(user, target)
   end
@@ -273,6 +293,7 @@ class Battle::Move
   def pbBaseAccuracy(user, target)
     acc = _orig_pbBaseAccuracy(user, target)
     if @battle && @battle.is_simulation && acc >= 70
+      # 0 = always hits for some reason
       return 0
     end
     return acc

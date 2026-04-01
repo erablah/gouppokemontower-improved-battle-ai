@@ -97,19 +97,19 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
         end
 
         # Keep the best result (prefer wins, then higher remaining HP)
-        if best_result.nil? ||
-           (result.user_wins? && !best_result.user_wins?) ||
-           (result.user_wins? == best_result.user_wins? &&
-            (result.user_hp || 0) > (best_result.user_hp || 0))
-          best_result = result
+        if best_result.nil? || 
+          (result.user_wins? && !best_result.user_wins?) ||
+          (result.user_wins? && best_result.user_wins? && (result.user_hp || 0) > (best_result.user_hp || 0)) ||
+          (!result.user_wins? && !best_result.user_wins? && (result.enemy_hp || 0) < (best_result.enemy_hp || 0))
+            best_result = result
         end
       end
 
       # --- Scoring ---
-      died_on_entry = best_result.nil? || (best_result.user_fainted && best_result.turns <= 1)
+      died_on_entry = best_result.nil? || (best_result.user_fainted && !best_result.user_succeeded)
 
       if died_on_entry 
-        # Dies on entry (hazards or immediate OHKO) and no status move survives
+        # Dies on entry (hazards or immediate OHKO)
         score -= 50
         PBDebug.log_score_change(-50, "#{pkmn.name} vs #{b.name}: dies on entry")
       elsif best_result.user_wins?
@@ -123,7 +123,7 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
         bonus += (hp_pct * 10).round
         score += bonus
         PBDebug.log_score_change(bonus, "#{pkmn.name} vs #{b.name}: wins (KO turn #{u_turns}, #{(hp_pct * 100).round}% remaining)")
-      else
+      elsif best_result.target_wins?
         f_turns = best_result.user_ko_turn || 999
         penalty = 15
         penalty += 25 if best_result.target_can_ohko?
@@ -135,6 +135,15 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
         penalty = [penalty, 5].max
         score -= penalty
         PBDebug.log_score_change(-penalty, "#{pkmn.name} vs #{b.name}: loses (KO'd turn #{f_turns})")
+      else
+        if best_result.target_hp && b.totalhp > 0
+          dmg_dealt_pct = 1.0 - (best_result.target_hp.to_f / b.totalhp)
+          hp_pct = best_result.user_hp.to_f / [pkmn.totalhp, 1].max
+          bonus = [dmg_dealt_pct - hp_pct, 0].max * 10
+        end
+        bonus = bonus ? bonus.round : 1
+        score += bonus
+        PBDebug.log_score_change(bonus, "#{pkmn.name} vs #{b.name}: no KO (survived #{f_turns} turns)")
       end
     end
     next score

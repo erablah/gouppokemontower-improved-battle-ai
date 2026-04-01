@@ -165,6 +165,8 @@ class Battle::AI
         user = sim.battlers[user_index]
         target = sim.battlers[target_index]
 
+        PBDebug.log("User: #{user.pokemon.name} lastRoundMoved=#{user.lastRoundMoved} lastMoveFailed=#{user.lastMoveFailed}")
+
         # Determine if each side got action (check lastRoundMoved)
         user_acted = user.lastRoundMoved == turn + turn_offset
         target_acted = target.lastRoundMoved == turn + turn_offset
