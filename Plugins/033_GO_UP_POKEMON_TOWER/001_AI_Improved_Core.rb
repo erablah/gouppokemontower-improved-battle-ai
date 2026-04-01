@@ -444,7 +444,7 @@ class Battle::AI
         PBDebug.log_ai("=> will use #{chosen_move.name}")
       end
     end
-    PBDebug.flush
+    # PBDebug.flush
   end
 
   #override pbChooseToSwitchOut
@@ -536,6 +536,7 @@ class Battle::AI
     if forced_switch
       @_ai_dmg_cache = {}
       @_matchup_cache = {}
+      invalidate_sim_cache
     end
 
     # Get all possible replacement Pokémon

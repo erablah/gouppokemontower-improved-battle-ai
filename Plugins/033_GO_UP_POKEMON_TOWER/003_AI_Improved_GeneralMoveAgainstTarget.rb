@@ -17,6 +17,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:predicted_damage,
 Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:one_v_one_move_score,
   proc { |score, move, user, target, ai, battle|
     next score unless ai.trainer.has_skill_flag?("HPAware")
+    next score if user.wild?
 
     # --- Foe threat data (shared by damaging and status paths) ---
     summary   = ai.matchup_summary

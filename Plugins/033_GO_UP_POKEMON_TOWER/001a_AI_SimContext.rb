@@ -1,9 +1,10 @@
 #===============================================================================
-# Battle Simulation: Deep-copy based sim reuse.
+# Battle Simulation: Deep-copy once, restore in-place for subsequent sims.
 #
-# We deep-copy the real Battle (minus its scene) once at the start of the
-# AI turn and cache it.  Each create_battle_copy call deep-copies from
-# that cached clean copy, giving each simulation a fresh independent state.
+# The first create_battle_copy call per decision cycle deep-copies the real
+# Battle and builds a mapping (real object_id → sim object).  Subsequent
+# calls restore the cached sim from the real battle by walking the mapping
+# and overwriting ivars/contents — no new object allocation.
 #===============================================================================
 
 class Battle::AI
@@ -65,66 +66,146 @@ class Battle::AI
   end
 
   #---------------------------------------------------------------------------
-  # Return a fresh deep copy of the real battle for simulation.
+  # Return a battle copy for simulation.  First call per decision cycle does
+  # a full deep copy and caches the result + object mapping.  Subsequent
+  # calls restore the cached copy in-place from the real battle.
   #---------------------------------------------------------------------------
   def create_battle_copy
     tick_scene
+    cache_key = [@battle.turnCount, @user&.index]
+    if @_sim_template && @_sim_cache_key == cache_key
+      restore_sim_from_real
+      tick_scene
+      return @_sim_template
+    end
+    # Full deep copy + build real→sim mapping
+    @_real_to_sim = {}
     saved_scene = @battle.instance_variable_get(:@scene)
     @battle.instance_variable_set(:@scene, nil)
     begin
-      sim = deep_copy(@battle)
+      @_sim_template = deep_copy(@battle, @_real_to_sim)
     ensure
       @battle.instance_variable_set(:@scene, saved_scene)
     end
-    sim.instance_variable_set(:@scene, SilentScene.new)
-    sim.instance_variable_set(:@is_simulation, true)
+    @_sim_template.instance_variable_set(:@scene, SilentScene.new)
+    @_sim_template.instance_variable_set(:@is_simulation, true)
     # Abort simulation on any forced switch attempt (U-turn, Eject Pack, etc.)
+    sim = @_sim_template
     def sim.pbSwitchInBetween(idxBattler, checkLaxOnly = false, canCancel = false)
       throw Battle::AI::SIM_SWITCH_TRIGGERED
     end
+    @_sim_cache_key = cache_key
     tick_scene
-    sim
+    @_sim_template
+  end
+
+  # Invalidate the sim template cache (called on forced switches, etc.)
+  def invalidate_sim_cache
+    @_sim_template = nil
+    @_real_to_sim = nil
+    @_sim_cache_key = nil
   end
 
   private
 
   #---------------------------------------------------------------------------
-  # Custom recursive deep copy.
-  # Uses an identity map (`seen`) to preserve shared references and avoid
-  # infinite recursion on circular object graphs.
+  # Deep copy that builds a mapping from real object_id → sim object.
+  # The mapping is used both for cycle detection during copy and for
+  # in-place restoration on subsequent simulation calls.
   #---------------------------------------------------------------------------
-  def deep_copy(obj, seen = {})
-    # Immutable types — return as-is
+  def deep_copy(obj, mapping)
     case obj
     when nil, true, false, Numeric, Symbol, Method, Proc
       return obj
-    when String
-      return obj.dup
     end
-
-    # Already copied this exact object — return the same copy
-    return seen[obj.object_id] if seen.key?(obj.object_id)
+    return mapping[obj.object_id] if mapping.key?(obj.object_id)
 
     case obj
+    when String
+      copy = obj.dup
+      mapping[obj.object_id] = copy
+      return copy
     when Array
       copy = []
-      seen[obj.object_id] = copy
-      obj.each { |e| copy << deep_copy(e, seen) }
+      mapping[obj.object_id] = copy
+      obj.each { |e| copy << deep_copy(e, mapping) }
     when Hash
       copy = {}
-      seen[obj.object_id] = copy
-      obj.each { |k, v| copy[deep_copy(k, seen)] = deep_copy(v, seen) }
+      mapping[obj.object_id] = copy
+      entries = obj.to_a
+      entries.each { |k, v| copy[deep_copy(k, mapping)] = deep_copy(v, mapping) }
     else
-      # Generic object: allocate a bare instance, then deep-copy each ivar
       copy = obj.class.allocate
-      seen[obj.object_id] = copy
+      mapping[obj.object_id] = copy
       obj.instance_variables.each do |ivar|
         tick_scene
-        copy.instance_variable_set(ivar, deep_copy(obj.instance_variable_get(ivar), seen))
+        copy.instance_variable_set(ivar, deep_copy(obj.instance_variable_get(ivar), mapping))
       end
     end
     tick_scene
     copy
+  end
+
+  #---------------------------------------------------------------------------
+  # Restore the cached sim template from the real battle's current state.
+  # Walks the real battle's object graph via the mapping and overwrites
+  # each sim object's state without allocating new objects.
+  #---------------------------------------------------------------------------
+  def restore_sim_from_real
+    saved_scene = @battle.instance_variable_get(:@scene)
+    @battle.instance_variable_set(:@scene, nil)
+    begin
+      restore_object(@battle, @_real_to_sim, {})
+    ensure
+      @battle.instance_variable_set(:@scene, saved_scene)
+    end
+    @_sim_template.instance_variable_set(:@scene, SilentScene.new)
+    @_sim_template.instance_variable_set(:@is_simulation, true)
+  end
+
+  #---------------------------------------------------------------------------
+  # Recursively restore a sim object's state from its real counterpart.
+  # - Strings: replace contents
+  # - Arrays/Hashes: clear and rebuild with mapped references
+  # - Objects: overwrite ivars with mapped values, remove stale ivars
+  #---------------------------------------------------------------------------
+  def restore_object(real_obj, mapping, visited)
+    case real_obj
+    when nil, true, false, Numeric, Symbol, Method, Proc
+      return
+    end
+    return if visited.key?(real_obj.object_id)
+    sim_obj = mapping[real_obj.object_id]
+    return unless sim_obj
+    visited[real_obj.object_id] = true
+
+    case real_obj
+    when String
+      sim_obj.replace(real_obj)
+    when Array
+      sim_obj.clear
+      real_obj.each do |elem|
+        sim_obj << (mapping[elem.object_id] || elem)
+        restore_object(elem, mapping, visited)
+      end
+    when Hash
+      sim_obj.clear
+      real_obj.each do |k, v|
+        sim_obj[mapping[k.object_id] || k] = mapping[v.object_id] || v
+        restore_object(k, mapping, visited)
+        restore_object(v, mapping, visited)
+      end
+    else
+      real_obj.instance_variables.each do |ivar|
+        tick_scene
+        real_val = real_obj.instance_variable_get(ivar)
+        sim_obj.instance_variable_set(ivar, mapping[real_val.object_id] || real_val)
+        restore_object(real_val, mapping, visited)
+      end
+      # Remove ivars that were added during previous simulation
+      extra = sim_obj.instance_variables - real_obj.instance_variables
+      extra.each { |ivar| sim_obj.remove_instance_variable(ivar) } unless extra.empty?
+    end
   end
 end
 
@@ -195,6 +276,33 @@ class Battle::Move
       return 0
     end
     return acc
+  end
+end
+
+#===============================================================================
+# Suppress random damage variance during AI simulations.
+# Uses a fixed midpoint (92/100) instead of random 85-100 for consistent
+# damage estimates in pbCalcDamage calls.
+#===============================================================================
+class Battle::Move
+  alias _orig_pbCalcDamageMults_Random pbCalcDamageMults_Random
+  def pbCalcDamageMults_Random(user, target, numTargets, type, baseDmg, multipliers)
+    if @battle && @battle.is_simulation
+      # Critical hits (reuse existing sim crit logic via pbIsCritical?)
+      if target.damageState.critical
+        if Settings::NEW_CRITICAL_HIT_RATE_MECHANICS
+          multipliers[:final_damage_multiplier] *= 1.5
+        else
+          multipliers[:final_damage_multiplier] *= 2
+        end
+      end
+      # Fixed variance instead of random
+      if !self.is_a?(Battle::Move::Confusion)
+        multipliers[:final_damage_multiplier] *= 92 / 100.0
+      end
+      return
+    end
+    _orig_pbCalcDamageMults_Random(user, target, numTargets, type, baseDmg, multipliers)
   end
 end
 

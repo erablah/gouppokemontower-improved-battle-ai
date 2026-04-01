@@ -62,6 +62,7 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
       foe_vs_reserve_id = foe_vs_reserve ? foe_vs_reserve[:move].id : foe_vs_current_id
       # Reserve's best damaging moves vs foe (top 2 by actual damage)
       reserve_dmg = ai.damage_moves_with_switch(idxBattler, b.index, pre_switch)
+      reserve_dmg ||= {}
       reserve_candidates = reserve_dmg.values.sort_by { |md| -md[:dmg] }.first(1)
       status_moves = pkmn.moves.select { |m| m.is_a?(Pokemon::Move) && m.power == 0 }
 
@@ -71,6 +72,7 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
       best_result = nil
       reserve_candidates.each do |md|
         if voluntary_switch
+          PBDebug.log("scorereplacement)")
           # Turn 1: switch in, foe uses best move vs current battler
           # Turn 2+: reserve attacks, foe uses best move vs reserve
           sim = ai.create_switched_sim(
@@ -82,7 +84,7 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
           result = ai.simulate_battle(
             idxBattler, b.index,
             [md[:move].id], [foe_vs_reserve_id],
-            sim: sim, max_turns: 10
+            sim: sim, max_turns: 5
           )
         else
           # Faint replacement or pivot: entry effects applied, no free hit
@@ -90,7 +92,7 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
           result = ai.simulate_battle(
             idxBattler, b.index,
             [md[:move].id], [foe_vs_reserve_id],
-            sim: sim, max_turns: 10
+            sim: sim, max_turns: 5
           )
         end
 
@@ -106,19 +108,10 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
       # --- Scoring ---
       died_on_entry = best_result.nil? || (best_result.user_fainted && best_result.turns <= 1)
 
-      status_survives = false
-      if died_on_entry && !status_moves.empty?
-        status_survives = status_moves.any? { |m| ai.reserve_status_move_survives?(idxBattler, pkmn, b, m.id) }
-      end
-
-      if died_on_entry && !status_survives
+      if died_on_entry 
         # Dies on entry (hazards or immediate OHKO) and no status move survives
         score -= 50
         PBDebug.log_score_change(-50, "#{pkmn.name} vs #{b.name}: dies on entry")
-      elsif died_on_entry && status_survives
-        # Only surviving moves are status moves; useful but passive
-        score -= 10
-        PBDebug.log_score_change(-10, "#{pkmn.name} vs #{b.name}: relies on status move survival")
       elsif best_result.user_wins?
         u_turns = best_result.target_ko_turn || 999
         f_turns = best_result.user_ko_turn || 999
@@ -273,15 +266,13 @@ Battle::AI::Handlers::ScoreReplacement.add(:intimidate_switch_in,
       next if battle.moldBreaker
       next if b.stages[:ATTACK] <= -6
       phys_count = 0
-      spec_count = 0
       ai.known_foe_moves(b).each do |m|
         next unless m&.damagingMove?
         phys_count += 1 if m.physicalMove?
-        spec_count += 1 if m.specialMove?
       end
       next if phys_count == 0
-      phys_ratio = phys_count.to_f / (phys_count + spec_count)
-      bonus = (12 * phys_ratio).round
+      phys_ratio = phys_count.to_f / 4
+      bonus = (10 * phys_ratio).round
       bonus = (bonus * 0.5).round if b.stages[:ATTACK] < 0
       if bonus > 0
         score += bonus

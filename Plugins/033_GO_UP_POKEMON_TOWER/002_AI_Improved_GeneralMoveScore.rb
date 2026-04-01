@@ -31,6 +31,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:good_move_for_choice_item,
 Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
   proc { |score, move, user, ai, battle|
     next score unless ai.trainer.high_skill?
+    next score if user.wild?
 
     real_move = move.move
     fc = ai.safe_function_code(move) || ""
@@ -189,7 +190,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
         user.index, b.index,
         [setup_move_id, user_best_move_id],
         [foe_best_move_id],
-        max_turns: 10
+        max_turns: 5
       )
 
       # --- Score comparison ---
@@ -339,6 +340,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:tactical_substitute,
   proc { |score, move, user, ai, battle|
     # Skip if not Substitute
     next score unless move.id == :SUBSTITUTE
+    next score if user.wild?
 
     battler = user.battler
     next score unless battler
@@ -438,6 +440,8 @@ Battle::AI::Handlers::GeneralMoveScore.add(:boost_setup_when_foe_helpless,
 Battle::AI::Handlers::GeneralMoveScore.add(:smart_recovery,
   proc { |score, move, user, ai, battle|
     next score unless ai.trainer.high_skill?
+    next score if user.wild?
+    
     healing_codes = [
       "HealUserHalfOfTotalHP",
       "HealUserHalfOfTotalHPLoseFlyingTypeThisTurn",
@@ -636,6 +640,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_rest,
 Battle::AI::Handlers::GeneralMoveScore.add(:status_survival_check_global,
   proc { |score, move, user, ai, battle|
     next score if move.damagingMove?
+    next score if user.wild?
 
     summary = ai.matchup_summary
     

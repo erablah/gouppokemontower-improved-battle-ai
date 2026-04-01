@@ -56,7 +56,7 @@ Battle::AI::Handlers::GeneralItemScore.add(
         sim_result = ai.simulate_battle(
           battler.index, foe_idx,
           [user_best], [foe_best_move.id],
-          max_turns: 10, heal_user_full: true
+          max_turns: 5, heal_user_full: true
         )
 
         foe_outspeeds = foe[:effectively_outspeeds]
