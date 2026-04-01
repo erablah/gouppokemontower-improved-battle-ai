@@ -78,8 +78,13 @@ class Battle::AI
     sim_move = sim_user.moves.find { |sm| sm.id == move.id }
     sim_move ||= move  # fallback to the original move object
 
+    # Mirror the real move-use flow closely enough for moves whose damage setup
+    # happens in pbOnStartUse (e.g. Tera Blast under simulated Terastallization).
+    sim_move.calcType = sim_move.pbCalcType(sim_user)
+    sim_move.pbOnStartUse(sim_user, [sim_target])
+
     # Move failure check: type immunity, ability immunity, etc.
-    calc_type = sim_move.pbCalcType(sim_user)
+    calc_type = sim_move.calcType
     type_mod = sim_move.pbCalcTypeMod(calc_type, sim_user, sim_target)
     # Type immunity
     return 0 if Effectiveness.ineffective?(type_mod)
