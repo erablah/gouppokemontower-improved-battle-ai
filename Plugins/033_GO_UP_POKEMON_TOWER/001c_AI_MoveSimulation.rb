@@ -29,10 +29,8 @@ class Battle::AI
 
     def user_wins?;       @target_fainted && !@user_fainted; end
     def target_wins?;     @user_fainted && !@target_fainted; end
-    def user_can_ohko?;   @target_ko_turn == 1; end
-    def target_can_ohko?; @user_ko_turn == 1; end
-    def user_can_2hko?;   @target_ko_turn && @target_ko_turn <= 2; end
-    def target_can_2hko?; @user_ko_turn && @user_ko_turn <= 2; end
+    def user_can_ohko?;   @target_fainted && !@target_got_action; end
+    def target_can_ohko?; @user_fainted && !@user_got_action; end
   end
 
   #-----------------------------------------------------------------------------
@@ -151,27 +149,39 @@ class Battle::AI
 
         user_hp_before = user.hp
         target_hp_before = target.hp
+        sim.instance_variable_set(:@_sim_action_results, {})
 
-        # Run actual battle phases
+        # Run attack phase first and snapshot action results before EOR faint
+        # cleanup can reset move-tracking fields on battlers that acted.
         switch_triggered = catch(SIM_SWITCH_TRIGGERED) do
           sim.pbAttackPhase
-          tick_scene
-          sim.pbEndOfRoundPhase
           tick_scene
           false
         end
 
-        # Update battler references after phases (or abrupt switch throw)
+        # Update battler references after the attack phase (or abrupt switch throw)
         user = sim.battlers[user_index]
         target = sim.battlers[target_index]
+        sim_action_results = sim.instance_variable_get(:@_sim_action_results) || {}
+        user_result = sim_action_results[user_index]
+        target_result = sim_action_results[target_index]
 
-        PBDebug.log("User: #{user.pokemon.name} lastRoundMoved=#{user.lastRoundMoved} lastMoveFailed=#{user.lastMoveFailed}")
+        # Determine if each side got an action from attack-phase state, before a
+        # later faint can call pbInitEffects(false) and wipe lastRoundMoved.
+        user_acted = user_result ? user_result[:acted] : (user.lastRoundMoved == turn + turn_offset)
+        target_acted = target_result ? target_result[:acted] : (target.lastRoundMoved == turn + turn_offset)
+        user_failed = user_result ? !user_result[:succeeded] : user.lastMoveFailed
+        target_failed = target_result ? !target_result[:succeeded] : target.lastMoveFailed
 
-        # Determine if each side got action (check lastRoundMoved)
-        user_acted = user.lastRoundMoved == turn + turn_offset
-        target_acted = target.lastRoundMoved == turn + turn_offset
-        user_failed = user.lastMoveFailed
-        target_failed = target.lastMoveFailed
+        unless switch_triggered
+          switch_triggered = catch(SIM_SWITCH_TRIGGERED) do
+            sim.pbEndOfRoundPhase
+            tick_scene
+            false
+          end
+          user = sim.battlers[user_index]
+          target = sim.battlers[target_index]
+        end
 
         result.user_got_action ||= user_acted
         result.target_got_action ||= target_acted

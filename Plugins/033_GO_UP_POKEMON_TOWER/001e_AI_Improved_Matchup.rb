@@ -71,7 +71,7 @@ class Battle::AI
   #---------------------------------------------------------------------------
   # Direct damage calculation for a single move on sim battlers.
   # Handles failure checks, multi-hit, Parental Bond, and fixed damage.
-  # attacker_ai/defender_ai are the real AI battlers (for failure prediction).
+  # attacker_ai/defender_ai are retained for call-site compatibility.
   #---------------------------------------------------------------------------
   def calc_move_damage(move, sim_user, sim_target, attacker_ai = nil, defender_ai = nil)
     # Find the sim version of the move on the sim battler
@@ -79,24 +79,22 @@ class Battle::AI
     sim_move ||= move  # fallback to the original move object
 
     # Move failure check: type immunity, ability immunity, etc.
-    if attacker_ai && defender_ai
-      calc_type = sim_move.pbCalcType(sim_user)
-      type_mod = sim_move.pbCalcTypeMod(calc_type, sim_user, sim_target)
-      # Type immunity
-      return 0 if Effectiveness.ineffective?(type_mod)
-      # Ability immunity
-      return 0 if sim_move.pbImmunityByAbility(sim_user, sim_target, false)
-      # Ground vs airborne
-      return 0 if calc_type == :GROUND && sim_target.airborne? && !sim_move.hitsFlyingTargets?
-      # Primal weather
-      return 0 if sim_user.battle.pbWeather == :HeavyRain && calc_type == :FIRE
-      return 0 if sim_user.battle.pbWeather == :HarshSun && calc_type == :WATER
-    end
+    calc_type = sim_move.pbCalcType(sim_user)
+    type_mod = sim_move.pbCalcTypeMod(calc_type, sim_user, sim_target)
+    # Type immunity
+    return 0 if Effectiveness.ineffective?(type_mod)
+    # Ability immunity
+    return 0 if sim_move.pbImmunityByAbility(sim_user, sim_target, false)
+    # Ground vs airborne
+    return 0 if calc_type == :GROUND && sim_target.airborne? && !sim_move.hitsFlyingTargets?
+    # Primal weather
+    return 0 if sim_user.battle.pbWeather == :HeavyRain && calc_type == :FIRE
+    return 0 if sim_user.battle.pbWeather == :HarshSun && calc_type == :WATER
 
     # Set up damage state for calculation
     sim_target.damageState.reset
-    sim_move.calcType = sim_move.pbCalcType(sim_user)
-    sim_target.damageState.typeMod = sim_move.pbCalcTypeMod(sim_move.calcType, sim_user, sim_target)
+    sim_move.calcType = calc_type
+    sim_target.damageState.typeMod = type_mod
     sim_move.pbCheckDamageAbsorption(sim_user, sim_target)
 
     # Calculate damage

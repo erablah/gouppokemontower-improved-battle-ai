@@ -403,9 +403,6 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("DisableTargetStatusMoves
     # Already taunted
     next Battle::AI::MOVE_USELESS_SCORE if target.effects[PBEffects::Taunt] > 0
 
-    # Mental Herb cures taunt
-    next Battle::AI::MOVE_USELESS_SCORE if target.has_active_item?(:MENTALHERB)
-
     # Not worth on Choice-locked targets
     if !target.effects[PBEffects::ChoiceBand]
       if target.has_active_item?([:CHOICEBAND, :CHOICESPECS, :CHOICESCARF]) ||
@@ -644,3 +641,25 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("FailsIfTargetActed",
     next score
   }
 )
+
+Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("CurseTargetOrLowerUserSpd1RaiseUserAtkDef1",
+  proc { |score, move, user, target, ai, battle|
+    next score if !user.has_type?(:GHOST) &&
+                  !(move.rough_type == :GHOST && user.has_active_ability?([:LIBERO, :PROTEAN]))
+    if ai.trainer.medium_skill?
+      # Prefer if the user has no damaging moves
+      score += 15 if !user.check_for_move { |m| m.damagingMove? }
+      # Prefer if the target can't switch out to remove its curse
+      score += 10 if !battle.pbCanChooseNonActive?(target.index)
+    end
+    if ai.trainer.high_skill?
+      # Prefer if user can stall while damage is dealt
+      if user.check_for_move { |m| m.is_a?(Battle::Move::ProtectMove) }
+        score += 5
+      end
+    end
+    next score
+  }
+)
+
+

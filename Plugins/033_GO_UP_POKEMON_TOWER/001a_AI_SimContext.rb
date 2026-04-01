@@ -242,7 +242,8 @@ end
 
 #===============================================================================
 # Suppress low-chance crits during AI simulations.
-# Only allow crits when the crit rate is >= 50% (ratio <= 2, i.e. stage 2+).
+# Only allow crit checks when the crit rate is >= 50% (ratio <= 2, i.e. stage 2+),
+# while preserving normal randomness for those allowed crit stages.
 # This prevents lucky RNG from skewing AI damage predictions.
 #===============================================================================
 class Battle::Move
@@ -277,6 +278,7 @@ class Battle::Move
       c += crit_stage_bonuses(user)
       ratios = CRITICAL_HIT_RATIOS
       c = ratios.length - 1 if c >= ratios.length
+      return false if ratios[c] > 2
       return true if ratios[c] == 1
       r = @battle.pbRandom(ratios[c])
       return true if r == 0

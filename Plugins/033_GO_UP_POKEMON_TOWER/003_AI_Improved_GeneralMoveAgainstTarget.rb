@@ -209,3 +209,11 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:boost_priority_when_slo
 )
 
 
+#===============================================================================
+# override ability and item triggers because its already done in simulations(and is not fun for game player)
+#===============================================================================
+Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:trigger_target_ability_or_item_upon_hit,
+  proc { |score, move, user, target, ai, battle|
+    next score
+  }
+)
