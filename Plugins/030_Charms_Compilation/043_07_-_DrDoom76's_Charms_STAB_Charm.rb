@@ -149,19 +149,7 @@ class Battle::Move
     when :ShadowSky
       multipliers[:final_damage_multiplier] *= 1.5 if type == :SHADOW
     end
-    # Critical hits
-    if target.damageState.critical
-      if Settings::NEW_CRITICAL_HIT_RATE_MECHANICS
-        multipliers[:final_damage_multiplier] *= 1.5
-      else
-        multipliers[:final_damage_multiplier] *= 2
-      end
-    end
-    # Random variance
-    if !self.is_a?(Battle::Move::Confusion)
-      random = 85 + @battle.pbRandom(16)
-      multipliers[:final_damage_multiplier] *= random / 100.0
-    end
+    pbCalcDamageMults_Random(user, target, numTargets, type, baseDmg, multipliers)
     # STAB + Type effectiveness (delegated for Tera compatibility)
     pbCalcDamageMults_Type(user, target, numTargets, type, baseDmg, multipliers)
     # Burn
