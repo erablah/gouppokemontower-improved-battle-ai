@@ -454,11 +454,11 @@ class Battle::AI
     # return true unless foe_lethal_move
 
     foe_vs_current = best_damage_move(target_battler, @user) unless @user.fainted?
-    foe_vs_current_id = foe_vs_current ? foe_vs_current[:move].id : best_damage.id
+    foe_vs_current_id = foe_vs_current ? foe_vs_current[:move].id : best_damage[:move].id
 
     status_move_survival_with_switch(
       idxBattler, target_battler.index, pre_switch,
-      best_damage.id, foe_vs_current_id, m_id
+      best_damage[:move].id, foe_vs_current_id, m_id
     ) == true
   end
 
