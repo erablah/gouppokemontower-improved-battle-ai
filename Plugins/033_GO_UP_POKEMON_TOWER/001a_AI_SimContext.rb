@@ -303,6 +303,22 @@ class Battle::Move
 end
 
 #===============================================================================
+# Suppress low-chance additional effects during AI simulations.
+# Secondary effects below 50% are treated as never occurring, while effects with
+# 50%+ odds keep their normal randomness.
+#===============================================================================
+class Battle::Move
+  alias _orig_pbAdditionalEffectChance pbAdditionalEffectChance
+  def pbAdditionalEffectChance(user, target, effectChance = 0)
+    chance = _orig_pbAdditionalEffectChance(user, target, effectChance)
+    if @battle && @battle.is_simulation && chance > 0 && chance < 50
+      return 0
+    end
+    return chance
+  end
+end
+
+#===============================================================================
 # Suppress random damage variance during AI simulations.
 # Uses a fixed midpoint (92/100) instead of random 85-100 for consistent
 # damage estimates in pbCalcDamage calls.
