@@ -402,8 +402,8 @@ class Battle::AI
     PBDebug.log_ai("[Sucker Punch mind game] chosen=#{chosen_move.class} (#{chosen_move.name})")
     return unless chosen_move.is_a?(Battle::Move::FailsIfTargetActed)
     roll = pbAIRandom(100)
-    PBDebug.log_ai("[Sucker Punch mind game] roll=#{roll} (need <25)")
-    return unless roll < 25
+    PBDebug.log_ai("[Sucker Punch mind game] roll=#{roll} (need <30)")
+    return unless roll < 30
     target_idx = @battle.choices[user_battler.index][3]
     return unless target_idx >= 0
     foe = @battlers[target_idx]
