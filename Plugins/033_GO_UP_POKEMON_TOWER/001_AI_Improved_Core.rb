@@ -102,6 +102,9 @@ class Battle::AI
       battler.pokemon.makeDynamaxForm
       battler.form = battler.pokemon.form
       battler.pokemon.makeDynamax
+      # Keep the previewed live battler consistent with a real Dynamax state so
+      # copied battle sims don't immediately unDynamax it at end of round.
+      battler.effects[PBEffects::Dynamax] = Settings::DYNAMAX_TURNS
       battler.pbUpdate(true)
       sim[:transforms] << { battler: battler, type: :dynamax, prev_form: prev_form }
       PBDebug.log_ai("[simulate_transforms] Dynamax applied: #{battler.name}")
@@ -137,6 +140,7 @@ class Battle::AI
         t[:battler].pokemon.makeUndynamaxForm
         t[:battler].form = t[:prev_form]
         t[:battler].pokemon.makeUndynamax
+        t[:battler].effects[PBEffects::Dynamax] = 0
         t[:battler].pbUpdate(true)
       end
     end

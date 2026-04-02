@@ -33,6 +33,31 @@ class Battle::AI
     def target_can_ohko?; @user_fainted && !@user_got_action; end
   end
 
+  def resolve_sim_action_move(battler, action)
+    return nil unless battler && action.is_a?(Symbol)
+    move = battler.moves.find { |m| m.id == action }
+    return move if move
+
+    if battler.respond_to?(:baseMoves) && !battler.baseMoves.empty?
+      battler.baseMoves.each_with_index do |base_move, idx|
+        next if !base_move
+        next if base_move.id != action
+        return battler.moves[idx]
+      end
+    end
+
+    action_data = GameData::Move.try_get(action)
+    return nil if !action_data || !action_data.dynamaxMove?
+    dynahash = GameData::Move.get_generic_dynamax_moves
+    battler.moves.each do |candidate|
+      next if !candidate
+      next if candidate.get_compatible_dynamax_move(battler, dynahash) != action
+      PBDebug.log_ai("[AI SIM] Resolved reverted Dynamax move #{action} to base move #{candidate.id} for #{battler.pbThis}")
+      return candidate
+    end
+    nil
+  end
+
   #-----------------------------------------------------------------------------
   # Simulate a full battle with action sequences.
   #
@@ -100,7 +125,7 @@ class Battle::AI
         # Clamp to last action instead of cycling, so switches happen only once
         user_action_idx = [turn - 1, user_actions.length - 1].min
         user_action = user_action_idx >= 0 ? user_actions[user_action_idx] : nil
-        user_move = user.moves.find { |m| m.id == user_action }
+        user_move = resolve_sim_action_move(user, user_action)
         next unless user_move
         # Priority move KO interception (skip turn 1: test the actual move first)
         if turn > 1
@@ -127,7 +152,7 @@ class Battle::AI
         if target.usingMultiTurnAttack?
           PBDebug.log_ai("AI SIM: Target #{target.pbThis} locked into a multi-turn attack") if $DEBUG
         elsif target_action.is_a?(Symbol)
-          target_move = target.moves.find { |m| m.id == target_action }
+          target_move = resolve_sim_action_move(target, target_action)
           if target_move
             # Priority move KO interception
             target_priority_moves.each do |pm|
