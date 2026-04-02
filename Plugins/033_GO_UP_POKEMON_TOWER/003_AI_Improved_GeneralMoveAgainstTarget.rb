@@ -73,13 +73,19 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:one_v_one_move_score,
     # --- 1v1 simulation from matchup_summary cache ---
     result = foe_entry[:move_results]&.dig(move.id)
     next score unless result
+    foe_pivoted_out = result.terminated_by_switch &&
+                      result.switch_type == :live_switch &&
+                      result.switch_battler_index == target.index &&
+                      !result.user_fainted
 
     # B) User loses the 1v1 — early return with penalty, score boosts for damage are already applied
-    unless result.user_wins?
+    unless result.user_wins? || foe_pivoted_out
       score -= 40
       PBDebug.log_score_change(-50, "1v1: user loses matchup")
       next score
     end
+
+    next score if foe_pivoted_out
 
     u_turns = result.target_ko_turn || 999
 

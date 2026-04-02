@@ -542,9 +542,14 @@ class Battle::AI
     pkmn = @battle.pbParty(idxBattler)[idxParty]
     @_fresh_switch_scores[idxBattler] = {
       score:       @_last_replacement_score || 100,
-      personal_id: pkmn.personalID
+      personal_id: pkmn.personalID,
+      foe_ids:     current_foe_personal_ids(idxBattler)
     }
     PBDebug.log_ai("  [fresh_switch] stored score #{@_fresh_switch_scores[idxBattler][:score]} for #{pkmn.name}")
+  end
+
+  def current_foe_personal_ids(idxBattler)
+    @battle.allOtherSideBattlers(idxBattler).map { |b| b.pokemon&.personalID }.compact.sort
   end
 
   def choose_best_replacement_pokemon(idxBattler, forced_switch = false, threshold: REPLACEMENT_THRESHOLD_NORMAL)
@@ -602,7 +607,10 @@ class Battle::AI
       fresh = (@_fresh_switch_scores || {})[idxBattler]
       if fresh && battler.turnCount == 0 &&
          battler.pokemon&.personalID == fresh[:personal_id]
-        if reserves[0][1] <= fresh[:score]
+        current_foes = current_foe_personal_ids(idxBattler)
+        if fresh[:foe_ids] && fresh[:foe_ids] != current_foes
+          PBDebug.log_ai("=> fresh switch-in protection skipped for #{battler.name}: foe changed from #{fresh[:foe_ids].inspect} to #{current_foes.inspect}")
+        elsif reserves[0][1] <= fresh[:score]
           PBDebug.log_ai("=> fresh switch-in #{battler.name} (entry score #{fresh[:score]}) >= best replacement #{party[reserves[0][0]].name} (#{reserves[0][1]}), not switching")
           return -1
         else

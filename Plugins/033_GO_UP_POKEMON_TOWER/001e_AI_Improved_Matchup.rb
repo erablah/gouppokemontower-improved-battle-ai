@@ -70,8 +70,15 @@ class Battle::AI
             [m.id], foe_actions,
             max_turns: 1
           )
-          # A status move is successful if it was used and did NOT fail
-          status_survival[m.id] = res.user_succeeded
+          # A foe pivoting out before the user acts is not a mechanical failure
+          # of the user's status move, just an interrupted line the sim doesn't
+          # continue modeling.
+          status_survival[m.id] =
+            res.user_succeeded ||
+            (res.terminated_by_switch &&
+             res.switch_type == :live_switch &&
+             res.switch_battler_index == b.index &&
+             !res.user_fainted)
           tick_scene
         end
 
