@@ -39,11 +39,12 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
     stat_up = (real_move.respond_to?(:statUp) && real_move.statUp) ? real_move.statUp : nil
     stat_up_from_fc = false
 
-    # Fallback: parse stat_up from function code if @statUp is nil
-    if !stat_up && fc.include?("RaiseUser")
+    # Fallback: parse stat_up from function code if @statUp is nil.
+    # This also covers Dynamax "RaiseUserSide..." effects like Max Airstream.
+    if !stat_up && fc.match?(/RaiseUser(?:Side)?/)
       # Handle RaiseUserMainStats first (all main stats)
-      if fc.include?("RaiseUserMainStats")
-        stages = fc[/RaiseUserMainStats(\d+)/, 1].to_i
+      if fc.match?(/RaiseUser(?:Side)?MainStats/)
+        stages = fc[/RaiseUser(?:Side)?MainStats(\d+)/, 1].to_i
         parsed = []
         [:ATTACK, :DEFENSE, :SPECIAL_ATTACK, :SPECIAL_DEFENSE, :SPEED].each do |s|
           parsed.push(s, stages)
@@ -60,7 +61,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
                      "Evasion" => :EVASION, "Acc" => :ACCURACY, "Eva" => :EVASION }
         stat_names = stat_map.keys.sort_by { |k| -k.length }
         stat_pattern = stat_names.map { |s| Regexp.escape(s) }.join("|")
-        if fc =~ /RaiseUser((?:(?:#{stat_pattern})\d*)+)/
+        if fc =~ /RaiseUser(?:Side)?((?:(?:#{stat_pattern})\d*)+)/
           segment = $1
           pairs = []
           while !segment.empty?
@@ -93,8 +94,11 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
 
     is_status = move.statusMove?
     # Skip damaging moves whose stat boost is a non-guaranteed secondary effect
-    # (e.g. Meteor Mash 20% Atk). Function-code-parsed boosts are always guaranteed.
-    if move.damagingMove? && !stat_up_from_fc && real_move.addlEffect != 100
+    # (e.g. Meteor Mash 20% Atk). Function-code-parsed boosts are always
+    # guaranteed, and so are Dynamax side-boosting Max Moves like Max Airstream.
+    guaranteed_damaging_setup = stat_up_from_fc || fc.start_with?("RaiseUserSide")
+    if move.damagingMove? && !guaranteed_damaging_setup && real_move.addlEffect != 100
+      PBDebug.log_ai("[smart_setup] Skipped #{move.name}: damaging boost isn't guaranteed.")
       next score
     end
 
@@ -174,11 +178,14 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
       foe_best_move = foe_entry[:best_move]
       next unless foe_best_move
 
-      user_best = ai.best_damage_move(user, b)
+      user_best = ai.best_damage_move_for_simulation(user, b)
       next unless user_best
 
-      user_best_move_id = user_best[:move].id
-      foe_best_move_id = foe_best_move.id
+      user_best_action = ai.simulation_action_for_move_data(user_best, b)
+      foe_best = ai.best_damage_move_for_simulation(b, user)
+      next unless foe_best
+      foe_best_action = ai.simulation_action_for_move_data(foe_best, user)
+      next unless user_best_action && foe_best_action
 
       # Current: user attacks with best move, foe attacks with best move
       current_result = foe_entry[:sim_result]
@@ -187,8 +194,8 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
       # Boosted: user uses setup move first, then best attack; foe keeps attacking
       boosted_result = ai.simulate_battle(
         user.index, b.index,
-        [setup_move_id, user_best_move_id],
-        [foe_best_move_id],
+        [setup_move_id, user_best_action],
+        [foe_best_action],
         max_turns: 5
       )
 
@@ -345,12 +352,12 @@ Battle::AI::Handlers::GeneralMoveScore.add(:tactical_substitute,
     next score unless battler
 
     # Don't use if Substitute is already active
-    next Battle::AI::MOVE_USELESS_SCORE if battler.effects[PBEffects::Substitute] > 0
+    next Battle::AI::MOVE_FAIL_SCORE if battler.effects[PBEffects::Substitute] > 0
 
     # -------------------------------------------------------------------------
     # Phazing check: Substitute doesn't block phazing moves
     # -------------------------------------------------------------------------
-    phaze_codes = ["SwitchOutTargetStatusMove", "SwitchOutTargetDamagingMove"]
+    phaze_codes = ["SwitchOutTargetStatusMove"]
     foe_has_phazing = false
     sim_move = Battle::AI::AIMove.new(ai)
     ai.each_foe_battler(user.side) do |b, _i|
@@ -367,10 +374,22 @@ Battle::AI::Handlers::GeneralMoveScore.add(:tactical_substitute,
     end
 
     # -------------------------------------------------------------------------
-    # B. Foe threat analysis — reject if any foe can deal >25% in one hit
+    # B. Foe threat analysis — reject if any foe can break the Substitute in one hit
     # -------------------------------------------------------------------------
-    summary = ai.matchup_summary
-    threatened = summary[:foes].values.any? { |f| f[:best_dmg] > battler.totalhp * 0.3 }
+    sub_break_threshold = battler.totalhp / 4.0
+    threatened = false
+    ai.each_foe_battler(user.side) do |b, _i|
+      best_dmg = ai.best_damage_move(b, user)&.dig(:dmg) || 0
+      PBDebug.log_ai(
+        "[tactical_substitute] Threat check vs #{b.name}: best_dmg=#{best_dmg}, " \
+        "sub_threshold=#{sub_break_threshold}"
+      )
+      if best_dmg >= sub_break_threshold
+        threatened = true
+        PBDebug.log_ai("[tactical_substitute] Rejected: #{b.name} can break Substitute in one hit.")
+        break
+      end
+    end
 
     # Substitute is counterproductive when foe can break it in one hit
     next Battle::AI::MOVE_USELESS_SCORE if threatened

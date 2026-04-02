@@ -4,6 +4,103 @@
 #===============================================================================
 
 class Battle::AI
+  def zmove_available_for_battler_index?(idxBattler)
+    battler = @battle.battlers[idxBattler]
+    return false unless battler
+    return false if $game_switches[Settings::NO_ZMOVE]
+    return false unless @battle.pbHasZRing?(idxBattler)
+    return false if battler.effects[PBEffects::SkyDrop] >= 0
+    side  = battler.idxOwnSide
+    owner = @battle.pbGetOwnerIndexFromBattlerIndex(idxBattler)
+    @battle.zMove[side][owner] == -1
+  rescue StandardError
+    false
+  end
+
+  def _damage_entry_key(base_move, move)
+    return base_move.id unless move.respond_to?(:zMove?) && move.zMove?
+    [:zmove, base_move.id, move.id]
+  end
+
+  def _damage_entry_action(base_move, move)
+    return base_move.id unless move.respond_to?(:zMove?) && move.zMove?
+    { move_id: base_move.id, zmove: true }
+  end
+
+  def _build_damage_entry(base_move, move, dmg)
+    {
+      key: _damage_entry_key(base_move, move),
+      move: move,
+      base_move: base_move,
+      dmg: dmg,
+      zmove: move.respond_to?(:zMove?) && move.zMove?,
+      action: _damage_entry_action(base_move, move)
+    }
+  end
+
+  def _compatible_damaging_zmove(base_move, holder, battle, battler_index = nil)
+    return nil if !base_move || !holder
+    return nil unless base_move.respond_to?(:damagingMove?) && base_move.damagingMove?
+    return nil unless battler_index && zmove_available_for_battler_index?(battler_index)
+
+    item_id = holder.respond_to?(:item_id) ? holder.item_id : holder.item
+    return nil unless item_id
+    item = GameData::Item.try_get(item_id)
+    return nil unless item&.is_zcrystal?
+
+    pkmn = if holder.is_a?(Battle::Battler)
+             holder.effects[PBEffects::TransformPokemon] || holder.pokemon
+           else
+             holder
+           end
+    return nil unless pkmn
+
+    new_id = base_move.get_compatible_zmove(item, pkmn)
+    return nil unless new_id
+
+    zmove = base_move.make_zmove(new_id, battle)
+    return nil unless zmove&.damagingMove?
+    zmove
+  rescue StandardError
+    nil
+  end
+
+  def _each_damage_option(move_source, calc_holder, battle, battler_index: nil, can_choose: nil)
+    Array(move_source).compact.each do |base_move|
+      next unless base_move&.damagingMove?
+      next if can_choose && !can_choose.call(base_move)
+
+      yield base_move, base_move
+
+      zmove = _compatible_damaging_zmove(base_move, calc_holder, battle, battler_index)
+      next unless zmove
+      yield base_move, zmove
+    end
+  end
+
+  def damaging_zmove_lethal?(move_data, target)
+    return true unless move_data && move_data[:zmove]
+    return false unless target&.respond_to?(:hp)
+    move_data[:dmg].to_i >= target.hp
+  end
+
+  def simulation_action_for_move_data(move_data, target = nil)
+    return nil unless move_data
+    return nil unless damaging_zmove_lethal?(move_data, target)
+    move_data[:action]
+  end
+
+  def _simulatable_damage_data(dmg_data, target = nil)
+    return {} unless dmg_data
+    filtered = dmg_data.each_with_object({}) do |(key, move_data), acc|
+      next unless simulation_action_for_move_data(move_data, target)
+      acc[key] = move_data
+    end
+    selected_cache = dmg_data.instance_variable_get(:@_selected_best_moves)
+    filtered.instance_variable_set(:@_selected_best_moves, selected_cache) if selected_cache
+    filtered
+  end
+
   #---------------------------------------------------------------------------
   # Returns {move_id => {move: Battle::Move, dmg: int}}
   # Calculates damage for each of attacker's damaging moves against defender
@@ -24,14 +121,15 @@ class Battle::AI
     # Forward: attacker → defender
     fwd = {}
     fwd_moves = (attacker.side != @user.side) ? known_foe_moves(attacker) : attacker.moves
-    fwd_moves.each do |m|
-      next unless m&.damagingMove?
-      next unless attacker.pbCanChooseMove?(m, false, false)
-      dmg = calc_move_damage(m, sim_a, sim_b, attacker, defender)
+    _each_damage_option(fwd_moves, attacker, sim, battler_index: attacker.index,
+                        can_choose: ->(m) { attacker.pbCanChooseMove?(m, false, false) }) do |base_move, move|
+      dmg = calc_move_damage(move, sim_a, sim_b, attacker, defender)
       pct_total = (100.0 * dmg / [1, defender.totalhp].max).round(1)
       pct_hp    = (100.0 * dmg / [1, defender.hp].max).round(1)
-      PBDebug.log_ai("  #{attacker.name} #{m.name}: #{dmg} dmg (#{pct_total}% totalhp / #{pct_hp}% curhp)")
-      fwd[m.id] = { move: m, dmg: dmg }
+      z_tag = (move.respond_to?(:zMove?) && move.zMove?) ? " [Z]" : ""
+      PBDebug.log_ai("  #{attacker.name} #{move.name}#{z_tag}: #{dmg} dmg (#{pct_total}% totalhp / #{pct_hp}% curhp)")
+      entry = _build_damage_entry(base_move, move, dmg)
+      fwd[entry[:key]] = entry
       tick_scene
     end
     cache[fwd_key] = fwd
@@ -41,14 +139,15 @@ class Battle::AI
     unless cache.key?(rev_key)
       rev = {}
       rev_moves = (defender.side != @user.side) ? known_foe_moves(defender) : defender.moves
-      rev_moves.each do |m|
-        next unless m&.damagingMove?
-        next unless defender.pbCanChooseMove?(m, false, false)
-        dmg = calc_move_damage(m, sim_b, sim_a, defender, attacker)
+      _each_damage_option(rev_moves, defender, sim, battler_index: defender.index,
+                          can_choose: ->(m) { defender.pbCanChooseMove?(m, false, false) }) do |base_move, move|
+        dmg = calc_move_damage(move, sim_b, sim_a, defender, attacker)
         pct_total = (100.0 * dmg / [1, attacker.totalhp].max).round(1)
         pct_hp    = (100.0 * dmg / [1, attacker.hp].max).round(1)
-        PBDebug.log_ai("  #{defender.name} #{m.name}: #{dmg} dmg (#{pct_total}% totalhp / #{pct_hp}% curhp)")
-        rev[m.id] = { move: m, dmg: dmg }
+        z_tag = (move.respond_to?(:zMove?) && move.zMove?) ? " [Z]" : ""
+        PBDebug.log_ai("  #{defender.name} #{move.name}#{z_tag}: #{dmg} dmg (#{pct_total}% totalhp / #{pct_hp}% curhp)")
+        entry = _build_damage_entry(base_move, move, dmg)
+        rev[entry[:key]] = entry
         tick_scene
       end
       cache[rev_key] = rev
@@ -64,7 +163,9 @@ class Battle::AI
     mega = (@battle.pbRegisteredMegaEvolution?(attacker.index) rescue false)
     tera = (@battle.pbRegisteredTerastallize?(attacker.index) rescue false) || attacker.tera?
     def_tera = defender.tera?
-    [attacker.index, defender.index, @battle.turnCount, mega, tera, def_tera,
+    atk_z = zmove_available_for_battler_index?(attacker.index)
+    def_z = zmove_available_for_battler_index?(defender.index)
+    [attacker.index, defender.index, @battle.turnCount, mega, tera, def_tera, atk_z, def_z,
      attacker.pokemon&.personalID, defender.pokemon&.personalID]
   end
 
@@ -156,37 +257,47 @@ class Battle::AI
   #---------------------------------------------------------------------------
   def best_damage_move(attacker, defender)
     dmg_data = damage_moves(attacker, defender)
-    _select_best_damage_move(dmg_data, attacker, defender)
+    _select_best_damage_move(dmg_data, attacker, defender, cache_scope: :all_moves)
+  end
+
+  def best_damage_move_for_simulation(attacker, defender)
+    dmg_data = _simulatable_damage_data(damage_moves(attacker, defender), defender)
+    _select_best_damage_move(dmg_data, attacker, defender, cache_scope: :simulatable)
   end
 
   #---------------------------------------------------------------------------
-  # Scores a lethal move tie for best_damage_move/best_damage_move_with_switch.
-  # Priority is weighted heavily; beneficial self-effects increase the odds,
-  # while drawbacks like recharge/two-turn/self-drops decrease the odds.
+  # Selects the best damage option.
+  # If any move is lethal against the current target HP, selection is restricted
+  # to lethal options. Tied lethal options are chosen with weighted probability
+  # once, then cached so later lookups for the same entry stay consistent.
   #---------------------------------------------------------------------------
-  def _select_best_damage_move(dmg_data, attacker, target = nil)
+  def _select_best_damage_move(dmg_data, attacker, target = nil, cache_scope: :default)
     return nil if !dmg_data || dmg_data.empty?
     max_dmg = dmg_data.values.max_by { |md| md[:dmg] }[:dmg]
     lethal_moves = dmg_data.values.select { |md| md[:dmg] == max_dmg }
     lethal_threshold = nil
     if target && target.respond_to?(:hp)
       lethal_threshold = target.hp
-      lethal_moves = dmg_data.values.select { |md| md[:dmg] >= lethal_threshold }
+      lethal_candidates = dmg_data.values.select { |md| md[:dmg] >= lethal_threshold }
+      lethal_moves = lethal_candidates if lethal_candidates.any?
     end
+    cached_selection = _cached_best_damage_move(dmg_data, cache_scope, lethal_threshold)
+    return cached_selection if cached_selection
+
     if lethal_moves.length > 1
-      cached_selection = _cached_best_damage_move(dmg_data, lethal_threshold)
-      return cached_selection if cached_selection
       lethal_moves.each do |md|
         md[:lethal_score] = _lethal_move_score(md[:move], attacker)
         md[:lethal_weight] = _lethal_move_weight(md[:lethal_score])
       end
       selected = _pick_weighted_lethal_move(lethal_moves)
-      _cache_best_damage_move(dmg_data, lethal_threshold, selected)
+      _cache_best_damage_move(dmg_data, cache_scope, lethal_threshold, selected)
       return selected
     end
-    best = dmg_data.values.max_by { |md| md[:dmg] }
+
+    best = lethal_moves.max_by { |md| md[:dmg] }
     best[:lethal_score] = _lethal_move_score(best[:move], attacker) if best
-    return best
+    _cache_best_damage_move(dmg_data, cache_scope, lethal_threshold, best)
+    best
   end
 
   def _lethal_move_score(move, attacker)
@@ -246,22 +357,32 @@ class Battle::AI
       return md if roll < weight
       roll -= weight
     end
-    lethal_moves.max_by { |md| [md[:lethal_weight] || 1, md[:dmg]] }
+    lethal_moves.max_by do |md|
+      move = md[:move]
+      base_move = md[:base_move] || move
+      [
+        md[:lethal_weight] || 1,
+        md[:dmg].to_i,
+        md[:zmove] ? 0 : 1,
+        (base_move&.id || move&.id).to_s,
+        (move&.id || "").to_s
+      ]
+    end
   end
 
-  def _cached_best_damage_move(dmg_data, lethal_threshold)
+  def _cached_best_damage_move(dmg_data, cache_scope, lethal_threshold)
     cache = dmg_data.instance_variable_get(:@_selected_best_moves)
     return nil unless cache
-    cache[lethal_threshold]
+    cache[[cache_scope, lethal_threshold]]
   end
 
-  def _cache_best_damage_move(dmg_data, lethal_threshold, selected)
+  def _cache_best_damage_move(dmg_data, cache_scope, lethal_threshold, selected)
     cache = dmg_data.instance_variable_get(:@_selected_best_moves)
     unless cache
       cache = {}
       dmg_data.instance_variable_set(:@_selected_best_moves, cache)
     end
-    cache[lethal_threshold] = selected
+    cache[[cache_scope, lethal_threshold]] = selected
   end
 
   #---------------------------------------------------------------------------
@@ -284,11 +405,11 @@ class Battle::AI
 
     fwd = {}
     fwd_moves = pre_switch[attacker_index] ? sim_a.moves : _switch_move_source(attacker_index, pre_switch)
-    fwd_moves.each do |m|
-      is_damaging = m.is_a?(Pokemon::Move) ? GameData::Move.get(m.id).damaging? : m.damagingMove?
-      next unless is_damaging
-      dmg = calc_move_damage(m, sim_a, sim_b)
-      fwd[m.id] = { move: m, dmg: dmg }
+    fwd_holder = pre_switch[attacker_index] ? sim_a.pokemon : @battle.battlers[attacker_index]
+    _each_damage_option(fwd_moves, fwd_holder, sim, battler_index: attacker_index) do |base_move, move|
+      dmg = calc_move_damage(move, sim_a, sim_b)
+      entry = _build_damage_entry(base_move, move, dmg)
+      fwd[entry[:key]] = entry
       tick_scene
     end
     cache[fwd_key] = fwd
@@ -297,11 +418,11 @@ class Battle::AI
     if rev_key && !cache.key?(rev_key)
       rev = {}
       rev_moves = pre_switch[target_index] ? sim_b.moves : _switch_move_source(target_index, pre_switch)
-      rev_moves.each do |m|
-        is_damaging = m.is_a?(Pokemon::Move) ? GameData::Move.get(m.id).damaging? : m.damagingMove?
-        next unless is_damaging
-        dmg = calc_move_damage(m, sim_b, sim_a)
-        rev[m.id] = { move: m, dmg: dmg }
+      rev_holder = pre_switch[target_index] ? sim_b.pokemon : @battle.battlers[target_index]
+      _each_damage_option(rev_moves, rev_holder, sim, battler_index: target_index) do |base_move, move|
+        dmg = calc_move_damage(move, sim_b, sim_a)
+        entry = _build_damage_entry(base_move, move, dmg)
+        rev[entry[:key]] = entry
         tick_scene
       end
       cache[rev_key] = rev
@@ -329,7 +450,9 @@ class Battle::AI
     else
       tgt_id = @battle.battlers[target_index].pokemon&.personalID
     end
-    [:dmg_switch, attacker_index, target_index, @battle.turnCount, atk_id, tgt_id]
+    atk_z = zmove_available_for_battler_index?(attacker_index)
+    tgt_z = zmove_available_for_battler_index?(target_index)
+    [:dmg_switch, attacker_index, target_index, @battle.turnCount, atk_id, tgt_id, atk_z, tgt_z]
   end
 
   #---------------------------------------------------------------------------
@@ -357,6 +480,18 @@ class Battle::AI
              else
                @battle.battlers[target_index]
              end
-    _select_best_damage_move(dmg_data, attacker, target)
+    _select_best_damage_move(dmg_data, attacker, target, cache_scope: :all_moves)
+  end
+
+  def best_damage_move_with_switch_for_simulation(attacker_index, target_index, pre_switch)
+    dmg_data = damage_moves_with_switch(attacker_index, target_index, pre_switch)
+    return nil unless dmg_data
+    attacker = @battle.battlers[attacker_index]
+    target = if pre_switch[target_index]
+               @battle.pbParty(target_index)[pre_switch[target_index]]
+             else
+               @battle.battlers[target_index]
+             end
+    _select_best_damage_move(_simulatable_damage_data(dmg_data, target), attacker, target, cache_scope: :simulatable)
   end
 end

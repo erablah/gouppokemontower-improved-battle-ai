@@ -23,8 +23,8 @@ class Battle::AI
       summary[:max_foe_dmg] = 0
 
       each_foe_battler(@user.side) do |b, _i|
-        user_best = best_damage_move(@user, b)
-        foe_best = best_damage_move(b, @user)
+        user_best = best_damage_move_for_simulation(@user, b)
+        foe_best = best_damage_move_for_simulation(b, @user)
 
         foe_speed = b.rough_stat(:SPEED)
         foe_outspeeds = b.faster_than?(@user)
@@ -35,30 +35,34 @@ class Battle::AI
         # Run 10-turn sim for each of user's damaging moves against foe's best
         move_results = {}
         if foe_best_move
-          damage_moves(@user, b).each do |move_id, _data|
-            move_results[move_id] = simulate_battle(
+          damage_moves(@user, b).each do |move_key, data|
+            user_action = simulation_action_for_move_data(data, b)
+            next unless user_action
+            foe_action = simulation_action_for_move_data(foe_best, @user)
+            next unless foe_action
+            move_results[move_key] = simulate_battle(
               @user.index, b.index,
-              [move_id], [foe_best_move.id],
+              [user_action], [foe_action],
               max_turns: 10
             )
             tick_scene
           end
         end
-        sim_result = user_best ? move_results[user_best[:move].id] : nil
+        sim_result = user_best ? move_results[user_best[:key]] : nil
 
         status_survival = {}
         foe_best_dmg = foe_best&.dig(:dmg) || 0
-        foe_action_id = nil
+        foe_action = nil
         
         if foe_best_dmg >= @user.hp
           lethal_moves = damage_moves(b, @user).values.select { |d| d[:dmg] >= @user.hp }
-          foe_lethal_move = lethal_moves.max_by { |d| d[:move].priority }&.dig(:move)
-          foe_action_id = foe_lethal_move.id if foe_lethal_move
+          foe_lethal_move = lethal_moves.max_by { |d| d[:move].priority }
+          foe_action = simulation_action_for_move_data(foe_lethal_move, @user) if foe_lethal_move
         else
-          foe_action_id = foe_best_move.id if foe_best_move
+          foe_action = simulation_action_for_move_data(foe_best, @user) if foe_best_move
         end
 
-        foe_actions = foe_action_id ? [foe_action_id] : []
+        foe_actions = foe_action ? [foe_action] : []
         @user.moves.each do |m|
           next if m.damagingMove?
           res = simulate_battle(
@@ -136,7 +140,7 @@ class Battle::AI
   # [NEW] Lazy per-move status survival check for reserve switch-ins.
   # Only simulates the specific move requested, caching individual results.
   #---------------------------------------------------------------------------
-  def status_move_survival_with_switch(attacker_index, target_index, pre_switch, foe_lethal_move_id, foe_vs_current_id, m_id)
+  def status_move_survival_with_switch(attacker_index, target_index, pre_switch, foe_lethal_action, foe_vs_current_action, m_id)
     if pre_switch[attacker_index]
       pkmn = @battle.pbParty(attacker_index)[pre_switch[attacker_index]]
       return false unless pkmn
@@ -147,7 +151,7 @@ class Battle::AI
 
     tgt_id = pre_switch[target_index] ? @battle.pbParty(target_index)[pre_switch[target_index]].personalID : @battle.battlers[target_index].pokemon&.personalID
 
-    key = [:status_switch, attacker_index, target_index, @battle.turnCount, atk_id, tgt_id, foe_lethal_move_id, foe_vs_current_id, m_id]
+    key = [:status_switch, attacker_index, target_index, @battle.turnCount, atk_id, tgt_id, foe_lethal_action, foe_vs_current_action, m_id]
     (@_ai_dmg_cache ||= {})[key] ||= begin
       voluntary_switch = @battle.command_phase
       party_index = pre_switch[attacker_index]
@@ -158,12 +162,12 @@ class Battle::AI
            pre_switch,
            voluntary_switch: true,
            target_index: target_index,
-           foe_move_id: foe_vs_current_id
+           foe_move_id: foe_vs_current_action
         )
       else
         sim = create_switched_sim(pre_switch)
       end
-      sim_foe_actions = foe_lethal_move_id ? [foe_lethal_move_id] : []
+      sim_foe_actions = foe_lethal_action ? [foe_lethal_action] : []
       res = simulate_battle(
         attacker_index, target_index,
         [m_id], sim_foe_actions,
@@ -183,7 +187,7 @@ class Battle::AI
 
     pre_switch = { idxBattler => party_index }
 
-    best_damage = best_damage_move_with_switch(target_battler.index, idxBattler, pre_switch)
+    best_damage = best_damage_move_with_switch_for_simulation(target_battler.index, idxBattler, pre_switch)
 
     # foe_dmg_hash = damage_moves_with_switch(target_battler.index, idxBattler, pre_switch)
     # lethal_moves = foe_dmg_hash.values.select { |d| d[:dmg] >= pkmn.hp }
@@ -192,12 +196,12 @@ class Battle::AI
     # foe_lethal_move = lethal_moves.max_by { |d| d[:move].priority }&.dig(:move)
     # return true unless foe_lethal_move
 
-    foe_vs_current = best_damage_move(target_battler, @user) unless @user.fainted?
-    foe_vs_current_id = foe_vs_current ? foe_vs_current[:move].id : best_damage[:move].id
+    foe_vs_current = best_damage_move_for_simulation(target_battler, @user) unless @user.fainted?
+    foe_vs_current_action = foe_vs_current ? simulation_action_for_move_data(foe_vs_current, @user) : simulation_action_for_move_data(best_damage, pkmn)
 
     status_move_survival_with_switch(
       idxBattler, target_battler.index, pre_switch,
-      best_damage[:move].id, foe_vs_current_id, m_id
+      simulation_action_for_move_data(best_damage, pkmn), foe_vs_current_action, m_id
     ) == true
   end
 

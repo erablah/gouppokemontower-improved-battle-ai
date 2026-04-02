@@ -51,23 +51,23 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
 
     ai.each_foe_battler(ai.user.side) do |b, _i|
       # Foe's best move vs current battler (used on switch-in turn for voluntary switches)
-      foe_vs_current = ai.best_damage_move(b, ai.user) unless ai.user.fainted?
+      foe_vs_current = ai.best_damage_move_for_simulation(b, ai.user) unless ai.user.fainted?
       if voluntary_switch
         next unless foe_vs_current
       end
-      foe_vs_current_id = foe_vs_current ? foe_vs_current[:move].id : nil
+      foe_vs_current_action = foe_vs_current ? ai.simulation_action_for_move_data(foe_vs_current, ai.user) : nil
 
       # Foe's best move vs the reserve (actual damage via pre_switch sim)
-      foe_vs_reserve = ai.best_damage_move_with_switch(b.index, idxBattler, pre_switch)
-      foe_vs_reserve_id = foe_vs_reserve ? foe_vs_reserve[:move].id : foe_vs_current_id
+      foe_vs_reserve = ai.best_damage_move_with_switch_for_simulation(b.index, idxBattler, pre_switch)
+      foe_vs_reserve_action = foe_vs_reserve ? ai.simulation_action_for_move_data(foe_vs_reserve, pkmn) : foe_vs_current_action
       # Reserve's best damaging moves vs foe (top 2 by actual damage)
       reserve_dmg = ai.damage_moves_with_switch(idxBattler, b.index, pre_switch)
       reserve_dmg ||= {}
-      reserve_candidates = reserve_dmg.values.sort_by { |md| -md[:dmg] }.first(1)
+      reserve_candidates = ai.send(:_simulatable_damage_data, reserve_dmg, b).values.sort_by { |md| -md[:dmg] }.first(1)
       status_moves = pkmn.moves.select { |m| m.is_a?(Pokemon::Move) && m.power == 0 }
 
       # For forced switches, if we couldn't determine any foe move, skip
-      next if !foe_vs_reserve_id || (reserve_candidates.empty? && status_moves.empty?)
+      next if !foe_vs_reserve_action || (reserve_candidates.empty? && status_moves.empty?)
 
       if reserve_candidates.empty?
         if status_moves.any? { |m| ai.reserve_status_move_survives?(idxBattler, pkmn, b, m.id) }
@@ -89,11 +89,11 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
              pre_switch, 
              voluntary_switch: true, 
              target_index: b.index, 
-             foe_move_id: foe_vs_current_id
+             foe_move_id: foe_vs_current_action
           )
           result = ai.simulate_battle(
             idxBattler, b.index,
-            [md[:move].id], [foe_vs_reserve_id],
+            [ai.simulation_action_for_move_data(md, b)], [foe_vs_reserve_action],
             sim: sim, max_turns: 5
           )
         else
@@ -101,7 +101,7 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
           sim = ai.create_switched_sim(pre_switch)
           result = ai.simulate_battle(
             idxBattler, b.index,
-            [md[:move].id], [foe_vs_reserve_id],
+            [ai.simulation_action_for_move_data(md, b)], [foe_vs_reserve_action],
             sim: sim, max_turns: 5
           )
         end

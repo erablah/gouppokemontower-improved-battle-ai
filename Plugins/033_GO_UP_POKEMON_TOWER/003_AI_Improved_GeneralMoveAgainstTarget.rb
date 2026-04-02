@@ -77,7 +77,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:one_v_one_move_score,
     # B) User loses the 1v1 — early return with penalty, score boosts for damage are already applied
     unless result.user_wins?
       score -= 40
-      PBDebug.log_score_change(-40, "1v1: user loses matchup")
+      PBDebug.log_score_change(-50, "1v1: user loses matchup")
       next score
     end
 

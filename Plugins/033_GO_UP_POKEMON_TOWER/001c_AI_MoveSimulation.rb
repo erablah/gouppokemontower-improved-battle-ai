@@ -34,7 +34,27 @@ class Battle::AI
   end
 
   def resolve_sim_action_move(battler, action)
-    return nil unless battler && action.is_a?(Symbol)
+    return nil unless battler
+
+    if action.is_a?(Hash)
+      base_id = action[:move_id]
+      return nil unless base_id
+      move = battler.moves.find { |m| m.id == base_id }
+      if !move && battler.respond_to?(:baseMoves) && !battler.baseMoves.empty?
+        battler.baseMoves.each_with_index do |base_move, idx|
+          next if !base_move || base_move.id != base_id
+          move = battler.moves[idx] || base_move
+          break
+        end
+      end
+      return nil unless move
+      return move unless action[:zmove]
+
+      move_idx = battler.moves.index(move) || 0
+      return move.convert_zmove(battler, battler.battle, move_idx, true)
+    end
+
+    return nil unless action.is_a?(Symbol)
     move = battler.moves.find { |m| m.id == action }
     return move if move
 
@@ -96,13 +116,13 @@ class Battle::AI
         user_ai = @battlers[user_index]
         target_ai = @battlers[target_index]
         if user_ai && target_ai
-          damage_moves(user_ai, target_ai).each do |move_id, data|
+          damage_moves(user_ai, target_ai).each do |_move_key, data|
             next unless data[:move].priority > 0
-            user_priority_moves << { id: move_id, dmg: data[:dmg], pri: data[:move].priority }
+            user_priority_moves << { action: data[:action], dmg: data[:dmg], pri: data[:move].priority, zmove: data[:zmove] }
           end
-          damage_moves(target_ai, user_ai).each do |move_id, data|
+          damage_moves(target_ai, user_ai).each do |_move_key, data|
             next unless data[:move].priority > 0
-            target_priority_moves << { id: move_id, dmg: data[:dmg], pri: data[:move].priority }
+            target_priority_moves << { action: data[:action], dmg: data[:dmg], pri: data[:move].priority, zmove: data[:zmove] }
           end
         end
       end
@@ -131,7 +151,7 @@ class Battle::AI
         if turn > 1
           user_priority_moves.each do |pm|
             next unless pm[:dmg] >= target.hp
-            pri_move = user.moves.find { |m| m.id == pm[:id] }
+            pri_move = resolve_sim_action_move(user, pm[:action])
             if pri_move
               user_move = pri_move
               break
@@ -157,7 +177,7 @@ class Battle::AI
             # Priority move KO interception
             target_priority_moves.each do |pm|
               next unless pm[:dmg] >= user.hp
-              pri_move = target.moves.find { |m| m.id == pm[:id] }
+              pri_move = resolve_sim_action_move(target, pm[:action])
               if pri_move
                 target_move = pri_move
                 break
@@ -283,10 +303,10 @@ class Battle::AI
         # Simulate the foe hitting the incoming pokemon
         target_idx = options[:target_index]
         user_idx = pre_switch.keys.first
-        foe_move_id = options[:foe_move_id]
+        foe_action = options[:foe_move_id]
         
         atk = sim.battlers[target_idx]
-        foe_move = atk.moves.find { |m| m.id == foe_move_id }
+        foe_move = resolve_sim_action_move(atk, foe_action)
         if foe_move
           sim.choices[target_idx] = [:UseMove, atk.moves.index(foe_move) || 0, foe_move, user_idx, 0]
         else
