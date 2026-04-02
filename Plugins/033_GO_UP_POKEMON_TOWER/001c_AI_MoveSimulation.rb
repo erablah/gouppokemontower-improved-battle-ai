@@ -13,6 +13,7 @@ class Battle::AI
     attr_accessor :user_ko_turn, :target_ko_turn
     attr_accessor :user_got_action, :target_got_action
     attr_accessor :user_succeeded, :target_succeeded
+    attr_accessor :terminated_by_switch, :switch_type, :switch_battler_index
 
     def initialize
       @turns = 0
@@ -25,6 +26,9 @@ class Battle::AI
       @target_got_action = false
       @user_succeeded  = false
       @target_succeeded = false
+      @terminated_by_switch = false
+      @switch_type = nil
+      @switch_battler_index = nil
     end
 
     def user_wins?;       @target_fainted && !@user_fainted; end
@@ -197,7 +201,7 @@ class Battle::AI
 
         # Run attack phase first and snapshot action results before EOR faint
         # cleanup can reset move-tracking fields on battlers that acted.
-        switch_triggered = catch(SIM_SWITCH_TRIGGERED) do
+        switch_event = catch(SIM_SWITCH_TRIGGERED) do
           sim.pbAttackPhase
           tick_scene
           false
@@ -213,19 +217,33 @@ class Battle::AI
 
         # Determine if each side got an action from attack-phase state, before a
         # later faint can call pbInitEffects(false) and wipe lastRoundMoved.
-        user_acted = (user_action_turn == turn + turn_offset)
-        target_acted = (target_action_turn == turn + turn_offset)
-        user_failed = user_acted ? !user_succeeded_on_action : user.lastMoveFailed
-        target_failed = target_acted ? !target_succeeded_on_action : target.lastMoveFailed
+        user_acted = (user_action_turn == turn + turn_offset) || (user.lastRoundMoved == turn + turn_offset)
+        target_acted = (target_action_turn == turn + turn_offset) || (target.lastRoundMoved == turn + turn_offset)
+        user_failed = if user_acted
+                        user_succeeded_on_action.nil? ? user.lastMoveFailed : !user_succeeded_on_action
+                      else
+                        user.lastMoveFailed
+                      end
+        target_failed = if target_acted
+                          target_succeeded_on_action.nil? ? target.lastMoveFailed : !target_succeeded_on_action
+                        else
+                          target.lastMoveFailed
+                        end
 
-        unless switch_triggered
-          switch_triggered = catch(SIM_SWITCH_TRIGGERED) do
+        unless switch_event
+          switch_event = catch(SIM_SWITCH_TRIGGERED) do
             sim.pbEndOfRoundPhase
             tick_scene
             false
           end
           user = sim.battlers[user_index]
           target = sim.battlers[target_index]
+        end
+
+        if switch_event
+          result.terminated_by_switch = true
+          result.switch_type = switch_event[:reason]
+          result.switch_battler_index = switch_event[:battler_index]
         end
 
         result.user_got_action ||= user_acted
@@ -246,7 +264,7 @@ class Battle::AI
           target_succeeded: (target_acted && !target_failed)
         }
 
-        break if switch_triggered.nil?
+        break if switch_event
         break if sim.decision > 0
       end
 

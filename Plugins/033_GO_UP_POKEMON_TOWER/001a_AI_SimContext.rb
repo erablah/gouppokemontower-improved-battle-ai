@@ -89,10 +89,17 @@ class Battle::AI
     end
     @_sim_template.instance_variable_set(:@scene, SilentScene.new)
     @_sim_template.instance_variable_set(:@is_simulation, true)
-    # Abort simulation on any forced switch attempt (U-turn, Eject Pack, etc.)
+    # Abort simulation on any switch attempt, but preserve whether it was a
+    # faint replacement or a live battler leaving mid-turn.
     sim = @_sim_template
     def sim.pbSwitchInBetween(idxBattler, checkLaxOnly = false, canCancel = false)
-      throw Battle::AI::SIM_SWITCH_TRIGGERED
+      battler = @battlers[idxBattler]
+      reason = if @endOfRound || (battler && battler.fainted?)
+                 :replacement
+               else
+                 :live_switch
+               end
+      throw Battle::AI::SIM_SWITCH_TRIGGERED, { reason: reason, battler_index: idxBattler }
     end
     @_sim_cache_key = cache_key
     tick_scene
