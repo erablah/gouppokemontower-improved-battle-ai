@@ -62,6 +62,22 @@ class Battle::AI
     move = battler.moves.find { |m| m.id == action }
     return move if move
 
+    action_data = GameData::Move.try_get(action)
+    if action_data&.zMove?
+      battler.moves.each_with_index do |base_move, idx|
+        next if !base_move
+        zmove = base_move.convert_zmove(battler, battler.battle, idx, true)
+        return zmove if zmove&.id == action
+      end
+      if battler.respond_to?(:baseMoves) && !battler.baseMoves.empty?
+        battler.baseMoves.each_with_index do |base_move, idx|
+          next if !base_move
+          zmove = base_move.convert_zmove(battler, battler.battle, idx, true)
+          return zmove if zmove&.id == action
+        end
+      end
+    end
+
     if battler.respond_to?(:baseMoves) && !battler.baseMoves.empty?
       battler.baseMoves.each_with_index do |base_move, idx|
         next if !base_move
@@ -70,7 +86,6 @@ class Battle::AI
       end
     end
 
-    action_data = GameData::Move.try_get(action)
     return nil if !action_data || !action_data.dynamaxMove?
     dynahash = GameData::Move.get_generic_dynamax_moves
     battler.moves.each do |candidate|
@@ -144,6 +159,7 @@ class Battle::AI
 
         result.turns = turn
         sim.instance_variable_set(:@turnCount, turn + turn_offset)
+        stop_after_turn = false
 
         # --- Resolve user action ---
         # Clamp to last action instead of cycling, so switches happen only once
@@ -151,6 +167,7 @@ class Battle::AI
         user_action = user_action_idx >= 0 ? user_actions[user_action_idx] : nil
         user_move = resolve_sim_action_move(user, user_action)
         next unless user_move
+        stop_after_turn ||= user_move.respond_to?(:zMove?) && user_move.zMove?
         # Priority move KO interception (skip turn 1: test the actual move first)
         if turn > 1
           user_priority_moves.each do |pm|
@@ -158,6 +175,7 @@ class Battle::AI
             pri_move = resolve_sim_action_move(user, pm[:action])
             if pri_move
               user_move = pri_move
+              stop_after_turn ||= user_move.respond_to?(:zMove?) && user_move.zMove?
               break
             end
           end
@@ -178,12 +196,14 @@ class Battle::AI
         elsif target_action.is_a?(Symbol)
           target_move = resolve_sim_action_move(target, target_action)
           if target_move
+            stop_after_turn ||= target_move.respond_to?(:zMove?) && target_move.zMove?
             # Priority move KO interception
             target_priority_moves.each do |pm|
               next unless pm[:dmg] >= user.hp
               pri_move = resolve_sim_action_move(target, pm[:action])
               if pri_move
                 target_move = pri_move
+                stop_after_turn ||= target_move.respond_to?(:zMove?) && target_move.zMove?
                 break
               end
             end
@@ -246,6 +266,19 @@ class Battle::AI
           result.switch_battler_index = switch_event[:battler_index]
         end
 
+        # Live self-switch moves like Baton Pass/U-turn throw out before
+        # pbEndTurn can mark lastRoundMoved, so credit that battler here.
+        if switch_event && switch_event[:reason] == :live_switch
+          case switch_event[:battler_index]
+          when user_index
+            user_acted = true
+            user_failed = false
+          when target_index
+            target_acted = true
+            target_failed = false
+          end
+        end
+
         result.user_got_action ||= user_acted
         result.target_got_action ||= target_acted
         result.user_succeeded ||= (user_acted && !user_failed)
@@ -266,6 +299,7 @@ class Battle::AI
 
         break if switch_event
         break if sim.decision > 0
+        break if stop_after_turn
       end
 
     result.user_fainted = user.fainted?

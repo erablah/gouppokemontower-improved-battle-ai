@@ -371,13 +371,12 @@ class Battle::AI
             PBDebug.log("")
             return
           end
-        end
-        ret = false
-        PBDebug.logonerr { ret = pbChooseToUseItem(:reserve) }
-        # 5. Reserve-targeted items are a last resort.
-        if ret
-          PBDebug.log("")
-          return
+          PBDebug.logonerr { ret = pbChooseToUseItem(:reserve) }
+          # 5. Reserve-targeted items are a last resort.
+          if ret
+            PBDebug.log("")
+            return
+          end
         end
         # 6. Choose move as normal
         pbChooseMove(choices)
@@ -417,8 +416,6 @@ class Battle::AI
       next if c[4].is_a?(Battle::Move::FailsIfTargetActed)
       next unless c[4].damagingMove?
       next unless c[2] == target_idx
-      dmg = damage_moves(@user, foe)[c[4].id]&.dig(:dmg) || 0
-      next unless dmg >= foe.hp
       best_alt = c if best_alt.nil? || c[1] > best_alt[1]
     end
     return unless best_alt

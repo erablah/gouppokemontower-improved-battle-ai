@@ -24,32 +24,8 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:one_v_one_move_score,
     foe_entry = summary[:foes][target.index]
     next score unless foe_entry
 
-    foe_dmg      = foe_entry[:best_dmg]
-    foe_best_pri = foe_entry[:best_priority]
-    foe_move     = foe_entry[:best_move]
-
-    # Priority-aware speed: who acts first?
-    if move.move.priority > foe_best_pri
-      user_outspeeds = true
-    elsif foe_best_pri > move.move.priority
-      user_outspeeds = false
-    else
-      user_outspeeds = user.faster_than?(target)
-    end
-
-    # --- Universal survival check (Damaging moves only) ---
-    if move.damagingMove?
-      # If foe can OHKO and acts first, any move is likely wasted
-      if foe_dmg >= user.hp && !user_outspeeds && user.effects[PBEffects::Substitute] <= 0
-        if foe_move&.is_a?(Battle::Move::FailsIfTargetActed) && ai.pbAIRandom(100) < 25
-          PBDebug.log_ai("[1v1] skip Sucker Punch KO penalty (25% chance it fails)")
-        else
-          score -= 100
-          PBDebug.log_score_change(-100, "1v1: foe can OHKO and outspeeds")
-        end
-      end
-    else
-      # Status move survival/fail checks are handled globally in GeneralMoveScore.
+    # Status move survival/fail checks are handled globally in GeneralMoveScore.
+    if !move.damagingMove?
       next score
     end
 
@@ -58,29 +34,36 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:one_v_one_move_score,
     is_pivot = pivot_codes.include?(ai.safe_function_code(move)) &&
                battle.pbCanChooseNonActive?(user.battler.index)
 
-    user_dmg = ai.damage_moves(user, target)[move.id]&.dig(:dmg) || 0
-
-    # Substitute: use Sub HP for damage calculations (move hits Sub first)
-    effective_hp = target.effects[PBEffects::Substitute] > 0 ? target.effects[PBEffects::Substitute] : target.hp
+    user_dmg = ai.damage_entry_for_move(user, target, move)&.dig(:dmg) || 0
 
     # A) Base damage scaling: 0 to +20 based on damage relative to effective HP
-    base = ([20.0 * user_dmg / effective_hp, 20].min).to_i
+    base = ([20.0 * user_dmg / target.hp, 20].min).to_i
     score += base
-    PBDebug.log_score_change(base, "1v1: base damage (#{user_dmg}/#{effective_hp})")
+    PBDebug.log_score_change(base, "1v1: base damage (#{user_dmg}/#{target.hp})")
 
     next score if is_pivot  # pivot moves: base damage + survival check only
 
     # --- 1v1 simulation from matchup_summary cache ---
-    result = foe_entry[:move_results]&.dig(move.id)
+    result = foe_entry[:move_results_by_id]&.dig(move.id) ||
+             foe_entry[:move_results]&.dig(move.id)
     next score unless result
+    interrupted_by_live_switch = result.terminated_by_switch &&
+                                 result.switch_type == :live_switch
     foe_pivoted_out = result.terminated_by_switch &&
                       result.switch_type == :live_switch &&
                       result.switch_battler_index == target.index &&
                       !result.user_fainted
 
+    # The per-move simulation already knows whether the foe KOs before the
+    # user gets a turn, so prefer that over a separate speed/priority shortcut.
+    if result.target_can_ohko? && !interrupted_by_live_switch
+      score -= 100
+      PBDebug.log_score_change(-100, "1v1: foe KOs before user acts")
+    end
+
     # B) User loses the 1v1 — early return with penalty, score boosts for damage are already applied
     unless result.user_wins? || foe_pivoted_out
-      score -= 40
+      score -= 50
       PBDebug.log_score_change(-50, "1v1: user loses matchup")
       next score
     end
@@ -101,15 +84,13 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:one_v_one_move_score,
       PBDebug.log_score_change(-15, "1v1: move mediocre (#{u_turns} turns to KO)")
     end
 
-    # D) OHKO bonus
-    if result.user_can_ohko?
-      bonus = user_outspeeds ? 30 : 15
+    # D) Positive sim bonus
+    if result.user_can_ohko? && !interrupted_by_live_switch
+      bonus = result.target_got_action ? 15 : 30
       score += bonus
-      PBDebug.log_score_change(bonus, "1v1: can OHKO target#{user_outspeeds ? ' (outspeeds)' : ''}")
-
-    # E) User wins in multiple turns
+      PBDebug.log_score_change(bonus, "1v1: can OHKO target#{result.target_got_action ? '' : ' (before target acts)'}")
     else
-      bonus = (20.0 / u_turns).to_i.clamp(5, 15)  # 2HKO->10, 3HKO->6, 4HKO->5...
+      bonus = (20.0 / u_turns).to_i.clamp(5, 15)
       score += bonus
       PBDebug.log_score_change(bonus, "1v1: user wins in #{u_turns} turns")
     end

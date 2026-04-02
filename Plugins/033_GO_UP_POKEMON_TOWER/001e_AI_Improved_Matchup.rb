@@ -28,17 +28,20 @@ class Battle::AI
 
         # Run 10-turn sim for each of user's damaging moves against foe's best
         move_results = {}
+        move_results_by_id = {}
         if foe_best_move
           damage_moves(@user, b).each do |move_key, data|
             user_action = simulation_action_for_move_data(data, b)
             next unless user_action
             foe_action = simulation_action_for_move_data(foe_best, @user)
             next unless foe_action
-            move_results[move_key] = simulate_battle(
+            result = simulate_battle(
               @user.index, b.index,
               [user_action], [foe_action],
               max_turns: 10
             )
+            move_results[move_key] = result
+            move_results_by_id[data[:move].id] = result
             tick_scene
           end
         end
@@ -79,11 +82,11 @@ class Battle::AI
         foe_entry = {
           best_dmg:      foe_best_dmg,
           best_move:     foe_best_move,
-          best_priority: foe_best_move ? foe_best_move.priority : 0,
           effectively_outspeeds: foe_effectively_outspeeds,
           can_ohko:      sim_result&.target_can_ohko? || false,
           sim_result:    sim_result,
           move_results:  move_results,
+          move_results_by_id: move_results_by_id,
           status_survival: status_survival
         }
         summary[:foes][b.index] = foe_entry

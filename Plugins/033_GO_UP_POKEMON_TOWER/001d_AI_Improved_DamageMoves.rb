@@ -65,6 +65,14 @@ class Battle::AI
     nil
   end
 
+  def zmove_cache_allowed_for_battler_index?(idxBattler)
+    battler = @battle.battlers[idxBattler]
+    return false unless battler
+    battler.idxOwnSide == @user.side
+  rescue StandardError
+    false
+  end
+
   def _each_damage_option(move_source, calc_holder, battle, battler_index: nil, can_choose: nil)
     Array(move_source).compact.each do |base_move|
       next unless base_move&.damagingMove?
@@ -72,22 +80,32 @@ class Battle::AI
 
       yield base_move, base_move
 
+      next unless battler_index && zmove_cache_allowed_for_battler_index?(battler_index)
       zmove = _compatible_damaging_zmove(base_move, calc_holder, battle, battler_index)
       next unless zmove
       yield base_move, zmove
     end
   end
 
-  def damaging_zmove_lethal?(move_data, target)
-    return true unless move_data && move_data[:zmove]
-    return false unless target&.respond_to?(:hp)
-    move_data[:dmg].to_i >= target.hp
-  end
-
   def simulation_action_for_move_data(move_data, target = nil)
     return nil unless move_data
-    return nil unless damaging_zmove_lethal?(move_data, target)
     move_data[:action]
+  end
+
+  def damage_entry_for_move(attacker, defender, move, dmg_data = nil)
+    return nil unless attacker && defender && move
+    dmg_data ||= damage_moves(attacker, defender)
+    return nil unless dmg_data
+
+    entry = dmg_data[move.id]
+    return entry if entry
+
+    return nil unless move.respond_to?(:zMove?) && move.zMove?
+    dmg_data.each_value do |candidate|
+      next unless candidate[:zmove]
+      return candidate if candidate[:move]&.id == move.id
+    end
+    nil
   end
 
   def _simulatable_damage_data(dmg_data, target = nil)
@@ -96,8 +114,16 @@ class Battle::AI
       next unless simulation_action_for_move_data(move_data, target)
       acc[key] = move_data
     end
+    # Reuse a stable selection cache owned by the underlying damage table so
+    # lethal tie-breaks remain consistent across repeated switch-in evaluations.
+    # Without this, each filtered view can reroll its "best" move independently,
+    # causing different reserves to assume different foe moves in the same state.
     selected_cache = dmg_data.instance_variable_get(:@_selected_best_moves)
-    filtered.instance_variable_set(:@_selected_best_moves, selected_cache) if selected_cache
+    unless selected_cache
+      selected_cache = {}
+      dmg_data.instance_variable_set(:@_selected_best_moves, selected_cache)
+    end
+    filtered.instance_variable_set(:@_selected_best_moves, selected_cache)
     filtered
   end
 

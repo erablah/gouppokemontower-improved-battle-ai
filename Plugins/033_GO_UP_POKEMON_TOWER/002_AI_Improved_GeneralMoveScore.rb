@@ -661,13 +661,9 @@ Battle::AI::Handlers::GeneralMoveScore.add(:status_survival_check_global,
     next score if user.wild?
 
     summary = ai.matchup_summary
-    
-    # We evaluate if the status move fails across all active foes.
-    # If the move fails against EVERY foe (whether by KO or mechanical failure),
-    # it is a universally bad move and should be heavily penalized.
     all_failed = true
     has_foes = false
-    
+
     ai.each_foe_battler(user.side) do |b, _i|
       has_foes = true
       foe_entry = summary[:foes][b.index]
