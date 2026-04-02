@@ -593,12 +593,7 @@ class Battle::AI
         return chosen[0]
       end
     end
-    # Rate each possible replacement Pokémon
-    reserves.each_with_index do |reserve, i|
-      reserves[i][1] = rate_replacement_pokemon(idxBattler, party[reserve[0]], reserve[1])
-      PBDebug.log_ai("pokemon #{party[reserve[0]].name} has switch score #{reserves[i][1]}")
-    end
-    reserves.sort! { |a, b| b[1] <=> a[1] }   # Sort from highest to lowest rated
+    reserves = scored_replacement_candidates(idxBattler, forced_switch, party, reserves)
     @_last_replacement_score = reserves[0][1]
     # Fresh switch-in protection: if the current battler just switched in voluntarily
     # (turnCount == 0) and hasn't acted yet, require the replacement to beat its
@@ -632,6 +627,30 @@ class Battle::AI
     end
     # Return the party index of the best rated replacement Pokémon
     return reserves[0][0]
+  end
+
+  def scored_replacement_candidates(idxBattler, forced_switch, party, reserves)
+    battler = @battle.battlers[idxBattler]
+    cache_key = [
+      idxBattler,
+      forced_switch,
+      @battle.command_phase,
+      battler.pokemon&.personalID,
+      battler.pokemonIndex,
+      reserves.map { |reserve| reserve[0] }
+    ]
+    @_replacement_score_cache ||= {}
+    cached = @_replacement_score_cache[cache_key]
+    return cached.map(&:dup) if cached
+
+    scored = reserves.map do |reserve|
+      score = rate_replacement_pokemon(idxBattler, party[reserve[0]], reserve[1])
+      PBDebug.log_ai("pokemon #{party[reserve[0]].name} has switch score #{score}")
+      [reserve[0], score]
+    end
+    scored.sort! { |a, b| b[1] <=> a[1] }
+    @_replacement_score_cache[cache_key] = scored.map(&:dup)
+    return scored
   end
 
   #override

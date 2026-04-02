@@ -122,6 +122,7 @@ class Battle::AI
     @_ai_dmg_cache = nil
     @_matchup_cache = nil
     @_known_foe_moves_cache = nil
+    @_replacement_score_cache = nil
     invalidate_sim_cache
   end
 
