@@ -192,9 +192,10 @@ class Battle::AI
   def _lethal_move_score(move, attacker)
     scored_move = _move_for_lethal_scoring(move, attacker)
     score = _move_priority(scored_move, attacker) * 100
-    score -= 90 if scored_move.function_code == "AttackAndSkipNextTurn"
-    score -= 70 if scored_move.respond_to?(:chargingTurnMove?) && scored_move.chargingTurnMove?
-    score -= 20 if scored_move.respond_to?(:recoilMove?) && scored_move.recoilMove?
+    score -= 50 if scored_move.function_code == "AttackAndSkipNextTurn"
+    # players dont really use charging moves if they cant use it on one turn
+    # score -= 70 if scored_move.respond_to?(:chargingTurnMove?) && scored_move.chargingTurnMove?
+    score -= 10 if scored_move.respond_to?(:recoilMove?) && scored_move.recoilMove?
     score += 15 if scored_move.respond_to?(:healingMove?) && scored_move.healingMove? && scored_move.damagingMove?
 
     contrary = attacker && attacker.respond_to?(:hasActiveAbility?) && attacker.hasActiveAbility?(:CONTRARY)
@@ -211,6 +212,7 @@ class Battle::AI
   end
 
   def _move_priority(move, attacker)
+    # grassy terrain grassy glide etc
     return move.pbPriority(attacker) if attacker && move.respond_to?(:pbPriority)
     return move.priority if move.respond_to?(:priority)
     0
@@ -219,7 +221,7 @@ class Battle::AI
   def _lethal_stat_stage_score(move, contrary)
     score = 0
     score += _sum_stat_stages(move.statUp) * (contrary ? -12 : 12) if move.respond_to?(:statUp) && move.statUp
-    score += _sum_stat_stages(move.statDown) * (contrary ? 14 : -14) if move.respond_to?(:statDown) && move.statDown
+    score += _sum_stat_stages(move.statDown) * (contrary ? 40 : -40) if move.respond_to?(:statDown) && move.statDown
     score
   end
 

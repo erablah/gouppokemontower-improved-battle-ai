@@ -69,6 +69,16 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
       # For forced switches, if we couldn't determine any foe move, skip
       next if !foe_vs_reserve_id || (reserve_candidates.empty? && status_moves.empty?)
 
+      if reserve_candidates.empty?
+        if status_moves.any? { |m| ai.reserve_status_move_survives?(idxBattler, pkmn, b, m.id) }
+          PBDebug.log_score_change(0, "#{pkmn.name} vs #{b.name}: no damaging moves, but can act with status")
+          next
+        end
+        score -= 50
+        PBDebug.log_score_change(-50, "#{pkmn.name} vs #{b.name}: dies before using a status move")
+        next
+      end
+
       best_result = nil
       reserve_candidates.each do |md|
         if voluntary_switch
