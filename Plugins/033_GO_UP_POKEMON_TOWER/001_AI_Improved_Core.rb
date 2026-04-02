@@ -361,7 +361,16 @@ class Battle::AI
         # 2. Score moves
         choices = pbGetMoveScores
         max_move_score = choices.map { |c| c[1] }.max || 0
-        # 3. Terrible moves: try switching
+        # 3. Try items on the current battler first if moves are mediocre.
+        if max_move_score < MOVE_BASE_SCORE
+          ret = false
+          PBDebug.logonerr { ret = pbChooseToUseItem(:current) }
+          if ret
+            PBDebug.log("")
+            return
+          end
+        end
+        # 4. Terrible moves: try switching
         if max_move_score < REPLACEMENT_THRESHOLD_TERRIBLE_MOVES
           ret = false
           PBDebug.logonerr { ret = pbChooseToSwitchOut(true) }
@@ -370,16 +379,14 @@ class Battle::AI
             return
           end
         end
-        # 4. Try items only if best move score is mediocre
-        if max_move_score < MOVE_BASE_SCORE
-          ret = false
-          PBDebug.logonerr { ret = pbChooseToUseItem }
-          if ret
-            PBDebug.log("")
-            return
-          end
+        ret = false
+        PBDebug.logonerr { ret = pbChooseToUseItem(:reserve) }
+        # 5. Reserve-targeted items are a last resort.
+        if ret
+          PBDebug.log("")
+          return
         end
-        # 5. Choose move as normal
+        # 6. Choose move as normal
         pbChooseMove(choices)
         PBDebug.log("")
         pbRegisterEnemySpecialAction2(idxBattler)
@@ -437,7 +444,7 @@ class Battle::AI
       return
     end
 
-    threshold = max_score - 20
+    threshold = [max_score - 20, 120].min
     choices.each { |c| c[3] = [c[1] - threshold, 0].max }
     total_score = choices.sum { |c| c[3] }
     PBDebug.log_ai("Move choices for #{@user.name} with threshold: #{threshold}: ")
@@ -519,19 +526,7 @@ class Battle::AI
       PBDebug.log_ai("   => no good replacement Pokémon, will not switch after all")
       return false
     end
-    # Prefer using Baton Pass instead of switching
-    baton_pass = -1
-    @user.battler.eachMoveWithIndex do |m, i|
-      next if m.function_code != "SwitchOutUserPassOnEffects"   # Baton Pass
-      next if !@battle.pbCanChooseMove?(@user.index, i, false)
-      baton_pass = i
-      break
-    end
-    if baton_pass >= 0 && @battle.pbRegisterMove(@user.index, baton_pass, false)
-      PBDebug.log_ai("=> will use Baton Pass to switch out")
-      register_fresh_switch_score(@user.index, idxParty)
-      return true
-    elsif @battle.pbRegisterSwitch(@user.index, idxParty)
+    if @battle.pbRegisterSwitch(@user.index, idxParty)
       PBDebug.log_ai("=> will switch with #{@battle.pbParty(@user.index)[idxParty].name}")
       register_fresh_switch_score(@user.index, idxParty)
       return true
@@ -615,11 +610,6 @@ class Battle::AI
         end
       end
     end
-    # threshold is set via kwarg, default REPLACEMENT_THRESHOLD_NORMAL
-    # Raise threshold if switching dooms current Pokemon to hazard death
-    unless forced_switch
-      threshold = [threshold + hazard_death_threshold_bonus(idxBattler, reserves), 110].min
-    end
     if reserves[0][1] < threshold
       if forced_switch
         # Must switch (faint/pivot) — just pick the highest-scored reserve
@@ -663,36 +653,6 @@ class Battle::AI
     score = Battle::AI::Handlers.score_replacement(idxBattler, pkmn, score, @battle, self)
     return score.to_i
   end
-
-  # Returns a threshold bonus (0 or 20) if switching out would doom the current
-  # Pokemon to hazard death on re-entry, with no way to mitigate it.
-  def hazard_death_threshold_bonus(idxBattler, reserves)
-    current_pkmn = @battle.pbParty(idxBattler)[@battle.battlers[idxBattler].pokemonIndex]
-    own_side = idxBattler & 1
-    hazard_dmg = calculate_entry_hazard_damage(current_pkmn, own_side)
-    return 0 if hazard_dmg < current_pkmn.hp
-    # Current mon dies to hazards on re-entry — check for outs
-    party = @battle.pbParty(idxBattler)
-    hazard_clear_codes = [
-      "RemoveUserBindingAndEntryHazards",            # Rapid Spin
-      "RemoveUserBindingAndEntryHazardsPoisonTarget", # Mortal Spin
-      "LowerTargetEvasion1RemoveSideEffects"          # Defog
-    ]
-    reserves.each do |r|
-      rpkmn = party[r[0]]
-      rpkmn.moves.each do |m|
-        return 0 if hazard_clear_codes.include?(m.function_code)
-      end
-    end
-    # No hazard clearer — check for HP healing items
-    items = @battle.pbGetOwnerItems(idxBattler)
-    items.each do |itm|
-      return 0 if @battle.pbItemHealsHP?(itm)
-    end
-    PBDebug.log_ai("Hazard death: current mon dies to hazards, no clearer, no healing items — raising threshold by 20")
-    return 20
-  end
-
 end
 
 module Battle::AI::Handlers
