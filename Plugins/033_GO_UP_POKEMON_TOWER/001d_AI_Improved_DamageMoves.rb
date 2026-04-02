@@ -468,21 +468,6 @@ class Battle::AI
     end
   end
 
-  #---------------------------------------------------------------------------
-  # Returns the best move data {move:, dmg:} from damage_moves_with_switch.
-  #---------------------------------------------------------------------------
-  def best_damage_move_with_switch(attacker_index, target_index, pre_switch)
-    dmg_data = damage_moves_with_switch(attacker_index, target_index, pre_switch)
-    return nil unless dmg_data
-    attacker = @battle.battlers[attacker_index]
-    target = if pre_switch[target_index]
-               @battle.pbParty(target_index)[pre_switch[target_index]]
-             else
-               @battle.battlers[target_index]
-             end
-    _select_best_damage_move(dmg_data, attacker, target, cache_scope: :all_moves)
-  end
-
   def best_damage_move_with_switch_for_simulation(attacker_index, target_index, pre_switch)
     dmg_data = damage_moves_with_switch(attacker_index, target_index, pre_switch)
     return nil unless dmg_data

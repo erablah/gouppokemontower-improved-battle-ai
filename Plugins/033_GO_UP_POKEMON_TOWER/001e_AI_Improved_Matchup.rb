@@ -15,18 +15,12 @@ class Battle::AI
     key = [@user.index, @battle.turnCount, mega, tera, @user.pokemon&.personalID, foe_ids]
     (@_matchup_cache ||= {})[key] ||= begin
       summary = { foes: {} }
-      user_speed = @user.rough_stat(:SPEED)
-      summary[:user_speed] = user_speed
-      summary[:foe_can_ohko] = false
-      summary[:foe_can_ohko_and_outspeeds] = false
-      summary[:user_can_ko_any] = false
       summary[:max_foe_dmg] = 0
 
       each_foe_battler(@user.side) do |b, _i|
         user_best = best_damage_move_for_simulation(@user, b)
         foe_best = best_damage_move_for_simulation(b, @user)
 
-        foe_speed = b.rough_stat(:SPEED)
         foe_outspeeds = b.faster_than?(@user)
         foe_best_move = foe_best&.dig(:move)
         foe_has_priority = foe_best_move && foe_best_move.priority > 0
@@ -86,23 +80,14 @@ class Battle::AI
           best_dmg:      foe_best_dmg,
           best_move:     foe_best_move,
           best_priority: foe_best_move ? foe_best_move.priority : 0,
-          user_best_dmg: user_best&.dig(:dmg) || 0,
-          speed:         foe_speed,
-          outspeeds:     foe_outspeeds,
           effectively_outspeeds: foe_effectively_outspeeds,
           can_ohko:      sim_result&.target_can_ohko? || false,
-          foe_hp:        b.hp,
-          foe_totalhp:   b.totalhp,
           sim_result:    sim_result,
           move_results:  move_results,
           status_survival: status_survival
         }
-        foe_entry[:switch_prediction_roll] = pbAIRandom(100)
         summary[:foes][b.index] = foe_entry
         summary[:max_foe_dmg] = [summary[:max_foe_dmg], foe_best_dmg].max
-        summary[:foe_can_ohko] = true if foe_entry[:can_ohko]
-        summary[:foe_can_ohko_and_outspeeds] = true if foe_entry[:can_ohko] && foe_effectively_outspeeds
-        summary[:user_can_ko_any] = true if sim_result&.user_can_ohko?
       end
       summary
     end

@@ -318,13 +318,6 @@ class Battle::AI
     return move.function_code
   end
 
-  def safe_types(obj)
-    return [] if !obj
-    return obj.pbTypes(true) if obj.respond_to?(:pbTypes)
-    return obj.types if obj.respond_to?(:types)
-    return []
-  end
-
    # override stat raise generic
   def get_target_stat_raise_score_generic(score, target, stat_changes, desire_mult = 1)
     return score
