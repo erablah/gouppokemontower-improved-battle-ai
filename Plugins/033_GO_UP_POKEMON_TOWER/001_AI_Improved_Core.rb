@@ -318,6 +318,43 @@ class Battle::AI
     return move.function_code
   end
 
+  def move_is_setup?(move, battler = nil)
+    return false if !move
+    fc = safe_function_code(move) || ""
+    return false if fc.empty?
+    return false if fc == "CurseTargetOrLowerUserSpd1RaiseUserAtkDef1" &&
+                    battler&.has_type?(:GHOST)
+
+    return true if fc.match?(/RaiseUser(?:Side)?/)
+    return true if fc == "UserAddStockpileRaiseDefSpDef1"
+
+    return false unless move.respond_to?(:move) && move.move.respond_to?(:statUp)
+    stat_up = move.move.statUp
+    return false if !stat_up || stat_up.empty?
+
+    stat_up.each_slice(2).any? do |stat, stages|
+      next false if !stat || !stages || stages <= 0
+      [:ATTACK, :DEFENSE, :SPECIAL_ATTACK, :SPECIAL_DEFENSE,
+       :SPEED, :ACCURACY, :EVASION].include?(stat)
+    end
+  end
+
+  def battler_has_setup_move?(battler)
+    return false if !battler
+    battler.check_for_move { |m| move_is_setup?(m, battler) }
+  end
+
+  def foe_has_setup_move?(user)
+    found_setup = false
+    each_foe_battler(user.side) do |b, _i|
+      if battler_has_setup_move?(b)
+        found_setup = true
+        break
+      end
+    end
+    return found_setup
+  end
+
    # override stat raise generic
   def get_target_stat_raise_score_generic(score, target, stat_changes, desire_mult = 1)
     return score

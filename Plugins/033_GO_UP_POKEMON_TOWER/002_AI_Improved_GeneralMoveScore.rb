@@ -105,6 +105,21 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
     battler = user.battler
     next score unless battler
 
+    speed_stage_gain = 0
+    boosted_stats = []
+    (stat_up.length / 2).times do |i|
+      stat_id = stat_up[i * 2]
+      stages  = stat_up[i * 2 + 1]
+      boosted_stats << stat_id
+      speed_stage_gain += stages if stat_id == :SPEED
+    end
+    if speed_stage_gain > 0 && battler.stages[:SPEED] >= 2
+      speed_penalty = (boosted_stats.uniq == [:SPEED]) ? 40 : 20
+      score -= speed_penalty
+      PBDebug.log_score_change(-speed_penalty,
+        "Setup speed penalty: Speed stage already #{battler.stages[:SPEED]}.")
+    end
+
     # -----------------------------------------------------------------------
     # Phazing check (status setup moves only): skip if foe has a phazing
     # move that won't fail against the AI's battler.
@@ -128,28 +143,12 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
     end
 
     # -----------------------------------------------------------------------
-    # Compute boost multipliers from stat_up (skip if all stats already maxed)
+    # Skip if all boosted stats are already maxed
     # -----------------------------------------------------------------------
-    has_physical = battler.moves.compact.any? { |m| m.physicalMove? }
-    has_special  = battler.moves.compact.any? { |m| m.specialMove? }
-
-    atk_mult = 1.0; spa_mult = 1.0; def_mult = 1.0; spdef_mult = 1.0; spd_boost = 0
-    any_effective = false
-    (stat_up.length / 2).times do |i|
+    any_effective = (stat_up.length / 2).times.any? do |i|
       stat_id = stat_up[i * 2]
       stages  = stat_up[i * 2 + 1]
-      cur = battler.stages[stat_id]
-      new_s = [cur + stages, 6].min
-      next if cur == new_s
-      any_effective = true
-      ratio = ai.stat_stage_mult(new_s) / ai.stat_stage_mult(cur)
-      case stat_id
-      when :ATTACK         then atk_mult = ratio if has_physical
-      when :SPECIAL_ATTACK then spa_mult = ratio if has_special
-      when :DEFENSE        then def_mult = ratio
-      when :SPECIAL_DEFENSE then spdef_mult = ratio
-      when :SPEED          then spd_boost = stages
-      end
+      battler.stages[stat_id] < [battler.stages[stat_id] + stages, 6].min
     end
     unless any_effective
       PBDebug.log_ai("[smart_setup] All boosted stats already maxed.")
@@ -318,6 +317,11 @@ Battle::AI::Handlers::GeneralMoveScore.add(:penalize_hazards_vs_boosted_foe,
       score -= penalty
       PBDebug.log_score_change(-penalty, "Hazard vs boosted foe (+#{foe_boosts} total boosts).")
     end
+
+    if ai.foe_has_setup_move?(user)
+      score -= 25
+      PBDebug.log_score_change(-25, "Hazard vs foe with setup move(s).")
+    end
     next score
   }
 )
@@ -401,7 +405,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:tactical_substitute,
     future_value = 0
 
     # 1) Substitute value increases if user has setup moves
-    if user.check_for_move { |m| ai.safe_function_code(m)&.start_with?("RaiseUser") }
+    if ai.battler_has_setup_move?(user)
       future_value += 20
     end
 
@@ -433,7 +437,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:boost_setup_when_foe_helpless,
   proc { |score, move, user, ai, battle|
     next score unless ai.trainer.high_skill?
     next score unless move.statusMove?
-    next score unless ai.safe_function_code(move)&.start_with?("RaiseUser")
+    next score unless ai.move_is_setup?(move, user)
 
     any_foe_can_act = false
     ai.each_foe_battler(user.side) do |b, i|
@@ -529,7 +533,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_protect,
       stall_value += 5  if b.status == :POISON && b.statusCount == 0
 
       # Foe has setup moves — Protect gives them a free turn to boost
-      if b.check_for_move { |m| ai.safe_function_code(m)&.start_with?("RaiseUser") }
+      if ai.battler_has_setup_move?(b)
         stall_value -= 15
         PBDebug.log_ai("[smart_protect] Foe #{b.name} has setup moves → -15 stall value.")
       end
@@ -633,17 +637,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_rest,
     end
 
     # Penalize if foe can set up while user sleeps
-    foe_has_setup = false
-    ai.each_foe_battler(user.side) do |b, _i|
-      ai.known_foe_moves(b).each do |m|
-        if ai.safe_function_code(m)&.start_with?("RaiseUser")
-          foe_has_setup = true
-          break
-        end
-      end
-      break if foe_has_setup
-    end
-    if foe_has_setup
+    if ai.foe_has_setup_move?(user)
       score -= 40
       PBDebug.log_score_change(-40, "Rest: foe has setup potential while user sleeps.")
     end
