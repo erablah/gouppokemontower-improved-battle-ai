@@ -662,4 +662,28 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("CurseTargetOrLowerUserSp
   }
 )
 
+Battle::AI::Handlers::MoveEffectScore.add("HealUserPositionNextTurn",
+  proc { |score, move, user, ai, battle|
+    battler = user.battler
+    next score unless battler
 
+    # Block if Wish is already active on this position
+    position = battle.positions[battler.index]
+    if position && position.effects[PBEffects::Wish] > 0
+      next Battle::AI::MOVE_FAIL_SCORE
+    end
+
+    # Consider how much HP will be restored
+    if user.hp <= user.totalhp * 0.5
+      score -= 10
+    end
+
+    # Wish + pivot synergy
+    if user.check_for_move { |m| ai.safe_function_code(m)&.start_with?("SwitchOutUser") }
+      score += 20
+      PBDebug.log_score_change(20, "Wish: pivot move synergy.")
+    end
+
+    next score
+  }
+)

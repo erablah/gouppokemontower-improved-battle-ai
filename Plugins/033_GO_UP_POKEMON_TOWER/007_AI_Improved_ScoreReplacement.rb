@@ -3,14 +3,89 @@
 # Simple handlers that work with raw Pokemon data.
 #===============================================================================
 
+class Battle::AI
+  SLOW_PIVOT_FUNCTION_CODES = [
+    "SwitchOutUserStatusMove",
+    "SwitchOutUserDamagingMove",
+    "SwitchOutUserPassOnEffects",
+    "LowerTargetAtkSpAtk1SwitchOutUser",
+    "StartHailWeatherSwitchOutUser",
+    "SwitchOutUserStartHailWeather",
+    "UserMakeSubstituteSwitchOut"
+  ].freeze
+
+  SWITCH_IN_SIM_MAX_TURNS = 4
+
+  def reserve_has_followup_switch_option?(idxBattler, reserve_party_index)
+    @battle.eachInTeamFromBattlerIndex(idxBattler) do |_pkmn, i|
+      next if i == reserve_party_index
+      return true if @battle.pbCanSwitchIn?(idxBattler, i)
+    end
+    false
+  end
+
+  def reserve_slow_pivot_bonus(idxBattler, pkmn, foe_battler, pre_switch, voluntary_switch: @battle.command_phase)
+    party = @battle.pbParty(idxBattler)
+    reserve_party_index = party.index(pkmn)
+    return 0 unless reserve_party_index
+    return 0 unless reserve_has_followup_switch_option?(idxBattler, reserve_party_index)
+
+    pivot_moves = pkmn.moves.select do |m|
+      m.is_a?(Pokemon::Move) && SLOW_PIVOT_FUNCTION_CODES.include?(safe_function_code(m))
+    end
+    return 0 if pivot_moves.empty?
+
+    foe_vs_reserve = best_damage_move_with_switch_for_simulation(foe_battler.index, idxBattler, pre_switch)
+    foe_vs_reserve_action = foe_vs_reserve ? simulation_action_for_move_data(foe_vs_reserve, pkmn) : nil
+    return 0 unless foe_vs_reserve_action
+
+    foe_vs_current = best_damage_move_for_simulation(foe_battler, @user) unless @user.fainted?
+    foe_vs_current_action = foe_vs_current ? simulation_action_for_move_data(foe_vs_current, @user) : foe_vs_reserve_action
+
+    best_bonus = 0
+    pivot_moves.each do |move|
+      sim = if voluntary_switch
+              create_switched_sim(
+                pre_switch,
+                voluntary_switch: true,
+                target_index: foe_battler.index,
+                foe_move_id: foe_vs_current_action
+              )
+            else
+              create_switched_sim(pre_switch)
+            end
+
+      result = simulate_battle(
+        idxBattler, foe_battler.index,
+        [move.id], [foe_vs_reserve_action],
+        sim: sim, max_turns: 1
+      )
+      next unless result.terminated_by_switch &&
+                  result.switch_type == :live_switch &&
+                  result.switch_battler_index == idxBattler
+      next unless result.user_succeeded && !result.user_fainted
+      next unless result.target_got_action
+
+      hp_pct = result.user_hp.to_f / [pkmn.totalhp, 1].max
+      move_data = GameData::Move.get(move.id)
+      damaging_pivot = move_data&.category != 2
+      bonus = 8 + (damaging_pivot ? 2 : 0) + (hp_pct * 5).round
+      if bonus > best_bonus
+        best_bonus = bonus
+        PBDebug.log_ai("[slow_pivot] #{pkmn.name} can slow pivot with #{move.name} vs #{foe_battler.name} (+#{bonus})")
+      end
+    end
+
+    best_bonus
+  end
+end
+
 Battle::AI::Handlers::ScoreReplacement.add(:entry_hazards,
   proc { |idxBattler, pkmn, score, battle, ai|
     prev_score = score
     entry_hazard_damage = ai.calculate_entry_hazard_damage(pkmn, idxBattler & 1)
     if entry_hazard_damage >= pkmn.hp
       score -= 50   # pkmn will just faint
-    elsif entry_hazard_damage > 0
-      score -= 50 * entry_hazard_damage / pkmn.hp
     end
     PBDebug.log_score_change(score - prev_score, "#{pkmn.name}: entry hazard damage #{entry_hazard_damage}")
     next score
@@ -94,7 +169,7 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
           result = ai.simulate_battle(
             idxBattler, b.index,
             [ai.simulation_action_for_move_data(md, b)], [foe_vs_reserve_action],
-            sim: sim, max_turns: 5
+            sim: sim, pre_switch: pre_switch, max_turns: Battle::AI::SWITCH_IN_SIM_MAX_TURNS
           )
         else
           # Faint replacement or pivot: entry effects applied, no free hit
@@ -102,7 +177,7 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
           result = ai.simulate_battle(
             idxBattler, b.index,
             [ai.simulation_action_for_move_data(md, b)], [foe_vs_reserve_action],
-            sim: sim, max_turns: 5
+            sim: sim, pre_switch: pre_switch, max_turns: Battle::AI::SWITCH_IN_SIM_MAX_TURNS
           )
         end
 
@@ -122,7 +197,7 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
         # Dies on entry (hazards or immediate OHKO)
         score -= 50
         PBDebug.log_score_change(-50, "#{pkmn.name} vs #{b.name}: dies on entry")
-      elsif best_result.user_wins?
+      elsif best_result.user_wins? && (best_result.user_hp.to_f / [pkmn.totalhp, 1].max >= 0.1)
         u_turns = best_result.target_ko_turn || 999
         f_turns = best_result.user_ko_turn || 999
         turn_adv = f_turns - u_turns
@@ -155,6 +230,29 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
         score += bonus
         PBDebug.log_score_change(bonus, "#{pkmn.name} vs #{b.name}: no KO (survived #{f_turns} turns)")
       end
+
+    end
+    next score
+  }
+)
+
+Battle::AI::Handlers::ScoreReplacement.add(:slow_pivot_followup,
+  proc { |idxBattler, pkmn, score, battle, ai|
+    party = battle.pbParty(idxBattler)
+    party_index = party.index(pkmn)
+    next score unless party_index
+
+    voluntary_switch = battle.command_phase
+    pre_switch = { idxBattler => party_index }
+
+    ai.each_foe_battler(ai.user.side) do |b, _i|
+      slow_pivot_bonus = ai.reserve_slow_pivot_bonus(
+        idxBattler, pkmn, b, pre_switch, voluntary_switch: voluntary_switch
+      )
+      next if slow_pivot_bonus <= 0
+
+      score += slow_pivot_bonus
+      PBDebug.log_score_change(slow_pivot_bonus, "#{pkmn.name} vs #{b.name}: safe slow pivot option")
     end
     next score
   }

@@ -129,7 +129,17 @@ class Battle::AI
 
     if max_turns > 1
       if options[:sim]
-        # Skip priority cache for explicit sim
+        if options[:pre_switch]
+          pre_switch = options[:pre_switch]
+          damage_moves_with_switch(user_index, target_index, pre_switch)&.each_value do |data|
+            next unless data[:move].priority > 0
+            user_priority_moves << { action: data[:action], dmg: data[:dmg], pri: data[:move].priority, zmove: data[:zmove] }
+          end
+          damage_moves_with_switch(target_index, user_index, pre_switch)&.each_value do |data|
+            next unless data[:move].priority > 0
+            target_priority_moves << { action: data[:action], dmg: data[:dmg], pri: data[:move].priority, zmove: data[:zmove] }
+          end
+        end
       else
         # Use cached damage from current battlers
         user_ai = @battlers[user_index]
@@ -168,8 +178,8 @@ class Battle::AI
         user_move = resolve_sim_action_move(user, user_action)
         next unless user_move
         stop_after_turn ||= user_move.respond_to?(:zMove?) && user_move.zMove?
-        # Priority move KO interception (skip turn 1: test the actual move first)
-        if turn > 1
+        # Priority move KO interception.
+        if turn > 1 || options[:sim]
           user_priority_moves.each do |pm|
             next unless pm[:dmg] >= target.hp
             pri_move = resolve_sim_action_move(user, pm[:action])

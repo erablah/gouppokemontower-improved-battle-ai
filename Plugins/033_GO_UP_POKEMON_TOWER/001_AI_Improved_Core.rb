@@ -146,6 +146,29 @@ class Battle::AI
     end
   end
 
+  def unregister_terapagos_tera_for_passive_move(idxBattler, sim = nil)
+    battler = @battle.battlers[idxBattler]
+    return false unless battler
+    return false unless battler.isSpecies?(:TERAPAGOS)
+    return false unless (@battle.pbRegisteredTerastallize?(idxBattler) rescue false)
+    return false unless battler.hasActiveAbility?(:TERASHELL) && battler.hp == battler.totalhp
+
+    @battle.pbUnregisterTerastallize(idxBattler)
+
+    if sim && sim[:transforms]
+      tera_idx = sim[:transforms].rindex { |t| t[:battler] == battler && t[:type] == :tera }
+      if tera_idx
+        tera_transform = sim[:transforms].delete_at(tera_idx)
+        battler.pokemon.instance_variable_set(:@terastallized, tera_transform[:prev_tera])
+        battler.form = tera_transform[:prev_form]
+        battler.pbUpdate(true)
+      end
+    end
+
+    PBDebug.log_ai("[tera rollback] #{battler.name} canceled Terastallization after choosing a non-damaging move with Tera Shell active")
+    true
+  end
+
   def pbGetEffectivenessMult(effectiveness_id)
     return effectiveness_id.to_f / 100.0
   end
@@ -417,6 +440,11 @@ class Battle::AI
         end
         # 6. Choose move as normal
         pbChooseMove(choices)
+        chosen_move = @battle.choices[idxBattler][2]
+        # unregister tera for terapagos when terashell active
+        if chosen_move && !chosen_move.damagingMove?
+          unregister_terapagos_tera_for_passive_move(idxBattler, sim)
+        end
         PBDebug.log("")
         pbRegisterEnemySpecialAction2(idxBattler)
       ensure

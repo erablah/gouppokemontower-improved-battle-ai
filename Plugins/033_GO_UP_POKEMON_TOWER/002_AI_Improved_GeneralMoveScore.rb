@@ -113,6 +113,12 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
       boosted_stats << stat_id
       speed_stage_gain += stages if stat_id == :SPEED
     end
+    if speed_stage_gain > 0 && battler.stages[:SPEED] < 1
+      speed_bonus = (boosted_stats.uniq == [:SPEED]) ? 5 : 3
+      score += speed_bonus
+      PBDebug.log_score_change(speed_bonus,
+        "Setup speed bonus: Speed stage is only #{battler.stages[:SPEED]}.")
+    end
     if speed_stage_gain > 0 && battler.stages[:SPEED] >= 2
       speed_penalty = (boosted_stats.uniq == [:SPEED]) ? 40 : 20
       score -= speed_penalty
@@ -292,7 +298,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:prevent_redundant_effects,
 )
 
 #===============================================================================
-# 10. Penalize hazard setup when foe is boosted
+# 10. Penalize hazard setup when foe can boost
 # A boosted foe is an immediate threat — spending a turn on hazards wastes tempo.
 #===============================================================================
 HAZARD_FUNCTION_CODES = [
@@ -304,23 +310,9 @@ Battle::AI::Handlers::GeneralMoveScore.add(:penalize_hazards_vs_boosted_foe,
   proc { |score, move, user, ai, battle|
     next score unless HAZARD_FUNCTION_CODES.include?(ai.safe_function_code(move))
 
-    foe_boosts = 0
-    ai.each_foe_battler(user.side) do |b, _i|
-      GameData::Stat.each_battle do |s|
-        stage = b.stages[s.id]
-        foe_boosts += stage if stage > 0
-      end
-    end
-
-    if foe_boosts >= 2
-      penalty = 10 + (foe_boosts * 10)
-      score -= penalty
-      PBDebug.log_score_change(-penalty, "Hazard vs boosted foe (+#{foe_boosts} total boosts).")
-    end
-
     if ai.foe_has_setup_move?(user)
-      score -= 25
-      PBDebug.log_score_change(-25, "Hazard vs foe with setup move(s).")
+      score -= 80
+      PBDebug.log_score_change(-80, "Hazard vs foe with setup move(s).")
     end
     next score
   }
@@ -555,44 +547,6 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_protect,
     else
       score -= 40
       PBDebug.log_score_change(-40, "Protect has no stall value.")
-    end
-
-    next score
-  }
-)
-
-#===============================================================================
-# [NEW] Smart Wish usage
-#===============================================================================
-Battle::AI::Handlers::GeneralMoveScore.add(:smart_wish,
-  proc { |score, move, user, ai, battle|
-    next score unless ai.trainer.high_skill?
-    next score unless ai.safe_function_code(move) == "HealUserPositionNextTurn"
-
-    battler = user.battler
-    next score unless battler
-
-    # Block if Wish is already active on this position
-    position = battle.positions[battler.index]
-    if position && position.effects[PBEffects::Wish] > 0
-      next Battle::AI::MOVE_USELESS_SCORE
-    end
-
-    hp_ratio = battler.hp.to_f / battler.totalhp
-
-    # Bonus based on HP ratio
-    if hp_ratio < 0.50
-      score += 25
-      PBDebug.log_score_change(25, "Wish: HP < 50% (#{(hp_ratio * 100).to_i}%).")
-    elsif hp_ratio < 0.80
-      score += 15
-      PBDebug.log_score_change(15, "Wish: HP 50-80% (#{(hp_ratio * 100).to_i}%).")
-    end
-
-    # Wish + pivot synergy
-    if user.check_for_move { |m| ai.safe_function_code(m)&.start_with?("SwitchOutUser") }
-      score += 10
-      PBDebug.log_score_change(10, "Wish: pivot move synergy.")
     end
 
     next score
