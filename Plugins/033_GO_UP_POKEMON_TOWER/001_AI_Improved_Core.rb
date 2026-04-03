@@ -58,6 +58,13 @@ class Battle::AI
                        :HYPERCUTTER, :INNERFOCUS, :OBLIVIOUS,
                        :OWNTEMPO, :SCRAPPY, :GUARDDOG].freeze
 
+  alias go_up_original_stat_raise_worthwhile? stat_raise_worthwhile?
+
+  def stat_raise_worthwhile?(target, stat, fixed_change = false)
+    return true if stat == :SPEED && target.stages[:SPEED] < 1
+    return go_up_original_stat_raise_worthwhile?(target, stat, fixed_change)
+  end
+
   # Returns the stat multiplier for a given stage (-6 to +6)
   def stat_stage_mult(stage)
     stage = stage.clamp(-6, 6)
@@ -90,7 +97,7 @@ class Battle::AI
        (@battle.pbRegisteredTerastallize?(idxBattler) rescue false) && !battler.tera?
       prev_tera = battler.pokemon.instance_variable_get(:@terastallized)
       prev_form = battler.form
-      battler.pokemon.instance_variable_set(:@terastallized, true)
+      battler.pokemon.terastallized = true
       battler.form = battler.pokemon.form if battler.form != battler.pokemon.form
       battler.pbUpdate(true)
       sim[:transforms] << { battler: battler, type: :tera, prev_form: prev_form, prev_tera: prev_tera }
@@ -133,7 +140,7 @@ class Battle::AI
         t[:battler].form = t[:prev_form]
         t[:battler].pbUpdate(true)
       when :tera
-        t[:battler].pokemon.instance_variable_set(:@terastallized, t[:prev_tera])
+        t[:battler].pokemon.terastallized = t[:prev_tera]
         t[:battler].form = t[:prev_form]
         t[:battler].pbUpdate(true)
       when :dynamax
@@ -159,7 +166,7 @@ class Battle::AI
       tera_idx = sim[:transforms].rindex { |t| t[:battler] == battler && t[:type] == :tera }
       if tera_idx
         tera_transform = sim[:transforms].delete_at(tera_idx)
-        battler.pokemon.instance_variable_set(:@terastallized, tera_transform[:prev_tera])
+        battler.pokemon.terastallized = tera_transform[:prev_tera]
         battler.form = tera_transform[:prev_form]
         battler.pbUpdate(true)
       end
@@ -701,7 +708,9 @@ class Battle::AI
     return cached.map(&:dup) if cached
 
     scored = reserves.map do |reserve|
-      score = rate_replacement_pokemon(idxBattler, party[reserve[0]], reserve[1])
+      pkmn = party[reserve[0]]
+      ensure_replacement_1v1_results(idxBattler, pkmn)
+      score = rate_replacement_pokemon(idxBattler, pkmn, reserve[1])
       PBDebug.log_ai("pokemon #{party[reserve[0]].name} has switch score #{score}")
       [reserve[0], score]
     end

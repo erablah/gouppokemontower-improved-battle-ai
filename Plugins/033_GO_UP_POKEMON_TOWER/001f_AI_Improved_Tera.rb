@@ -82,14 +82,14 @@ class Battle::AI::AIBattler
     prev_tera = @battler.pokemon.instance_variable_get(:@terastallized)
     prev_form = @battler.form
     begin
-      @battler.pokemon.instance_variable_set(:@terastallized, true)
+      @battler.pokemon.terastallized = true
       @battler.form = @battler.pokemon.form if @battler.form != @battler.pokemon.form
       @battler.pbUpdate(true)
 
       user_dmg_with_tera = @ai.damage_moves(self, foe)
       foe_dmg_with_tera  = @ai.damage_moves(foe, self)
     ensure
-      @battler.pokemon.instance_variable_set(:@terastallized, prev_tera)
+      @battler.pokemon.terastallized = prev_tera
       @battler.form = prev_form
       @battler.pbUpdate(true)
     end

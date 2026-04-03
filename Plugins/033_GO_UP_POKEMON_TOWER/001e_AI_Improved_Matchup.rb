@@ -180,24 +180,11 @@ class Battle::AI
     party_index = @battle.pbParty(idxBattler).index(pkmn)
     return true unless party_index
 
-    pre_switch = { idxBattler => party_index }
-
-    best_damage = best_damage_move_with_switch_for_simulation(target_battler.index, idxBattler, pre_switch)
-
-    # foe_dmg_hash = damage_moves_with_switch(target_battler.index, idxBattler, pre_switch)
-    # lethal_moves = foe_dmg_hash.values.select { |d| d[:dmg] >= pkmn.hp }
-    return true unless best_damage
-
-    # foe_lethal_move = lethal_moves.max_by { |d| d[:move].priority }&.dig(:move)
-    # return true unless foe_lethal_move
-
-    foe_vs_current = best_damage_move_for_simulation(target_battler, @user) unless @user.fainted?
-    foe_vs_current_action = foe_vs_current ? simulation_action_for_move_data(foe_vs_current, @user) : simulation_action_for_move_data(best_damage, pkmn)
-
-    status_move_survival_with_switch(
-      idxBattler, target_battler.index, pre_switch,
-      simulation_action_for_move_data(best_damage, pkmn), foe_vs_current_action, m_id
-    ) == true
+    ensure_replacement_1v1_results(idxBattler, pkmn)
+    cached_foe_results = replacement_1v1_result_for_foe(idxBattler, pkmn, target_battler)
+    cached_status_survival = cached_foe_results&.dig(:status_move_survival, m_id)
+    return true if cached_foe_results && cached_status_survival.nil?
+    cached_status_survival == true
   end
 
 end

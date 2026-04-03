@@ -14,7 +14,246 @@ class Battle::AI
     "UserMakeSubstituteSwitchOut"
   ].freeze
 
+  HAZARD_CLEAR_FUNCTION_CODES = [
+    "RemoveUserBindingAndEntryHazards",
+    "RemoveUserBindingAndEntryHazardsPoisonTarget",
+    "LowerTargetEvasion1RemoveSideEffects"
+  ].freeze
+
   SWITCH_IN_SIM_MAX_TURNS = 4
+
+  def replacement_1v1_results_key(idxBattler, pkmn)
+    battler = @battle.battlers[idxBattler]
+    party = @battle.pbParty(idxBattler)
+    party_index = party.index(pkmn)
+    foe_snapshot = @battle.allOtherSideBattlers(idxBattler).map do |foe|
+      [foe.index, foe.pokemon&.personalID, foe.pokemonIndex, foe.turnCount, foe.fainted?]
+    end
+    [
+      idxBattler,
+      @battle.command_phase,
+      battler.pokemon&.personalID,
+      battler.pokemonIndex,
+      party_index,
+      pkmn.personalID,
+      foe_snapshot
+    ]
+  end
+
+  def store_replacement_1v1_results(idxBattler, pkmn, results)
+    @_replacement_1v1_results ||= {}
+    @_replacement_1v1_results[replacement_1v1_results_key(idxBattler, pkmn)] = results
+  end
+
+  def replacement_1v1_results(idxBattler, pkmn)
+    return nil unless @_replacement_1v1_results
+    @_replacement_1v1_results[replacement_1v1_results_key(idxBattler, pkmn)]
+  end
+
+  def ensure_replacement_1v1_results(idxBattler, pkmn)
+    cached = replacement_1v1_results(idxBattler, pkmn)
+    return cached if cached
+
+    results = build_replacement_1v1_results(idxBattler, pkmn)
+    store_replacement_1v1_results(idxBattler, pkmn, results)
+    results
+  end
+
+  def replacement_1v1_result_for_foe(idxBattler, pkmn, foe_battler)
+    foe_index = foe_battler.is_a?(Integer) ? foe_battler : foe_battler.index
+    foe_results = replacement_1v1_results(idxBattler, pkmn)&.[](foe_index)
+    return nil unless foe_results
+    return foe_results if foe_battler.is_a?(Integer)
+    return nil if foe_results[:foe_personal_id] != foe_battler.pokemon&.personalID
+    foe_results
+  end
+
+  def replacement_1v1_move_result(foe_results, move_id)
+    return nil unless foe_results
+    foe_results[:damaging_move_results]&.find { |move_result| move_result[:move_id] == move_id }
+  end
+
+  def replacement_move_survives?(foe_results, move_id, status_move: false)
+    return false unless foe_results
+    if status_move
+      return foe_results[:status_move_survival]&.dig(move_id) == true
+    end
+
+    damaging_result = replacement_1v1_move_result(foe_results, move_id)
+    return false if !damaging_result || !damaging_result[:result]
+
+    result = damaging_result[:result]
+    result.user_succeeded && !result.user_fainted
+  end
+
+  def build_replacement_1v1_results(idxBattler, pkmn)
+    party = @battle.pbParty(idxBattler)
+    party_index = party.index(pkmn)
+    return {} unless party_index
+
+    voluntary_switch = @battle.command_phase
+    pre_switch = { idxBattler => party_index }
+    all_results = {}
+
+    each_foe_battler(@user.side) do |b, _i|
+      foe_vs_current = best_damage_move_for_simulation(b, @user) unless @user.fainted?
+      if voluntary_switch && !foe_vs_current
+        all_results[b.index] = {
+          foe_index: b.index,
+          foe_personal_id: b.pokemon&.personalID,
+          skipped_reason: :unknown_current_foe_move
+        }
+        next
+      end
+      foe_vs_current_action = foe_vs_current ? simulation_action_for_move_data(foe_vs_current, @user) : nil
+
+      foe_vs_reserve = best_damage_move_with_switch_for_simulation(b.index, idxBattler, pre_switch)
+      foe_vs_reserve_action = foe_vs_reserve ? simulation_action_for_move_data(foe_vs_reserve, pkmn) : foe_vs_current_action
+
+      reserve_dmg = damage_moves_with_switch(idxBattler, b.index, pre_switch) || {}
+      reserve_candidates = send(:_simulatable_damage_data, reserve_dmg, b).values.sort_by { |md| -md[:dmg] }
+      status_moves = pkmn.moves.select { |m| m.is_a?(Pokemon::Move) && m.power == 0 }
+      status_move_survival = {}
+
+      status_moves.each do |m|
+        status_move_survival[m.id] = status_move_survival_with_switch(
+          idxBattler, b.index, pre_switch, foe_vs_reserve_action, foe_vs_current_action, m.id
+        ) == true
+      end
+
+      foe_results = {
+        foe_index: b.index,
+        foe_personal_id: b.pokemon&.personalID,
+        foe_vs_current: foe_vs_current,
+        foe_vs_reserve: foe_vs_reserve,
+        reserve_candidates: reserve_candidates.map(&:dup),
+        damaging_move_results: [],
+        status_move_ids: status_moves.map(&:id),
+        status_move_survival: status_move_survival,
+        any_status_move_survives: status_move_survival.value?(true),
+        best_result: nil,
+        best_move_action: nil
+      }
+      all_results[b.index] = foe_results
+
+      if !foe_vs_reserve_action || (reserve_candidates.empty? && status_moves.empty?)
+        foe_results[:skip_scoring] = true
+        next
+      end
+
+      if reserve_candidates.empty?
+        if foe_results[:any_status_move_survives]
+          foe_results[:status_only] = true
+        else
+          foe_results[:died_before_status] = true
+        end
+        next
+      end
+
+      reserve_candidates.each do |md|
+        move_action = simulation_action_for_move_data(md, b)
+        next unless move_action
+
+        sim = if voluntary_switch
+          create_switched_sim(
+            pre_switch,
+            voluntary_switch: true,
+            target_index: b.index,
+            foe_move_id: foe_vs_current_action
+          )
+        else
+          create_switched_sim(pre_switch)
+        end
+        result = simulate_battle(
+          idxBattler, b.index,
+          [move_action], [foe_vs_reserve_action],
+          sim: sim, pre_switch: pre_switch, max_turns: Battle::AI::SWITCH_IN_SIM_MAX_TURNS
+        )
+
+        foe_results[:damaging_move_results] << {
+          move_id: md[:move]&.id,
+          action: move_action,
+          move_data: md.dup,
+          result: result
+        }
+
+        best_result = foe_results[:best_result]
+        if best_result.nil? ||
+           (result.user_wins? && !best_result.user_wins?) ||
+           (result.user_wins? && best_result.user_wins? && (result.user_hp || 0) > (best_result.user_hp || 0)) ||
+           (!result.user_wins? && !best_result.user_wins? && (result.target_hp || 0) < (best_result.target_hp || 0))
+          foe_results[:best_result] = result
+          foe_results[:best_move_action] = move_action
+        end
+      end
+    end
+
+    all_results
+  end
+
+  def score_replacement_1v1_results(pkmn, foe_battler, foe_results)
+    return 0 unless foe_results
+    return 0 if foe_results[:skip_scoring] || foe_results[:skipped_reason]
+
+    if foe_results[:reserve_candidates].empty?
+      if foe_results[:any_status_move_survives]
+        PBDebug.log_score_change(0, "#{pkmn.name} vs #{foe_battler.name}: no damaging moves, but can act with status")
+        return 0
+      end
+      if foe_results[:died_before_status]
+        PBDebug.log_score_change(-50, "#{pkmn.name} vs #{foe_battler.name}: dies before using a status move")
+        return -50
+      end
+    end
+
+    best_result = foe_results[:best_result]
+    died_on_entry = best_result.nil? || (best_result.user_fainted && !best_result.user_succeeded)
+    if died_on_entry
+      PBDebug.log_score_change(-50, "#{pkmn.name} vs #{foe_battler.name}: dies on entry")
+      return -50
+    elsif best_result.user_wins?
+      u_turns = best_result.target_ko_turn || 999
+      f_turns = best_result.user_ko_turn || 999
+      turn_adv = f_turns - u_turns
+      bonus = 5 + [turn_adv * 5, 10].min
+      bonus += 10 if best_result.user_can_ohko?
+      hp_pct = best_result.user_hp.to_f / [pkmn.totalhp, 1].max
+      bonus += (hp_pct * 10).round
+      bonus == 0 if hp_pct <= 0.1
+      PBDebug.log_score_change(bonus, "#{pkmn.name} vs #{foe_battler.name}: wins (KO turn #{u_turns}, #{(hp_pct * 100).round}% remaining)")
+      return bonus
+    elsif best_result.target_wins?
+      f_turns = best_result.user_ko_turn || 999
+      penalty = 15
+      penalty += 25 if best_result.target_can_ohko?
+      if best_result.target_hp && foe_battler.totalhp > 0
+        dmg_dealt_pct = 1.0 - (best_result.target_hp.to_f / foe_battler.totalhp)
+        penalty -= (dmg_dealt_pct * 10).round
+      end
+      penalty -= f_turns if f_turns > 2
+      penalty = [penalty, 5].max
+      PBDebug.log_score_change(-penalty, "#{pkmn.name} vs #{foe_battler.name}: loses (KO'd turn #{f_turns})")
+      return -penalty
+    else
+      bonus = if best_result.target_hp && foe_battler.totalhp > 0
+        dmg_dealt_pct = 1.0 - (best_result.target_hp.to_f / foe_battler.totalhp)
+        hp_pct = best_result.user_hp.to_f / [pkmn.totalhp, 1].max
+        [dmg_dealt_pct - hp_pct, 0].max * 10
+      end
+      bonus = bonus ? bonus.round : 1
+      PBDebug.log_score_change(bonus, "#{pkmn.name} vs #{foe_battler.name}: no KO")
+      return bonus
+    end
+  end
+
+  def side_hazard_clear_bonus(side)
+    bonus = 0
+    bonus += 20 if side.effects[PBEffects::StealthRock]
+    bonus += 12 * side.effects[PBEffects::Spikes]
+    bonus += 10 * side.effects[PBEffects::ToxicSpikes]
+    bonus += 12 if side.effects[PBEffects::StickyWeb]
+    bonus
+  end
 
   def reserve_has_followup_switch_option?(idxBattler, reserve_party_index)
     @battle.eachInTeamFromBattlerIndex(idxBattler) do |_pkmn, i|
@@ -25,6 +264,8 @@ class Battle::AI
   end
 
   def reserve_slow_pivot_bonus(idxBattler, pkmn, foe_battler, pre_switch, voluntary_switch: @battle.command_phase)
+    return 0 unless voluntary_switch
+
     party = @battle.pbParty(idxBattler)
     reserve_party_index = party.index(pkmn)
     return 0 unless reserve_party_index
@@ -35,31 +276,40 @@ class Battle::AI
     end
     return 0 if pivot_moves.empty?
 
-    foe_vs_reserve = best_damage_move_with_switch_for_simulation(foe_battler.index, idxBattler, pre_switch)
+    cached_foe_results = replacement_1v1_result_for_foe(idxBattler, pkmn, foe_battler)
+    foe_vs_reserve = cached_foe_results ? cached_foe_results[:foe_vs_reserve] :
+      best_damage_move_with_switch_for_simulation(foe_battler.index, idxBattler, pre_switch)
     foe_vs_reserve_action = foe_vs_reserve ? simulation_action_for_move_data(foe_vs_reserve, pkmn) : nil
     return 0 unless foe_vs_reserve_action
 
-    foe_vs_current = best_damage_move_for_simulation(foe_battler, @user) unless @user.fainted?
+    foe_vs_current = if cached_foe_results
+      cached_foe_results[:foe_vs_current]
+    elsif !@user.fainted?
+      best_damage_move_for_simulation(foe_battler, @user)
+    end
     foe_vs_current_action = foe_vs_current ? simulation_action_for_move_data(foe_vs_current, @user) : foe_vs_reserve_action
 
     best_bonus = 0
-    pivot_moves.each do |move|
-      sim = if voluntary_switch
-              create_switched_sim(
-                pre_switch,
-                voluntary_switch: true,
-                target_index: foe_battler.index,
-                foe_move_id: foe_vs_current_action
-              )
-            else
-              create_switched_sim(pre_switch)
-            end
+    sim = nil
 
-      result = simulate_battle(
-        idxBattler, foe_battler.index,
-        [move.id], [foe_vs_reserve_action],
-        sim: sim, max_turns: 1
-      )
+    pivot_moves.each do |move|
+      damaging_result = cached_foe_results&.dig(:damaging_move_results)&.find do |move_result|
+        move_result[:move_id] == move.id
+      end
+      result = damaging_result ? damaging_result[:result] : nil
+      if !result
+        sim ||= create_switched_sim(
+          pre_switch,
+          voluntary_switch: true,
+          target_index: foe_battler.index,
+          foe_move_id: foe_vs_current_action
+        )
+        result = simulate_battle(
+          idxBattler, foe_battler.index,
+          [move.id], [foe_vs_reserve_action],
+          sim: sim, max_turns: 1
+        )
+      end
       next unless result.terminated_by_switch &&
                   result.switch_type == :live_switch &&
                   result.switch_battler_index == idxBattler
@@ -116,121 +366,11 @@ Battle::AI::Handlers::ScoreReplacement.add(:toxics_spikes_and_sticky_web,
 #===============================================================================
 Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
   proc { |idxBattler, pkmn, score, battle, ai|
-    # Find party index
-    party = battle.pbParty(idxBattler)
-    party_index = party.index(pkmn)
-    next score unless party_index
-
-    voluntary_switch = battle.command_phase
-    pre_switch = { idxBattler => party_index }
+    cached_results = ai.replacement_1v1_results(idxBattler, pkmn)
+    next score if !cached_results || cached_results.empty?
 
     ai.each_foe_battler(ai.user.side) do |b, _i|
-      # Foe's best move vs current battler (used on switch-in turn for voluntary switches)
-      foe_vs_current = ai.best_damage_move_for_simulation(b, ai.user) unless ai.user.fainted?
-      if voluntary_switch
-        next unless foe_vs_current
-      end
-      foe_vs_current_action = foe_vs_current ? ai.simulation_action_for_move_data(foe_vs_current, ai.user) : nil
-
-      # Foe's best move vs the reserve (actual damage via pre_switch sim)
-      foe_vs_reserve = ai.best_damage_move_with_switch_for_simulation(b.index, idxBattler, pre_switch)
-      foe_vs_reserve_action = foe_vs_reserve ? ai.simulation_action_for_move_data(foe_vs_reserve, pkmn) : foe_vs_current_action
-      # Reserve's best damaging moves vs foe (top 2 by actual damage)
-      reserve_dmg = ai.damage_moves_with_switch(idxBattler, b.index, pre_switch)
-      reserve_dmg ||= {}
-      reserve_candidates = ai.send(:_simulatable_damage_data, reserve_dmg, b).values.sort_by { |md| -md[:dmg] }.first(1)
-      status_moves = pkmn.moves.select { |m| m.is_a?(Pokemon::Move) && m.power == 0 }
-
-      # For forced switches, if we couldn't determine any foe move, skip
-      next if !foe_vs_reserve_action || (reserve_candidates.empty? && status_moves.empty?)
-
-      if reserve_candidates.empty?
-        if status_moves.any? { |m| ai.reserve_status_move_survives?(idxBattler, pkmn, b, m.id) }
-          PBDebug.log_score_change(0, "#{pkmn.name} vs #{b.name}: no damaging moves, but can act with status")
-          next
-        end
-        score -= 50
-        PBDebug.log_score_change(-50, "#{pkmn.name} vs #{b.name}: dies before using a status move")
-        next
-      end
-
-      best_result = nil
-      reserve_candidates.each do |md|
-        if voluntary_switch
-          PBDebug.log("scorereplacement)")
-          # Turn 1: switch in, foe uses best move vs current battler
-          # Turn 2+: reserve attacks, foe uses best move vs reserve
-          sim = ai.create_switched_sim(
-             pre_switch, 
-             voluntary_switch: true, 
-             target_index: b.index, 
-             foe_move_id: foe_vs_current_action
-          )
-          result = ai.simulate_battle(
-            idxBattler, b.index,
-            [ai.simulation_action_for_move_data(md, b)], [foe_vs_reserve_action],
-            sim: sim, pre_switch: pre_switch, max_turns: Battle::AI::SWITCH_IN_SIM_MAX_TURNS
-          )
-        else
-          # Faint replacement or pivot: entry effects applied, no free hit
-          sim = ai.create_switched_sim(pre_switch)
-          result = ai.simulate_battle(
-            idxBattler, b.index,
-            [ai.simulation_action_for_move_data(md, b)], [foe_vs_reserve_action],
-            sim: sim, pre_switch: pre_switch, max_turns: Battle::AI::SWITCH_IN_SIM_MAX_TURNS
-          )
-        end
-
-        # Keep the best result (prefer wins, then higher remaining HP)
-        if best_result.nil? || 
-          (result.user_wins? && !best_result.user_wins?) ||
-          (result.user_wins? && best_result.user_wins? && (result.user_hp || 0) > (best_result.user_hp || 0)) ||
-          (!result.user_wins? && !best_result.user_wins? && (result.enemy_hp || 0) < (best_result.enemy_hp || 0))
-            best_result = result
-        end
-      end
-
-      # --- Scoring ---
-      died_on_entry = best_result.nil? || (best_result.user_fainted && !best_result.user_succeeded)
-
-      if died_on_entry 
-        # Dies on entry (hazards or immediate OHKO)
-        score -= 50
-        PBDebug.log_score_change(-50, "#{pkmn.name} vs #{b.name}: dies on entry")
-      elsif best_result.user_wins? && (best_result.user_hp.to_f / [pkmn.totalhp, 1].max >= 0.1)
-        u_turns = best_result.target_ko_turn || 999
-        f_turns = best_result.user_ko_turn || 999
-        turn_adv = f_turns - u_turns
-        bonus = 5 + [turn_adv * 5, 10].min
-        bonus += 10 if best_result.user_can_ohko?
-        # Remaining HP bonus (healthier finish = better for later matchups)
-        hp_pct = best_result.user_hp.to_f / [pkmn.totalhp, 1].max
-        bonus += (hp_pct * 10).round
-        score += bonus
-        PBDebug.log_score_change(bonus, "#{pkmn.name} vs #{b.name}: wins (KO turn #{u_turns}, #{(hp_pct * 100).round}% remaining)")
-      elsif best_result.target_wins?
-        f_turns = best_result.user_ko_turn || 999
-        penalty = 15
-        penalty += 25 if best_result.target_can_ohko?
-        # Less penalty if reserve dealt significant damage before losing
-        if best_result.target_hp && b.totalhp > 0
-          dmg_dealt_pct = 1.0 - (best_result.target_hp.to_f / b.totalhp)
-          penalty -= (dmg_dealt_pct * 10).round
-        end
-        penalty = [penalty, 5].max
-        score -= penalty
-        PBDebug.log_score_change(-penalty, "#{pkmn.name} vs #{b.name}: loses (KO'd turn #{f_turns})")
-      else
-        if best_result.target_hp && b.totalhp > 0
-          dmg_dealt_pct = 1.0 - (best_result.target_hp.to_f / b.totalhp)
-          hp_pct = best_result.user_hp.to_f / [pkmn.totalhp, 1].max
-          bonus = [dmg_dealt_pct - hp_pct, 0].max * 10
-        end
-        bonus = bonus ? bonus.round : 1
-        score += bonus
-        PBDebug.log_score_change(bonus, "#{pkmn.name} vs #{b.name}: no KO (survived #{f_turns} turns)")
-      end
-
+      score += ai.score_replacement_1v1_results(pkmn, b, cached_results[b.index])
     end
     next score
   }
@@ -253,6 +393,58 @@ Battle::AI::Handlers::ScoreReplacement.add(:slow_pivot_followup,
 
       score += slow_pivot_bonus
       PBDebug.log_score_change(slow_pivot_bonus, "#{pkmn.name} vs #{b.name}: safe slow pivot option")
+    end
+    next score
+  }
+)
+
+Battle::AI::Handlers::ScoreReplacement.add(:hazard_clearing,
+  proc { |idxBattler, pkmn, score, battle, ai|
+    own_side = ai.user.pbOwnSide
+    hazard_bonus = ai.side_hazard_clear_bonus(own_side)
+    next score if hazard_bonus <= 0
+
+    if battle.pbAbleNonActiveCount(idxBattler & 1) == 0
+      hazard_bonus = (hazard_bonus * 0.5).round
+    end
+    next score if hazard_bonus <= 0
+
+    clear_moves = pkmn.moves.select do |m|
+      m.is_a?(Pokemon::Move) && Battle::AI::HAZARD_CLEAR_FUNCTION_CODES.include?(ai.safe_function_code(m))
+    end
+    next score if clear_moves.empty?
+
+    cached_results = ai.replacement_1v1_results(idxBattler, pkmn)
+    next score if !cached_results || cached_results.empty?
+
+    best_bonus = 0
+    clear_moves.each do |m|
+      move_survives = cached_results.any? do |_foe_index, foe_results|
+        ai.replacement_move_survives?(foe_results, m.id, status_move: m.statusMove?)
+      end
+      next unless move_survives
+
+      bonus = hazard_bonus
+      bonus += 3 if m.damagingMove?
+      if ai.safe_function_code(m) == "LowerTargetEvasion1RemoveSideEffects"
+        foe_has_hazards = false
+        ai.each_foe_battler(ai.user.side) do |b, _i|
+          if ai.side_hazard_clear_bonus(b.pbOwnSide) > 0
+            foe_has_hazards = true
+            break
+          end
+        end
+        bonus -= 8 if foe_has_hazards
+      end
+      next if bonus <= best_bonus
+
+      best_bonus = bonus
+      PBDebug.log_ai("[hazard_clear] #{pkmn.name} values #{m.name} for hazard removal (+#{bonus})")
+    end
+
+    if best_bonus > 0
+      score += best_bonus
+      PBDebug.log_score_change(best_bonus, "#{pkmn.name}: can clear entry hazards")
     end
     next score
   }
