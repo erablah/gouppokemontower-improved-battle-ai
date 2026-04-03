@@ -3,9 +3,6 @@
 # - DBK / Doubles / Raid compatible
 #===============================================================================
 
-#-------------------------------------------------------------------------------
-# Fog of War: track any battler that uses a move so the AI knows they've acted
-#-------------------------------------------------------------------------------
 class Battle::Battler
   alias _tower_fog_pbProcessTurn pbProcessTurn
   def pbProcessTurn(choice, tryFlee = true)
@@ -14,11 +11,6 @@ class Battle::Battler
       acted_this_turn = @lastRoundMoved == @battle.turnCount
       @_sim_action_turn = (acted_this_turn ? @battle.turnCount : nil)
       @_sim_action_succeeded = (acted_this_turn && !@lastMoveFailed)
-    end
-    if choice[0] == :UseMove && self.pokemon
-      acted = @battle.instance_variable_get(:@_foe_acted_ids) || {}
-      acted[self.pokemon.personalID] = true
-      @battle.instance_variable_set(:@_foe_acted_ids, acted)
     end
     ret
   end

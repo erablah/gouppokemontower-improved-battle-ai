@@ -97,41 +97,6 @@ class Battle::AI
   end
 
   #---------------------------------------------------------------------------
-  # Fog of War: returns the list of moves the AI "knows" about for a foe.
-  # If the foe has never acted, one non-STAB move may be hidden (50% chance).
-  #---------------------------------------------------------------------------
-  def known_foe_moves(foe_ai_battler)
-    cache_key = [foe_ai_battler.index, @battle.turnCount, foe_ai_battler.pokemon&.personalID]
-    (@_known_foe_moves_cache ||= {})[cache_key] ||= begin
-      all_moves = foe_ai_battler.moves.compact
-      acted_ids = @battle.instance_variable_get(:@_foe_acted_ids) || {}
-      pkmn = foe_ai_battler.pokemon
-
-      if pkmn && acted_ids[pkmn.personalID]
-        all_moves
-      else
-        foe_types = foe_ai_battler.pbTypes(true)
-        protected_moves = []
-        foe_types.each do |t|
-          best = all_moves.select { |m| m.type == t && m.damagingMove? }
-                          .max_by { |m| m.power }
-          protected_moves << best if best
-        end
-
-        remaining = all_moves - protected_moves
-        if remaining.length > 0 && pbAIRandom(100) < 50
-          hide = remaining[pbAIRandom(remaining.length)]
-          result = all_moves - [hide]
-          PBDebug.log_ai("[known_foe_moves] Hiding #{hide.name} from #{foe_ai_battler.name} (never acted)")
-          result
-        else
-          all_moves
-        end
-      end
-    end
-  end
-
-  #---------------------------------------------------------------------------
   # [NEW] Lazy per-move status survival check for reserve switch-ins.
   # Only simulates the specific move requested, caching individual results.
   #---------------------------------------------------------------------------

@@ -128,7 +128,6 @@ class Battle::AI
   def reset_decision_caches
     @_ai_dmg_cache = nil
     @_matchup_cache = nil
-    @_known_foe_moves_cache = nil
     @_replacement_score_cache = nil
     @_replacement_1v1_results = nil
     invalidate_sim_cache
