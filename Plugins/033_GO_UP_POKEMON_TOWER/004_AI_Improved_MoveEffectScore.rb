@@ -687,3 +687,43 @@ Battle::AI::Handlers::MoveEffectScore.add("HealUserPositionNextTurn",
     next score
   }
 )
+
+#===============================================================================
+# Dynamax move-effect score overrides
+#===============================================================================
+Battle::AI::Handlers::MoveEffectScore.add("DamageTargetStartSunWeather",
+  proc { |score, move, user, ai, battle|
+    next score
+  }
+)
+Battle::AI::Handlers::MoveEffectScore.copy("DamageTargetStartSunWeather",
+                                           "DamageTargetStartRainWeather",
+                                           "DamageTargetStartSandstormWeather",
+                                           "DamageTargetStartHailWeather")
+
+Battle::AI::Handlers::MoveEffectScore.add("ProtectUserEvenFromDynamaxMoves",
+  proc { |score, move, user, ai, battle|
+    next Battle::AI::MOVE_USELESS_SCORE if !battle.allOtherSideBattlers(user.battler).any?(&:dynamax?)
+    next Battle::AI::MOVE_USELESS_SCORE if user.effects[PBEffects::ProtectRate] >= 4
+    useless = true
+    ai.each_foe_battler(user.side) do |b, i|
+      next if !b.can_attack?
+      next if b.check_for_move { |m| m.damagingMove? && m.ignoresMaxGuard? }
+      useless = false
+      score += 7 if b.battler.dynamax?
+      score += 15 if b.effects[PBEffects::TwoTurnAttack] &&
+                     GameData::Move.get(b.effects[PBEffects::TwoTurnAttack]).category != 2
+    end
+    next Battle::AI::MOVE_USELESS_SCORE if useless
+    user_eor_damage = user.rough_end_of_round_damage
+    if user_eor_damage >= user.hp
+      next Battle::AI::MOVE_USELESS_SCORE
+    elsif user_eor_damage > 0
+      score -= 8
+    elsif user_eor_damage < 0
+      score += 8
+    end
+    score -= (user.effects[PBEffects::ProtectRate] - 1) * ((Settings::MECHANICS_GENERATION >= 6) ? 15 : 10)
+    next score
+  }
+)
