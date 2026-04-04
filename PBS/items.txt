@@ -7941,3 +7941,12 @@ Pocket = 1
 Price = 0
 BPPrice = 0
 Description = 더미
+#-------------------------------
+[AIFOGDUMMY]
+Name = AI 더미아이템
+NamePlural = AI 더미아이템
+Pocket = 1
+Price = 0
+BPPrice = 0
+Flags = Fling_10
+Description = AI 전용 안개 전쟁용 더미 아이템.

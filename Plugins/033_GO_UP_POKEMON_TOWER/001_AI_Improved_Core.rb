@@ -3,17 +3,14 @@
 # - DBK / Doubles / Raid compatible
 #===============================================================================
 
-#-------------------------------------------------------------------------------
-# Fog of War: track any battler that uses a move so the AI knows they've acted
-#-------------------------------------------------------------------------------
 class Battle::Battler
   alias _tower_fog_pbProcessTurn pbProcessTurn
   def pbProcessTurn(choice, tryFlee = true)
     ret = _tower_fog_pbProcessTurn(choice, tryFlee)
-    if choice[0] == :UseMove && self.pokemon
-      acted = @battle.instance_variable_get(:@_foe_acted_ids) || {}
-      acted[self.pokemon.personalID] = true
-      @battle.instance_variable_set(:@_foe_acted_ids, acted)
+    if @battle.is_simulation
+      acted_this_turn = @lastRoundMoved == @battle.turnCount
+      @_sim_action_turn = (acted_this_turn ? @battle.turnCount : nil)
+      @_sim_action_succeeded = (acted_this_turn && !@lastMoveFailed)
     end
     ret
   end
@@ -29,27 +26,43 @@ class Battle::Battler
 end
 
 #-------------------------------------------------------------------------------
-# Lagging Tail / Full Incense: override faster_than? to account for
-# PriorityBracketChange items that force the holder to move last.
+# Lagging Tail / Full Incense constant (used by speed checks)
 #-------------------------------------------------------------------------------
 LAGGING_TAIL_ITEMS = [:LAGGINGTAIL, :FULLINCENSE]
 
+#-------------------------------------------------------------------------------
+# Delegate missing AIBattler methods to real battler
+#-------------------------------------------------------------------------------
 class Battle::AI::AIBattler
-  alias _tower_orig_faster_than? faster_than?
-  def faster_than?(other)
-    return false if other.nil?
-    self_lagging  = LAGGING_TAIL_ITEMS.include?(battler.item_id) && battler.itemActive?
-    other_lagging = LAGGING_TAIL_ITEMS.include?(other.battler.item_id) && other.battler.itemActive?
-    # If only one side has a lagging item, that side is always slower
-    return false if self_lagging && !other_lagging
-    return true  if other_lagging && !self_lagging
-    # Both or neither — fall through to normal speed comparison
-    _tower_orig_faster_than?(other)
+  def method_missing(method, *args, &block)
+    @battler.send(method, *args, &block)
+  end
+
+  def respond_to_missing?(method, include_private = false)
+    @battler.respond_to?(method, include_private)
   end
 end
 
 class Battle::AI
   MOVE_FAIL_SCORE = -999
+
+  INTIMIDATE_IMMUNE = [:CLEARBODY, :WHITESMOKE, :FULLMETALBODY,
+                       :HYPERCUTTER, :INNERFOCUS, :OBLIVIOUS,
+                       :OWNTEMPO, :SCRAPPY, :GUARDDOG].freeze
+
+  alias go_up_original_stat_raise_worthwhile? stat_raise_worthwhile?
+
+  def stat_raise_worthwhile?(target, stat, fixed_change = false)
+    return true if stat == :SPEED && target.stages[:SPEED] < 1
+    return go_up_original_stat_raise_worthwhile?(target, stat, fixed_change)
+  end
+
+  # Returns the stat multiplier for a given stage (-6 to +6)
+  def stat_stage_mult(stage)
+    stage = stage.clamp(-6, 6)
+    Battle::Battler::STAT_STAGE_MULTIPLIERS[stage + 6].to_f /
+      Battle::Battler::STAT_STAGE_DIVISORS[stage + 6]
+  end
   REPLACEMENT_THRESHOLD_NORMAL = 105
   REPLACEMENT_THRESHOLD_TERRIBLE_MOVES = 80
   REPLACEMENT_THRESHOLD_SHOULD_SWITCH = 70
@@ -76,7 +89,7 @@ class Battle::AI
        (@battle.pbRegisteredTerastallize?(idxBattler) rescue false) && !battler.tera?
       prev_tera = battler.pokemon.instance_variable_get(:@terastallized)
       prev_form = battler.form
-      battler.pokemon.instance_variable_set(:@terastallized, true)
+      battler.pokemon.terastallized = true
       battler.form = battler.pokemon.form if battler.form != battler.pokemon.form
       battler.pbUpdate(true)
       sim[:transforms] << { battler: battler, type: :tera, prev_form: prev_form, prev_tera: prev_tera }
@@ -88,6 +101,9 @@ class Battle::AI
       battler.pokemon.makeDynamaxForm
       battler.form = battler.pokemon.form
       battler.pokemon.makeDynamax
+      # Keep the previewed live battler consistent with a real Dynamax state so
+      # copied battle sims don't immediately unDynamax it at end of round.
+      battler.effects[PBEffects::Dynamax] = Settings::DYNAMAX_TURNS
       battler.pbUpdate(true)
       sim[:transforms] << { battler: battler, type: :dynamax, prev_form: prev_form }
       PBDebug.log_ai("[simulate_transforms] Dynamax applied: #{battler.name}")
@@ -116,16 +132,40 @@ class Battle::AI
         t[:battler].form = t[:prev_form]
         t[:battler].pbUpdate(true)
       when :tera
-        t[:battler].pokemon.instance_variable_set(:@terastallized, t[:prev_tera])
+        t[:battler].pokemon.terastallized = t[:prev_tera]
         t[:battler].form = t[:prev_form]
         t[:battler].pbUpdate(true)
       when :dynamax
         t[:battler].pokemon.makeUndynamaxForm
         t[:battler].form = t[:prev_form]
         t[:battler].pokemon.makeUndynamax
+        t[:battler].effects[PBEffects::Dynamax] = 0
         t[:battler].pbUpdate(true)
       end
     end
+  end
+
+  def unregister_terapagos_tera_for_passive_move(idxBattler, sim = nil)
+    battler = @battle.battlers[idxBattler]
+    return false unless battler
+    return false unless battler.isSpecies?(:TERAPAGOS)
+    return false unless (@battle.pbRegisteredTerastallize?(idxBattler) rescue false)
+    return false unless battler.hasActiveAbility?(:TERASHELL) && battler.hp == battler.totalhp
+
+    @battle.pbUnregisterTerastallize(idxBattler)
+
+    if sim && sim[:transforms]
+      tera_idx = sim[:transforms].rindex { |t| t[:battler] == battler && t[:type] == :tera }
+      if tera_idx
+        tera_transform = sim[:transforms].delete_at(tera_idx)
+        battler.pokemon.terastallized = tera_transform[:prev_tera]
+        battler.form = tera_transform[:prev_form]
+        battler.pbUpdate(true)
+      end
+    end
+
+    PBDebug.log_ai("[tera rollback] #{battler.name} canceled Terastallization after choosing a non-damaging move with Tera Shell active")
+    true
   end
 
   def pbGetEffectivenessMult(effectiveness_id)
@@ -141,10 +181,10 @@ class Battle::AI
     # Move effect-specific checks
     return true if Battle::AI::Handlers.move_will_fail_against_target?(move.function_code, move, user, target, self, @battle)
     # Psychic Terrain blocks priority moves against grounded targets
-    return true if @battle.field.terrain == :Psychic && target.battler.affectedByTerrain? &&
+    return true if @battle.field.terrain == :Psychic && target.affectedByTerrain? &&
                    target.opposes?(user) && move.rough_priority(user) > 0
     # Ability immunity (Volt Absorb, Flash Fire, Levitate, Good as Gold, etc.)
-    return true if move.move.pbImmunityByAbility(user.battler, target.battler, false)
+    return true if move.move.pbImmunityByAbility(user, target, false)
     # Dazzling / Queenly Majesty / Armor Tail — ally-side priority block
     if move.rough_priority(user) > 0 && target.opposes?(user)
       each_same_side_battler(target.side) do |b, _i|
@@ -152,22 +192,22 @@ class Battle::AI
       end
     end
     # Commander immunity (conditional on form state)
-    return true if target.has_active_ability?(:COMMANDER) && target.battler.respond_to?(:isCommander?) && target.battler.isCommander?
+    return true if target.has_active_ability?(:COMMANDER) && target.isCommander?
     # Type immunity
     calc_type = move.rough_type
-    typeMod = move.move.pbCalcTypeMod(calc_type, user.battler, target.battler)
+    typeMod = move.move.pbCalcTypeMod(calc_type, user, target)
     return true if move.move.pbDamagingMove? && Effectiveness.ineffective?(typeMod)
     # Dark-type immunity to Prankster-boosted status moves
     return true if Settings::MECHANICS_GENERATION >= 7 && move.statusMove? &&
                    user.has_active_ability?(:PRANKSTER) && target.has_type?(:DARK) && target.opposes?(user)
     # Airborne immunity to Ground moves
     return true if move.damagingMove? && calc_type == :GROUND &&
-                   target.battler.airborne? && !move.move.hitsFlyingTargets?
+                   target.airborne? && !move.move.hitsFlyingTargets?
     # Powder move immunity
-    return true if move.move.powderMove? && !target.battler.affectedByPowder?
+    return true if move.move.powderMove? && !target.affectedByPowder?
     # Substitute blocks non-ignoring status moves
     return true if target.effects[PBEffects::Substitute] > 0 && move.statusMove? &&
-                   !move.move.ignoresSubstitute?(user.battler) && user.index != target.index
+                   !move.move.ignoresSubstitute?(user) && user.index != target.index
     return false
   end
 
@@ -188,7 +228,7 @@ class Battle::AI
       score = Battle::AI::Handlers.apply_general_move_against_target_score_modifiers(
         score, @move, @user, @target, self, @battle)
     end
-    target_data = @move.pbTarget(@user.battler)
+    target_data = @move.pbTarget(@user)
     if pbShouldInvertScore?(target_data)
       if score == MOVE_USELESS_SCORE
         PBDebug.log("     move is useless against #{@target.name}")
@@ -241,7 +281,7 @@ class Battle::AI
   # change between now and using the move).
   def pbPredictMoveFailure
     # User is awake and can't use moves that are only usable when asleep
-    return true if !@user.battler.asleep? && @move.move.usableWhenAsleep?
+    return true if !@user.asleep? && @move.move.usableWhenAsleep?
 
     # Primal weather
     return true if @battle.pbWeather == :HeavyRain && @move.rough_type == :FIRE
@@ -300,11 +340,41 @@ class Battle::AI
     return move.function_code
   end
 
-  def safe_types(obj)
-    return [] if !obj
-    return obj.pbTypes(true) if obj.respond_to?(:pbTypes)
-    return obj.types if obj.respond_to?(:types)
-    return []
+  def move_is_setup?(move, battler = nil)
+    return false if !move
+    fc = safe_function_code(move) || ""
+    return false if fc.empty?
+    return false if fc == "CurseTargetOrLowerUserSpd1RaiseUserAtkDef1" &&
+                    battler&.has_type?(:GHOST)
+
+    return true if fc.match?(/RaiseUser(?:Side)?/)
+    return true if fc == "UserAddStockpileRaiseDefSpDef1"
+
+    return false unless move.respond_to?(:move) && move.move.respond_to?(:statUp)
+    stat_up = move.move.statUp
+    return false if !stat_up || stat_up.empty?
+
+    stat_up.each_slice(2).any? do |stat, stages|
+      next false if !stat || !stages || stages <= 0
+      [:ATTACK, :DEFENSE, :SPECIAL_ATTACK, :SPECIAL_DEFENSE,
+       :SPEED, :ACCURACY, :EVASION].include?(stat)
+    end
+  end
+
+  def battler_has_setup_move?(battler)
+    return false if !battler
+    battler.check_for_move { |m| move_is_setup?(m, battler) }
+  end
+
+  def foe_has_setup_move?(user)
+    found_setup = false
+    each_foe_battler(user.side) do |b, _i|
+      if battler_has_setup_move?(b)
+        found_setup = true
+        break
+      end
+    end
+    return found_setup
   end
 
    # override stat raise generic
@@ -322,49 +392,72 @@ class Battle::AI
   # item value against best available move before committing.
   #---------------------------------------------------------------------------
   def pbDefaultChooseEnemyCommand(idxBattler)
-    set_up(idxBattler)
-    # 1. Special commands (Mega, Dynamax, etc.)
-    ret = false
-    PBDebug.logonerr { ret = pbChooseToUseSpecialCommand }
-    if ret
-      PBDebug.log("")
-      return
-    end
-    if @battle.pbAutoFightMenu(idxBattler)
-      PBDebug.log("")
-      return
-    end
-    pbRegisterEnemySpecialAction(idxBattler)
-    # Simulate registered transforms so all scoring sees post-transform stats
-    sim = simulate_registered_transforms(idxBattler)
-    begin
-      # 2. Score moves
-      choices = pbGetMoveScores
-      max_move_score = choices.map { |c| c[1] }.max || 0
-      # 3. Terrible moves: try switching
-      if max_move_score < REPLACEMENT_THRESHOLD_TERRIBLE_MOVES
-        ret = false
-        PBDebug.logonerr { ret = pbChooseToSwitchOut(true) }
-        if ret
-          PBDebug.log("")
-          return
-        end
+    with_decision_cache do
+      show_thinking_indicator
+      set_up(idxBattler)
+      # 1. Special commands (Mega, Dynamax, etc.)
+      ret = false
+      PBDebug.logonerr { ret = pbChooseToUseSpecialCommand }
+      if ret
+        PBDebug.log("")
+        return
       end
-      # 4. Try items only if best move score is mediocre
-      if max_move_score < MOVE_BASE_SCORE
-        ret = false
-        PBDebug.logonerr { ret = pbChooseToUseItem }
-        if ret
-          PBDebug.log("")
-          return
-        end
+      if @battle.pbAutoFightMenu(idxBattler)
+        PBDebug.log("")
+        return
       end
-      # 5. Choose move as normal
-      pbChooseMove(choices)
-      PBDebug.log("")
-      pbRegisterEnemySpecialAction2(idxBattler)
+      pbRegisterEnemySpecialAction(idxBattler)
+      # Simulate registered transforms so all scoring sees post-transform stats
+      sim = simulate_registered_transforms(idxBattler)
+      begin
+        # 2. Score moves
+        choices = pbGetMoveScores
+        max_move_score = choices.map { |c| c[1] }.max || 0
+        # 3. Try items on the current battler first if moves are mediocre.
+        if max_move_score < MOVE_BASE_SCORE
+          ret = false
+          PBDebug.logonerr { ret = pbChooseToUseItem(:current) }
+          if ret
+            PBDebug.log("")
+            return
+          end
+        end
+        # 4. Terrible moves: try switching
+        if max_move_score < REPLACEMENT_THRESHOLD_TERRIBLE_MOVES
+          ret = false
+          PBDebug.logonerr { ret = pbChooseToSwitchOut(true) }
+          if ret
+            PBDebug.log("")
+            return
+          end
+          PBDebug.logonerr { ret = pbChooseToUseItem(:reserve) }
+          # 5. Reserve-targeted items are a last resort.
+          if ret
+            PBDebug.log("")
+            return
+          end
+        end
+        # 6. Choose move as normal
+        pbChooseMove(choices)
+        chosen_move = @battle.choices[idxBattler][2]
+        # unregister tera for terapagos when terashell active
+        if chosen_move && !chosen_move.damagingMove?
+          unregister_terapagos_tera_for_passive_move(idxBattler, sim)
+        end
+        PBDebug.log("")
+        pbRegisterEnemySpecialAction2(idxBattler)
+      ensure
+        restore_registered_transforms(sim)
+      end
     ensure
-      restore_registered_transforms(sim)
+      hide_thinking_indicator
+    end
+  end
+
+  def pbDefaultChooseNewEnemy(idxBattler)
+    with_decision_cache do
+      set_up(idxBattler)
+      choose_best_replacement_pokemon(idxBattler, true)
     end
   end
 
@@ -376,8 +469,8 @@ class Battle::AI
     PBDebug.log_ai("[Sucker Punch mind game] chosen=#{chosen_move.class} (#{chosen_move.name})")
     return unless chosen_move.is_a?(Battle::Move::FailsIfTargetActed)
     roll = pbAIRandom(100)
-    PBDebug.log_ai("[Sucker Punch mind game] roll=#{roll} (need <25)")
-    return unless roll < 25
+    PBDebug.log_ai("[Sucker Punch mind game] roll=#{roll} (need <30)")
+    return unless roll < 30
     target_idx = @battle.choices[user_battler.index][3]
     return unless target_idx >= 0
     foe = @battlers[target_idx]
@@ -387,8 +480,6 @@ class Battle::AI
       next if c[4].is_a?(Battle::Move::FailsIfTargetActed)
       next unless c[4].damagingMove?
       next unless c[2] == target_idx
-      dmg = damage_moves(@user, foe)[c[4].id]&.dig(:dmg) || 0
-      next unless dmg >= foe.hp
       best_alt = c if best_alt.nil? || c[1] > best_alt[1]
     end
     return unless best_alt
@@ -407,7 +498,7 @@ class Battle::AI
       return
     end
 
-    threshold = max_score - 20
+    threshold = [max_score - 20, 120].min
     choices.each { |c| c[3] = [c[1] - threshold, 0].max }
     total_score = choices.sum { |c| c[3] }
     PBDebug.log_ai("Move choices for #{@user.name} with threshold: #{threshold}: ")
@@ -436,7 +527,7 @@ class Battle::AI
         PBDebug.log_ai("=> will use #{chosen_move.name}")
       end
     end
-    PBDebug.flush
+    # PBDebug.flush
   end
 
   #override pbChooseToSwitchOut
@@ -489,19 +580,7 @@ class Battle::AI
       PBDebug.log_ai("   => no good replacement Pokémon, will not switch after all")
       return false
     end
-    # Prefer using Baton Pass instead of switching
-    baton_pass = -1
-    @user.battler.eachMoveWithIndex do |m, i|
-      next if m.function_code != "SwitchOutUserPassOnEffects"   # Baton Pass
-      next if !@battle.pbCanChooseMove?(@user.index, i, false)
-      baton_pass = i
-      break
-    end
-    if baton_pass >= 0 && @battle.pbRegisterMove(@user.index, baton_pass, false)
-      PBDebug.log_ai("=> will use Baton Pass to switch out")
-      register_fresh_switch_score(@user.index, idxParty)
-      return true
-    elsif @battle.pbRegisterSwitch(@user.index, idxParty)
+    if @battle.pbRegisterSwitch(@user.index, idxParty)
       PBDebug.log_ai("=> will switch with #{@battle.pbParty(@user.index)[idxParty].name}")
       register_fresh_switch_score(@user.index, idxParty)
       return true
@@ -517,18 +596,23 @@ class Battle::AI
     pkmn = @battle.pbParty(idxBattler)[idxParty]
     @_fresh_switch_scores[idxBattler] = {
       score:       @_last_replacement_score || 100,
-      personal_id: pkmn.personalID
+      personal_id: pkmn.personalID,
+      foe_ids:     current_foe_personal_ids(idxBattler)
     }
     PBDebug.log_ai("  [fresh_switch] stored score #{@_fresh_switch_scores[idxBattler][:score]} for #{pkmn.name}")
   end
 
-  def choose_best_replacement_pokemon(idxBattler, forced_switch = false, threshold: REPLACEMENT_THRESHOLD_NORMAL)
+  def current_foe_personal_ids(idxBattler)
+    @battle.allOtherSideBattlers(idxBattler).map { |b| b.pokemon&.personalID }.compact.sort
+  end
 
+  def choose_best_replacement_pokemon(idxBattler, forced_switch = false, threshold: REPLACEMENT_THRESHOLD_NORMAL)
     # Clear caches only on forced switches (faints/pivots) where a different
     # Pokémon now occupies the battler index, invalidating cached results.
     if forced_switch
       @_ai_dmg_cache = {}
       @_matchup_cache = {}
+      invalidate_sim_cache
     end
 
     # Get all possible replacement Pokémon
@@ -567,12 +651,7 @@ class Battle::AI
         return chosen[0]
       end
     end
-    # Rate each possible replacement Pokémon
-    reserves.each_with_index do |reserve, i|
-      reserves[i][1] = rate_replacement_pokemon(idxBattler, party[reserve[0]], reserve[1])
-      PBDebug.log_ai("pokemon #{party[reserve[0]].name} has switch score #{reserves[i][1]}")
-    end
-    reserves.sort! { |a, b| b[1] <=> a[1] }   # Sort from highest to lowest rated
+    reserves = scored_replacement_candidates(idxBattler, forced_switch, party, reserves)
     @_last_replacement_score = reserves[0][1]
     # Fresh switch-in protection: if the current battler just switched in voluntarily
     # (turnCount == 0) and hasn't acted yet, require the replacement to beat its
@@ -582,18 +661,16 @@ class Battle::AI
       fresh = (@_fresh_switch_scores || {})[idxBattler]
       if fresh && battler.turnCount == 0 &&
          battler.pokemon&.personalID == fresh[:personal_id]
-        if reserves[0][1] <= fresh[:score]
+        current_foes = current_foe_personal_ids(idxBattler)
+        if fresh[:foe_ids] && fresh[:foe_ids] != current_foes
+          PBDebug.log_ai("=> fresh switch-in protection skipped for #{battler.name}: foe changed from #{fresh[:foe_ids].inspect} to #{current_foes.inspect}")
+        elsif reserves[0][1] <= fresh[:score]
           PBDebug.log_ai("=> fresh switch-in #{battler.name} (entry score #{fresh[:score]}) >= best replacement #{party[reserves[0][0]].name} (#{reserves[0][1]}), not switching")
           return -1
         else
           PBDebug.log_ai("=> fresh switch-in #{battler.name} (entry score #{fresh[:score]}) beaten by #{party[reserves[0][0]].name} (#{reserves[0][1]})")
         end
       end
-    end
-    # threshold is set via kwarg, default REPLACEMENT_THRESHOLD_NORMAL
-    # Raise threshold if switching dooms current Pokemon to hazard death
-    unless forced_switch
-      threshold = [threshold + hazard_death_threshold_bonus(idxBattler, reserves), 110].min
     end
     if reserves[0][1] < threshold
       if forced_switch
@@ -608,42 +685,38 @@ class Battle::AI
     return reserves[0][0]
   end
 
+  def scored_replacement_candidates(idxBattler, forced_switch, party, reserves)
+    battler = @battle.battlers[idxBattler]
+    cache_key = [
+      idxBattler,
+      forced_switch,
+      @battle.command_phase,
+      battler.pokemon&.personalID,
+      battler.pokemonIndex,
+      reserves.map { |reserve| reserve[0] }
+    ]
+    @_replacement_score_cache ||= {}
+    cached = @_replacement_score_cache[cache_key]
+    return cached.map(&:dup) if cached
+
+    scored = reserves.map do |reserve|
+      pkmn = party[reserve[0]]
+      ensure_replacement_1v1_results(idxBattler, pkmn)
+      score = rate_replacement_pokemon(idxBattler, pkmn, reserve[1])
+      PBDebug.log_ai("pokemon #{party[reserve[0]].name} has switch score #{score}")
+      [reserve[0], score]
+    end
+    scored.sort! { |a, b| b[1] <=> a[1] }
+    @_replacement_score_cache[cache_key] = scored.map(&:dup)
+    return scored
+  end
+
   #override
   def rate_replacement_pokemon(idxBattler, pkmn, score)
     # The actual calculations are deferred to handlers
     score = Battle::AI::Handlers.score_replacement(idxBattler, pkmn, score, @battle, self)
     return score.to_i
   end
-
-  # Returns a threshold bonus (0 or 20) if switching out would doom the current
-  # Pokemon to hazard death on re-entry, with no way to mitigate it.
-  def hazard_death_threshold_bonus(idxBattler, reserves)
-    current_pkmn = @battle.pbParty(idxBattler)[@battle.battlers[idxBattler].pokemonIndex]
-    own_side = idxBattler & 1
-    hazard_dmg = calculate_entry_hazard_damage(current_pkmn, own_side)
-    return 0 if hazard_dmg < current_pkmn.hp
-    # Current mon dies to hazards on re-entry — check for outs
-    party = @battle.pbParty(idxBattler)
-    hazard_clear_codes = [
-      "RemoveUserBindingAndEntryHazards",            # Rapid Spin
-      "RemoveUserBindingAndEntryHazardsPoisonTarget", # Mortal Spin
-      "LowerTargetEvasion1RemoveSideEffects"          # Defog
-    ]
-    reserves.each do |r|
-      rpkmn = party[r[0]]
-      rpkmn.moves.each do |m|
-        return 0 if hazard_clear_codes.include?(m.function_code)
-      end
-    end
-    # No hazard clearer — check for HP healing items
-    items = @battle.pbGetOwnerItems(idxBattler)
-    items.each do |itm|
-      return 0 if @battle.pbItemHealsHP?(itm)
-    end
-    PBDebug.log_ai("Hazard death: current mon dies to hazards, no clearer, no healing items — raising threshold by 20")
-    return 20
-  end
-
 end
 
 module Battle::AI::Handlers
@@ -655,20 +728,5 @@ module Battle::AI::Handlers
       score = new_score if new_score
     end
     return score
-  end
-end
-
-#===============================================================================
-# AIBattler compatibility patch (prevent NoMethodError)
-#===============================================================================
-class Battle::AI::AIBattler
-  def unstoppableAbility?(ability_id)
-    return self.battler.unstoppableAbility?(ability_id) if self.battler.respond_to?(:unstoppableAbility?)
-    return false
-  end
-
-  def isRaidBoss?
-    return self.battler.isRaidBoss? if self.battler.respond_to?(:isRaidBoss?)
-    return false
   end
 end

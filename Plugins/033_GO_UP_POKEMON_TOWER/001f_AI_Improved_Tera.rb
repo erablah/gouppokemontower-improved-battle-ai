@@ -7,8 +7,32 @@ class Battle::AI
   # override: only one tera available per team.
   alias wants_to_terastallize_original wants_to_terastallize?
   def wants_to_terastallize?
-        return true if @user.battler.isSpecies?(:TERAPAGOS)
+        return true if @user.isSpecies?(:TERAPAGOS)
         return @user.get_total_tera_score >= 0
+  end
+
+  #---------------------------------------------------------------------------
+  # Evaluates a 1v1 simulated matchup between two battlers
+  # returns { user_wins: bool, u_turns: int, f_turns: int }
+  #---------------------------------------------------------------------------
+  def one_v_one_result(user_c, foe_c, user_outspeeds)
+    u_hp = user_c[:hp]
+    u_dmg = user_c[:dmg] || 0
+    f_hp = foe_c[:hp]
+    f_dmg = foe_c[:dmg] || 0
+
+    u_turns = (u_dmg > 0) ? (f_hp.to_f / u_dmg).ceil : 999
+    f_turns = (f_dmg > 0) ? (u_hp.to_f / f_dmg).ceil : 999
+
+    if u_turns < f_turns
+      user_wins = true
+    elsif f_turns < u_turns
+      user_wins = false
+    else
+      user_wins = user_outspeeds
+    end
+
+    { user_wins: user_wins, u_turns: u_turns, f_turns: f_turns }
   end
 end
 
@@ -16,7 +40,6 @@ class Battle::AI::AIBattler
   #=============================================================================
   # Scenario-based Tera scoring using predicted damage and 1v1 simulation
   #=============================================================================
-  alias total_tera_score_original get_total_tera_score
   def get_total_tera_score
     tera_type = @battler.tera_type
     type_name = GameData::Type.get(tera_type).name
@@ -59,14 +82,14 @@ class Battle::AI::AIBattler
     prev_tera = @battler.pokemon.instance_variable_get(:@terastallized)
     prev_form = @battler.form
     begin
-      @battler.pokemon.instance_variable_set(:@terastallized, true)
+      @battler.pokemon.terastallized = true
       @battler.form = @battler.pokemon.form if @battler.form != @battler.pokemon.form
       @battler.pbUpdate(true)
 
       user_dmg_with_tera = @ai.damage_moves(self, foe)
       foe_dmg_with_tera  = @ai.damage_moves(foe, self)
     ensure
-      @battler.pokemon.instance_variable_set(:@terastallized, prev_tera)
+      @battler.pokemon.terastallized = prev_tera
       @battler.form = prev_form
       @battler.pbUpdate(true)
     end
@@ -102,8 +125,10 @@ class Battle::AI::AIBattler
                    "spd=#{user_outspeeds ? 'user' : 'foe'} foe_hp=#{foe.hp} user_hp=#{self.hp}")
 
     # --- 1v1 simulation: compare with and without tera ---
-    user_c = { battler: self, target: foe, dmg: u_dmg_no, move: best_user_no_tera&.dig(:move), hp: self.hp }
-    foe_c  = { battler: foe, target: self, dmg: f_dmg_no, move: best_foe_no_tera&.dig(:move), hp: foe.hp }
+    user_c = { battler: self, index: self.index, target: foe, target_index: foe.index,
+               dmg: u_dmg_no, move: best_user_no_tera&.dig(:move), hp: self.hp }
+    foe_c  = { battler: foe, index: foe.index, target: self, target_index: self.index,
+               dmg: f_dmg_no, move: best_foe_no_tera&.dig(:move), hp: foe.hp }
     foe_tera_move = foe_chosen_move_id && foe_dmg_with_tera[foe_chosen_move_id] ?
                     foe_dmg_with_tera[foe_chosen_move_id][:move] : best_foe_no_tera&.dig(:move)
     return simulate_1v1_tera_value(

@@ -20,9 +20,8 @@ Battle::AI::Handlers::GeneralMoveScore.add(:good_move_for_choice_item,
       score -= 8 if type_data.immunities.include?(move_type)
     end
     if move.accuracy > 0
-      score -= (0.4 * (100 - move.accuracy)).to_i
+      score -= (0.2 * (100 - move.accuracy)).to_i
     end
-    score -= 10 if move.move.pp <= 5
     PBDebug.log_score_change(score - old_score, "move is less suitable to be Choiced into")
     next score
   }
@@ -31,6 +30,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:good_move_for_choice_item,
 Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
   proc { |score, move, user, ai, battle|
     next score unless ai.trainer.high_skill?
+    next score if user.wild?
 
     real_move = move.move
     fc = ai.safe_function_code(move) || ""
@@ -39,11 +39,12 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
     stat_up = (real_move.respond_to?(:statUp) && real_move.statUp) ? real_move.statUp : nil
     stat_up_from_fc = false
 
-    # Fallback: parse stat_up from function code if @statUp is nil
-    if !stat_up && fc.include?("RaiseUser")
+    # Fallback: parse stat_up from function code if @statUp is nil.
+    # This also covers Dynamax "RaiseUserSide..." effects like Max Airstream.
+    if !stat_up && fc.match?(/RaiseUser(?:Side)?/)
       # Handle RaiseUserMainStats first (all main stats)
-      if fc.include?("RaiseUserMainStats")
-        stages = fc[/RaiseUserMainStats(\d+)/, 1].to_i
+      if fc.match?(/RaiseUser(?:Side)?MainStats/)
+        stages = fc[/RaiseUser(?:Side)?MainStats(\d+)/, 1].to_i
         parsed = []
         [:ATTACK, :DEFENSE, :SPECIAL_ATTACK, :SPECIAL_DEFENSE, :SPEED].each do |s|
           parsed.push(s, stages)
@@ -60,7 +61,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
                      "Evasion" => :EVASION, "Acc" => :ACCURACY, "Eva" => :EVASION }
         stat_names = stat_map.keys.sort_by { |k| -k.length }
         stat_pattern = stat_names.map { |s| Regexp.escape(s) }.join("|")
-        if fc =~ /RaiseUser((?:(?:#{stat_pattern})\d*)+)/
+        if fc =~ /RaiseUser(?:Side)?((?:(?:#{stat_pattern})\d*)+)/
           segment = $1
           pairs = []
           while !segment.empty?
@@ -93,13 +94,31 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
 
     is_status = move.statusMove?
     # Skip damaging moves whose stat boost is a non-guaranteed secondary effect
-    # (e.g. Meteor Mash 20% Atk). Function-code-parsed boosts are always guaranteed.
-    if move.damagingMove? && !stat_up_from_fc && real_move.addlEffect != 100
+    # (e.g. Meteor Mash 20% Atk). Function-code-parsed boosts are always
+    # guaranteed, and so are Dynamax side-boosting Max Moves like Max Airstream.
+    guaranteed_damaging_setup = stat_up_from_fc || fc.start_with?("RaiseUserSide")
+    if move.damagingMove? && !guaranteed_damaging_setup && real_move.addlEffect != 100
+      PBDebug.log_ai("[smart_setup] Skipped #{move.name}: damaging boost isn't guaranteed.")
       next score
     end
 
     battler = user.battler
     next score unless battler
+
+    speed_stage_gain = 0
+    boosted_stats = []
+    (stat_up.length / 2).times do |i|
+      stat_id = stat_up[i * 2]
+      stages  = stat_up[i * 2 + 1]
+      boosted_stats << stat_id
+      speed_stage_gain += stages if stat_id == :SPEED
+    end
+    if speed_stage_gain > 0 && battler.stages[:SPEED] >= 2
+      speed_penalty = (boosted_stats.uniq == [:SPEED]) ? 40 : 20
+      score -= speed_penalty
+      PBDebug.log_score_change(-speed_penalty,
+        "Setup speed penalty: Speed stage already #{battler.stages[:SPEED]}.")
+    end
 
     # -----------------------------------------------------------------------
     # Phazing check (status setup moves only): skip if foe has a phazing
@@ -124,28 +143,12 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
     end
 
     # -----------------------------------------------------------------------
-    # Compute boost multipliers from stat_up (skip if all stats already maxed)
+    # Skip if all boosted stats are already maxed
     # -----------------------------------------------------------------------
-    has_physical = battler.moves.compact.any? { |m| m.physicalMove? }
-    has_special  = battler.moves.compact.any? { |m| m.specialMove? }
-
-    atk_mult = 1.0; spa_mult = 1.0; def_mult = 1.0; spdef_mult = 1.0; spd_boost = 0
-    any_effective = false
-    (stat_up.length / 2).times do |i|
+    any_effective = (stat_up.length / 2).times.any? do |i|
       stat_id = stat_up[i * 2]
       stages  = stat_up[i * 2 + 1]
-      cur = battler.stages[stat_id]
-      new_s = [cur + stages, 6].min
-      next if cur == new_s
-      any_effective = true
-      ratio = ai.stat_stage_mult(new_s) / ai.stat_stage_mult(cur)
-      case stat_id
-      when :ATTACK         then atk_mult = ratio if has_physical
-      when :SPECIAL_ATTACK then spa_mult = ratio if has_special
-      when :DEFENSE        then def_mult = ratio
-      when :SPECIAL_DEFENSE then spdef_mult = ratio
-      when :SPEED          then spd_boost = stages
-      end
+      battler.stages[stat_id] < [battler.stages[stat_id] + stages, 6].min
     end
     unless any_effective
       PBDebug.log_ai("[smart_setup] All boosted stats already maxed.")
@@ -153,10 +156,11 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
     end
 
     # -----------------------------------------------------------------------
-    # Per-foe 1v1 comparison: current vs boosted
+    # Per-foe 1v1 comparison: current vs boosted (using actual simulation)
     # -----------------------------------------------------------------------
     summary = ai.matchup_summary
     total_bonus = 0
+    setup_move_id = move.id
 
     ai.each_foe_battler(user.side) do |b, _i|
       foe_entry = summary[:foes][b.index]
@@ -164,98 +168,39 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
 
       # Unaware ignores all stat stage changes — setup is wasted
       if b.has_active_ability?(:UNAWARE)
-        foe_bonus = is_status ? -40 : 0
+        foe_bonus = is_status ? -100 : 0
         PBDebug.log_ai("[smart_setup] vs #{b.name}: foe has Unaware → #{foe_bonus}")
         total_bonus += foe_bonus
         next
       end
 
-      current_result = foe_entry[:one_v_one]
-      foe_best_dmg  = foe_entry[:best_dmg]
       foe_best_move = foe_entry[:best_move]
+      next unless foe_best_move
 
-      user_c = ai.make_combatant(user, b)
-      foe_c  = ai.make_combatant(b, user)
+      user_best = ai.best_damage_move_for_simulation(user, b)
+      next unless user_best
 
-      # --- Boosted user damage (pick best move and best priority after boost) ---
-      user_dmg_data = ai.damage_moves(user, b)
-      boosted_user_dmg = 0
-      boosted_user_move = nil
-      boosted_user_pri_dmg = 0
-      user_dmg_data.each_value do |md|
-        d = md[:dmg]
-        if md[:move].physicalMove?
-          d = (d * atk_mult).round
-        elsif md[:move].specialMove?
-          d = (d * spa_mult).round
-        end
-        if d > boosted_user_dmg
-          boosted_user_dmg = d
-          boosted_user_move = md[:move]
-        end
-        if md[:move].priority > 0 && d > boosted_user_pri_dmg
-          boosted_user_pri_dmg = d
-        end
-      end
+      user_best_action = ai.simulation_action_for_move_data(user_best, b)
+      foe_best = ai.best_damage_move_for_simulation(b, user)
+      next unless foe_best
+      foe_best_action = ai.simulation_action_for_move_data(foe_best, user)
+      next unless user_best_action && foe_best_action
 
-      # --- Boosted foe damage (reduced by our defensive boosts) ---
-      boosted_foe_dmg = foe_best_dmg
-      if foe_best_move
-        if foe_best_move.physicalMove?
-          boosted_foe_dmg = (foe_best_dmg / def_mult).round
-        elsif foe_best_move.specialMove?
-          boosted_foe_dmg = (foe_best_dmg / spdef_mult).round
-        end
-      end
+      # Current: user attacks with best move, foe attacks with best move
+      current_result = foe_entry[:sim_result]
+      next unless current_result
 
-      # --- Speed after boost ---
-      if spd_boost > 0
-        user_has_lagging = LAGGING_TAIL_ITEMS.include?(battler.item_id) && battler.itemActive?
-        foe_has_lagging = LAGGING_TAIL_ITEMS.include?(b.battler.item_id) && b.battler.itemActive?
-        if user_has_lagging && !foe_has_lagging
-          boosted_outspeeds = false
-        elsif foe_has_lagging && !user_has_lagging
-          boosted_outspeeds = true
-        else
-          user_speed = user.rough_stat(:SPEED)
-          cur_spd_stage = battler.stages[:SPEED]
-          new_spd_stage = [cur_spd_stage + spd_boost, 6].min
-          base_speed = user_speed / ai.stat_stage_mult(cur_spd_stage)
-          boosted_speed = base_speed * ai.stat_stage_mult(new_spd_stage)
-          trick_room = battle.field.effects[PBEffects::TrickRoom] > 0
-          boosted_outspeeds = (boosted_speed > foe_entry[:speed]) ^ trick_room
-        end
-      else
-        boosted_outspeeds = !foe_entry[:outspeeds]
-      end
-
-      # --- Status moves: user takes one hit during setup turn ---
-      if is_status
-        boosted_user_hp = user.hp - foe_best_dmg
-        if boosted_user_hp <= 0
-          total_bonus -= 200
-          PBDebug.log_ai("[smart_setup] vs #{b.name}: would die during setup → -200")
-          next
-        end
-        # Foe heals from drain during setup turn
-        foe_mods = ai.move_sim_modifiers(foe_best_move)
-        boosted_foe_hp = [b.hp + (foe_mods[:drain_factor] * foe_best_dmg).round, b.battler.totalhp].min
-      else
-        boosted_user_hp = user.hp
-        boosted_foe_hp = b.hp
-      end
-
-      # --- Run boosted 1v1 ---
-      boosted_result = ai.one_v_one_result(
-        user_c.merge(dmg: boosted_user_dmg, move: boosted_user_move,
-                     hp: boosted_user_hp, priority_dmg: boosted_user_pri_dmg),
-        foe_c.merge(dmg: boosted_foe_dmg, hp: boosted_foe_hp),
-        boosted_outspeeds
+      # Boosted: user uses setup move first, then best attack; foe keeps attacking
+      boosted_result = ai.simulate_battle(
+        user.index, b.index,
+        [setup_move_id, user_best_action],
+        [foe_best_action],
+        max_turns: 5
       )
 
       # --- Score comparison ---
-      cur_wins = current_result[:user_wins]
-      bst_wins = boosted_result[:user_wins]
+      cur_wins = current_result.user_wins?
+      bst_wins = boosted_result.user_wins?
       foe_bonus = 0
 
       if !cur_wins && bst_wins
@@ -263,31 +208,34 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
         foe_bonus = is_status ? 50 : 25
       elsif cur_wins && !bst_wins
         # Boost makes winning → losing (HP cost too high for status)
-        foe_bonus = is_status ? -40 : -20
+        foe_bonus = is_status ? -60 : -40
       elsif cur_wins && bst_wins
-        # Both win — score by absolute HP saved (normalized to user's actual HP)
-        current_remaining = current_result[:user_hp_pct] * user.hp
-        boosted_remaining = boosted_result[:user_hp_pct] * boosted_user_hp
-        dmg_saved_pct = (boosted_remaining - current_remaining) / [user.hp, 1].max.to_f
+        # Both win — compare turns to KO and remaining HP
+        cur_turns = current_result.target_ko_turn || 999
+        bst_turns = boosted_result.target_ko_turn || 999
+        # Boosted takes longer due to setup turn, but should deal more damage per hit
+        # Score based on HP remaining after winning
+        cur_hp_pct = current_result.user_hp.to_f / [user.totalhp, 1].max
+        bst_hp_pct = boosted_result.user_hp.to_f / [user.totalhp, 1].max
+        hp_saved = bst_hp_pct - cur_hp_pct
         # Base value: you win AND end up boosted for future matchups
-        base = [current_result[:f_turns] * 3, 15].min + 10
-        if dmg_saved_pct > 0
-          # Saved HP on top of being boosted
-          foe_bonus = base + (dmg_saved_pct * 40).round.clamp(0, 25)
-        elsif dmg_saved_pct >= -0.01
-          # Same damage — still good, you're boosted
+        base = [cur_turns * 3, 15].min + 10
+        if hp_saved > 0
+          foe_bonus = base + (hp_saved * 40).round.clamp(0, 25)
+        elsif hp_saved >= -0.05
           foe_bonus = base
         else
-          # Costs more HP but still winning and boosted — reduce base
-          foe_bonus = [base + (dmg_saved_pct * 30).round, 0].max
+          foe_bonus = [base + (hp_saved * 30).round, 0].max
         end
       else
         # Both lose — status wastes a turn, damaging still deals damage
-        foe_bonus = is_status ? -40 : 0
+        foe_bonus = is_status ? -60 : 0
       end
 
-      PBDebug.log_ai("[smart_setup] vs #{b.name}: cur=#{cur_wins ? 'W' : 'L'}(#{current_result[:u_turns]}T) " \
-                     "bst=#{bst_wins ? 'W' : 'L'}(#{boosted_result[:u_turns]}T) → #{foe_bonus > 0 ? '+' : ''}#{foe_bonus}")
+      cur_turns = current_result.target_ko_turn || 999
+      bst_turns = boosted_result.target_ko_turn || 999
+      PBDebug.log_ai("[smart_setup] vs #{b.name}: cur=#{cur_wins ? 'W' : 'L'}(#{cur_turns}T) " \
+                     "bst=#{bst_wins ? 'W' : 'L'}(#{bst_turns}T) → #{foe_bonus > 0 ? '+' : ''}#{foe_bonus}")
       total_bonus += foe_bonus
     end
 
@@ -344,7 +292,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:prevent_redundant_effects,
 )
 
 #===============================================================================
-# 10. Penalize hazard setup when foe is boosted
+# 10. Penalize hazard setup when foe can boost
 # A boosted foe is an immediate threat — spending a turn on hazards wastes tempo.
 #===============================================================================
 HAZARD_FUNCTION_CODES = [
@@ -356,18 +304,9 @@ Battle::AI::Handlers::GeneralMoveScore.add(:penalize_hazards_vs_boosted_foe,
   proc { |score, move, user, ai, battle|
     next score unless HAZARD_FUNCTION_CODES.include?(ai.safe_function_code(move))
 
-    foe_boosts = 0
-    ai.each_foe_battler(user.side) do |b, _i|
-      GameData::Stat.each_battle do |s|
-        stage = b.stages[s.id]
-        foe_boosts += stage if stage > 0
-      end
-    end
-
-    if foe_boosts >= 2
-      penalty = 10 + (foe_boosts * 10)
-      score -= penalty
-      PBDebug.log_score_change(-penalty, "Hazard vs boosted foe (+#{foe_boosts} total boosts).")
+    if ai.foe_has_setup_move?(user)
+      score -= 80
+      PBDebug.log_score_change(-80, "Hazard vs foe with setup move(s).")
     end
     next score
   }
@@ -397,17 +336,18 @@ Battle::AI::Handlers::GeneralMoveScore.add(:tactical_substitute,
   proc { |score, move, user, ai, battle|
     # Skip if not Substitute
     next score unless move.id == :SUBSTITUTE
+    next score if user.wild?
 
     battler = user.battler
     next score unless battler
 
     # Don't use if Substitute is already active
-    next Battle::AI::MOVE_USELESS_SCORE if battler.effects[PBEffects::Substitute] > 0
+    next Battle::AI::MOVE_FAIL_SCORE if battler.effects[PBEffects::Substitute] > 0
 
     # -------------------------------------------------------------------------
     # Phazing check: Substitute doesn't block phazing moves
     # -------------------------------------------------------------------------
-    phaze_codes = ["SwitchOutTargetStatusMove", "SwitchOutTargetDamagingMove"]
+    phaze_codes = ["SwitchOutTargetStatusMove"]
     foe_has_phazing = false
     sim_move = Battle::AI::AIMove.new(ai)
     ai.each_foe_battler(user.side) do |b, _i|
@@ -424,10 +364,22 @@ Battle::AI::Handlers::GeneralMoveScore.add(:tactical_substitute,
     end
 
     # -------------------------------------------------------------------------
-    # B. Foe threat analysis — reject if any foe can deal >25% in one hit
+    # B. Foe threat analysis — reject if any foe can break the Substitute in one hit
     # -------------------------------------------------------------------------
-    summary = ai.matchup_summary
-    threatened = summary[:foes].values.any? { |f| f[:best_dmg] > battler.totalhp * 0.3 }
+    sub_break_threshold = battler.totalhp / 4.0
+    threatened = false
+    ai.each_foe_battler(user.side) do |b, _i|
+      best_dmg = ai.best_damage_move(b, user)&.dig(:dmg) || 0
+      PBDebug.log_ai(
+        "[tactical_substitute] Threat check vs #{b.name}: best_dmg=#{best_dmg}, " \
+        "sub_threshold=#{sub_break_threshold}"
+      )
+      if best_dmg >= sub_break_threshold
+        threatened = true
+        PBDebug.log_ai("[tactical_substitute] Rejected: #{b.name} can break Substitute in one hit.")
+        break
+      end
+    end
 
     # Substitute is counterproductive when foe can break it in one hit
     next Battle::AI::MOVE_USELESS_SCORE if threatened
@@ -439,7 +391,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:tactical_substitute,
     future_value = 0
 
     # 1) Substitute value increases if user has setup moves
-    if user.check_for_move { |m| ai.safe_function_code(m)&.start_with?("RaiseUser") }
+    if ai.battler_has_setup_move?(user)
       future_value += 20
     end
 
@@ -471,7 +423,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:boost_setup_when_foe_helpless,
   proc { |score, move, user, ai, battle|
     next score unless ai.trainer.high_skill?
     next score unless move.statusMove?
-    next score unless ai.safe_function_code(move)&.start_with?("RaiseUser")
+    next score unless ai.move_is_setup?(move, user)
 
     any_foe_can_act = false
     ai.each_foe_battler(user.side) do |b, i|
@@ -496,6 +448,8 @@ Battle::AI::Handlers::GeneralMoveScore.add(:boost_setup_when_foe_helpless,
 Battle::AI::Handlers::GeneralMoveScore.add(:smart_recovery,
   proc { |score, move, user, ai, battle|
     next score unless ai.trainer.high_skill?
+    next score if user.wild?
+    
     healing_codes = [
       "HealUserHalfOfTotalHP",
       "HealUserHalfOfTotalHPLoseFlyingTypeThisTurn",
@@ -511,13 +465,24 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_recovery,
     # Check if foe can 2HKO — recovery is futile
     summary = ai.matchup_summary
     max_foe_dmg = summary[:max_foe_dmg]
-    PBDebug.log_ai("[smart_recovery] max foe dmg = #{max_foe_dmg} (#{(100.0 * max_foe_dmg / [1, battler.totalhp].max).round(1)}% totalhp, threshold 55%)")
+    foe_damage_ratio = max_foe_dmg.to_f / [1, battler.totalhp].max
+    PBDebug.log_ai("[smart_recovery] max foe dmg = #{max_foe_dmg} (#{(100.0 * foe_damage_ratio).round(1)}% totalhp, reward threshold 50%, fail threshold 60%)")
 
-    if max_foe_dmg >= battler.totalhp * 0.55
+    if max_foe_dmg >= battler.totalhp * 0.6
       score -= 60
       PBDebug.log_score_change(-60, "Recovery futile: foe can 2HKO (#{(100 * max_foe_dmg / battler.totalhp).to_i}% per hit).")
       next score
     end
+
+    if hp_ratio > 0.70
+      penalty = (15 + (20 * (hp_ratio - 0.70) / 0.30)).to_i.clamp(15, 35)
+      score -= penalty
+      PBDebug.log_score_change(-penalty, "Smart recovery penalty at #{(hp_ratio * 100).to_i}% HP.")
+    end
+
+    next score if foe_damage_ratio > 0.50
+
+    score += 20
 
     # Good recovery range: 40~60% HP
     if hp_ratio <= 0.60 && hp_ratio >= 0.40
@@ -565,7 +530,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_protect,
       stall_value += 5  if b.status == :POISON && b.statusCount == 0
 
       # Foe has setup moves — Protect gives them a free turn to boost
-      if b.check_for_move { |m| ai.safe_function_code(m)&.start_with?("RaiseUser") }
+      if ai.battler_has_setup_move?(b)
         stall_value -= 15
         PBDebug.log_ai("[smart_protect] Foe #{b.name} has setup moves → -15 stall value.")
       end
@@ -587,44 +552,6 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_protect,
     else
       score -= 40
       PBDebug.log_score_change(-40, "Protect has no stall value.")
-    end
-
-    next score
-  }
-)
-
-#===============================================================================
-# [NEW] Smart Wish usage
-#===============================================================================
-Battle::AI::Handlers::GeneralMoveScore.add(:smart_wish,
-  proc { |score, move, user, ai, battle|
-    next score unless ai.trainer.high_skill?
-    next score unless ai.safe_function_code(move) == "HealUserPositionNextTurn"
-
-    battler = user.battler
-    next score unless battler
-
-    # Block if Wish is already active on this position
-    position = battle.positions[battler.index]
-    if position && position.effects[PBEffects::Wish] > 0
-      next Battle::AI::MOVE_USELESS_SCORE
-    end
-
-    hp_ratio = battler.hp.to_f / battler.totalhp
-
-    # Bonus based on HP ratio
-    if hp_ratio < 0.50
-      score += 25
-      PBDebug.log_score_change(25, "Wish: HP < 50% (#{(hp_ratio * 100).to_i}%).")
-    elsif hp_ratio < 0.80
-      score += 15
-      PBDebug.log_score_change(15, "Wish: HP 50-80% (#{(hp_ratio * 100).to_i}%).")
-    end
-
-    # Wish + pivot synergy
-    if user.check_for_move { |m| ai.safe_function_code(m)&.start_with?("SwitchOutUser") }
-      score += 10
-      PBDebug.log_score_change(10, "Wish: pivot move synergy.")
     end
 
     next score
@@ -669,17 +596,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_rest,
     end
 
     # Penalize if foe can set up while user sleeps
-    foe_has_setup = false
-    ai.each_foe_battler(user.side) do |b, _i|
-      ai.known_foe_moves(b).each do |m|
-        if ai.safe_function_code(m)&.start_with?("RaiseUser")
-          foe_has_setup = true
-          break
-        end
-      end
-      break if foe_has_setup
-    end
-    if foe_has_setup
+    if ai.foe_has_setup_move?(user)
       score -= 40
       PBDebug.log_score_change(-40, "Rest: foe has setup potential while user sleeps.")
     end
@@ -688,3 +605,35 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_rest,
   }
 )
 
+#===============================================================================
+# [NEW] Status Move Survival / Fail Check (Global)
+#===============================================================================
+Battle::AI::Handlers::GeneralMoveScore.add(:status_survival_check_global,
+  proc { |score, move, user, ai, battle|
+    next score if move.damagingMove?
+    next score if user.wild?
+
+    summary = ai.matchup_summary
+    all_failed = true
+    has_foes = false
+
+    ai.each_foe_battler(user.side) do |b, _i|
+      has_foes = true
+      foe_entry = summary[:foes][b.index]
+      next unless foe_entry
+
+      survives = ai.current_status_move_survives?(b, move.id)
+      if survives == true
+        all_failed = false
+        break
+      end
+    end
+
+    if has_foes && all_failed
+      score -= 100
+      PBDebug.log_score_change(-100, "Global survival: status move fails or user KO'd before acting vs all foes")
+    end
+
+    next score
+  }
+)

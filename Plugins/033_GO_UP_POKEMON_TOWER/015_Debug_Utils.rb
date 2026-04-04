@@ -23,32 +23,31 @@ module PBDebug
 
   def self.log(msg)
     echoln(msg.gsub("%", "%%")) if $DEBUG
-    @@log.push(msg + "\r\n")
+    @@log.push(msg + "\r\n") if $DEBUG
     PBDebug.maybe_flush
   end
 
   def self.log_header(msg)
     echoln(Console.markup_style(msg.gsub("%", "%%"), text: :light_purple)) if $DEBUG
-    @@log.push(msg + "\r\n")
+    @@log.push(msg + "\r\n") if $DEBUG
     PBDebug.maybe_flush
   end
 
   def self.log_message(msg)
     msg = "\"" + msg + "\""
     echoln(Console.markup_style(msg.gsub("%", "%%"), text: :dark_gray)) if $DEBUG
-    @@log.push(msg + "\r\n")
+    @@log.push(msg + "\r\n") if $DEBUG
     PBDebug.maybe_flush
   end
 
   def self.log_ai(msg)
     msg = "[AI] " + msg
     echoln(msg.gsub("%", "%%")) if $DEBUG
-    @@log.push(msg + "\r\n")
+    @@log.push(msg + "\r\n") if $DEBUG
     PBDebug.maybe_flush
   end
 
   def self.log_score_change(amt, msg)
-    return if amt == 0
     sign     = (amt > 0) ? "+" : "-"
     amt_text = sprintf("%3d", amt.abs)
     plain    = "     #{sign}#{amt_text}: #{msg}"
@@ -56,7 +55,7 @@ module PBDebug
       color = (amt > 0) ? :light_green : :light_red
       echoln Console.markup_style(plain.gsub("%", "%%"), text: color)
     end
-    @@log.push(plain + "\r\n")
+    @@log.push(plain + "\r\n") if $DEBUG
     PBDebug.maybe_flush
   end
 end

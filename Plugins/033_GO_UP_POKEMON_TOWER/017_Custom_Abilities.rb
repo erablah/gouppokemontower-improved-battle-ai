@@ -23,7 +23,7 @@ class Battle::AI::AIBattler
   def effectiveness_of_type_against_battler(type, user = nil, move = nil)
     ret = eeriechill_effectiveness(type, user, move)
     if type == :ICE && user&.has_active_ability?(:EERIECHILL)
-      battler.pbTypes(true).each do |defend_type|
+      pbTypes(true).each do |defend_type|
         if (defend_type == :FIRE || defend_type == :GHOST) &&
            !Effectiveness.super_effective_type?(type, defend_type)
           # Undo the original calc for this type and apply SE instead
