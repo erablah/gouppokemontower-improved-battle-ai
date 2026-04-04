@@ -107,9 +107,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:boost_pivot_moves,
     next score if !ai.trainer.high_skill?
     next score if !battle.pbCanChooseNonActive?(user.battler.index)
 
-    is_pivot = [
-      "SwitchOutUserDamagingMove"
-    ].include?(ai.safe_function_code(move))
+    is_pivot = Battle::AI::SLOW_PIVOT_FUNCTION_CODES.include?(ai.safe_function_code(move))
     next score unless is_pivot
 
     score += 5
@@ -120,7 +118,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:boost_pivot_moves,
       PBDebug.log_score_change(5, "6. Slow Pivot preference.")
     end
 
-    PBDebug.log_score_change(10, "6. Active Pivot move boost.")
+    score += 5 if user.has_active_ability?(:REGENERATOR) && user.hp <= user.totalhp * 0.75
     next score
   }
 )

@@ -374,33 +374,51 @@ module Battle::ItemEffects
 
   def self.trigger(hash, *args, ret: false)
     new_ret = fog_of_war_trigger(hash, *args, ret: ret)
-    fog_of_war_reveal_item(hash, args) if FOG_OF_WAR_REVEALABLE_TRIGGERS.include?(hash)
+    if FOG_OF_WAR_REVEALABLE_TRIGGERS.include?(hash) &&
+       fog_of_war_generic_trigger_changed?(hash, ret, new_ret)
+      fog_of_war_reveal_item(hash, args)
+    end
     return (!new_ret.nil?) ? new_ret : ret
   end
 
   def self.triggerOnMissingTarget(item, user, target, move, hit_num, battle)
+    old_user = fog_of_war_battler_snapshot(user)
     fog_of_war_triggerOnMissingTarget(item, user, target, move, hit_num, battle)
-    fog_of_war_reveal_item(OnMissingTarget, [item, user, target, move, hit_num, battle])
+    if fog_of_war_battler_changed?(old_user, fog_of_war_battler_snapshot(user))
+      fog_of_war_reveal_item(OnMissingTarget, [item, user, target, move, hit_num, battle])
+    end
   end
 
   def self.triggerAccuracyCalcFromUser(item, mods, user, target, move, type)
+    old_mods = mods.dup
     fog_of_war_triggerAccuracyCalcFromUser(item, mods, user, target, move, type)
-    fog_of_war_reveal_item(AccuracyCalcFromUser, [item, mods, user, target, move, type])
+    if mods != old_mods
+      fog_of_war_reveal_item(AccuracyCalcFromUser, [item, mods, user, target, move, type])
+    end
   end
 
   def self.triggerAccuracyCalcFromTarget(item, mods, user, target, move, type)
+    old_mods = mods.dup
     fog_of_war_triggerAccuracyCalcFromTarget(item, mods, user, target, move, type)
-    fog_of_war_reveal_item(AccuracyCalcFromTarget, [item, mods, user, target, move, type])
+    if mods != old_mods
+      fog_of_war_reveal_item(AccuracyCalcFromTarget, [item, mods, user, target, move, type])
+    end
   end
 
   def self.triggerDamageCalcFromUser(item, user, target, move, mults, power, type)
+    old_mults = mults.dup
     fog_of_war_triggerDamageCalcFromUser(item, user, target, move, mults, power, type)
-    fog_of_war_reveal_item(DamageCalcFromUser, [item, user, target, move, mults, power, type])
+    if mults != old_mults
+      fog_of_war_reveal_item(DamageCalcFromUser, [item, user, target, move, mults, power, type])
+    end
   end
 
   def self.triggerDamageCalcFromTarget(item, user, target, move, mults, power, type)
+    old_mults = mults.dup
     fog_of_war_triggerDamageCalcFromTarget(item, user, target, move, mults, power, type)
-    fog_of_war_reveal_item(DamageCalcFromTarget, [item, user, target, move, mults, power, type])
+    if mults != old_mults
+      fog_of_war_reveal_item(DamageCalcFromTarget, [item, user, target, move, mults, power, type])
+    end
   end
 
   def self.triggerPriorityBracketUse(item, battler, battle)
@@ -409,18 +427,33 @@ module Battle::ItemEffects
   end
 
   def self.triggerOnBeingHit(item, user, target, move, battle)
+    old_user = fog_of_war_battler_snapshot(user)
+    old_target = fog_of_war_battler_snapshot(target)
     fog_of_war_triggerOnBeingHit(item, user, target, move, battle)
-    fog_of_war_reveal_item(OnBeingHit, [item, user, target, move, battle])
+    if fog_of_war_battler_changed?(old_user, fog_of_war_battler_snapshot(user)) ||
+       fog_of_war_battler_changed?(old_target, fog_of_war_battler_snapshot(target))
+      fog_of_war_reveal_item(OnBeingHit, [item, user, target, move, battle])
+    end
   end
 
   def self.triggerAfterMoveUseFromTarget(item, battler, user, move, switched_battlers, battle)
+    old_battler = fog_of_war_battler_snapshot(battler)
+    old_user = fog_of_war_battler_snapshot(user)
+    old_switched = switched_battlers.dup
     fog_of_war_triggerAfterMoveUseFromTarget(item, battler, user, move, switched_battlers, battle)
-    fog_of_war_reveal_item(AfterMoveUseFromTarget, [item, battler, user, move, switched_battlers, battle])
+    if fog_of_war_battler_changed?(old_battler, fog_of_war_battler_snapshot(battler)) ||
+       fog_of_war_battler_changed?(old_user, fog_of_war_battler_snapshot(user)) ||
+       switched_battlers != old_switched
+      fog_of_war_reveal_item(AfterMoveUseFromTarget, [item, battler, user, move, switched_battlers, battle])
+    end
   end
 
   def self.triggerAfterMoveUseFromUser(item, user, targets, move, num_hits, battle)
+    old_user = fog_of_war_battler_snapshot(user)
     fog_of_war_triggerAfterMoveUseFromUser(item, user, targets, move, num_hits, battle)
-    fog_of_war_reveal_item(AfterMoveUseFromUser, [item, user, targets, move, num_hits, battle])
+    if fog_of_war_battler_changed?(old_user, fog_of_war_battler_snapshot(user))
+      fog_of_war_reveal_item(AfterMoveUseFromUser, [item, user, targets, move, num_hits, battle])
+    end
   end
 
   def self.triggerEndOfRoundHealing(item, battler, battle)
@@ -448,8 +481,56 @@ module Battle::ItemEffects
   end
 
   def self.triggerOnSwitchIn(item, battler, battle)
+    old_battler = fog_of_war_battler_snapshot(battler)
     fog_of_war_triggerOnSwitchIn(item, battler, battle)
-    fog_of_war_reveal_item(OnSwitchIn, [item, battler, battle])
+    if item == :AIRBALLOON ||
+       fog_of_war_battler_changed?(old_battler, fog_of_war_battler_snapshot(battler))
+      fog_of_war_reveal_item(OnSwitchIn, [item, battler, battle])
+    end
+  end
+
+  def self.fog_of_war_generic_trigger_changed?(hash, ret, new_ret)
+    effective_ret = (!new_ret.nil?) ? new_ret : ret
+    case hash
+    when SpeedCalc, WeightCalc, PriorityBracketChange, CriticalCalcFromUser,
+         CriticalCalcFromTarget, WeatherExtender, TerrainExtender
+      return effective_ret != ret
+    when HPHeal, OnStatLoss, StatusCure, TerrainStatBoost,
+         OnBeingHitPositiveBerry, OnEndOfUsingMove, OnEndOfUsingMoveStatRestore,
+         CertainSwitching, OnIntimidated, CertainEscapeFromBattle
+      return effective_ret != false
+    end
+    return true
+  end
+
+  def self.fog_of_war_battler_snapshot(battler)
+    return nil if !battler
+    stages = {}
+    GameData::Stat.each_battle { |s| stages[s.id] = battler.stages[s.id] }
+    return {
+      pokemon_index: battler.pokemonIndex,
+      personal_id: battler.pokemon&.personalID,
+      hp: battler.hp,
+      status: battler.status,
+      status_count: battler.statusCount,
+      item_id: battler.item_id,
+      stages: stages,
+      move_pp: battler.moves.map { |move| move&.pp },
+      effects: {
+        confusion: battler.effects[PBEffects::Confusion],
+        attract: battler.effects[PBEffects::Attract],
+        taunt: battler.effects[PBEffects::Taunt],
+        encore: battler.effects[PBEffects::Encore],
+        encore_move: battler.effects[PBEffects::EncoreMove],
+        torment: battler.effects[PBEffects::Torment],
+        disable: battler.effects[PBEffects::Disable],
+        heal_block: battler.effects[PBEffects::HealBlock]
+      }
+    }
+  end
+
+  def self.fog_of_war_battler_changed?(old_snapshot, new_snapshot)
+    return old_snapshot != new_snapshot
   end
 
   def self.fog_of_war_reveal_item(hash, args)

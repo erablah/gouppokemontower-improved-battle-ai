@@ -201,8 +201,7 @@ class Battle::AI
       bonus = 5 + [turn_adv * 5, 10].min
       bonus += 10 if best_result.user_can_ohko?
       hp_pct = best_result.user_hp.to_f / [pkmn.totalhp, 1].max
-      bonus += (hp_pct * 10).round
-      bonus == 0 if hp_pct <= 0.25 && f_turns == 1
+      bonus = hp_pct >= 0.25 ? bonus + (hp_pct * 10).round : bonus - ((1 - hp_pct) * 10).round
       PBDebug.log_score_change(bonus, "#{pkmn.name} vs #{foe_battler.name}: wins (KO turn #{u_turns}, #{(hp_pct * 100).round}% remaining)")
       return bonus
     elsif best_result.target_wins?
