@@ -184,6 +184,7 @@ class Battle::AI
             next unless pm[:dmg] >= target.hp
             pri_move = resolve_sim_action_move(user, pm[:action])
             if pri_move
+              PBDebug.log_ai("[AI SIM] KO priority interception proc: #{user.pbThis} swaps #{user_move.name} -> #{pri_move.name} against #{target.pbThis} on turn #{turn} (predicted #{pm[:dmg]} >= #{target.hp} HP)")
               user_move = pri_move
               stop_after_turn ||= user_move.respond_to?(:zMove?) && user_move.zMove?
               break
@@ -212,6 +213,7 @@ class Battle::AI
               next unless pm[:dmg] >= user.hp
               pri_move = resolve_sim_action_move(target, pm[:action])
               if pri_move
+                PBDebug.log_ai("[AI SIM] KO priority interception proc: #{target.pbThis} swaps #{target_move.name} -> #{pri_move.name} against #{user.pbThis} on turn #{turn} (predicted #{pm[:dmg]} >= #{user.hp} HP)")
                 target_move = pri_move
                 stop_after_turn ||= target_move.respond_to?(:zMove?) && target_move.zMove?
                 break

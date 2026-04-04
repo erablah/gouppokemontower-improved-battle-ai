@@ -91,11 +91,11 @@ class Battle::AI
     party_index = party.index(pkmn)
     return {} unless party_index
 
-    voluntary_switch = @battle.command_phase
     pre_switch = { idxBattler => party_index }
     all_results = {}
 
     each_foe_battler(@user.side) do |b, _i|
+      voluntary_switch = @battle.command_phase || (!b.movedThisRound? && b.turnCount > 0)
       foe_vs_current = best_damage_move_for_simulation(b, @user) unless @user.fainted?
       if voluntary_switch && !foe_vs_current
         all_results[b.index] = {
@@ -398,10 +398,10 @@ Battle::AI::Handlers::ScoreReplacement.add(:slow_pivot_followup,
     party_index = party.index(pkmn)
     next score unless party_index
 
-    voluntary_switch = battle.command_phase
     pre_switch = { idxBattler => party_index }
 
     ai.each_foe_battler(ai.user.side) do |b, _i|
+      voluntary_switch = battle.command_phase || (!b.movedThisRound? && b.turnCount > 0)
       slow_pivot_bonus = ai.reserve_slow_pivot_bonus(
         idxBattler, pkmn, b, pre_switch, voluntary_switch: voluntary_switch
       )

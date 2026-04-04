@@ -622,7 +622,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:status_survival_check_global,
       foe_entry = summary[:foes][b.index]
       next unless foe_entry
 
-      survives = foe_entry[:status_survival]&.dig(move.id)
+      survives = ai.current_status_move_survives?(b, move.id)
       if survives == true
         all_failed = false
         break

@@ -47,7 +47,6 @@ class Battle::AI
         end
         sim_result = user_best ? move_results[user_best[:key]] : nil
 
-        status_survival = {}
         foe_best_dmg = foe_best&.dig(:dmg) || 0
         foe_action = nil
         
@@ -59,26 +58,6 @@ class Battle::AI
           foe_action = simulation_action_for_move_data(foe_best, @user) if foe_best_move
         end
 
-        foe_actions = foe_action ? [foe_action] : []
-        @user.moves.each do |m|
-          next if m.damagingMove?
-          res = simulate_battle(
-            @user.index, b.index,
-            [m.id], foe_actions,
-            max_turns: 1
-          )
-          # A foe pivoting out before the user acts is not a mechanical failure
-          # of the user's status move, just an interrupted line the sim doesn't
-          # continue modeling.
-          status_survival[m.id] =
-            res.user_succeeded ||
-            (res.terminated_by_switch &&
-             res.switch_type == :live_switch &&
-             res.switch_battler_index == b.index &&
-             !res.user_fainted)
-          tick_scene
-        end
-
         foe_entry = {
           best_dmg:      foe_best_dmg,
           best_move:     foe_best_move,
@@ -87,7 +66,8 @@ class Battle::AI
           sim_result:    sim_result,
           move_results:  move_results,
           move_results_by_id: move_results_by_id,
-          status_survival: status_survival
+          status_survival: {},
+          status_foe_action: foe_action
         }
         summary[:foes][b.index] = foe_entry
         summary[:max_foe_dmg] = [summary[:max_foe_dmg], foe_best_dmg].max
@@ -135,11 +115,36 @@ class Battle::AI
       )
       tick_scene
       res.user_succeeded ||
-            (res.terminated_by_switch &&
-             res.switch_type == :live_switch &&
-             res.switch_battler_index == b.index &&
-             !res.user_fainted)
+        (res.terminated_by_switch &&
+         res.switch_type == :live_switch &&
+         res.switch_battler_index == target_index &&
+         !res.user_fainted)
     end
+  end
+
+  def current_status_move_survives?(target_battler, m_id)
+    summary = matchup_summary
+    foe_entry = summary[:foes][target_battler.index]
+    return false unless foe_entry
+
+    cached = foe_entry[:status_survival][m_id]
+    return cached == true unless cached.nil?
+
+    foe_action = foe_entry[:status_foe_action]
+    foe_actions = foe_action ? [foe_action] : []
+    res = simulate_battle(
+      @user.index, target_battler.index,
+      [m_id], foe_actions,
+      max_turns: 1
+    )
+    tick_scene
+    survives = res.user_succeeded ||
+      (res.terminated_by_switch &&
+       res.switch_type == :live_switch &&
+       res.switch_battler_index == target_battler.index &&
+       !res.user_fainted)
+    foe_entry[:status_survival][m_id] = survives
+    survives
   end
 
   #---------------------------------------------------------------------------
