@@ -112,14 +112,6 @@ class Battle::AI
 
       reserve_dmg = damage_moves_with_switch(idxBattler, b.index, pre_switch) || {}
       reserve_candidates = send(:_simulatable_damage_data, reserve_dmg, b).values.sort_by { |md| -md[:dmg] }
-      status_moves = pkmn.moves.select { |m| m.is_a?(Pokemon::Move) && m.power == 0 }
-      status_move_survival = {}
-
-      status_moves.each do |m|
-        status_move_survival[m.id] = status_move_survival_with_switch(
-          idxBattler, b.index, pre_switch, foe_vs_reserve_action, foe_vs_current_action, m.id
-        ) == true
-      end
 
       foe_results = {
         foe_index: b.index,
@@ -128,29 +120,22 @@ class Battle::AI
         foe_vs_reserve: foe_vs_reserve,
         reserve_candidates: reserve_candidates.map(&:dup),
         damaging_move_results: [],
-        status_move_ids: status_moves.map(&:id),
-        status_move_survival: status_move_survival,
-        any_status_move_survives: status_move_survival.value?(true),
+        status_move_survival: {},
         best_result: nil,
         best_move_action: nil
       }
       all_results[b.index] = foe_results
 
-      if !foe_vs_reserve_action || (reserve_candidates.empty? && status_moves.empty?)
+      if !foe_vs_reserve_action && reserve_candidates.empty?
         foe_results[:skip_scoring] = true
         next
       end
 
-      if reserve_candidates.empty?
-        if foe_results[:any_status_move_survives]
-          foe_results[:status_only] = true
-        else
-          foe_results[:died_before_status] = true
-        end
-        next
-      end
+      reserve_sim_candidates = reserve_candidates.each_with_index.select do |md, idx|
+        idx == 0 || md[:dmg].to_i > 1
+      end.map(&:first)
 
-      reserve_candidates.each do |md|
+      reserve_sim_candidates.each do |md|
         move_action = simulation_action_for_move_data(md, b)
         next unless move_action
 
@@ -196,14 +181,12 @@ class Battle::AI
     return 0 if foe_results[:skip_scoring] || foe_results[:skipped_reason]
 
     if foe_results[:reserve_candidates].empty?
-      if foe_results[:any_status_move_survives]
+      if pkmn.moves.any? { |m| m.statusMove? && reserve_status_move_survives?(@user.index, pkmn, foe_battler, m.id) }
         PBDebug.log_score_change(0, "#{pkmn.name} vs #{foe_battler.name}: no damaging moves, but can act with status")
         return 0
       end
-      if foe_results[:died_before_status]
-        PBDebug.log_score_change(-50, "#{pkmn.name} vs #{foe_battler.name}: dies before using a status move")
-        return -50
-      end
+      PBDebug.log_score_change(-50, "#{pkmn.name} vs #{foe_battler.name}: dies before using a status move")
+      return -50
     end
 
     best_result = foe_results[:best_result]
@@ -453,8 +436,12 @@ Battle::AI::Handlers::ScoreReplacement.add(:hazard_clearing,
 
     best_bonus = 0
     clear_moves.each do |m|
-      move_survives = cached_results.any? do |_foe_index, foe_results|
-        ai.replacement_move_survives?(foe_results, m.id, status_move: m.status_move?)
+      move_survives = cached_results.any? do |foe_index, foe_results|
+        if m.status_move?
+          ai.reserve_status_move_survives?(idxBattler, pkmn, battle.battlers[foe_index], m.id)
+        else
+          ai.replacement_move_survives?(foe_results, m.id)
+        end
       end
       next unless move_survives
 

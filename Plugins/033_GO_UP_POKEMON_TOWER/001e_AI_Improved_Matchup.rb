@@ -134,7 +134,11 @@ class Battle::AI
         sim: sim, max_turns: 1
       )
       tick_scene
-      res.user_succeeded
+      res.user_succeeded ||
+            (res.terminated_by_switch &&
+             res.switch_type == :live_switch &&
+             res.switch_battler_index == b.index &&
+             !res.user_fainted)
     end
   end
 
@@ -147,9 +151,21 @@ class Battle::AI
 
     ensure_replacement_1v1_results(idxBattler, pkmn)
     cached_foe_results = replacement_1v1_result_for_foe(idxBattler, pkmn, target_battler)
+    return true unless cached_foe_results
+
     cached_status_survival = cached_foe_results&.dig(:status_move_survival, m_id)
-    return true if cached_foe_results && cached_status_survival.nil?
-    cached_status_survival == true
+    return cached_status_survival == true unless cached_status_survival.nil?
+
+    pre_switch = { idxBattler => party_index }
+    foe_vs_reserve = cached_foe_results[:foe_vs_reserve]
+    foe_vs_reserve_action = foe_vs_reserve ? simulation_action_for_move_data(foe_vs_reserve, pkmn) : nil
+    foe_vs_current = cached_foe_results[:foe_vs_current]
+    foe_vs_current_action = foe_vs_current ? simulation_action_for_move_data(foe_vs_current, @user) : foe_vs_reserve_action
+    survives = status_move_survival_with_switch(
+      idxBattler, target_battler.index, pre_switch, foe_vs_reserve_action, foe_vs_current_action, m_id
+    ) == true
+    cached_foe_results[:status_move_survival][m_id] = survives
+    survives
   end
 
 end
