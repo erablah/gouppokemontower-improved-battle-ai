@@ -1,6 +1,15 @@
 class Battle
   AI_FOG_PLACEHOLDER_ITEM = :AIFOGDUMMY
-  AI_FOG_ALWAYS_VISIBLE_ITEMS = [:TERAPIECE, :MAXMUSHROOM].freeze
+  # These items stay visible from the start even while the default fog hides
+  # everything else.
+  AI_FOG_VISIBLE_ITEMS = [
+    :LIGHTCLAY,
+    :LEFTOVERS,
+    :BLACKSLUDGE,
+    :LOADEDDICE,
+    :MAXMUSHROOM,
+    :TERAPIECE
+  ].freeze
 
   alias fog_of_war_initialize initialize
 
@@ -10,7 +19,7 @@ class Battle
     @player_item_hidden = Array.new(@party1.length) do |i|
       pkmn = @party1[i]
       next false if !pkmn || !pkmn.item_id
-      !ai_fog_item_always_visible?(pkmn.item_id)
+      ai_fog_item_hidden?(pkmn.item_id)
     end
     @ai_fog_hidden_move_index = {}
     @party1.each_with_index do |pkmn, i|
@@ -32,9 +41,11 @@ class Battle
     return @player_item_hidden[party_index]
   end
 
-  def reveal_player_item(party_index)
+  def reveal_player_item(party_index, reason = nil)
     return if !party_index || party_index < 0 || party_index >= @player_item_hidden.length
-    PBDebug.log_ai("[fog_of_war:reveal] party index #{party_index} hidden_before=#{@player_item_hidden[party_index]}")
+    log_msg = "[fog_of_war:reveal] party index #{party_index} hidden_before=#{@player_item_hidden[party_index]}"
+    log_msg += " reason=#{reason}" if reason
+    PBDebug.log_ai(log_msg)
     @player_item_hidden[party_index] = false
   end
 
@@ -44,12 +55,12 @@ class Battle
     return player_item_hidden?(battler.pokemonIndex)
   end
 
-  def ai_fog_item_always_visible?(item)
+  def ai_fog_item_hidden?(item)
     item_data = GameData::Item.try_get(item)
     return false if !item_data
-    return true if item_data.has_flag?("MegaStone")
-    return true if AI_FOG_ALWAYS_VISIBLE_ITEMS.include?(item_data.id)
-    return false
+    return false if item_data.has_flag?("MegaStone")
+    return false if AI_FOG_VISIBLE_ITEMS.include?(item_data.id)
+    return true
   end
 
   def ai_fog_acted_ids
@@ -115,6 +126,55 @@ class Battle
     return all_moves if !hidden_move
     return all_moves - [hidden_move]
   end
+
+  def ai_fog_check_choice_scarf_reveals
+    return if ai_item_fog_of_war?
+    return if !@priority || @priority.empty?
+    @priority.each do |entry|
+      battler = entry[0]
+      next if !battler || battler.fainted?
+      next if !battler.pbOwnedByPlayer?
+      next if !player_item_hidden_for_battler?(battler)
+      next if battler.item_id != :CHOICESCARF
+      next if @choices[battler.index][0] != :UseMove
+      bracket = @priority.select do |other|
+        next false if !other[0] || other[0].fainted?
+        other[5] == entry[5] && other[4] == entry[4]
+      end
+      next if bracket.length <= 1
+      actual_index = bracket.index(entry)
+      scarf_speed = entry[1]
+      hidden_before = @player_item_hidden[battler.pokemonIndex]
+      original_item_id = battler.item_id
+      begin
+        @player_item_hidden[battler.pokemonIndex] = false
+        battler.item = nil
+        scarfless_speed = battler.pbSpeed
+      ensure
+        battler.item = original_item_id
+        @player_item_hidden[battler.pokemonIndex] = hidden_before
+      end
+      next if scarf_speed == scarfless_speed
+      alt_order = bracket.sort do |a, b|
+        speed_a = (a.equal?(entry)) ? scarfless_speed : a[1]
+        speed_b = (b.equal?(entry)) ? scarfless_speed : b[1]
+        if @priorityTrickRoom
+          (speed_a == speed_b) ? b[6] <=> a[6] : speed_a <=> speed_b
+        else
+          (speed_a == speed_b) ? b[6] <=> a[6] : speed_b <=> speed_a
+        end
+      end
+      reveal_player_item(battler.pokemonIndex, "PriorityCalc(ChoiceScarf)") if alt_order.index(entry) != actual_index
+    end
+  end
+
+  alias fog_of_war_pbCalculatePriority pbCalculatePriority
+  def pbCalculatePriority(fullCalc = false, indexArray = nil)
+    ret = fog_of_war_pbCalculatePriority(fullCalc, indexArray)
+    ai_fog_check_choice_scarf_reveals
+    return ret
+  end
+
 end
 
 Battle::AI::Handlers::ItemRanking.add(:AIFOGDUMMY,
@@ -186,15 +246,20 @@ class Battle::Battler
     end
     return fog_of_war_hasActiveItem?(check_item, ignore_fainted)
   end
+end
 
-  alias fog_of_war_pbEndTurn pbEndTurn
-  def pbEndTurn(choice)
-    fog_of_war_pbEndTurn(choice)
-    return if !pbOwnedByPlayer?
-    return if !@battle.ai_fog_acted?(self)
-    return if !hasActiveItem?([:CHOICEBAND, :CHOICESPECS, :CHOICESCARF])
-    return if !@effects[PBEffects::ChoiceBand]
-    @battle.reveal_player_item(pokemonIndex)
+class Battle::Move
+  alias fog_of_war_pbInflictHPDamage pbInflictHPDamage
+  def pbInflictHPDamage(target)
+    item_before_damage = target&.item_id
+    fog_of_war_pbInflictHPDamage(target)
+    return if !target
+    return if target.damageState.substitute
+    return if target.damageState.hpLost <= 0
+    return if !specialMove?
+    return if !target.pbOwnedByPlayer?
+    return if item_before_damage != :ASSAULTVEST
+    target.battle.reveal_player_item(target.pokemonIndex, "InflictHPDamage(AssaultVest)")
   end
 end
 
@@ -260,6 +325,11 @@ end
 module Battle::ItemEffects
   class << self
     alias fog_of_war_trigger trigger
+    alias fog_of_war_triggerOnMissingTarget triggerOnMissingTarget
+    alias fog_of_war_triggerAccuracyCalcFromUser triggerAccuracyCalcFromUser
+    alias fog_of_war_triggerAccuracyCalcFromTarget triggerAccuracyCalcFromTarget
+    alias fog_of_war_triggerDamageCalcFromUser triggerDamageCalcFromUser
+    alias fog_of_war_triggerDamageCalcFromTarget triggerDamageCalcFromTarget
     alias fog_of_war_triggerPriorityBracketUse triggerPriorityBracketUse
     alias fog_of_war_triggerOnBeingHit triggerOnBeingHit
     alias fog_of_war_triggerAfterMoveUseFromTarget triggerAfterMoveUseFromTarget
@@ -269,16 +339,30 @@ module Battle::ItemEffects
     alias fog_of_war_triggerOnSwitchIn triggerOnSwitchIn
   end
 
+  # These are trigger-based reveals for non-consumables and other effects that
+  # are already public once the battle message/animation resolves.
   FOG_OF_WAR_REVEALABLE_TRIGGERS = [
+    WeightCalc,
     HPHeal,
+    OnStatLoss,
     StatusCure,
+    PriorityBracketChange,
     PriorityBracketUse,
+    OnMissingTarget,
+    AccuracyCalcFromUser,
+    AccuracyCalcFromTarget,
+    DamageCalcFromUser,
+    DamageCalcFromTarget,
+    CriticalCalcFromUser,
+    CriticalCalcFromTarget,
     OnBeingHit,
     OnBeingHitPositiveBerry,
     AfterMoveUseFromTarget,
     AfterMoveUseFromUser,
     OnEndOfUsingMove,
     OnEndOfUsingMoveStatRestore,
+    WeatherExtender,
+    TerrainExtender,
     TerrainStatBoost,
     EndOfRoundHealing,
     EndOfRoundEffect,
@@ -286,13 +370,37 @@ module Battle::ItemEffects
     TrappingByTarget,
     OnSwitchIn,
     OnIntimidated,
-    CertainEscapeFromBattle
   ].freeze
 
   def self.trigger(hash, *args, ret: false)
     new_ret = fog_of_war_trigger(hash, *args, ret: ret)
     fog_of_war_reveal_item(hash, args) if FOG_OF_WAR_REVEALABLE_TRIGGERS.include?(hash)
     return (!new_ret.nil?) ? new_ret : ret
+  end
+
+  def self.triggerOnMissingTarget(item, user, target, move, hit_num, battle)
+    fog_of_war_triggerOnMissingTarget(item, user, target, move, hit_num, battle)
+    fog_of_war_reveal_item(OnMissingTarget, [item, user, target, move, hit_num, battle])
+  end
+
+  def self.triggerAccuracyCalcFromUser(item, mods, user, target, move, type)
+    fog_of_war_triggerAccuracyCalcFromUser(item, mods, user, target, move, type)
+    fog_of_war_reveal_item(AccuracyCalcFromUser, [item, mods, user, target, move, type])
+  end
+
+  def self.triggerAccuracyCalcFromTarget(item, mods, user, target, move, type)
+    fog_of_war_triggerAccuracyCalcFromTarget(item, mods, user, target, move, type)
+    fog_of_war_reveal_item(AccuracyCalcFromTarget, [item, mods, user, target, move, type])
+  end
+
+  def self.triggerDamageCalcFromUser(item, user, target, move, mults, power, type)
+    fog_of_war_triggerDamageCalcFromUser(item, user, target, move, mults, power, type)
+    fog_of_war_reveal_item(DamageCalcFromUser, [item, user, target, move, mults, power, type])
+  end
+
+  def self.triggerDamageCalcFromTarget(item, user, target, move, mults, power, type)
+    fog_of_war_triggerDamageCalcFromTarget(item, user, target, move, mults, power, type)
+    fog_of_war_reveal_item(DamageCalcFromTarget, [item, user, target, move, mults, power, type])
   end
 
   def self.triggerPriorityBracketUse(item, battler, battle)
@@ -350,7 +458,43 @@ module Battle::ItemEffects
     battler = fog_of_war_holder_from_trigger(hash, args)
     battle = args.find { |arg| arg.is_a?(Battle) } || battler&.battle
     return if !battler || !battle || battle.ai_item_fog_of_war? || !battler.pbOwnedByPlayer?
-    battle.reveal_player_item(battler.pokemonIndex)
+    battle.reveal_player_item(battler.pokemonIndex, fog_of_war_trigger_name(hash))
+  end
+
+  def self.fog_of_war_trigger_name(hash)
+    case hash
+    when SpeedCalc then "SpeedCalc"
+    when WeightCalc then "WeightCalc"
+    when HPHeal then "HPHeal"
+    when OnStatLoss then "OnStatLoss"
+    when StatusCure then "StatusCure"
+    when PriorityBracketChange then "PriorityBracketChange"
+    when PriorityBracketUse then "PriorityBracketUse"
+    when OnMissingTarget then "OnMissingTarget"
+    when AccuracyCalcFromUser then "AccuracyCalcFromUser"
+    when AccuracyCalcFromTarget then "AccuracyCalcFromTarget"
+    when DamageCalcFromUser then "DamageCalcFromUser"
+    when DamageCalcFromTarget then "DamageCalcFromTarget"
+    when CriticalCalcFromUser then "CriticalCalcFromUser"
+    when CriticalCalcFromTarget then "CriticalCalcFromTarget"
+    when OnBeingHit then "OnBeingHit"
+    when OnBeingHitPositiveBerry then "OnBeingHitPositiveBerry"
+    when AfterMoveUseFromTarget then "AfterMoveUseFromTarget"
+    when AfterMoveUseFromUser then "AfterMoveUseFromUser"
+    when OnEndOfUsingMove then "OnEndOfUsingMove"
+    when OnEndOfUsingMoveStatRestore then "OnEndOfUsingMoveStatRestore"
+    when WeatherExtender then "WeatherExtender"
+    when TerrainExtender then "TerrainExtender"
+    when TerrainStatBoost then "TerrainStatBoost"
+    when EndOfRoundHealing then "EndOfRoundHealing"
+    when EndOfRoundEffect then "EndOfRoundEffect"
+    when CertainSwitching then "CertainSwitching"
+    when TrappingByTarget then "TrappingByTarget"
+    when OnSwitchIn then "OnSwitchIn"
+    when OnIntimidated then "OnIntimidated"
+    when CertainEscapeFromBattle then "CertainEscapeFromBattle"
+    else hash.class.name
+    end
   end
 
   def self.fog_of_war_holder_from_trigger(hash, args)

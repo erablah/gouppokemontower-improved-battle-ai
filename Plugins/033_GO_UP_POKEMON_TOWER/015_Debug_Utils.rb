@@ -48,7 +48,6 @@ module PBDebug
   end
 
   def self.log_score_change(amt, msg)
-    return if amt == 0
     sign     = (amt > 0) ? "+" : "-"
     amt_text = sprintf("%3d", amt.abs)
     plain    = "     #{sign}#{amt_text}: #{msg}"

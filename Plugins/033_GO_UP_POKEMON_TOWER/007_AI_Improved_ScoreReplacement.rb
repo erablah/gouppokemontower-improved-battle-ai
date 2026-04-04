@@ -219,7 +219,7 @@ class Battle::AI
       bonus += 10 if best_result.user_can_ohko?
       hp_pct = best_result.user_hp.to_f / [pkmn.totalhp, 1].max
       bonus += (hp_pct * 10).round
-      bonus == 0 if hp_pct <= 0.1
+      bonus == 0 if hp_pct <= 0.25 && f_turns == 1
       PBDebug.log_score_change(bonus, "#{pkmn.name} vs #{foe_battler.name}: wins (KO turn #{u_turns}, #{(hp_pct * 100).round}% remaining)")
       return bonus
     elsif best_result.target_wins?
@@ -376,6 +376,40 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
   }
 )
 
+Battle::AI::Handlers::ScoreReplacement.add(:expected_foe_move_resistance,
+  proc { |idxBattler, pkmn, score, battle, ai|
+    cached_results = ai.replacement_1v1_results(idxBattler, pkmn)
+    next score if !cached_results || cached_results.empty?
+
+    ai.each_foe_battler(ai.user.side) do |b, _i|
+      foe_results = cached_results[b.index]
+      next unless foe_results
+
+      expected_into_current = foe_results[:foe_vs_current]
+      next unless expected_into_current
+
+      expected_into_reserve = foe_results[:reserve_candidates]&.find do |move_data|
+        move_data[:key] == expected_into_current[:key]
+      end
+      next unless expected_into_reserve
+
+      reserve_hp = [pkmn.hp, 1].max
+      reserve_damage = expected_into_reserve[:dmg].to_i
+      move_name = expected_into_current[:move]&.name || expected_into_current[:base_move]&.name || "expected move"
+
+      if reserve_damage <= 0
+        score += 10
+        PBDebug.log_score_change(10, "#{pkmn.name} vs #{b.name}: #{move_name} fails or does no damage on switch-in")
+      elsif reserve_damage < (reserve_hp * 0.2)
+        score += 5
+        pct = (100.0 * reserve_damage / reserve_hp).round(1)
+        PBDebug.log_score_change(5, "#{pkmn.name} vs #{b.name}: #{move_name} only does #{pct}% on switch-in")
+      end
+    end
+    next score
+  }
+)
+
 Battle::AI::Handlers::ScoreReplacement.add(:slow_pivot_followup,
   proc { |idxBattler, pkmn, score, battle, ai|
     party = battle.pbParty(idxBattler)
@@ -420,12 +454,12 @@ Battle::AI::Handlers::ScoreReplacement.add(:hazard_clearing,
     best_bonus = 0
     clear_moves.each do |m|
       move_survives = cached_results.any? do |_foe_index, foe_results|
-        ai.replacement_move_survives?(foe_results, m.id, status_move: m.statusMove?)
+        ai.replacement_move_survives?(foe_results, m.id, status_move: m.status_move?)
       end
       next unless move_survives
 
       bonus = hazard_bonus
-      bonus += 3 if m.damagingMove?
+      bonus += 3 if !m.status_move?
       if ai.safe_function_code(m) == "LowerTargetEvasion1RemoveSideEffects"
         foe_has_hazards = false
         ai.each_foe_battler(ai.user.side) do |b, _i|

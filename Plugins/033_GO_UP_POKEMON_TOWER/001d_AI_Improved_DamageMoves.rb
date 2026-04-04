@@ -312,7 +312,7 @@ class Battle::AI
 
     if lethal_moves.length > 1
       lethal_moves.each do |md|
-        md[:lethal_score] = _lethal_move_score(md[:move], attacker)
+        md[:lethal_score] = _lethal_move_score(md, attacker, target)
         md[:lethal_weight] = _lethal_move_weight(md[:lethal_score])
       end
       selected = _pick_weighted_lethal_move(lethal_moves)
@@ -321,12 +321,14 @@ class Battle::AI
     end
 
     best = lethal_moves.max_by { |md| md[:dmg] }
-    best[:lethal_score] = _lethal_move_score(best[:move], attacker) if best
+    best[:lethal_score] = _lethal_move_score(best, attacker, target) if best
     _cache_best_damage_move(dmg_data, cache_scope, lethal_threshold, best)
     best
   end
 
-  def _lethal_move_score(move, attacker)
+  def _lethal_move_score(move_data, attacker, target = nil)
+    move = move_data.is_a?(Hash) ? move_data[:move] : move_data
+    dmg  = move_data.is_a?(Hash) ? move_data[:dmg].to_i : 0
     scored_move = _move_for_lethal_scoring(move, attacker)
     score = _move_priority(scored_move, attacker) * 100
     score -= 50 if scored_move.function_code == "AttackAndSkipNextTurn"
@@ -337,7 +339,21 @@ class Battle::AI
 
     contrary = attacker && attacker.respond_to?(:hasActiveAbility?) && attacker.hasActiveAbility?(:CONTRARY)
     score += _lethal_stat_stage_score(scored_move, contrary)
+    score += _lethal_overkill_score(dmg, target)
     score
+  end
+
+  def _lethal_overkill_score(dmg, target)
+    return 0 if dmg <= 0 || !target || !target.respond_to?(:hp) || !target.respond_to?(:totalhp)
+
+    hp_floor = [target.hp.to_i, 1].max
+    capped_damage = [dmg.to_i, (target.totalhp * 1.5).floor].min
+    return 0 if capped_damage <= hp_floor
+
+    # Let overkill matter for lethal move prediction, but taper it by capping
+    # the rewarded damage at 150% of the target's total HP.
+    overkill = capped_damage - hp_floor
+    [(overkill.to_f / [target.totalhp, 1].max * 40).round, 40].min
   end
 
   def _move_for_lethal_scoring(move, attacker)

@@ -168,7 +168,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
 
       # Unaware ignores all stat stage changes — setup is wasted
       if b.has_active_ability?(:UNAWARE)
-        foe_bonus = is_status ? -40 : 0
+        foe_bonus = is_status ? -100 : 0
         PBDebug.log_ai("[smart_setup] vs #{b.name}: foe has Unaware → #{foe_bonus}")
         total_bonus += foe_bonus
         next
@@ -465,13 +465,24 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_recovery,
     # Check if foe can 2HKO — recovery is futile
     summary = ai.matchup_summary
     max_foe_dmg = summary[:max_foe_dmg]
-    PBDebug.log_ai("[smart_recovery] max foe dmg = #{max_foe_dmg} (#{(100.0 * max_foe_dmg / [1, battler.totalhp].max).round(1)}% totalhp, threshold 55%)")
+    foe_damage_ratio = max_foe_dmg.to_f / [1, battler.totalhp].max
+    PBDebug.log_ai("[smart_recovery] max foe dmg = #{max_foe_dmg} (#{(100.0 * foe_damage_ratio).round(1)}% totalhp, reward threshold 50%, fail threshold 60%)")
 
-    if max_foe_dmg >= battler.totalhp * 0.55
+    if max_foe_dmg >= battler.totalhp * 0.6
       score -= 60
       PBDebug.log_score_change(-60, "Recovery futile: foe can 2HKO (#{(100 * max_foe_dmg / battler.totalhp).to_i}% per hit).")
       next score
     end
+
+    if hp_ratio > 0.70
+      penalty = (15 + (20 * (hp_ratio - 0.70) / 0.30)).to_i.clamp(15, 35)
+      score -= penalty
+      PBDebug.log_score_change(-penalty, "Smart recovery penalty at #{(hp_ratio * 100).to_i}% HP.")
+    end
+
+    next score if foe_damage_ratio > 0.50
+
+    score += 20
 
     # Good recovery range: 40~60% HP
     if hp_ratio <= 0.60 && hp_ratio >= 0.40

@@ -41,8 +41,6 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:one_v_one_move_score,
     score += base
     PBDebug.log_score_change(base, "1v1: base damage (#{user_dmg}/#{target.hp})")
 
-    next score if is_pivot  # pivot moves: base damage + survival check only
-
     # --- 1v1 simulation from matchup_summary cache ---
     result = foe_entry[:move_results_by_id]&.dig(move.id) ||
              foe_entry[:move_results]&.dig(move.id)
@@ -60,6 +58,8 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:one_v_one_move_score,
       score -= 100
       PBDebug.log_score_change(-100, "1v1: foe KOs before user acts")
     end
+
+    next score if is_pivot  # pivot moves: base damage + survival check only
 
     # B) User loses the 1v1 — early return with penalty, score boosts for damage are already applied
     unless result.user_wins? || foe_pivoted_out
