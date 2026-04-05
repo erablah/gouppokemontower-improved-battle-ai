@@ -141,8 +141,11 @@ class Battle::AI
     # Foe mega evolutions
     @battle.battlers.each do |b|
       next unless b && !b.fainted? && b.opposes?(idxBattler)
-      next unless (@battle.pbRegisteredMegaEvolution?(b.index) rescue false)
       next if b.mega?
+      # For foe previews, don't depend on battle registration.
+      # If the foe currently has access to its Mega form via the correct
+      # Mega Stone or Mega move, simulate the matchup as Mega.
+      next unless b.pokemon&.hasMegaForm?
       prev_form = b.form
       b.pokemon.makeMega
       b.form = b.pokemon.form
