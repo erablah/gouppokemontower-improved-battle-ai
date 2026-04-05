@@ -1,7 +1,7 @@
 Name       = [DBK] Animated Pokémon System
 Version    = 1.1.1
 Essentials = 21.1
-Requires   = Deluxe Battle Kit, 1.2.8
+Requires   = Deluxe Battle Kit, 1.2.9
 Optional   = [DBK] Dynamax, 1.1.2
 Optional   = [DBK] Terastallization, 1.1.5
 Conflicts  = Generation 8 Pack Scripts

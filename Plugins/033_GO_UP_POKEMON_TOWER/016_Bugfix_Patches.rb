@@ -27,3 +27,8 @@ class Battle::AI::AITrainer
     end
   end
 end
+
+
+module Settings
+  ANIMATION_FRAME_DELAY = 240
+end
