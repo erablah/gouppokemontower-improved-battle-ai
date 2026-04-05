@@ -181,7 +181,7 @@ class Battle::AI
     return 0 if foe_results[:skip_scoring] || foe_results[:skipped_reason]
 
     if foe_results[:reserve_candidates].empty?
-      if pkmn.moves.any? { |m| m.statusMove? && reserve_status_move_survives?(@user.index, pkmn, foe_battler, m.id) }
+      if pkmn.moves.any? { |m| m.status_move? && reserve_status_move_survives?(@user.index, pkmn, foe_battler, m.id) }
         PBDebug.log_score_change(0, "#{pkmn.name} vs #{foe_battler.name}: no damaging moves, but can act with status")
         return 0
       end

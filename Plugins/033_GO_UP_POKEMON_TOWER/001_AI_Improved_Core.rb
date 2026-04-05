@@ -3,6 +3,36 @@
 # - DBK / Doubles / Raid compatible
 #===============================================================================
 
+#===============================================================================
+# Override: AI chooses actions BEFORE the player, not after.
+#===============================================================================
+class Battle
+  def pbCommandPhase
+    @command_phase = true
+    @scene.pbBeginCommandPhase
+    # Reset choices if commands can be shown
+    @battlers.each_with_index do |b, i|
+      next if !b
+      pbClearChoice(i) if pbCanShowCommands?(i)
+    end
+    # Reset choices to perform Mega Evolution if it wasn't done somehow
+    2.times do |side|
+      @megaEvolution[side].each_with_index do |megaEvo, i|
+        @megaEvolution[side][i] = -1 if megaEvo >= 0
+      end
+    end
+    # Choose actions for the round (AI first, then player)
+    pbCommandPhaseLoop(false)   # AI chooses their actions
+    if @decision != 0   # Battle ended, stop choosing actions
+      @command_phase = false
+      return
+    end
+    pbCommandPhaseLoop(true)    # Player chooses their actions
+    @command_phase = false
+  end
+end
+
+
 class Battle::Battler
   alias _tower_fog_pbProcessTurn pbProcessTurn
   def pbProcessTurn(choice, tryFlee = true)
@@ -393,7 +423,7 @@ class Battle::AI
   #---------------------------------------------------------------------------
   def pbDefaultChooseEnemyCommand(idxBattler)
     with_decision_cache do
-      show_thinking_indicator
+      # show_thinking_indicator
       set_up(idxBattler)
       # 1. Special commands (Mega, Dynamax, etc.)
       ret = false
@@ -450,7 +480,7 @@ class Battle::AI
         restore_registered_transforms(sim)
       end
     ensure
-      hide_thinking_indicator
+      # hide_thinking_indicator
     end
   end
 

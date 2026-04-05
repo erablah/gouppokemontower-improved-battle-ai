@@ -56,12 +56,8 @@ class Battle::AI
     return unless @_thinking_shown
     scene = @battle.scene
     return unless scene.is_a?(Battle::Scene)
-    scene.sprites["messageBox"]&.visible = false
     msgw = scene.sprites["messageWindow"]
-    if msgw
-      msgw.text = ""
-      msgw.visible = false
-    end
+    msgw&.text = ""
     @_thinking_shown = false
   end
 
