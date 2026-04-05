@@ -24,7 +24,10 @@ class Battle::AI
         max_turns: 1
       )
       tick_scene
-      status_survival[move.id] = status_move_succeeded_in_result?(result, target_battler.index)
+      status_survival[move.id] = {
+        success: status_move_succeeded_in_result?(result, target_battler.index),
+        result:  result
+      }
     end
     status_survival
   end
@@ -136,7 +139,10 @@ class Battle::AI
         sim: sim, max_turns: 1
       )
       tick_scene
-      status_move_succeeded_in_result?(res, target_index)
+      {
+        success: status_move_succeeded_in_result?(res, target_index),
+        result:  res
+      }
     end
   end
 
@@ -146,7 +152,16 @@ class Battle::AI
     return false unless foe_entry
 
     cached = foe_entry[:status_survival][m_id]
-    cached == true
+    cached.is_a?(Hash) ? cached[:success] == true : cached == true
+  end
+
+  def current_status_move_sim_result(target_battler, m_id)
+    summary = matchup_summary
+    foe_entry = summary[:foes][target_battler.index]
+    return nil unless foe_entry
+
+    cached = foe_entry[:status_survival][m_id]
+    cached.is_a?(Hash) ? cached[:result] : nil
   end
 
   #---------------------------------------------------------------------------
@@ -160,19 +175,42 @@ class Battle::AI
     cached_foe_results = replacement_1v1_result_for_foe(idxBattler, pkmn, target_battler)
     return true unless cached_foe_results
 
-    cached_status_survival = cached_foe_results&.dig(:status_move_survival, m_id)
-    return cached_status_survival == true unless cached_status_survival.nil?
+    cached_entry = cached_foe_results&.dig(:status_move_survival, m_id)
+    if cached_entry.is_a?(Hash)
+      return cached_entry[:success] == true
+    elsif !cached_entry.nil?
+      return cached_entry == true
+    end
 
     pre_switch = { idxBattler => party_index }
     foe_vs_reserve = cached_foe_results[:foe_vs_reserve]
     foe_vs_reserve_action = foe_vs_reserve ? simulation_action_for_move_data(foe_vs_reserve, pkmn) : nil
     foe_vs_current = cached_foe_results[:foe_vs_current]
     foe_vs_current_action = foe_vs_current ? simulation_action_for_move_data(foe_vs_current, @user) : foe_vs_reserve_action
-    succeeds = reserve_status_move_success(
+    status_result = reserve_status_move_success(
       idxBattler, target_battler.index, pre_switch, foe_vs_reserve_action, foe_vs_current_action, m_id
-    ) == true
-    cached_foe_results[:status_move_survival][m_id] = succeeds
-    succeeds
+    )
+    cached_foe_results[:status_move_survival][m_id] = status_result
+    status_result.is_a?(Hash) ? status_result[:success] == true : status_result == true
+  end
+
+  def reserve_status_move_sim_result(idxBattler, pkmn, target_battler, m_id)
+    party_index = @battle.pbParty(idxBattler).index(pkmn)
+    return nil unless party_index
+
+    ensure_replacement_1v1_results(idxBattler, pkmn)
+    cached_foe_results = replacement_1v1_result_for_foe(idxBattler, pkmn, target_battler)
+    return nil unless cached_foe_results
+
+    cached_entry = cached_foe_results&.dig(:status_move_survival, m_id)
+    if cached_entry.is_a?(Hash)
+      return cached_entry[:result]
+    end
+
+    # Trigger the sim to populate cache
+    reserve_status_move_succeeds?(idxBattler, pkmn, target_battler, m_id)
+    cached_entry = cached_foe_results&.dig(:status_move_survival, m_id)
+    cached_entry.is_a?(Hash) ? cached_entry[:result] : nil
   end
 
 end

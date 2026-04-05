@@ -441,15 +441,6 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("DisableTargetStatusMoves
       score += 5
     end
 
-    foe_entry = ai.matchup_summary[:foes][target.index]
-    if foe_entry
-      will_get_koed = foe_entry[:sim_result]&.target_can_ohko?
-      if will_get_koed
-        score -= 25
-        PBDebug.log_score_change(-25, "Taunt penalty: user gets KO'd before it can capitalize")
-      end
-    end
-
     PBDebug.log_score_change(score - 100, "Taunt: #{status_count} status moves#{has_setup ? ', has setup' : ''}#{has_recovery ? ', has recovery' : ''}.")
     next score
   }

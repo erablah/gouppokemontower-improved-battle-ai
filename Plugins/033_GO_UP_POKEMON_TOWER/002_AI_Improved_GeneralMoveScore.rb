@@ -475,18 +475,16 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_recovery,
     end
 
     if hp_ratio > 0.70
-      penalty = (15 + (20 * (hp_ratio - 0.70) / 0.30)).to_i.clamp(15, 35)
+      penalty = (10 + (20 * (hp_ratio - 0.70) / 0.30)).to_i.clamp(15, 35)
       score -= penalty
       PBDebug.log_score_change(-penalty, "Smart recovery penalty at #{(hp_ratio * 100).to_i}% HP.")
     end
 
     next score if foe_damage_ratio > 0.50
 
-    score += 20
-
     # Good recovery range: 40~60% HP
     if hp_ratio <= 0.60 && hp_ratio >= 0.40
-      bonus = (15 + (20 * (0.60 - hp_ratio) / 0.20)).to_i  # 15~35
+      bonus = (10 + (20 * (0.60 - hp_ratio) / 0.20)).to_i  # 15~35
       score += bonus
       PBDebug.log_score_change(bonus, "Smart recovery at #{(hp_ratio * 100).to_i}% HP.")
     end
@@ -615,6 +613,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:status_survival_check_global,
 
     summary = ai.matchup_summary
     all_failed = true
+    any_dies = false
     has_foes = false
 
     ai.each_foe_battler(user.side) do |b, _i|
@@ -625,13 +624,17 @@ Battle::AI::Handlers::GeneralMoveScore.add(:status_survival_check_global,
       succeeds = ai.current_status_move_succeeds?(b, move.id)
       if succeeds == true
         all_failed = false
-        break
+        result = ai.current_status_move_sim_result(b, move.id)
+        any_dies = true if result&.user_fainted
       end
     end
 
     if has_foes && all_failed
       score -= 100
       PBDebug.log_score_change(-100, "Global survival: status move fails or user KO'd before acting vs all foes")
+    elsif any_dies
+      score -= 30
+      PBDebug.log_score_change(-30, "Global survival: user dies on the turn it uses status move")
     end
 
     next score

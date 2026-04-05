@@ -76,7 +76,8 @@ class Battle::AI
   def replacement_move_survives?(foe_results, move_id, status_move: false)
     return false unless foe_results
     if status_move
-      return foe_results[:status_move_survival]&.dig(move_id) == true
+      cached = foe_results[:status_move_survival]&.dig(move_id)
+      return cached.is_a?(Hash) ? cached[:success] == true : cached == true
     end
 
     damaging_result = replacement_1v1_move_result(foe_results, move_id)
