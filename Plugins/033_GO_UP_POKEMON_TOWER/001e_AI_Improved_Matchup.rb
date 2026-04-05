@@ -3,6 +3,31 @@
 #===============================================================================
 
 class Battle::AI
+  def status_move_succeeded_in_result?(result, target_index)
+    result.user_succeeded ||
+      (result.terminated_by_switch &&
+       result.switch_type == :live_switch &&
+       result.switch_battler_index == target_index &&
+       !result.user_fainted)
+  end
+
+  def eager_current_status_move_success(target_battler, foe_action)
+    status_survival = {}
+    status_moves = @user.moves.select { |move| move&.statusMove? }
+    return status_survival if status_moves.empty?
+
+    foe_actions = foe_action ? [foe_action] : []
+    status_moves.each do |move|
+      result = simulate_battle(
+        @user.index, target_battler.index,
+        [move.id], foe_actions,
+        max_turns: 1
+      )
+      tick_scene
+      status_survival[move.id] = status_move_succeeded_in_result?(result, target_battler.index)
+    end
+    status_survival
+  end
 
   #---------------------------------------------------------------------------
   # Returns a cached summary of KO/speed data for all current battler pairs.
@@ -66,8 +91,7 @@ class Battle::AI
           sim_result:    sim_result,
           move_results:  move_results,
           move_results_by_id: move_results_by_id,
-          status_survival: {},
-          status_foe_action: foe_action
+          status_survival: eager_current_status_move_success(b, foe_action)
         }
         summary[:foes][b.index] = foe_entry
         summary[:max_foe_dmg] = [summary[:max_foe_dmg], foe_best_dmg].max
@@ -77,10 +101,9 @@ class Battle::AI
   end
 
   #---------------------------------------------------------------------------
-  # [NEW] Lazy per-move status survival check for reserve switch-ins.
-  # Only simulates the specific move requested, caching individual results.
+  # Lazy per-move status success check for reserve switch-ins.
   #---------------------------------------------------------------------------
-  def status_move_survival_with_switch(attacker_index, target_index, pre_switch, foe_lethal_action, foe_vs_current_action, m_id)
+  def reserve_status_move_success(attacker_index, target_index, pre_switch, foe_vs_reserve_action, foe_vs_current_action, move_id)
     if pre_switch[attacker_index]
       pkmn = @battle.pbParty(attacker_index)[pre_switch[attacker_index]]
       return false unless pkmn
@@ -91,12 +114,11 @@ class Battle::AI
 
     tgt_id = pre_switch[target_index] ? @battle.pbParty(target_index)[pre_switch[target_index]].personalID : @battle.battlers[target_index].pokemon&.personalID
 
-    key = [:status_switch, attacker_index, target_index, @battle.turnCount, atk_id, tgt_id, foe_lethal_action, foe_vs_current_action, m_id]
+    key = [:status_switch, attacker_index, target_index, @battle.turnCount, atk_id, tgt_id, foe_vs_reserve_action, foe_vs_current_action, move_id]
     (@_ai_dmg_cache ||= {})[key] ||= begin
       voluntary_switch = @battle.command_phase
       party_index = pre_switch[attacker_index]
 
-      PBDebug.log("status move survival)")
       if voluntary_switch && party_index
         sim = create_switched_sim(
            pre_switch,
@@ -107,50 +129,30 @@ class Battle::AI
       else
         sim = create_switched_sim(pre_switch)
       end
-      sim_foe_actions = foe_lethal_action ? [foe_lethal_action] : []
+      sim_foe_actions = foe_vs_reserve_action ? [foe_vs_reserve_action] : []
       res = simulate_battle(
         attacker_index, target_index,
-        [m_id], sim_foe_actions,
+        [move_id], sim_foe_actions,
         sim: sim, max_turns: 1
       )
       tick_scene
-      res.user_succeeded ||
-        (res.terminated_by_switch &&
-         res.switch_type == :live_switch &&
-         res.switch_battler_index == target_index &&
-         !res.user_fainted)
+      status_move_succeeded_in_result?(res, target_index)
     end
   end
 
-  def current_status_move_survives?(target_battler, m_id)
+  def current_status_move_succeeds?(target_battler, m_id)
     summary = matchup_summary
     foe_entry = summary[:foes][target_battler.index]
     return false unless foe_entry
 
     cached = foe_entry[:status_survival][m_id]
-    return cached == true unless cached.nil?
-
-    foe_action = foe_entry[:status_foe_action]
-    foe_actions = foe_action ? [foe_action] : []
-    res = simulate_battle(
-      @user.index, target_battler.index,
-      [m_id], foe_actions,
-      max_turns: 1
-    )
-    tick_scene
-    survives = res.user_succeeded ||
-      (res.terminated_by_switch &&
-       res.switch_type == :live_switch &&
-       res.switch_battler_index == target_battler.index &&
-       !res.user_fainted)
-    foe_entry[:status_survival][m_id] = survives
-    survives
+    cached == true
   end
 
   #---------------------------------------------------------------------------
-  # [NEW] Exposes whether a specific reserve status move survives its switch-in
+  # Exposes whether a specific reserve status move succeeds after its switch-in.
   #---------------------------------------------------------------------------
-  def reserve_status_move_survives?(idxBattler, pkmn, target_battler, m_id)
+  def reserve_status_move_succeeds?(idxBattler, pkmn, target_battler, m_id)
     party_index = @battle.pbParty(idxBattler).index(pkmn)
     return true unless party_index
 
@@ -166,11 +168,11 @@ class Battle::AI
     foe_vs_reserve_action = foe_vs_reserve ? simulation_action_for_move_data(foe_vs_reserve, pkmn) : nil
     foe_vs_current = cached_foe_results[:foe_vs_current]
     foe_vs_current_action = foe_vs_current ? simulation_action_for_move_data(foe_vs_current, @user) : foe_vs_reserve_action
-    survives = status_move_survival_with_switch(
+    succeeds = reserve_status_move_success(
       idxBattler, target_battler.index, pre_switch, foe_vs_reserve_action, foe_vs_current_action, m_id
     ) == true
-    cached_foe_results[:status_move_survival][m_id] = survives
-    survives
+    cached_foe_results[:status_move_survival][m_id] = succeeds
+    succeeds
   end
 
 end

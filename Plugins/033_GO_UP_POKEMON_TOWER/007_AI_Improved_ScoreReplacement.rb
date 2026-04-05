@@ -131,9 +131,9 @@ class Battle::AI
         next
       end
 
-      reserve_sim_candidates = reserve_candidates.each_with_index.select do |md, idx|
-        idx == 0 || md[:dmg].to_i > 1
-      end.map(&:first)
+      # Only precompute the top damaging line for replacement scoring.
+      # Other moves are simulated on-demand by explicit callers that need them.
+      reserve_sim_candidates = reserve_candidates.first ? [reserve_candidates.first] : []
 
       reserve_sim_candidates.each do |md|
         move_action = simulation_action_for_move_data(md, b)
@@ -181,7 +181,7 @@ class Battle::AI
     return 0 if foe_results[:skip_scoring] || foe_results[:skipped_reason]
 
     if foe_results[:reserve_candidates].empty?
-      if pkmn.moves.any? { |m| m.status_move? && reserve_status_move_survives?(@user.index, pkmn, foe_battler, m.id) }
+      if pkmn.moves.any? { |m| m.status_move? && reserve_status_move_succeeds?(@user.index, pkmn, foe_battler, m.id) }
         PBDebug.log_score_change(0, "#{pkmn.name} vs #{foe_battler.name}: no damaging moves, but can act with status")
         return 0
       end
@@ -437,7 +437,7 @@ Battle::AI::Handlers::ScoreReplacement.add(:hazard_clearing,
     clear_moves.each do |m|
       move_survives = cached_results.any? do |foe_index, foe_results|
         if m.status_move?
-          ai.reserve_status_move_survives?(idxBattler, pkmn, battle.battlers[foe_index], m.id)
+          ai.reserve_status_move_succeeds?(idxBattler, pkmn, battle.battlers[foe_index], m.id)
         else
           ai.replacement_move_survives?(foe_results, m.id)
         end
@@ -495,11 +495,20 @@ Battle::AI::Handlers::ScoreReplacement.add(:utility_switch_in,
     foe_total_boosts = 0
     foe_has_screens = false
     foe_has_status_moves = false
+    foe_has_boosted_target = false
+    foe_has_fast_target = false
+    foe_has_tanky_target = false
+    foe_has_physical_target = false
 
-    ai.each_foe_battler(ai.user.side) do |b, i|
+    cached_results = ai.ensure_replacement_1v1_results(idxBattler, pkmn)
+
+    ai.each_foe_battler(ai.user.side) do |b, _i|
+      foe_positive_boosts = 0
       GameData::Stat.each_battle do |s|
         foe_total_boosts += b.stages[s.id] if b.stages[s.id] > 0
+        foe_positive_boosts += b.stages[s.id] if b.stages[s.id] > 0
       end
+      foe_has_boosted_target ||= foe_positive_boosts >= 2
       foe_side = b.pbOwnSide
       foe_has_screens = true if foe_side.effects[PBEffects::Reflect] > 0 ||
                                  foe_side.effects[PBEffects::LightScreen] > 0 ||
@@ -507,18 +516,55 @@ Battle::AI::Handlers::ScoreReplacement.add(:utility_switch_in,
       status_count = 0
       ai.known_foe_moves(b).each { |m| status_count += 1 if m.statusMove? }
       foe_has_status_moves = true if status_count >= 2
+
+      visible_moves = ai.known_foe_moves(b)
+      has_physical = visible_moves.any? { |m| m.physicalMove? }
+      foe_has_physical_target ||= has_physical && !b.has_active_ability?(:GUTS)
+
+      foe_has_fast_target ||= b.rough_stat(:SPEED) >= 110
+
+      foe_results = cached_results[b.index] if cached_results
+      best_reserve_damage = foe_results&.dig(:reserve_candidates)&.first&.dig(:dmg).to_i
+      foe_has_tanky_target ||= best_reserve_damage > 0 && best_reserve_damage < (b.totalhp * 0.4)
     end
 
-    survives_move = proc { |m_id|
+    succeeds_move = proc { |m_id|
       s_val = true
       ai.each_foe_battler(ai.user.side) do |fb, _|
-        if !ai.reserve_status_move_survives?(idxBattler, pkmn, fb, m_id)
+        if !ai.reserve_status_move_succeeds?(idxBattler, pkmn, fb, m_id)
           s_val = false
           break
         end
       end
       s_val
     }
+
+    pkmn.moves.each do |m|
+      next unless m.status_move?
+      next unless succeeds_move.call(m.id)
+
+      case m.function_code
+      when "BurnTarget"
+        next unless foe_has_physical_target
+        score += 12
+        PBDebug.log_score_change(12, "Utility: #{m.name} vs physical foe")
+        break
+      when "ParalyzeTarget", "ParalyzeTargetIfNotTypeImmune"
+        next unless foe_has_boosted_target || foe_has_fast_target 
+        bonus = 8
+        bonus += 4 if foe_has_fast_target || foe_has_boosted_target
+        score += bonus
+        PBDebug.log_score_change(bonus, "Utility: #{m.name} vs boosted/fast/tanky foe")
+        break
+      when "PoisonTarget", "BadPoisonTarget"
+        next unless foe_has_boosted_target || foe_has_tanky_target
+        bonus = 8
+        bonus += 6 if foe_has_tanky_target || foe_has_boosted_target
+        score += bonus
+        PBDebug.log_score_change(bonus, "Utility: #{m.name} vs boosted/fast/tanky foe")
+        break
+      end
+    end
 
     # Unaware vs boosted foe
     if foe_total_boosts >= 2 && pkmn.hasAbility?(:UNAWARE)
@@ -531,7 +577,7 @@ Battle::AI::Handlers::ScoreReplacement.add(:utility_switch_in,
     if foe_total_boosts >= 2
       pkmn.moves.each do |m|
         if ["ResetAllBattlersStatStages", "ResetTargetStatStages"].include?(m.function_code)
-          next unless survives_move.call(m.id)
+          next unless succeeds_move.call(m.id)
           bonus = 20 + (foe_total_boosts * 2)
           score += bonus
           PBDebug.log_score_change(bonus, "Utility: #{m.name} vs +#{foe_total_boosts} boosts")
@@ -544,7 +590,7 @@ Battle::AI::Handlers::ScoreReplacement.add(:utility_switch_in,
     if foe_total_boosts >= 2
       pkmn.moves.each do |m|
         if ["SwitchOutTargetStatusMove", "SwitchOutTargetDamagingMove"].include?(m.function_code)
-          next unless survives_move.call(m.id)
+          next unless succeeds_move.call(m.id)
           bonus = 20 + (foe_total_boosts * 2)
           ai.each_foe_battler(ai.user.side) do |b, _|
             foe_side = b.pbOwnSide
@@ -563,7 +609,7 @@ Battle::AI::Handlers::ScoreReplacement.add(:utility_switch_in,
     if foe_has_status_moves
       pkmn.moves.each do |m|
         if m.function_code == "DisableTargetStatusMoves"
-          next unless survives_move.call(m.id)
+          next unless succeeds_move.call(m.id)
           score += 10
           PBDebug.log_score_change(10, "Utility: Taunt vs status-heavy foe")
           break
@@ -575,14 +621,13 @@ Battle::AI::Handlers::ScoreReplacement.add(:utility_switch_in,
     if foe_has_screens
       pkmn.moves.each do |m|
         if m.function_code == "RemoveScreens"
-          next unless survives_move.call(m.id)
+          next unless succeeds_move.call(m.id)
           score += 10
           PBDebug.log_score_change(10, "Utility: Brick Break vs screens")
           break
         end
       end
     end
-
     next score
   }
 )

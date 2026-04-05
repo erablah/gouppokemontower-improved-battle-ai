@@ -398,16 +398,13 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("ParalyzeFlinchTarget",
 #===============================================================================
 Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("DisableTargetStatusMoves",
   proc { |score, move, user, target, ai, battle|
-    next Battle::AI::MOVE_USELESS_SCORE if !target.check_for_move { |m| m.statusMove? }
-
-    # Already taunted
-    next Battle::AI::MOVE_USELESS_SCORE if target.effects[PBEffects::Taunt] > 0
+    next Battle::AI::MOVE_FAIL_SCORE if !target.check_for_move { |m| m.statusMove? }
 
     # Not worth on Choice-locked targets
     if !target.effects[PBEffects::ChoiceBand]
       if target.has_active_item?([:CHOICEBAND, :CHOICESPECS, :CHOICESCARF]) ||
          target.has_active_ability?(:GORILLATACTICS)
-        next Battle::AI::MOVE_USELESS_SCORE
+        next Battle::AI::MOVE_FAIL_SCORE
       end
     end
 
@@ -442,6 +439,15 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("DisableTargetStatusMoves
          m.statusMove? && m.function_code.start_with?("Protect")
        }
       score += 5
+    end
+
+    foe_entry = ai.matchup_summary[:foes][target.index]
+    if foe_entry
+      will_get_koed = foe_entry[:sim_result]&.target_can_ohko?
+      if will_get_koed
+        score -= 25
+        PBDebug.log_score_change(-25, "Taunt penalty: user gets KO'd before it can capitalize")
+      end
     end
 
     PBDebug.log_score_change(score - 100, "Taunt: #{status_count} status moves#{has_setup ? ', has setup' : ''}#{has_recovery ? ', has recovery' : ''}.")
@@ -483,9 +489,8 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("SleepTargetNextTurn",
     foe_side = target.pbOwnSide
     hazard_value = 0
     hazard_value += 8 if foe_side.effects[PBEffects::StealthRock]
-    hazard_value += 4 * foe_side.effects[PBEffects::Spikes]
-    hazard_value += 4 * foe_side.effects[PBEffects::ToxicSpikes]
-    hazard_value += 5 if foe_side.effects[PBEffects::StickyWeb]
+    hazard_value += 4 if foe_side.effects[PBEffects::Spikes]
+    hazard_value += 4 if foe_side.effects[PBEffects::ToxicSpikes]
 
     if hazard_value > 0
       score += hazard_value

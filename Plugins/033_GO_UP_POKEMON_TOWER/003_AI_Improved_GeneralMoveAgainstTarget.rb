@@ -35,6 +35,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:one_v_one_move_score,
                battle.pbCanChooseNonActive?(user.battler.index)
 
     user_dmg = ai.damage_entry_for_move(user, target, move)&.dig(:dmg) || 0
+    ignore_bad_loss_returns = user_dmg >= target.hp && ai.pbAIRandom(100) < 20
 
     # A) Base damage scaling: 0 to +20 based on damage relative to effective HP
     base = ([20.0 * user_dmg / target.hp, 20].min).to_i
@@ -45,6 +46,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:one_v_one_move_score,
     result = foe_entry[:move_results_by_id]&.dig(move.id) ||
              foe_entry[:move_results]&.dig(move.id)
     next score unless result
+
     interrupted_by_live_switch = result.terminated_by_switch &&
                                  result.switch_type == :live_switch
     foe_pivoted_out = result.terminated_by_switch &&
@@ -52,17 +54,17 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:one_v_one_move_score,
                       result.switch_battler_index == target.index &&
                       !result.user_fainted
 
-    # The per-move simulation already knows whether the foe KOs before the
-    # user gets a turn, so prefer that over a separate speed/priority shortcut.
-    if result.target_can_ohko? && !interrupted_by_live_switch
+    if result.target_can_ohko? && !interrupted_by_live_switch && !ignore_bad_loss_returns
       score -= 100
       PBDebug.log_score_change(-100, "1v1: foe KOs before user acts")
+    elsif result.target_can_ohko? && !interrupted_by_live_switch
+      PBDebug.log_score_change(0, "1v1: ignoring early loss check on lethal damage roll")
     end
 
     next score if is_pivot  # pivot moves: base damage + survival check only
 
     # B) User loses the 1v1 — early return with penalty, score boosts for damage are already applied
-    unless result.user_wins? || foe_pivoted_out
+    unless result.user_wins? || foe_pivoted_out || ignore_bad_loss_returns
       score -= 50
       PBDebug.log_score_change(-50, "1v1: user loses matchup")
       next score

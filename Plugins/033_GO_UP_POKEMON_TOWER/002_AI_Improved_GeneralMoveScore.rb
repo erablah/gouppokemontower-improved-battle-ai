@@ -622,8 +622,8 @@ Battle::AI::Handlers::GeneralMoveScore.add(:status_survival_check_global,
       foe_entry = summary[:foes][b.index]
       next unless foe_entry
 
-      survives = ai.current_status_move_survives?(b, move.id)
-      if survives == true
+      succeeds = ai.current_status_move_succeeds?(b, move.id)
+      if succeeds == true
         all_failed = false
         break
       end

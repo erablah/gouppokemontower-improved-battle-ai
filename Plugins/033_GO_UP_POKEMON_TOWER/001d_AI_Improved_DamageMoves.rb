@@ -48,11 +48,16 @@ class Battle::AI
     item = GameData::Item.try_get(item_id)
     return nil unless item&.is_zcrystal?
 
-    pkmn = if holder.is_a?(Battle::Battler)
-             holder.effects[PBEffects::TransformPokemon] || holder.pokemon
-           else
-             holder
-           end
+    pkmn =
+      if holder.is_a?(Battle::Battler)
+        holder.effects[PBEffects::TransformPokemon] || holder.pokemon
+      elsif holder.respond_to?(:battler) && holder.battler.is_a?(Battle::Battler)
+        holder.battler.effects[PBEffects::TransformPokemon] || holder.battler.pokemon
+      elsif holder.respond_to?(:pokemon)
+        holder.pokemon
+      else
+        holder
+      end
     return nil unless pkmn
 
     new_id = base_move.get_compatible_zmove(item, pkmn)
@@ -455,6 +460,14 @@ class Battle::AI
       tick_scene
     end
     cache[fwd_key] = fwd
+    attacker_name = sim_a.name
+    target_name = sim_b.name
+    summary = fwd.values.sort_by { |entry| -entry[:dmg].to_i }.map do |entry|
+      move_name = entry[:move]&.name || entry[:base_move]&.name || entry[:key].to_s
+      "#{move_name}=#{entry[:dmg].to_i}"
+    end.join(", ")
+    summary = "(none)" if summary.empty?
+    PBDebug.log_ai("[damage_moves_with_switch] reserve summary #{attacker_name} -> #{target_name}: #{summary}")
 
     rev_key = _dmg_switch_cache_key(target_index, attacker_index, pre_switch)
     if rev_key && !cache.key?(rev_key)
