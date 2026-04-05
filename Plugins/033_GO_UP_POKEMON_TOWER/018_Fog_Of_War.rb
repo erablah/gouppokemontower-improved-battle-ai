@@ -139,6 +139,7 @@ class Battle
       next if @choices[battler.index][0] != :UseMove
       bracket = @priority.select do |other|
         next false if !other[0] || other[0].fainted?
+        next false if ![:UseMove].include?(@choices[other[0].index][0])
         other[5] == entry[5] && other[4] == entry[4]
       end
       next if bracket.length <= 1
@@ -154,6 +155,7 @@ class Battle
         battler.item = original_item_id
         @player_item_hidden[battler.pokemonIndex] = hidden_before
       end
+      PBDebug.log_ai("[fog_of_war:priority] #{battler.name} speed with scarf=#{scarf_speed} speed without scarf=#{scarfless_speed}")
       next if scarf_speed == scarfless_speed
       alt_order = bracket.sort do |a, b|
         speed_a = (a.equal?(entry)) ? scarfless_speed : a[1]
