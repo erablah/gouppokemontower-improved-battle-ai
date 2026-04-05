@@ -64,14 +64,31 @@ class Battle::AI
 
     action_data = GameData::Move.try_get(action)
     if action_data&.zMove?
+      item_data = GameData::Item.try_get(battler.item_id) if battler.respond_to?(:item_id)
+      pkmn =
+        if battler.respond_to?(:visiblePokemon)
+          battler.visiblePokemon
+        else
+          battler.pokemon
+        end
       battler.moves.each_with_index do |base_move, idx|
         next if !base_move
+        if item_data && pkmn && base_move.get_compatible_zmove(item_data, pkmn) == action
+          zmove = base_move.make_zmove(action, battler.battle)
+          zmove.specialUseZMove = true if zmove.respond_to?(:specialUseZMove=)
+          return zmove
+        end
         zmove = base_move.convert_zmove(battler, battler.battle, idx, true)
         return zmove if zmove&.id == action
       end
       if battler.respond_to?(:baseMoves) && !battler.baseMoves.empty?
         battler.baseMoves.each_with_index do |base_move, idx|
           next if !base_move
+          if item_data && pkmn && base_move.get_compatible_zmove(item_data, pkmn) == action
+            zmove = base_move.make_zmove(action, battler.battle)
+            zmove.specialUseZMove = true if zmove.respond_to?(:specialUseZMove=)
+            return zmove
+          end
           zmove = base_move.convert_zmove(battler, battler.battle, idx, true)
           return zmove if zmove&.id == action
         end
