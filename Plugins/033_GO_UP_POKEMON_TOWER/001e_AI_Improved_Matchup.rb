@@ -46,8 +46,8 @@ class Battle::AI
       summary[:max_foe_dmg] = 0
 
       each_foe_battler(@user.side) do |b, _i|
-        user_best = best_damage_move_for_simulation(@user, b)
-        foe_best = best_damage_move_for_simulation(b, @user)
+        user_best = best_damage_move(@user, b)
+        foe_best = best_damage_move(b, @user)
 
         foe_outspeeds = b.faster_than?(@user)
         foe_best_move = foe_best&.dig(:move)
@@ -59,9 +59,9 @@ class Battle::AI
         move_results_by_id = {}
         if foe_best_move
           damage_moves(@user, b).each do |move_key, data|
-            user_action = simulation_action_for_move_data(data, b)
+            user_action = simulation_action_for_move_data(data)
             next unless user_action
-            foe_action = simulation_action_for_move_data(foe_best, @user)
+            foe_action = simulation_action_for_move_data(foe_best)
             next unless foe_action
             result = simulate_battle(
               @user.index, b.index,
@@ -81,9 +81,9 @@ class Battle::AI
         if foe_best_dmg >= @user.hp
           lethal_moves = damage_moves(b, @user).values.select { |d| d[:dmg] >= @user.hp }
           foe_lethal_move = lethal_moves.max_by { |d| d[:move].priority }
-          foe_action = simulation_action_for_move_data(foe_lethal_move, @user) if foe_lethal_move
+          foe_action = simulation_action_for_move_data(foe_lethal_move) if foe_lethal_move
         else
-          foe_action = simulation_action_for_move_data(foe_best, @user) if foe_best_move
+          foe_action = simulation_action_for_move_data(foe_best) if foe_best_move
         end
 
         foe_entry = {
@@ -171,7 +171,7 @@ class Battle::AI
     party_index = @battle.pbParty(idxBattler).index(pkmn)
     return true unless party_index
 
-    ensure_replacement_1v1_results(idxBattler, pkmn)
+    replacement_1v1_results(idxBattler, pkmn)
     cached_foe_results = replacement_1v1_result_for_foe(idxBattler, pkmn, target_battler)
     return true unless cached_foe_results
 
@@ -184,9 +184,9 @@ class Battle::AI
 
     pre_switch = { idxBattler => party_index }
     foe_vs_reserve = cached_foe_results[:foe_vs_reserve]
-    foe_vs_reserve_action = foe_vs_reserve ? simulation_action_for_move_data(foe_vs_reserve, pkmn) : nil
+    foe_vs_reserve_action = foe_vs_reserve ? simulation_action_for_move_data(foe_vs_reserve) : nil
     foe_vs_current = cached_foe_results[:foe_vs_current]
-    foe_vs_current_action = foe_vs_current ? simulation_action_for_move_data(foe_vs_current, @user) : foe_vs_reserve_action
+    foe_vs_current_action = foe_vs_current ? simulation_action_for_move_data(foe_vs_current) : foe_vs_reserve_action
     status_result = reserve_status_move_success(
       idxBattler, target_battler.index, pre_switch, foe_vs_reserve_action, foe_vs_current_action, m_id
     )
@@ -198,7 +198,7 @@ class Battle::AI
     party_index = @battle.pbParty(idxBattler).index(pkmn)
     return nil unless party_index
 
-    ensure_replacement_1v1_results(idxBattler, pkmn)
+    replacement_1v1_results(idxBattler, pkmn)
     cached_foe_results = replacement_1v1_result_for_foe(idxBattler, pkmn, target_battler)
     return nil unless cached_foe_results
 

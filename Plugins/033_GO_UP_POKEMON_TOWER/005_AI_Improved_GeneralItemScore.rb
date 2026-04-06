@@ -157,7 +157,7 @@ class Battle::AI
   def item_use_simulation_context(attacker, defender)
     return nil unless attacker && defender
 
-    opening_move_data = best_damage_move_for_simulation(attacker, defender)
+    opening_move_data = best_damage_move(attacker, defender)
     sim = create_battle_copy
     sim_attacker = sim.battlers[attacker.index]
     sim_defender = sim.battlers[defender.index]
@@ -165,7 +165,7 @@ class Battle::AI
 
     sim_defender.hp = sim_defender.totalhp
 
-    opening_action = simulation_action_for_move_data(opening_move_data, defender)
+    opening_action = simulation_action_for_move_data(opening_move_data)
     if opening_action
       opening_move = resolve_sim_action_move(sim_attacker, opening_action)
       if opening_move
@@ -186,7 +186,7 @@ class Battle::AI
 
     {
       sim: sim,
-      move_data: best_damage_move_for_simulation(sim_attacker, sim_defender),
+      move_data: best_damage_move(sim_attacker, sim_defender),
       opening_move_data: opening_move_data
     }
   end

@@ -40,23 +40,10 @@ class Battle::AI
     ]
   end
 
-  def store_replacement_1v1_results(idxBattler, pkmn, results)
-    @_replacement_1v1_results ||= {}
-    @_replacement_1v1_results[replacement_1v1_results_key(idxBattler, pkmn)] = results
-  end
-
   def replacement_1v1_results(idxBattler, pkmn)
-    return nil unless @_replacement_1v1_results
-    @_replacement_1v1_results[replacement_1v1_results_key(idxBattler, pkmn)]
-  end
-
-  def ensure_replacement_1v1_results(idxBattler, pkmn)
-    cached = replacement_1v1_results(idxBattler, pkmn)
-    return cached if cached
-
-    results = build_replacement_1v1_results(idxBattler, pkmn)
-    store_replacement_1v1_results(idxBattler, pkmn, results)
-    results
+    key = replacement_1v1_results_key(idxBattler, pkmn)
+    @_replacement_1v1_results ||= {}
+    @_replacement_1v1_results[key] ||= build_replacement_1v1_results(idxBattler, pkmn)
   end
 
   def replacement_1v1_result_for_foe(idxBattler, pkmn, foe_battler)
@@ -97,7 +84,7 @@ class Battle::AI
 
     each_foe_battler(@user.side) do |b, _i|
       voluntary_switch = @battle.command_phase || (!b.movedThisRound? && b.turnCount > 0)
-      foe_vs_current = best_damage_move_for_simulation(b, @user) unless @user.fainted?
+      foe_vs_current = best_damage_move(b, @user) unless @user.fainted?
       if voluntary_switch && !foe_vs_current
         all_results[b.index] = {
           foe_index: b.index,
@@ -106,13 +93,13 @@ class Battle::AI
         }
         next
       end
-      foe_vs_current_action = foe_vs_current ? simulation_action_for_move_data(foe_vs_current, @user) : nil
+      foe_vs_current_action = foe_vs_current ? simulation_action_for_move_data(foe_vs_current) : nil
 
-      foe_vs_reserve = best_damage_move_with_switch_for_simulation(b.index, idxBattler, pre_switch)
-      foe_vs_reserve_action = foe_vs_reserve ? simulation_action_for_move_data(foe_vs_reserve, pkmn) : foe_vs_current_action
+      foe_vs_reserve = best_damage_move_with_switch(b.index, idxBattler, pre_switch)
+      foe_vs_reserve_action = foe_vs_reserve ? simulation_action_for_move_data(foe_vs_reserve) : foe_vs_current_action
 
       reserve_dmg = damage_moves_with_switch(idxBattler, b.index, pre_switch) || {}
-      reserve_candidates = send(:_simulatable_damage_data, reserve_dmg, b).values.sort_by { |md| -md[:dmg] }
+      reserve_candidates = reserve_dmg.values.sort_by { |md| -md[:dmg] }
 
       foe_results = {
         foe_index: b.index,
@@ -137,7 +124,7 @@ class Battle::AI
       reserve_sim_candidates = reserve_candidates.first ? [reserve_candidates.first] : []
 
       reserve_sim_candidates.each do |md|
-        move_action = simulation_action_for_move_data(md, b)
+        move_action = simulation_action_for_move_data(md)
         next unless move_action
 
         sim = if voluntary_switch
@@ -261,16 +248,16 @@ class Battle::AI
 
     cached_foe_results = replacement_1v1_result_for_foe(idxBattler, pkmn, foe_battler)
     foe_vs_reserve = cached_foe_results ? cached_foe_results[:foe_vs_reserve] :
-      best_damage_move_with_switch_for_simulation(foe_battler.index, idxBattler, pre_switch)
-    foe_vs_reserve_action = foe_vs_reserve ? simulation_action_for_move_data(foe_vs_reserve, pkmn) : nil
+      best_damage_move_with_switch(foe_battler.index, idxBattler, pre_switch)
+    foe_vs_reserve_action = foe_vs_reserve ? simulation_action_for_move_data(foe_vs_reserve) : nil
     return 0 unless foe_vs_reserve_action
 
     foe_vs_current = if cached_foe_results
       cached_foe_results[:foe_vs_current]
     elsif !@user.fainted?
-      best_damage_move_for_simulation(foe_battler, @user)
+      best_damage_move(foe_battler, @user)
     end
-    foe_vs_current_action = foe_vs_current ? simulation_action_for_move_data(foe_vs_current, @user) : foe_vs_reserve_action
+    foe_vs_current_action = foe_vs_current ? simulation_action_for_move_data(foe_vs_current) : foe_vs_reserve_action
 
     best_bonus = 0
     sim = nil
@@ -501,14 +488,11 @@ Battle::AI::Handlers::ScoreReplacement.add(:utility_switch_in,
     foe_has_tanky_target = false
     foe_has_physical_target = false
 
-    cached_results = ai.ensure_replacement_1v1_results(idxBattler, pkmn)
+    cached_results = ai.replacement_1v1_results(idxBattler, pkmn)
 
     ai.each_foe_battler(ai.user.side) do |b, _i|
-      foe_positive_boosts = 0
-      GameData::Stat.each_battle do |s|
-        foe_total_boosts += b.stages[s.id] if b.stages[s.id] > 0
-        foe_positive_boosts += b.stages[s.id] if b.stages[s.id] > 0
-      end
+      foe_positive_boosts = ai.total_positive_boosts(b)
+      foe_total_boosts += foe_positive_boosts
       foe_has_boosted_target ||= foe_positive_boosts >= 2
       foe_side = b.pbOwnSide
       foe_has_screens = true if foe_side.effects[PBEffects::Reflect] > 0 ||

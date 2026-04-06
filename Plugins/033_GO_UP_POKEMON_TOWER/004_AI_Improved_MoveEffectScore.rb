@@ -9,6 +9,13 @@ module AIEffectScoreHelper
     return (multiplier * (chance / 100.0)).round
   end
 
+  # Returns true if the target will instantly cure a status via Hydration in rain.
+  def self.hydration_cures_immediately?(target, user)
+    target.faster_than?(user) &&
+      target.has_active_ability?(:HYDRATION) &&
+      [:Rain, :HeavyRain].include?(target.battler.effectiveWeather)
+  end
+
   def self.get_target_heal_penalty(target, ai)
     penalty = 0
     if target.has_active_ability?(:SHEDSKIN)
@@ -57,9 +64,7 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("SleepTarget",
     next useless_score if target.effects[PBEffects::Yawn] > 0   # Target is going to fall asleep anyway
     # No score modifier if the sleep will be removed immediately
     next useless_score if target.has_active_item?([:CHESTOBERRY, :LUMBERRY])
-    next useless_score if target.faster_than?(user) &&
-                          target.has_active_ability?(:HYDRATION) &&
-                          [:Rain, :HeavyRain].include?(target.battler.effectiveWeather)
+    next useless_score if AIEffectScoreHelper.hydration_cures_immediately?(target, user)
     if target.battler.pbCanSleep?(user.battler, false, move.move)
       add_effect = move.get_score_change_for_additional_effect(user, target)
       next useless_score if add_effect == -999   # Additional effect will be negated
@@ -101,9 +106,7 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("PoisonTarget",
     next useless_score if target.has_active_ability?(:POISONHEAL)
     # No score modifier if the poisoning will be removed immediately
     next useless_score if target.has_active_item?([:PECHABERRY, :LUMBERRY])
-    next useless_score if target.faster_than?(user) &&
-                          target.has_active_ability?(:HYDRATION) &&
-                          [:Rain, :HeavyRain].include?(target.battler.effectiveWeather)
+    next useless_score if AIEffectScoreHelper.hydration_cures_immediately?(target, user)
     if target.battler.pbCanPoison?(user.battler, false, move.move)
       add_effect = move.get_score_change_for_additional_effect(user, target)
       next useless_score if add_effect == -999   # Additional effect will be negated
@@ -152,9 +155,7 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("ParalyzeTarget",
     useless_score = (move.statusMove?) ? Battle::AI::MOVE_USELESS_SCORE : score
     # No score modifier if the paralysis will be removed immediately
     next useless_score if target.has_active_item?([:CHERIBERRY, :LUMBERRY])
-    next useless_score if target.faster_than?(user) &&
-                          target.has_active_ability?(:HYDRATION) &&
-                          [:Rain, :HeavyRain].include?(target.battler.effectiveWeather)
+    next useless_score if AIEffectScoreHelper.hydration_cures_immediately?(target, user)
     if target.battler.pbCanParalyze?(user.battler, false, move.move)
       add_effect = move.get_score_change_for_additional_effect(user, target)
       next useless_score if add_effect == -999   # Additional effect will be negated
@@ -204,9 +205,7 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("BurnTarget",
     useless_score = (move.statusMove?) ? Battle::AI::MOVE_USELESS_SCORE : score
     # No score modifier if the burn will be removed immediately
     next useless_score if target.has_active_item?([:RAWSTBERRY, :LUMBERRY])
-    next useless_score if target.faster_than?(user) &&
-                          target.has_active_ability?(:HYDRATION) &&
-                          [:Rain, :HeavyRain].include?(target.battler.effectiveWeather)
+    next useless_score if AIEffectScoreHelper.hydration_cures_immediately?(target, user)
     if target.battler.pbCanBurn?(user.battler, false, move.move)
       add_effect = move.get_score_change_for_additional_effect(user, target)
       next useless_score if add_effect == -999   # Additional effect will be negated
@@ -260,9 +259,7 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("FreezeTarget",
     useless_score = (move.statusMove?) ? Battle::AI::MOVE_USELESS_SCORE : score
     # No score modifier if the freeze will be removed immediately
     next useless_score if target.has_active_item?([:ASPEARBERRY, :LUMBERRY])
-    next useless_score if target.faster_than?(user) &&
-                          target.has_active_ability?(:HYDRATION) &&
-                          [:Rain, :HeavyRain].include?(target.battler.effectiveWeather)
+    next useless_score if AIEffectScoreHelper.hydration_cures_immediately?(target, user)
     if target.battler.pbCanFreeze?(user.battler, false, move.move)
       add_effect = move.get_score_change_for_additional_effect(user, target)
       next useless_score if add_effect == -999   # Additional effect will be negated
@@ -328,9 +325,7 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("FreezeFlinchTarget",
     # Freeze component (10% chance)
     if target.battler.pbCanFreeze?(user.battler, false, move.move)
       if !target.has_active_item?([:ASPEARBERRY, :LUMBERRY])
-        can_heal = target.faster_than?(user) &&
-                   target.has_active_ability?(:HYDRATION) &&
-                   [:Rain, :HeavyRain].include?(target.battler.effectiveWeather)
+        can_heal = AIEffectScoreHelper.hydration_cures_immediately?(target, user)
         unless can_heal
           bonus = (30 * (AIEffectScoreHelper::FANG_STATUS_CHANCE / 100.0)).round  # 3
           bonus -= 2 if target.has_active_ability?(:MARVELSCALE)
@@ -350,9 +345,7 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("BurnFlinchTarget",
     # Burn component (10% chance)
     if target.battler.pbCanBurn?(user.battler, false, move.move)
       if !target.has_active_item?([:RAWSTBERRY, :LUMBERRY])
-        can_heal = target.faster_than?(user) &&
-                   target.has_active_ability?(:HYDRATION) &&
-                   [:Rain, :HeavyRain].include?(target.battler.effectiveWeather)
+        can_heal = AIEffectScoreHelper.hydration_cures_immediately?(target, user)
         unless can_heal
           bonus = (20 * (AIEffectScoreHelper::FANG_STATUS_CHANCE / 100.0)).round  # 2
           if !target.has_active_ability?(:GUTS) && target.check_for_move { |m| m.physicalMove? }
@@ -374,9 +367,7 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("ParalyzeFlinchTarget",
     # Paralysis component (10% chance)
     if target.battler.pbCanParalyze?(user.battler, false, move.move)
       if !target.has_active_item?([:CHERIBERRY, :LUMBERRY])
-        can_heal = target.faster_than?(user) &&
-                   target.has_active_ability?(:HYDRATION) &&
-                   [:Rain, :HeavyRain].include?(target.battler.effectiveWeather)
+        can_heal = AIEffectScoreHelper.hydration_cures_immediately?(target, user)
         unless can_heal
           bonus = (20 * (AIEffectScoreHelper::FANG_STATUS_CHANCE / 100.0)).round  # 2
           if target.faster_than?(user)
@@ -462,9 +453,7 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("SleepTargetNextTurn",
 
     # Immediate cure
     next useless_score if target.has_active_item?([:CHESTOBERRY, :LUMBERRY])
-    next useless_score if target.faster_than?(user) &&
-                          target.has_active_ability?(:HYDRATION) &&
-                          [:Rain, :HeavyRain].include?(target.battler.effectiveWeather)
+    next useless_score if AIEffectScoreHelper.hydration_cures_immediately?(target, user)
 
     # Electric Terrain blocks sleep on grounded
     if ai.trainer.high_skill?
@@ -489,10 +478,7 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("SleepTargetNextTurn",
     end
 
     # Prefer against setup mons — forces them to switch or sleep
-    target_boosts = 0
-    GameData::Stat.each_battle do |s|
-      target_boosts += target.stages[s.id] if target.stages[s.id] > 0
-    end
+    target_boosts = ai.total_positive_boosts(target)
     if target_boosts >= 2
       score += 10
       PBDebug.log_score_change(10, "Yawn vs boosted foe (+#{target_boosts}).")
@@ -510,12 +496,9 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("SleepTargetNextTurn",
 #===============================================================================
 Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("ResetTargetStatStages",
   proc { |score, move, user, target, ai, battle|
-    target_boosts = 0
+    target_boosts = ai.total_positive_boosts(target)
     target_drops = 0
-    GameData::Stat.each_battle do |s|
-      target_boosts += target.stages[s.id] if target.stages[s.id] > 0
-      target_drops += target.stages[s.id].abs if target.stages[s.id] < 0
-    end
+    GameData::Stat.each_battle { |s| target_drops += target.stages[s.id].abs if target.stages[s.id] < 0 }
 
     if target_boosts >= 2
       bonus = 8 + (target_boosts * 5)
@@ -536,19 +519,8 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("ResetTargetStatStages",
 Battle::AI::Handlers::MoveEffectScore.add("ResetAllBattlersStatStages",
   proc { |score, move, user, ai, battle|
     net_value = 0
-
-    ai.each_foe_battler(user.side) do |b, i|
-      GameData::Stat.each_battle do |s|
-        net_value += b.stages[s.id] if b.stages[s.id] > 0  # Foe boosts: good to reset
-      end
-    end
-
-    # Subtract user's own boosts (bad to reset)
-    user_boosts = 0
-    GameData::Stat.each_battle do |s|
-      user_boosts += user.stages[s.id] if user.stages[s.id] > 0
-    end
-    net_value -= user_boosts
+    ai.each_foe_battler(user.side) { |b, _i| net_value += ai.total_positive_boosts(b) }
+    net_value -= ai.total_positive_boosts(user)
 
     if net_value >= 2
       bonus = 5 + (net_value * 4)
@@ -611,10 +583,7 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("DisableTargetUsingDiffer
 
 Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("UserStealTargetPositiveStatStages",
   proc { |score, move, user, target, ai, battle|
-    target_boosts = 0
-    GameData::Stat.each_battle do |s|
-      target_boosts += target.stages[s.id] if target.stages[s.id] > 0
-    end
+    target_boosts = ai.total_positive_boosts(target)
 
     if target_boosts >= 2
       bonus = 10 + (target_boosts * 5)

@@ -201,10 +201,6 @@ class Battle::AI
     true
   end
 
-  def pbGetEffectivenessMult(effectiveness_id)
-    return effectiveness_id.to_f / 100.0
-  end
-
   #---------------------------------------------------------------------------
   # Override pbPredictMoveFailureAgainstTarget to accept explicit arguments.
   # Replaces both the base Essentials and Gen 9 Pack versions.
@@ -274,40 +270,31 @@ class Battle::AI
     return score
   end
 
-  # Override: scale stat-change scores by additional effect chance for damaging
+  # Scale a stat-change score delta by additional effect chance for damaging
   # moves with < 100% effect probability (e.g. Moonblast's 30% SpA drop).
+  def scale_by_additional_effect(score, result, label)
+    return result unless @move.damagingMove? && @move.move.addlEffect > 0 && @move.move.addlEffect < 100
+    delta = result - score
+    return result if delta == 0
+    chance = @move.move.addlEffect
+    chance = [chance * 2, 100].min if @user.has_active_ability?(:SERENEGRACE)
+    scaled_delta = (delta * chance / 100.0).round
+    PBDebug.log("     [additional effect scaling] #{label}: #{delta} * #{chance}% = #{scaled_delta}")
+    score + scaled_delta
+  end
+
   alias_method :orig_get_score_for_target_stat_drop, :get_score_for_target_stat_drop
   def get_score_for_target_stat_drop(score, target, stat_changes, whole_effect = true,
                                      fixed_change = false, ignore_contrary = false)
     result = orig_get_score_for_target_stat_drop(score, target, stat_changes, whole_effect, fixed_change, ignore_contrary)
-    if @move.damagingMove? && @move.move.addlEffect > 0 && @move.move.addlEffect < 100
-      delta = result - score
-      if delta != 0
-        chance = @move.move.addlEffect
-        chance = [chance * 2, 100].min if @user.has_active_ability?(:SERENEGRACE)
-        scaled_delta = (delta * chance / 100.0).round
-        PBDebug.log("     [additional effect scaling] stat drop: #{delta} * #{chance}% = #{scaled_delta}")
-        result = score + scaled_delta
-      end
-    end
-    return result
+    scale_by_additional_effect(score, result, "stat drop")
   end
 
   alias_method :orig_get_score_for_target_stat_raise, :get_score_for_target_stat_raise
   def get_score_for_target_stat_raise(score, target, stat_changes, whole_effect = true,
                                       fixed_change = false, ignore_contrary = false)
     result = orig_get_score_for_target_stat_raise(score, target, stat_changes, whole_effect, fixed_change, ignore_contrary)
-    if @move.damagingMove? && @move.move.addlEffect > 0 && @move.move.addlEffect < 100
-      delta = result - score
-      if delta != 0
-        chance = @move.move.addlEffect
-        chance = [chance * 2, 100].min if @user.has_active_ability?(:SERENEGRACE)
-        scaled_delta = (delta * chance / 100.0).round
-        PBDebug.log("     [additional effect scaling] stat raise: #{delta} * #{chance}% = #{scaled_delta}")
-        result = score + scaled_delta
-      end
-    end
-    return result
+    scale_by_additional_effect(score, result, "stat raise")
   end
 
   # Override: Returns whether the move will definitely fail (assuming no battle conditions
@@ -400,14 +387,32 @@ class Battle::AI
   end
 
   def foe_has_setup_move?(user)
-    found_setup = false
-    each_foe_battler(user.side) do |b, _i|
-      if battler_has_setup_move?(b)
-        found_setup = true
-        break
+    any_foe_battler?(user.side) { |b, _i| battler_has_setup_move?(b) }
+  end
+
+  # Yields each foe battler and returns true if the block ever returns truthy.
+  def any_foe_battler?(side)
+    each_foe_battler(side) { |b, i| return true if yield(b, i) }
+    false
+  end
+
+  # Returns true if any foe has an effective phazing move against the user.
+  def foe_has_effective_phazing?(user, phaze_codes = ["SwitchOutTargetStatusMove"])
+    sim_move = Battle::AI::AIMove.new(self)
+    any_foe_battler?(user.side) do |b, _i|
+      known_foe_moves(b).any? do |m|
+        next false unless phaze_codes.include?(m.function_code)
+        sim_move.set_up(m)
+        !pbPredictMoveFailureAgainstTarget(sim_move, b, user)
       end
     end
-    return found_setup
+  end
+
+  # Sums positive stat stages on a battler. Returns integer >= 0.
+  def total_positive_boosts(battler)
+    total = 0
+    GameData::Stat.each_battle { |s| total += battler.stages[s.id] if battler.stages[s.id] > 0 }
+    total
   end
 
    # override stat raise generic
@@ -734,7 +739,7 @@ class Battle::AI
 
     scored = reserves.map do |reserve|
       pkmn = party[reserve[0]]
-      ensure_replacement_1v1_results(idxBattler, pkmn)
+      replacement_1v1_results(idxBattler, pkmn)
       score = rate_replacement_pokemon(idxBattler, pkmn, reserve[1])
       PBDebug.log_ai("pokemon #{party[reserve[0]].name} has switch score #{score}")
       [reserve[0], score]

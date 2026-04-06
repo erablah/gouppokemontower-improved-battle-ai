@@ -138,11 +138,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:phaze_with_hazards,
     next score unless phaze_codes.include?(ai.safe_function_code(move))
 
     # Boost if target has set up
-    target_boosts = 0
-    GameData::Stat.each_battle do |s|
-      stage = target.stages[s.id]
-      target_boosts += stage if stage > 0
-    end
+    target_boosts = ai.total_positive_boosts(target)
     if target_boosts >= 1
       score +=30
       PBDebug.log_score_change(30, "Phaze to reset target's +#{target_boosts} boosts.")

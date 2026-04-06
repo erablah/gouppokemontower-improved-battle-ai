@@ -55,12 +55,11 @@ Battle::AI::Handlers::ShouldSwitch.add(:escape_boosted_foe,
   proc { |user, reserves, ai, battle|
     next false unless ai.trainer.high_skill?
 
-    # Find a threatening foe with > 2 cumulative positive stat stages
+    # Find a threatening foe with >= 2 cumulative positive stat stages
     threatening_foe  = nil
     foe_total_boosts = 0
-    ai.each_foe_battler(user.side) do |b, i|
-      boosts = 0
-      GameData::Stat.each_battle { |s| boosts += b.stages[s.id] if b.stages[s.id] > 0 }
+    ai.each_foe_battler(user.side) do |b, _i|
+      boosts = ai.total_positive_boosts(b)
       if boosts >= 2
         threatening_foe  = b
         foe_total_boosts = boosts

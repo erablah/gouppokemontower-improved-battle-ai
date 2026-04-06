@@ -124,22 +124,9 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
     # Phazing check (status setup moves only): skip if foe has a phazing
     # move that won't fail against the AI's battler.
     # -----------------------------------------------------------------------
-    if is_status
-      phaze_codes = ["SwitchOutTargetStatusMove", "SwitchOutTargetDamagingMove"]
-      foe_has_phazing = false
-      sim_move = Battle::AI::AIMove.new(ai)
-      ai.each_foe_battler(user.side) do |b, _i|
-        foe_has_phazing = ai.known_foe_moves(b).any? do |m|
-          next false unless phaze_codes.include?(m.function_code)
-          sim_move.set_up(m)
-          !ai.pbPredictMoveFailureAgainstTarget(sim_move, b, user)
-        end
-        break if foe_has_phazing
-      end
-      if foe_has_phazing
-        PBDebug.log_ai("[smart_setup] Skipped: foe has effective phazing move.")
-        next Battle::AI::MOVE_FAIL_SCORE
-      end
+    if is_status && ai.foe_has_effective_phazing?(user, ["SwitchOutTargetStatusMove", "SwitchOutTargetDamagingMove"])
+      PBDebug.log_ai("[smart_setup] Skipped: foe has effective phazing move.")
+      next Battle::AI::MOVE_FAIL_SCORE
     end
 
     # -----------------------------------------------------------------------
@@ -177,13 +164,13 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
       foe_best_move = foe_entry[:best_move]
       next unless foe_best_move
 
-      user_best = ai.best_damage_move_for_simulation(user, b)
+      user_best = ai.best_damage_move(user, b)
       next unless user_best
 
-      user_best_action = ai.simulation_action_for_move_data(user_best, b)
-      foe_best = ai.best_damage_move_for_simulation(b, user)
+      user_best_action = ai.simulation_action_for_move_data(user_best)
+      foe_best = ai.best_damage_move(b, user)
       next unless foe_best
-      foe_best_action = ai.simulation_action_for_move_data(foe_best, user)
+      foe_best_action = ai.simulation_action_for_move_data(foe_best)
       next unless user_best_action && foe_best_action
 
       # Current: user attacks with best move, foe attacks with best move
@@ -347,18 +334,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:tactical_substitute,
     # -------------------------------------------------------------------------
     # Phazing check: Substitute doesn't block phazing moves
     # -------------------------------------------------------------------------
-    phaze_codes = ["SwitchOutTargetStatusMove"]
-    foe_has_phazing = false
-    sim_move = Battle::AI::AIMove.new(ai)
-    ai.each_foe_battler(user.side) do |b, _i|
-      foe_has_phazing = ai.known_foe_moves(b).any? do |m|
-        next false unless phaze_codes.include?(m.function_code)
-        sim_move.set_up(m)
-        !ai.pbPredictMoveFailureAgainstTarget(sim_move, b, user)
-      end
-      break if foe_has_phazing
-    end
-    if foe_has_phazing
+    if ai.foe_has_effective_phazing?(user)
       PBDebug.log_ai("[tactical_substitute] Skipped: foe has effective phazing move.")
       next Battle::AI::MOVE_FAIL_SCORE
     end

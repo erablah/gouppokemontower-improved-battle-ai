@@ -92,7 +92,7 @@ class Battle::AI
     end
   end
 
-  def simulation_action_for_move_data(move_data, target = nil)
+  def simulation_action_for_move_data(move_data)
     return nil unless move_data
     move_data[:action]
   end
@@ -113,24 +113,6 @@ class Battle::AI
     nil
   end
 
-  def _simulatable_damage_data(dmg_data, target = nil)
-    return {} unless dmg_data
-    filtered = dmg_data.each_with_object({}) do |(key, move_data), acc|
-      next unless simulation_action_for_move_data(move_data, target)
-      acc[key] = move_data
-    end
-    # Reuse a stable selection cache owned by the underlying damage table so
-    # lethal tie-breaks remain consistent across repeated switch-in evaluations.
-    # Without this, each filtered view can reroll its "best" move independently,
-    # causing different reserves to assume different foe moves in the same state.
-    selected_cache = dmg_data.instance_variable_get(:@_selected_best_moves)
-    unless selected_cache
-      selected_cache = {}
-      dmg_data.instance_variable_set(:@_selected_best_moves, selected_cache)
-    end
-    filtered.instance_variable_set(:@_selected_best_moves, selected_cache)
-    filtered
-  end
 
   #---------------------------------------------------------------------------
   # Returns {move_id => {move: Battle::Move, dmg: int}}
@@ -288,12 +270,7 @@ class Battle::AI
   #---------------------------------------------------------------------------
   def best_damage_move(attacker, defender)
     dmg_data = damage_moves(attacker, defender)
-    _select_best_damage_move(dmg_data, attacker, defender, cache_scope: :all_moves)
-  end
-
-  def best_damage_move_for_simulation(attacker, defender)
-    dmg_data = _simulatable_damage_data(damage_moves(attacker, defender), defender)
-    _select_best_damage_move(dmg_data, attacker, defender, cache_scope: :simulatable)
+    _select_best_damage_move(dmg_data, attacker, defender)
   end
 
   #---------------------------------------------------------------------------
@@ -302,7 +279,7 @@ class Battle::AI
   # to lethal options. Tied lethal options are chosen with weighted probability
   # once, then cached so later lookups for the same entry stay consistent.
   #---------------------------------------------------------------------------
-  def _select_best_damage_move(dmg_data, attacker, target = nil, cache_scope: :default)
+  def _select_best_damage_move(dmg_data, attacker, target = nil)
     return nil if !dmg_data || dmg_data.empty?
     max_dmg = dmg_data.values.max_by { |md| md[:dmg] }[:dmg]
     lethal_moves = dmg_data.values.select { |md| md[:dmg] == max_dmg }
@@ -312,7 +289,7 @@ class Battle::AI
       lethal_candidates = dmg_data.values.select { |md| md[:dmg] >= lethal_threshold }
       lethal_moves = lethal_candidates if lethal_candidates.any?
     end
-    cached_selection = _cached_best_damage_move(dmg_data, cache_scope, lethal_threshold)
+    cached_selection = _cached_best_damage_move(dmg_data, lethal_threshold)
     return cached_selection if cached_selection
 
     if lethal_moves.length > 1
@@ -321,13 +298,13 @@ class Battle::AI
         md[:lethal_weight] = _lethal_move_weight(md[:lethal_score])
       end
       selected = _pick_weighted_lethal_move(lethal_moves)
-      _cache_best_damage_move(dmg_data, cache_scope, lethal_threshold, selected)
+      _cache_best_damage_move(dmg_data, lethal_threshold, selected)
       return selected
     end
 
     best = lethal_moves.max_by { |md| md[:dmg] }
     best[:lethal_score] = _lethal_move_score(best, attacker, target) if best
-    _cache_best_damage_move(dmg_data, cache_scope, lethal_threshold, best)
+    _cache_best_damage_move(dmg_data, lethal_threshold, best)
     best
   end
 
@@ -417,19 +394,19 @@ class Battle::AI
     end
   end
 
-  def _cached_best_damage_move(dmg_data, cache_scope, lethal_threshold)
+  def _cached_best_damage_move(dmg_data, lethal_threshold)
     cache = dmg_data.instance_variable_get(:@_selected_best_moves)
     return nil unless cache
-    cache[[cache_scope, lethal_threshold]]
+    cache[lethal_threshold]
   end
 
-  def _cache_best_damage_move(dmg_data, cache_scope, lethal_threshold, selected)
+  def _cache_best_damage_move(dmg_data, lethal_threshold, selected)
     cache = dmg_data.instance_variable_get(:@_selected_best_moves)
     unless cache
       cache = {}
       dmg_data.instance_variable_set(:@_selected_best_moves, cache)
     end
-    cache[[cache_scope, lethal_threshold]] = selected
+    cache[lethal_threshold] = selected
   end
 
   #---------------------------------------------------------------------------
@@ -523,7 +500,7 @@ class Battle::AI
     end
   end
 
-  def best_damage_move_with_switch_for_simulation(attacker_index, target_index, pre_switch)
+  def best_damage_move_with_switch(attacker_index, target_index, pre_switch)
     dmg_data = damage_moves_with_switch(attacker_index, target_index, pre_switch)
     return nil unless dmg_data
     attacker = @battle.battlers[attacker_index]
@@ -532,6 +509,6 @@ class Battle::AI
              else
                @battle.battlers[target_index]
              end
-    _select_best_damage_move(_simulatable_damage_data(dmg_data, target), attacker, target, cache_scope: :simulatable)
+    _select_best_damage_move(dmg_data, attacker, target)
   end
 end
