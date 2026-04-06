@@ -540,7 +540,8 @@ module Battle::ItemEffects
     return if !item || !hash[item]
     battler = fog_of_war_holder_from_trigger(hash, args)
     battle = args.find { |arg| arg.is_a?(Battle) } || battler&.battle
-    return if !battler || !battle || battle.ai_item_fog_of_war? || !battler.pbOwnedByPlayer?
+    return if !battler.is_a?(Battle::Battler)
+    return if !battle || battle.ai_item_fog_of_war? || !battler.pbOwnedByPlayer?
     battle.reveal_player_item(battler.pokemonIndex, fog_of_war_trigger_name(hash))
   end
 
@@ -585,15 +586,18 @@ module Battle::ItemEffects
     when SpeedCalc, WeightCalc, HPHeal, OnStatLoss, StatusCure,
          PriorityBracketChange, PriorityBracketUse, OnBeingHitPositiveBerry,
          AfterMoveUseFromTarget, AfterMoveUseFromUser, OnEndOfUsingMove,
-         OnEndOfUsingMoveStatRestore, WeatherExtender, TerrainExtender,
-         TerrainStatBoost, EndOfRoundHealing, EndOfRoundEffect,
+         OnEndOfUsingMoveStatRestore, TerrainStatBoost, EndOfRoundHealing, EndOfRoundEffect,
          CertainSwitching, OnSwitchIn, OnIntimidated, CertainEscapeFromBattle
       return args[1]
-    when AccuracyCalcFromTarget, DamageCalcFromTarget, CriticalCalcFromTarget,
-         OnBeingHit, TrappingByTarget
+    when AccuracyCalcFromUser
       return args[2]
-    when AccuracyCalcFromUser, DamageCalcFromUser, CriticalCalcFromUser,
-         OnMissingTarget
+    when AccuracyCalcFromTarget
+      return args[3]
+    when WeatherExtender, TerrainExtender
+      return args[3]
+    when DamageCalcFromTarget, CriticalCalcFromTarget, OnBeingHit, TrappingByTarget
+      return args[2]
+    when DamageCalcFromUser, CriticalCalcFromUser, OnMissingTarget
       return args[1]
     end
     return args.find { |arg| arg.is_a?(Battle::Battler) }

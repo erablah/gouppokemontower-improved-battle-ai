@@ -196,6 +196,7 @@ class Battle::AI
     # happens in pbOnStartUse (e.g. Tera Blast under simulated Terastallization).
     sim_move.calcType = sim_move.pbCalcType(sim_user)
     sim_move.pbOnStartUse(sim_user, [sim_target])
+    return 0 if sim_move.pbMoveFailed?(sim_user, [sim_target])
 
     # Move failure check: type immunity, ability immunity, etc.
     calc_type = sim_move.calcType

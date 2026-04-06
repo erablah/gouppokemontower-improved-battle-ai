@@ -194,15 +194,15 @@ MenuHandlers.add(:debug_menu, :search_trainer_battle, {
     trainerdata = pbListScreen(_INTL("TRAINERS: \"{1}\"", query), FilteredTrainerBattleLister.new(query))
     if trainerdata
       setBattleRule("canLose")
-      # Normalize all levels to 50
+      # Normalize all levels to 100
       EventHandlers.add(:on_trainer_load, :debug_level_normalize,
         proc { |trainer|
           next if !trainer
-          trainer.party.each { |p| p.level = 50; p.calc_stats }
+          trainer.party.each { |p| p.level = 100; p.calc_stats }
         }
       )
       orig_levels = $player.party.map { |p| p.level }
-      $player.party.each { |p| p.level = 50; p.calc_stats; p.heal }
+      $player.party.each { |p| p.level = 100; p.calc_stats; p.heal }
       begin
         TrainerBattle.start(trainerdata[0], trainerdata[1], trainerdata[2])
       ensure
