@@ -63,10 +63,23 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:one_v_one_move_score,
 
     next score if is_pivot  # pivot moves: base damage + survival check only
 
-    # B) User loses the 1v1 — early return with penalty, score boosts for damage are already applied
+    # B) User loses the 1v1 — penalty scaled by trade value
     unless result.user_wins? || foe_pivoted_out || ignore_bad_loss_returns
-      score -= 50
-      PBDebug.log_score_change(-50, "1v1: user loses matchup")
+      dmg_dealt_pct = 0.0
+      if result.target_hp && target.totalhp > 0
+        dmg_dealt = target.hp - result.target_hp
+        dmg_dealt_pct = dmg_dealt.to_f / target.totalhp
+      end
+      user_hp_pct = user.hp.to_f / [user.totalhp, 1].max
+
+      # Base penalty + scale by damage not dealt + reduce when user HP is low
+      # HP relief: zero above 70%, ramps steeply below
+      hp_relief = user_hp_pct < 0.7 ? ((0.7 - user_hp_pct) / 0.7) ** 1.5 * 20 : 0
+      loss_penalty = 15 + ((1.0 - dmg_dealt_pct) * 25).round - hp_relief.round
+      loss_penalty = loss_penalty.clamp(5, 50)
+      score -= loss_penalty
+      PBDebug.log_score_change(-loss_penalty,
+        "1v1: user loses (dealt #{(dmg_dealt_pct * 100).round}% to foe, user at #{(user_hp_pct * 100).round}% HP)")
       next score
     end
 

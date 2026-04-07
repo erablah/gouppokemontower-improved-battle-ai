@@ -93,7 +93,6 @@ class Battle::AI
     Battle::Battler::STAT_STAGE_MULTIPLIERS[stage + 6].to_f /
       Battle::Battler::STAT_STAGE_DIVISORS[stage + 6]
   end
-  REPLACEMENT_THRESHOLD_NORMAL = 105
   REPLACEMENT_THRESHOLD_TERRIBLE_MOVES = 80
   REPLACEMENT_THRESHOLD_SHOULD_SWITCH = 70
 
@@ -568,51 +567,28 @@ class Battle::AI
     # PBDebug.flush
   end
 
-  #override pbChooseToSwitchOut
-  def pbChooseToSwitchOut(terrible_moves = false)
+  #override pbChooseToSwitchOut — only called when all moves score < 80
+  def pbChooseToSwitchOut(terrible_moves = true)
     return false if !@battle.canSwitch   # Battle rule
     return false if @user.wild?
     return false if !@battle.pbCanSwitchOut?(@user.index)
-    # Don't switch if all foes are unable to do anything, e.g. resting after
-    # Hyper Beam, will Truant (i.e. free turn)
-    if @trainer.high_skill? && !terrible_moves
-      foe_can_act = false
-      each_foe_battler(@user.side) do |b, i|
-        next if !b.can_attack?
-        foe_can_act = true
-        break
-      end
-      return false if !foe_can_act
-    end
-    if terrible_moves
-      # 1) Try replacement at threshold 80
-      idxParty = choose_best_replacement_pokemon(@user.index, false, threshold: REPLACEMENT_THRESHOLD_TERRIBLE_MOVES)
-      if idxParty < 0
-        PBDebug.log_ai("   => no replacement at threshold #{REPLACEMENT_THRESHOLD_TERRIBLE_MOVES}, trying ShouldSwitch handlers")
-        # 2) ShouldSwitch handlers gate a lower threshold (70)
-        if @trainer.has_skill_flag?("ConsiderSwitching")
-          reserves = get_non_active_party_pokemon(@user.index)
-          if !reserves.empty?
-            should_switch = Battle::AI::Handlers.should_switch?(@user, reserves, self, @battle)
-            if should_switch && @trainer.medium_skill?
-              should_switch = false if Battle::AI::Handlers.should_not_switch?(@user, reserves, self, @battle)
-            end
-            if should_switch
-              idxParty = choose_best_replacement_pokemon(@user.index, false, threshold: REPLACEMENT_THRESHOLD_SHOULD_SWITCH)
-            end
+    # 1) Try replacement at threshold 80
+    idxParty = choose_best_replacement_pokemon(@user.index, false, threshold: REPLACEMENT_THRESHOLD_TERRIBLE_MOVES)
+    if idxParty < 0
+      PBDebug.log_ai("   => no replacement at threshold #{REPLACEMENT_THRESHOLD_TERRIBLE_MOVES}, trying ShouldSwitch handlers")
+      # 2) ShouldSwitch handlers gate a lower threshold (70)
+      if @trainer.has_skill_flag?("ConsiderSwitching")
+        reserves = get_non_active_party_pokemon(@user.index)
+        if !reserves.empty?
+          should_switch = Battle::AI::Handlers.should_switch?(@user, reserves, self, @battle)
+          if should_switch && @trainer.medium_skill?
+            should_switch = false if Battle::AI::Handlers.should_not_switch?(@user, reserves, self, @battle)
+          end
+          if should_switch
+            idxParty = choose_best_replacement_pokemon(@user.index, false, threshold: REPLACEMENT_THRESHOLD_SHOULD_SWITCH)
           end
         end
       end
-    else
-      return false if !@trainer.has_skill_flag?("ConsiderSwitching")
-      reserves = get_non_active_party_pokemon(@user.index)
-      return false if reserves.empty?
-      should_switch = Battle::AI::Handlers.should_switch?(@user, reserves, self, @battle)
-      if should_switch && @trainer.medium_skill?
-        should_switch = false if Battle::AI::Handlers.should_not_switch?(@user, reserves, self, @battle)
-      end
-      return false if !should_switch
-      idxParty = choose_best_replacement_pokemon(@user.index, false, threshold: REPLACEMENT_THRESHOLD_NORMAL)
     end
     if idxParty < 0
       PBDebug.log_ai("   => no good replacement Pokémon, will not switch after all")
@@ -644,7 +620,7 @@ class Battle::AI
     @battle.allOtherSideBattlers(idxBattler).map { |b| b.pokemon&.personalID }.compact.sort
   end
 
-  def choose_best_replacement_pokemon(idxBattler, forced_switch = false, threshold: REPLACEMENT_THRESHOLD_NORMAL)
+  def choose_best_replacement_pokemon(idxBattler, forced_switch = false, threshold: REPLACEMENT_THRESHOLD_TERRIBLE_MOVES)
     # Clear caches only on forced switches (faints/pivots) where a different
     # Pokémon now occupies the battler index, invalidating cached results.
     if forced_switch

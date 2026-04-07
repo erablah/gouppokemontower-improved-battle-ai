@@ -106,6 +106,7 @@ class Battle::AI
         foe_personal_id: b.pokemon&.personalID,
         foe_vs_current: foe_vs_current,
         foe_vs_reserve: foe_vs_reserve,
+        voluntary_switch: voluntary_switch,
         reserve_candidates: reserve_candidates.map(&:dup),
         damaging_move_results: [],
         status_move_survival: {},
@@ -182,7 +183,35 @@ class Battle::AI
     if died_on_entry
       PBDebug.log_score_change(-50, "#{pkmn.name} vs #{foe_battler.name}: dies on entry")
       return -50
-    elsif best_result.user_wins?
+    end
+
+    # --- Extract HP data from simulation turn log ---
+    first_turn = best_result.turn_log&.first
+    entry_hp = first_turn ? first_turn[:user_hp_before] : pkmn.hp
+    entry_hp_pct = entry_hp.to_f / [pkmn.totalhp, 1].max
+    foe_start_hp = first_turn ? first_turn[:target_hp_before] : foe_battler.hp
+    voluntary = foe_results[:voluntary_switch]
+
+    # How much HP we're "spending" by sending this pkmn in (relative to its max)
+    hp_invested_pct = pkmn.hp.to_f / [pkmn.totalhp, 1].max
+
+    # --- Switch-in fragility penalty (voluntary switches only) ---
+    # Heavy free-turn damage makes the switch-in risky: crits, wrong move
+    # prediction, or priority can turn a "winning" matchup into a dead mon.
+    # Penalty scales from 0 at <=30% damage taken up to 25 at ~100%.
+    # This makes fragile switch-ins score lower than bulky alternatives,
+    # so they're only chosen when nothing healthier is available.
+    fragility_penalty = 0
+    if voluntary
+      switch_in_dmg_pct = (pkmn.hp - entry_hp).to_f / [pkmn.totalhp, 1].max
+      if switch_in_dmg_pct > 0.30
+        fragility_penalty = ((switch_in_dmg_pct - 0.30) * 35).round.clamp(0, 25)
+        PBDebug.log_score_change(-fragility_penalty,
+          "#{pkmn.name} vs #{foe_battler.name}: risky entry (took #{(switch_in_dmg_pct * 100).round}% on switch-in, #{(entry_hp_pct * 100).round}% HP remaining)")
+      end
+    end
+
+    if best_result.user_wins?
       u_turns = best_result.target_ko_turn || 999
       f_turns = best_result.user_ko_turn || 999
       turn_adv = f_turns - u_turns
@@ -190,28 +219,57 @@ class Battle::AI
       bonus += 10 if best_result.user_can_ohko?
       hp_pct = best_result.user_hp.to_f / [pkmn.totalhp, 1].max
       bonus = hp_pct >= 0.25 ? bonus + (hp_pct * 10).round : bonus - ((1 - hp_pct) * 10).round
-      PBDebug.log_score_change(bonus, "#{pkmn.name} vs #{foe_battler.name}: wins (KO turn #{u_turns}, #{(hp_pct * 100).round}% remaining)")
+      bonus -= fragility_penalty
+      PBDebug.log_score_change(bonus + fragility_penalty, "#{pkmn.name} vs #{foe_battler.name}: wins (KO turn #{u_turns}, #{(hp_pct * 100).round}% remaining)")
       return bonus
+
     elsif best_result.target_wins?
-      f_turns = best_result.user_ko_turn || 999
-      penalty = 15
-      penalty += 25 if best_result.target_can_ohko?
+      # --- Trade-value-aware loss scoring ---
+      dmg_dealt_pct = 0.0
       if best_result.target_hp && foe_battler.totalhp > 0
-        dmg_dealt_pct = 1.0 - (best_result.target_hp.to_f / foe_battler.totalhp)
-        penalty -= (dmg_dealt_pct * 10).round
+        dmg_dealt = foe_start_hp - best_result.target_hp
+        dmg_dealt_pct = dmg_dealt.to_f / foe_battler.totalhp
       end
-      penalty -= f_turns if f_turns > 2
-      penalty = [penalty, 5].max
-      PBDebug.log_score_change(-penalty, "#{pkmn.name} vs #{foe_battler.name}: loses (KO'd turn #{f_turns})")
+      trade_ratio = hp_invested_pct > 0 ? dmg_dealt_pct / hp_invested_pct : 0.0
+      f_turns = best_result.user_ko_turn || 999
+
+      if trade_ratio >= 1.0
+        # Excellent trade: dealt more %HP to foe than we had
+        penalty = (5 - [f_turns - 1, 3].min).clamp(0, 5)
+      elsif trade_ratio >= 0.6
+        # Decent trade
+        penalty = (15 - (trade_ratio * 15).round).clamp(5, 15)
+        penalty -= [f_turns - 2, 2].min if f_turns > 2
+      else
+        # Bad trade
+        penalty = 15
+        penalty += best_result.target_can_ohko? ? [15 - (trade_ratio * 20).round, 0].max : 0
+        penalty += ((1.0 - trade_ratio) * 10).round
+        penalty -= [f_turns - 2, 3].min if f_turns > 2
+        penalty = penalty.clamp(15, 40)
+      end
+
+      penalty += fragility_penalty
+      PBDebug.log_score_change(-penalty,
+        "#{pkmn.name} vs #{foe_battler.name}: loses (KO'd turn #{f_turns}, dealt #{(dmg_dealt_pct * 100).round}%, trade ratio #{(trade_ratio * 100).round}%)")
       return -penalty
+
     else
-      bonus = if best_result.target_hp && foe_battler.totalhp > 0
-        dmg_dealt_pct = 1.0 - (best_result.target_hp.to_f / foe_battler.totalhp)
-        hp_pct = best_result.user_hp.to_f / [pkmn.totalhp, 1].max
-        [dmg_dealt_pct - hp_pct, 0].max * 10
+      # --- No KO: net HP trade (signed) ---
+      dmg_dealt_pct = 0.0
+      hp_lost_pct = 0.0
+      if best_result.target_hp && foe_battler.totalhp > 0
+        dmg_dealt = foe_start_hp - best_result.target_hp
+        dmg_dealt_pct = dmg_dealt.to_f / foe_battler.totalhp
       end
-      bonus = bonus ? bonus.round : 1
-      PBDebug.log_score_change(bonus, "#{pkmn.name} vs #{foe_battler.name}: no KO")
+      if best_result.user_hp && pkmn.totalhp > 0
+        hp_lost = pkmn.hp - best_result.user_hp
+        hp_lost_pct = hp_lost.to_f / pkmn.totalhp
+      end
+      net_trade = dmg_dealt_pct - hp_lost_pct
+      bonus = (net_trade * 15).round.clamp(-10, 10) - fragility_penalty
+      PBDebug.log_score_change(bonus + fragility_penalty,
+        "#{pkmn.name} vs #{foe_battler.name}: no KO (dealt #{(dmg_dealt_pct * 100).round}%, lost #{(hp_lost_pct * 100).round}%)")
       return bonus
     end
   end

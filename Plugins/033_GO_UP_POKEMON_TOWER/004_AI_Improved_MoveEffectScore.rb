@@ -653,6 +653,34 @@ Battle::AI::Handlers::MoveEffectScore.add("HealUserPositionNextTurn",
   }
 )
 
+Battle::AI::Handlers::MoveEffectScore.add("SwitchOutUserDamagingMove",
+  proc { |score, move, user, ai, battle|
+    next score if !battle.pbCanChooseNonActive?(user.index)
+    # Don't want to switch in ace
+    score -= 20 if ai.trainer.has_skill_flag?("ReserveLastPokemon") &&
+                   battle.pbTeamAbleNonActiveCount(user.index) == 1
+    # Prefer if the user switching out will lose a negative effect
+    score += 20 if user.effects[PBEffects::PerishSong] > 0
+    score += 10 if user.effects[PBEffects::Confusion] > 1
+    score += 10 if user.effects[PBEffects::Attract] >= 0
+    # Prefer if the user switching out will change its form
+    score += 20 if user.has_active_ability?(:ZEROTOHERO) && user.battler.form == 0
+    score += 10 if user.has_active_ability?(:REGENERATOR) && user.battler.form == 0
+    # Consider the user's stat stages
+    if user.stages.any? { |key, val| val >= 2 }
+      score -= 15
+    elsif user.stages.any? { |key, val| val < 0 }
+      score += 10
+    end
+    # Don't prefer if the user's side has entry hazards on it
+    score -= 5 if user.pbOwnSide.effects[PBEffects::Spikes] > 0
+    score -= 5 if user.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0
+    score -= 5 if user.pbOwnSide.effects[PBEffects::StealthRock]
+    next score
+  }
+)
+
+
 #===============================================================================
 # Dynamax move-effect score overrides
 #===============================================================================
