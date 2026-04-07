@@ -150,7 +150,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:boost_pivot_moves,
 #===============================================================================
 # [NEW] reset enemy boosts
 #===============================================================================
-Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:phaze_with_hazards,
+Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:preemptive_phaze,
   proc { |score, move, user, target, ai, battle|
     next score unless ai.trainer.high_skill?
     phaze_codes = [
@@ -162,13 +162,12 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:phaze_with_hazards,
     score -= 20
 
     # Boost if target has set up
-    target_boosts = ai.total_positive_boosts(target)
-    if target_boosts >= 1
-      score +=30
-      PBDebug.log_score_change(30, "Phaze to reset target's +#{target_boosts} boosts.")
-    elsif ai.battler_has_setup_move?(target)
-      score += 15
-      PBDebug.log_score_change(15, "Phaze to reset target's potential setup.")
+    if ai.foe_has_setup_move?(user)
+      score += 30
+      PBDebug.log_score_change(30, "Phaze to preemptively stop target's setup.")
+    elsif !move.damagingMove?
+      score -= 30
+      PBDebug.log_score_change(-30, "phaze wastes one turn")
     end
 
     next score
