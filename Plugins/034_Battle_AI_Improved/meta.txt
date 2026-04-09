@@ -1,8 +1,9 @@
-Name       = GO UP POKEMON TOWER
+Name       = Battle AI Improved
 Version    = 1.0
 Essentials = 21.1
 Requires   = v21.1 Hotfixes, 1.0.7
 Requires   = Deluxe Battle Kit, 1.2.9
-Requires   = Battle AI Improved, 1.0
+Requires   = [DBK] Improved Item AI, 1.0.2
+Requires   = [DBK] Animated Pokémon System, 1.1.1
 Optional   = [DBK] Enhanced Battle UI, 2.0.9
 Credits    = YOUNG
