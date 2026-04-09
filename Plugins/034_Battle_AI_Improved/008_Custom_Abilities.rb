@@ -125,6 +125,10 @@ Battle::AbilityEffects::OnBeingHit.add(:SPICYSPRAY,
 # The move still goes through Protect (handled by pbSuccessCheckAgainstTarget),
 # but isProtected? now reports true so the 1/4 damage multiplier can detect it.
 class Battle::Battler
+  def contactBypassProtect?(move)
+    return move.pbContactMove?(self) && (hasActiveAbility?(:UNSEENFIST) || hasActiveAbility?(:PIERCINGDRILL))
+  end
+
   def pbSuccessCheckAgainstTarget(move, user, target, targets)
     show_message = move.pbShowFailMessages?(targets)
     typeMod = move.pbCalcTypeMod(move.calcType, user, target)
@@ -163,7 +167,7 @@ class Battle::Battler
       end
       target.damageState.protected = true
       @battle.successStates[user.index].protected = true
-      return false
+      return user.contactBypassProtect?(move) ? true : false
     end
     if move.canProtectAgainst?
       # Quick Guard
@@ -175,7 +179,7 @@ class Battle::Battler
         end
         target.damageState.protected = true
         @battle.successStates[user.index].protected = true
-        return false
+        return user.contactBypassProtect?(move) ? true : false
       end
       # Protect
       if target.effects[PBEffects::Protect]
@@ -185,7 +189,7 @@ class Battle::Battler
         end
         target.damageState.protected = true
         @battle.successStates[user.index].protected = true
-        return false
+        return user.contactBypassProtect?(move) ? true : false
       end
       # King's Shield
       if target.effects[PBEffects::KingsShield] && move.damagingMove?
@@ -199,7 +203,7 @@ class Battle::Battler
             user.pbCanLowerStatStage?(:ATTACK, target)
           user.pbLowerStatStage(:ATTACK, (Settings::MECHANICS_GENERATION >= 8) ? 1 : 2, target)
         end
-        return false
+        return user.contactBypassProtect?(move) ? true : false
       end
       # Spiky Shield
       if target.effects[PBEffects::SpikyShield]
@@ -207,15 +211,15 @@ class Battle::Battler
           @battle.pbCommonAnimation("SpikyShield", target)
           @battle.pbDisplay(_INTL("\\j[{1},은,는] 스스로를 지켰다!", target.pbThis))
         end
-        target.damageState.protected = true
-        @battle.successStates[user.index].protected = true
+        target.damageState.protected = true 
+        @battle.successStates[user.index].protected = true 
         if move.pbContactMove?(user) && user.affectedByContactEffect? && user.takesIndirectDamage?
           @battle.scene.pbDamageAnimation(user)
           user.pbReduceHP(user.totalhp / 8, false)
           @battle.pbDisplay(_INTL("\\j[{1},은,는] 데미지를 입었다!", user.pbThis))
           user.pbItemHPHealCheck
         end
-        return false
+        return user.contactBypassProtect?(move) ? true : false
       end
       # Baneful Bunker
       if target.effects[PBEffects::BanefulBunker]
@@ -223,13 +227,13 @@ class Battle::Battler
           @battle.pbCommonAnimation("BanefulBunker", target)
           @battle.pbDisplay(_INTL("\\j[{1},은,는] 스스로를 지켰다!", target.pbThis))
         end
-        target.damageState.protected = true
+        target.damageState.protected = true 
         @battle.successStates[user.index].protected = true
         if move.pbContactMove?(user) && user.affectedByContactEffect? &&
             user.pbCanPoison?(target, false)
           user.pbPoison(target)
         end
-        return false
+        return user.contactBypassProtect?(move) ? true : false
       end
       # Obstruct
       if target.effects[PBEffects::Obstruct] && move.damagingMove?
@@ -237,21 +241,20 @@ class Battle::Battler
           @battle.pbCommonAnimation("Obstruct", target)
           @battle.pbDisplay(_INTL("\\j[{1},은,는] 스스로를 지켰다!", target.pbThis))
         end
-        target.damageState.protected = true
-        @battle.successStates[user.index].protected = true
+        target.damageState.protected = true 
+        @battle.successStates[user.index].protected = true 
         if move.pbContactMove?(user) && user.affectedByContactEffect? &&
             user.pbCanLowerStatStage?(:DEFENSE, target)
           user.pbLowerStatStage(:DEFENSE, 2, target)
         end
-        return false
+        return user.contactBypassProtect?(move) ? true : false
       end
       # Mat Block
       if target.pbOwnSide.effects[PBEffects::MatBlock] && move.damagingMove?
         # NOTE: Confirmed no common animation for this effect.
         @battle.pbDisplay(_INTL("\\j[{1},은,는] 마룻바닥을 세워 같은 편을 지켰다!", move.name)) if show_message
-        target.damageState.protected = true
-        @battle.successStates[user.index].protected = true
-        return false
+        target.damageState.protected = true 
+        @battle.successStates[user.index].protected = true 
       end
     end
     # Magic Coat/Magic Bounce
@@ -365,8 +368,20 @@ class Battle::Battler
   # unseen fist no longer bypasses everything for protect in successcheck, so add this here
   alias pokemonchampions_affectedByContactEffect? affectedByContactEffect?
   def affectedByContactEffect?(showMsg = false)
-    return false if hasActiveAbility?(:UNSEENFIST)
+    return true if self.hasActiveAbility?(:UNSEENFIST) || self.hasActiveAbility?(:PIERCINGDRILL)
     return pokemonchampions_affectedByContactEffect?
+  end
+
+  alias pokemonchampions_pbEffectsAfterMove pbEffectsAfterMove
+  def pbEffectsAfterMove(user, targets, move, numHits)
+    if move.damagingMove? && user.contactBypassProtect?(move)
+      targets.each do |b|
+        next if b.damageState.unaffected
+        next if !b.isProtected?(user, move)
+        @battle.pbDisplay(JosaProcessor.process(_INTL("\\j[{1},은,는] 완전히 막지 못하고 데미지를 입었다!", b.pbThis)))
+      end
+    end
+    pokemonchampions_pbEffectsAfterMove(user, targets, move, numHits)
   end
 end
 

@@ -33,8 +33,8 @@ class DeluxeBitmapWrapper
   end
 end
 
-# drdooms charm bugfix and also drought water move bugfix
 class Battle::Move
+  # drdooms charm bugfix and also drought water move bugfix
   def pbCalcDamageMultipliers(user, target, numTargets, type, baseDmg, multipliers)
     args = [user, target, numTargets, type, baseDmg]
     pbCalcDamageMults_Global(*args, multipliers)
@@ -90,15 +90,13 @@ class Battle::Move
   alias dynamax_pbCalcDamageMultipliers pbCalcDamageMultipliers
   def pbCalcDamageMultipliers(user, target, numTargets, type, baseDmg, multipliers)
     dynamax_pbCalcDamageMultipliers(user, target, numTargets, type, baseDmg, multipliers)
-    PBDebug.log("[PIERCINGDRILL] Checking for Protect piercing with #{name}, #{target.isProtected?(user, self)}")
     multipliers[:final_damage_multiplier] /= 4 if dynamaxMove? && target.isProtected?(user, self)
   end
 
   alias piercingdrill_pbCalcDamageMultipliers pbCalcDamageMultipliers
   def pbCalcDamageMultipliers(user, target, numTargets, type, baseDmg, multipliers)
     piercingdrill_pbCalcDamageMultipliers(user, target, numTargets, type, baseDmg, multipliers)
-    PBDebug.log("[PIERCINGDRILL] Checking for Protect piercing with #{name}, #{target.isProtected?(user, self)}")
-    if contactMove? && user.hasActiveAbility?(:UNSEENFIST) && user.hasActiveAbility?(:PIERCINGDRILL) &&
+    if contactMove? && (user.hasActiveAbility?(:UNSEENFIST) || user.hasActiveAbility?(:PIERCINGDRILL)) &&
        target.isProtected?(user, self)
       PBDebug.log("[PIERCINGDRILL] #{user.pbThis} pierces Protect with #{name}, applying 1/4 damage")
       multipliers[:final_damage_multiplier] /= 4
