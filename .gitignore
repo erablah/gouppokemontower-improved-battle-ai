@@ -10,3 +10,5 @@
 
 # But specifically ignore debuglog.txt
 Data/debuglog.txt
+meson-logs/*
+meson-private/*

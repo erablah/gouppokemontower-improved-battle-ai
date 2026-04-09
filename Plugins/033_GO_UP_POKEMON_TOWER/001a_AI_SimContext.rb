@@ -12,7 +12,7 @@ class Battle::AI
   SIM_SWITCH_TRIGGERED = :sim_switch_triggered
 
   # Minimum interval between scene ticks during AI computation (~7 FPS).
-  TICK_INTERVAL = 0.05
+  TICK_INTERVAL = 0.01
 
   #=============================================================================
   # SilentScene: No-op scene for simulation.
