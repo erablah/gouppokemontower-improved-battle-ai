@@ -207,9 +207,9 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
         hp_saved = bst_hp_pct - cur_hp_pct
         # Base value: you win AND end up boosted for future matchups
         base = [cur_turns * 3, 15].min + 10
-        if hp_saved > 0
+        if hp_saved > -0.25
           foe_bonus = base + (hp_saved * 40).round.clamp(0, 25)
-        elsif hp_saved >= -0.05
+        elsif hp_saved >= -0.4
           foe_bonus = base
         else
           foe_bonus = [base + (hp_saved * 30).round, 0].max
@@ -222,7 +222,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
       cur_turns = current_result.target_ko_turn || 999
       bst_turns = boosted_result.target_ko_turn || 999
       PBDebug.log_ai("[smart_setup] vs #{b.name}: cur=#{cur_wins ? 'W' : 'L'}(#{cur_turns}T) " \
-                     "bst=#{bst_wins ? 'W' : 'L'}(#{bst_turns}T) → #{foe_bonus > 0 ? '+' : ''}#{foe_bonus}")
+                     "bst=#{bst_wins ? 'W' : 'L'}(#{bst_turns}T) hpsaved = #{hp_saved}→ #{foe_bonus}")
       total_bonus += foe_bonus
     end
 
