@@ -348,13 +348,13 @@ class Battle::AI
     battler = sim.battlers[battler_index]
     return unless battler && battler.pokemon && !battler.fainted?
     # Mega Evolution
-    if (sim.pbCanMegaEvolve?(battler_index) rescue false)
+    if sim.pbCanMegaEvolve?(battler_index)
       battler.pokemon.makeMega
       battler.form_update(true)
       return
     end
     # Dynamax
-    if (sim.pbCanDynamax?(battler_index) rescue false)
+    if sim.pbCanDynamax?(battler_index)
       battler.effects[PBEffects::Dynamax] = Settings::DYNAMAX_TURNS
       battler.makeDynamax
       battler.display_dynamax_moves
@@ -362,7 +362,7 @@ class Battle::AI
     end
     # Tera for Terapagos / Ogerpon (form-changing tera species)
     if [:TERAPAGOS, :OGERPON].include?(battler.species) &&
-       (sim.pbCanTerastallize?(battler_index) rescue false)
+       sim.pbCanTerastallize?(battler_index)
       battler.pokemon.terastallized = true
       battler.form_update(true)
     end

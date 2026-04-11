@@ -173,8 +173,8 @@ class Battle::AI
   # Builds the cache key for damage_moves. Extracted for reuse.
   #---------------------------------------------------------------------------
   def _dmg_cache_key(attacker, defender)
-    mega = (@battle.pbRegisteredMegaEvolution?(attacker.index) rescue false)
-    tera = (@battle.pbRegisteredTerastallize?(attacker.index) rescue false) || attacker.tera?
+    mega = @battle.pbRegisteredMegaEvolution?(attacker.index)
+    tera = @battle.pbRegisteredTerastallize?(attacker.index) || attacker.tera?
     def_tera = defender.tera?
     atk_z = zmove_available_for_battler_index?(attacker.index)
     def_z = zmove_available_for_battler_index?(defender.index)

@@ -36,8 +36,8 @@ class Battle::AI
   # Returns a cached summary of KO/speed data for all current battler pairs.
   #---------------------------------------------------------------------------
   def matchup_summary
-    mega = (@battle.pbRegisteredMegaEvolution?(@user.index) rescue false)
-    tera = (@battle.pbRegisteredTerastallize?(@user.index) rescue false) || @user.tera?
+    mega = @battle.pbRegisteredMegaEvolution?(@user.index) 
+    tera = @battle.pbRegisteredTerastallize?(@user.index) || @user.tera?
     foe_ids = []
     each_foe_battler(@user.side) { |b, _| foe_ids << b.pokemon&.personalID }
     key = [@user.index, @battle.turnCount, mega, tera, @user.pokemon&.personalID, foe_ids]

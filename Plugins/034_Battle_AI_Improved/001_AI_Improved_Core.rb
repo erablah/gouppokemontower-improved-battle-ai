@@ -105,7 +105,7 @@ class Battle::AI
     sim = { transforms: [] }
     battler = @battle.battlers[idxBattler]
     # AI's own mega
-    if (@battle.pbRegisteredMegaEvolution?(idxBattler) rescue false) && !battler.mega?
+    if @battle.pbRegisteredMegaEvolution?(idxBattler) && !battler.mega?
       prev_form = battler.form
       battler.pokemon.makeMega
       battler.form = battler.pokemon.form
@@ -115,7 +115,7 @@ class Battle::AI
     end
     # AI's own tera
     if !battler.mega? &&
-       (@battle.pbRegisteredTerastallize?(idxBattler) rescue false) && !battler.tera?
+       @battle.pbRegisteredTerastallize?(idxBattler) && !battler.tera?
       prev_tera = battler.pokemon.instance_variable_get(:@terastallized)
       prev_form = battler.form
       battler.pokemon.terastallized = true
@@ -125,7 +125,7 @@ class Battle::AI
       PBDebug.log_ai("[simulate_transforms] Tera applied: #{battler.name} (#{battler.pokemon.tera_type})")
     end
     # AI's own dynamax
-    if (@battle.pbRegisteredDynamax?(idxBattler) rescue false) && !battler.dynamax?
+    if @battle.pbRegisteredDynamax?(idxBattler) && !battler.dynamax?
       prev_form = battler.form
       battler.pokemon.makeDynamaxForm
       battler.form = battler.pokemon.form
@@ -181,7 +181,7 @@ class Battle::AI
     battler = @battle.battlers[idxBattler]
     return false unless battler
     return false unless battler.isSpecies?(:TERAPAGOS)
-    return false unless (@battle.pbRegisteredTerastallize?(idxBattler) rescue false)
+    return false unless @battle.pbRegisteredTerastallize?(idxBattler)
     return false unless battler.hasActiveAbility?(:TERASHELL) && battler.hp == battler.totalhp
 
     @battle.pbUnregisterTerastallize(idxBattler)
