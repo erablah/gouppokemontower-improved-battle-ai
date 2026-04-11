@@ -648,10 +648,10 @@ Battle::AI::Handlers::ScoreReplacement.add(:utility_switch_in,
       end
     end
 
-    # Taunt vs status-heavy foe
+    # Taunt/Encore vs status-heavy foe
     if foe_has_status_moves
       pkmn.moves.each do |m|
-        if m.function_code == "DisableTargetStatusMoves"
+        if m.function_code == "DisableTargetStatusMoves" || m.function_code == "DisableTargetUsingDifferentMove"
           next unless succeeds_move.call(m.id)
           score += 10
           PBDebug.log_score_change(10, "Utility: Taunt vs status-heavy foe")
@@ -670,6 +670,14 @@ Battle::AI::Handlers::ScoreReplacement.add(:utility_switch_in,
           break
         end
       end
+    end
+
+    #start own screen
+    if ["StartWeakenDamageAgainstUserSideIfHail", "StartWeakenPhysicalDamageAgainstUserSide", "StartWeakenSpecialDamageAgainstUserSide"].include?(m.function_code)
+      next unless succeeds_move.call(m.id)
+      score += 10
+      PBDebug.log_score_change(10, "Utility: #{m.name} to set up screens")
+      break
     end
     next score
   }
