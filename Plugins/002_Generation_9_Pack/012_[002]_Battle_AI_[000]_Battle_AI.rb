@@ -187,9 +187,9 @@ class Battle::AI::AIBattler
     # Salt Cure
     if self.effects[PBEffects::SaltCure]
       if has_type?(:WATER) || has_type?(:STEEL)
-        ret += [self.totalhp / 4, 1].max
-      else
         ret += [self.totalhp / 8, 1].max
+      else
+        ret += [self.totalhp / 16, 1].max
       end
     end
     return ret
