@@ -1,23 +1,6 @@
 #===============================================================================
 # Salt Cure
 #===============================================================================
-class Battle::AI::AIBattler
-  # Returns how much damage this battler will take at the end of this round.
-  alias paldea_rough_end_of_round_damage rough_end_of_round_damage
-  def rough_end_of_round_damage
-    ret = paldea_rough_end_of_round_damage
-    # Salt Cure
-    if self.effects[PBEffects::SaltCure]
-      if has_type?(:WATER) || has_type?(:STEEL)
-        ret += [self.totalhp / 8, 1].max
-      else
-        ret += [self.totalhp / 16, 1].max
-      end
-    end
-    return ret
-  end
-end
-
 class Battle
   # redefine gen 9 pack plugin override
   def pbEOREffectDamage(priority)
@@ -37,6 +20,7 @@ class Battle
     priority.each do |battler|
       next if !battler.effects[PBEffects::SaltCure] || !battler.takesIndirectDamage?
       pbCommonAnimation("SaltCure", battler)
+      # change salt cure damage
       fraction = (battler.pbHasType?(:STEEL) || battler.pbHasType?(:WATER)) ? 8 : 16
       battler.pbTakeEffectDamage(battler.totalhp / fraction) { |hp_lost|
         pbDisplay(_INTL("\\j[{1},은,는] 소금에 절여지고 있다!", battler.pbThis))
