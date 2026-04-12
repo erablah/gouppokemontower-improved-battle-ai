@@ -44,7 +44,7 @@ module LevelScalingSettings
 
   AUTOMATIC_EVOLUTIONS = true     # Updates the evolution stage of the pokemon
   INCLUDE_PREVIOUS_STAGES = true  # Reverts pokemon to previous evolution stages if they did not reach the evolution level
-  INCLUDE_NEXT_STAGES = true      # If false, stops evolution at the species used in the function call (or defined in the PBS)
+  INCLUDE_NEXT_STAGES = false      # If false, stops evolution at the species used in the function call (or defined in the PBS)
 
   INCLUDE_NON_NATURAL_EVOLUTIONS = true # Evolve all pokemon, even if it only evolves by a non natural method
   # If INCLUDE_NON_NATURAL_EVOLUTIONS is false, the script will only consider evolutions that use the methods in the NATURAL_EVOLUTION_METHODS array
