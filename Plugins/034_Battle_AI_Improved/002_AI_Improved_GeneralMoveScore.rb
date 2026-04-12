@@ -36,69 +36,22 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
     fc = ai.safe_function_code(move) || ""
     # Ghost Curse sacrifices HP to curse — not a setup move
     next score if fc == "CurseTargetOrLowerUserSpd1RaiseUserAtkDef1" && user.has_type?(:GHOST)
-    stat_up = (real_move.respond_to?(:statUp) && real_move.statUp) ? real_move.statUp : nil
-    stat_up_from_fc = false
 
-    # Fallback: parse stat_up from function code if @statUp is nil.
-    # This also covers Dynamax "RaiseUserSide..." effects like Max Airstream.
-    if !stat_up && fc.match?(/RaiseUser(?:Side)?/)
-      # Handle RaiseUserMainStats first (all main stats)
-      if fc.match?(/RaiseUser(?:Side)?MainStats/)
-        stages = fc[/RaiseUser(?:Side)?MainStats(\d+)/, 1].to_i
-        parsed = []
-        [:ATTACK, :DEFENSE, :SPECIAL_ATTACK, :SPECIAL_DEFENSE, :SPEED].each do |s|
-          parsed.push(s, stages)
-        end
-        stat_up = parsed
-        stat_up_from_fc = true
-      else
-        # Parse compound stat abbreviations like AtkDef1, SpAtkSpDefSpd2, Atk1Spd2
-        # Sorted longest-first so "Attack" matches before "Atk", "SpAtk" before "Atk"
-        stat_map = { "Attack" => :ATTACK, "Defense" => :DEFENSE,
-                     "SpAtk" => :SPECIAL_ATTACK, "SpDef" => :SPECIAL_DEFENSE,
-                     "Speed" => :SPEED, "Spd" => :SPEED,
-                     "Atk" => :ATTACK, "Def" => :DEFENSE,
-                     "Evasion" => :EVASION, "Acc" => :ACCURACY, "Eva" => :EVASION }
-        stat_names = stat_map.keys.sort_by { |k| -k.length }
-        stat_pattern = stat_names.map { |s| Regexp.escape(s) }.join("|")
-        if fc =~ /RaiseUser(?:Side)?((?:(?:#{stat_pattern})\d*)+)/
-          segment = $1
-          pairs = []
-          while !segment.empty?
-            matched = false
-            stat_names.each do |sname|
-              next unless segment.start_with?(sname)
-              segment = segment[sname.length..]
-              digit = segment[/^\d+/]
-              if digit
-                segment = segment[digit.length..]
-                pairs << [stat_map[sname], digit.to_i]
-              else
-                pairs << [stat_map[sname], nil]  # shared stage, filled below
-              end
-              matched = true
-              break
-            end
-            break unless matched
-          end
-          # Fill nil stages with the last seen stage (e.g. AtkDef1 → both get 1)
-          last_stage = pairs.reverse.find { |_, s| s }&.last || 1
-          parsed = []
-          pairs.each { |stat, stage| parsed.push(stat, stage || last_stage) }
-          stat_up = parsed.empty? ? nil : parsed
-          stat_up_from_fc = true if stat_up
-        end
+    stat_up = (real_move.respond_to?(:statUp) && real_move.statUp) ? real_move.statUp : []
+    is_effective_statup = false
+    stat_up.each_with_index do |stat, idx|
+      next if idx.odd?
+      if ai.stat_raise_worthwhile?(user, stat, true) || stat == :SPEED
+        is_effective_statup = true
       end
     end
-    next score unless stat_up
+
+    next score unless is_effective_statup
 
     is_status = move.statusMove?
     # Skip damaging moves whose stat boost is a non-guaranteed secondary effect
-    # (e.g. Meteor Mash 20% Atk). Function-code-parsed boosts are always
-    # guaranteed, and so are Dynamax side-boosting Max Moves like Max Airstream.
-    guaranteed_damaging_setup = stat_up_from_fc || fc.start_with?("RaiseUserSide")
-    if move.damagingMove? && !guaranteed_damaging_setup && real_move.addlEffect != 100
-      PBDebug.log_ai("[smart_setup] Skipped #{move.name}: damaging boost isn't guaranteed.")
+    if move.damagingMove? && (real_move.addlEffect != 100 && real_move.addlEffect != 0)
+      PBDebug.log_ai("[smart_setup] Skipped #{move.name}: damaging boost isn't guaranteed. addlEffect=#{real_move.addlEffect}")
       next score
     end
 
@@ -126,20 +79,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
     # -----------------------------------------------------------------------
     if is_status && ai.foe_has_effective_phazing?(user, ["SwitchOutTargetStatusMove", "SwitchOutTargetDamagingMove"])
       PBDebug.log_ai("[smart_setup] Skipped: foe has effective phazing move.")
-      next Battle::AI::MOVE_FAIL_SCORE
-    end
-
-    # -----------------------------------------------------------------------
-    # Skip if all boosted stats are already maxed
-    # -----------------------------------------------------------------------
-    any_effective = (stat_up.length / 2).times.any? do |i|
-      stat_id = stat_up[i * 2]
-      stages  = stat_up[i * 2 + 1]
-      battler.stages[stat_id] < [battler.stages[stat_id] + stages, 6].min
-    end
-    unless any_effective
-      PBDebug.log_ai("[smart_setup] All boosted stats already maxed.")
-      next score
+      next Battle::AI::MOVE_USELESS_SCORE
     end
 
     # -----------------------------------------------------------------------
@@ -192,10 +132,10 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
 
       if !cur_wins && bst_wins
         # Boost flips losing → winning
-        foe_bonus = is_status ? 50 : 25
+        foe_bonus = 50
       elsif cur_wins && !bst_wins
-        # Boost makes winning → losing (HP cost too high for status)
-        foe_bonus = is_status ? -60 : -40
+        # Boost makes winning → losing
+        foe_bonus = -60
       elsif cur_wins && bst_wins
         # Both win — compare turns to KO and remaining HP
         cur_turns = current_result.target_ko_turn || 999
@@ -208,15 +148,14 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
         # Base value: you win AND end up boosted for future matchups
         base = [cur_turns * 3, 15].min + 10
         if hp_saved > -0.25
-          foe_bonus = base + (hp_saved * 40).round.clamp(0, 25)
-        elsif hp_saved >= -0.4
+          foe_bonus = base + ((hp_saved + 0.25) * 40).round.clamp(0, 10)
+        elsif hp_saved >= -0.5
           foe_bonus = base
         else
           foe_bonus = [base + (hp_saved * 30).round, 0].max
         end
       else
-        # Both lose — status wastes a turn, damaging still deals damage
-        foe_bonus = is_status ? -60 : 0
+        foe_bonus = -60
       end
 
       cur_turns = current_result.target_ko_turn || 999

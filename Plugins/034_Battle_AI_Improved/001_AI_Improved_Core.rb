@@ -372,6 +372,7 @@ class Battle::AI
     return false unless move.respond_to?(:move) && move.move.respond_to?(:statUp)
     stat_up = move.move.statUp
     return false if !stat_up || stat_up.empty?
+    return false if move.damagingMove? && (real_move.addlEffect != 100 && real_move.addlEffect != 0)
 
     stat_up.each_slice(2).any? do |stat, stages|
       next false if !stat || !stages || stages <= 0
@@ -458,11 +459,16 @@ class Battle::AI
             PBDebug.log("")
             return
           end
+          PBDebug.logonerr { ret = pbChooseToSwitchOut(true, threshold: 120) }
+          if ret
+            PBDebug.log("")
+            return
+          end
         end
         # 4. Terrible moves: try switching
         if max_move_score < REPLACEMENT_THRESHOLD_TERRIBLE_MOVES
           ret = false
-          PBDebug.logonerr { ret = pbChooseToSwitchOut(true) }
+          PBDebug.logonerr { ret = pbChooseToSwitchOut(true, threshold: REPLACEMENT_THRESHOLD_TERRIBLE_MOVES) }
           if ret
             PBDebug.log("")
             return
@@ -568,12 +574,12 @@ class Battle::AI
   end
 
   #override pbChooseToSwitchOut — only called when all moves score < 80
-  def pbChooseToSwitchOut(terrible_moves = true)
+  def pbChooseToSwitchOut(terrible_moves = true, threshold: REPLACEMENT_THRESHOLD_TERRIBLE_MOVES)
     return false if !@battle.canSwitch   # Battle rule
     return false if @user.wild?
     return false if !@battle.pbCanSwitchOut?(@user.index)
     # 1) Try replacement at threshold 80
-    idxParty = choose_best_replacement_pokemon(@user.index, false, threshold: REPLACEMENT_THRESHOLD_TERRIBLE_MOVES)
+    idxParty = choose_best_replacement_pokemon(@user.index, false, threshold: threshold)
     if idxParty < 0
       PBDebug.log_ai("   => no replacement at threshold #{REPLACEMENT_THRESHOLD_TERRIBLE_MOVES}, trying ShouldSwitch handlers")
       # 2) ShouldSwitch handlers gate a lower threshold (70)

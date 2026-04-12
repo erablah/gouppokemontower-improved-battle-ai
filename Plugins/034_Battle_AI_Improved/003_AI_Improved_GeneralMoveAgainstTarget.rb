@@ -30,12 +30,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:one_v_one_move_score,
     end
 
     # --- Damaging moves below ---
-    pivot_codes = ["SwitchOutUserDamagingMove", "LowerTargetAtkSpAtk1SwitchOutUser"]
-    is_pivot = pivot_codes.include?(ai.safe_function_code(move)) &&
-               battle.pbCanChooseNonActive?(user.battler.index)
-
     user_dmg = ai.damage_entry_for_move(user, target, move)&.dig(:dmg) || 0
-    ignore_bad_loss_returns = user_dmg >= target.hp && ai.pbAIRandom(100) < 20
 
     # A) Base damage scaling: 0 to +20 based on damage relative to effective HP
     base = ([20.0 * user_dmg / target.hp, 20].min).to_i
@@ -54,17 +49,31 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:one_v_one_move_score,
                       result.switch_battler_index == target.index &&
                       !result.user_fainted
 
-    if result.target_can_ohko? && !interrupted_by_live_switch && !ignore_bad_loss_returns
+    if result.target_can_ohko? && !interrupted_by_live_switch
       score -= 100
       PBDebug.log_score_change(-100, "1v1: foe KOs before user acts")
-    elsif result.target_can_ohko? && !interrupted_by_live_switch
-      PBDebug.log_score_change(0, "1v1: ignoring early loss check on lethal damage roll")
+      next score
     end
 
+    # pivot
+    pivot_codes = ["SwitchOutUserDamagingMove", "LowerTargetAtkSpAtk1SwitchOutUser"]
+    is_pivot = pivot_codes.include?(ai.safe_function_code(move)) && battle.pbCanChooseNonActive?(user.battler.index)
     next score if is_pivot  # pivot moves: base damage + survival check only
 
+    # setup moves
+    stat_up = move.move.respond_to?(:statUp) && move.move.statUp && move.move.addlEffect != 100 ? move.move.statUp : []
+    is_effective_statup = false
+    stat_up.each_with_index do |stat, idx|
+      next if idx.odd?
+      if ai.stat_raise_worthwhile?(user, stat, true) || stat == :SPEED
+        is_effective_statup = true
+      end
+    end
+    next score if is_effective_statup # let statup handler handle move scoring.
+
+
     # B) User loses the 1v1 — penalty scaled by trade value
-    unless result.user_wins? || foe_pivoted_out || ignore_bad_loss_returns
+    unless result.user_wins? || foe_pivoted_out
       dmg_dealt_pct = 0.0
       if result.target_hp && target.totalhp > 0
         dmg_dealt = target.hp - result.target_hp
@@ -75,7 +84,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:one_v_one_move_score,
       # Base penalty + scale by damage not dealt + reduce when user HP is low
       # HP relief: zero above 70%, ramps steeply below
       hp_relief = user_hp_pct < 0.7 ? ((0.7 - user_hp_pct) / 0.7) ** 1.5 * 20 : 0
-      loss_penalty = 15 + ((1.0 - dmg_dealt_pct) * 25).round - hp_relief.round
+      loss_penalty = 15 + ((1.0 - dmg_dealt_pct) * 40).round - hp_relief.round
       loss_penalty = loss_penalty.clamp(5, 50)
       score -= loss_penalty
       PBDebug.log_score_change(-loss_penalty,

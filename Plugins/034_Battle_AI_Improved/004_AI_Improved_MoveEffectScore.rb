@@ -306,6 +306,32 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("FreezeTarget",
   }
 )
 
+Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("ConfuseTarget",
+  proc { |score, move, user, target, ai, battle|
+    # No score modifier if the status problem will be removed immediately
+    next score if target.has_active_item?(:PERSIMBERRY)
+    if target.battler.pbCanConfuse?(user.battler, false, move.move)
+      add_effect = move.get_score_change_for_additional_effect(user, target)
+      next score if add_effect == -999   # Additional effect will be negated
+      score += add_effect
+      # Inherent preference
+      score += AIEffectScoreHelper.get_inherent_preference(move, 10)
+
+      bonus = 0
+      # Prefer if the target is at high HP
+      if ai.trainer.has_skill_flag?("HPAware")
+        bonus += 20 * target.hp / target.totalhp
+      end
+
+      # Don't prefer if target benefits from being confused
+      bonus -= 15 if target.has_active_ability?(:TANGLEDFEET)
+
+      score += AIEffectScoreHelper.get_inherent_preference(move, bonus)
+    end
+    next score
+  }
+)
+
 #===============================================================================
 # FreezeFlinchTarget  (Ice Fang)
 # BurnFlinchTarget    (Fire Fang)

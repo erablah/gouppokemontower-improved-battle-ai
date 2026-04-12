@@ -7,7 +7,8 @@ class Battle::AI
   # override: only one tera available per team.
   alias wants_to_terastallize_original wants_to_terastallize?
   def wants_to_terastallize?
-        return true if @user.isSpecies?(:TERAPAGOS) || @user.isSpecies?(:OGERPON)
+      return true if @user.isSpecies?(:TERAPAGOS) || @user.isSpecies?(:OGERPON)
+      return @user.get_total_tera_score >= 0
   end
 
   #---------------------------------------------------------------------------

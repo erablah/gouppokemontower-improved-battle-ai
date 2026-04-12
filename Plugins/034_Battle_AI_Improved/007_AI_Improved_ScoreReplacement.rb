@@ -196,8 +196,7 @@ class Battle::AI
     hp_invested_pct = pkmn.hp.to_f / [pkmn.totalhp, 1].max
 
     # --- Switch-in fragility penalty (voluntary switches only) ---
-    # Heavy free-turn damage makes the switch-in risky: crits, wrong move
-    # prediction, or priority can turn a "winning" matchup into a dead mon.
+    # Heavy free-turn damage makes the switch-in risky
     # Penalty scales from 0 at <=30% damage taken up to 25 at ~100%.
     # This makes fragile switch-ins score lower than bulky alternatives,
     # so they're only chosen when nothing healthier is available.
@@ -205,7 +204,7 @@ class Battle::AI
     if voluntary
       switch_in_dmg_pct = (pkmn.hp - entry_hp).to_f / [pkmn.totalhp, 1].max
       if switch_in_dmg_pct > 0.30
-        fragility_penalty = ((switch_in_dmg_pct - 0.30) * 35).round.clamp(0, 25)
+        fragility_penalty = ((switch_in_dmg_pct - 0.30) * 35).round.clamp(0, 40)
         PBDebug.log_score_change(-fragility_penalty,
           "#{pkmn.name} vs #{foe_battler.name}: risky entry (took #{(switch_in_dmg_pct * 100).round}% on switch-in, #{(entry_hp_pct * 100).round}% HP remaining)")
       end
@@ -245,7 +244,7 @@ class Battle::AI
         penalty = 15
         penalty += best_result.target_can_ohko? ? [15 - (trade_ratio * 20).round, 0].max : 0
         penalty += ((1.0 - trade_ratio) * 10).round
-        penalty -= [f_turns - 2, 3].min if f_turns > 2
+        penalty -= f_turns * 2 if f_turns > 2
         penalty = penalty.clamp(15, 40)
       end
 
@@ -404,40 +403,6 @@ Battle::AI::Handlers::ScoreReplacement.add(:one_v_one_matchup,
   }
 )
 
-Battle::AI::Handlers::ScoreReplacement.add(:expected_foe_move_resistance,
-  proc { |idxBattler, pkmn, score, battle, ai|
-    cached_results = ai.replacement_1v1_results(idxBattler, pkmn)
-    next score if !cached_results || cached_results.empty?
-
-    ai.each_foe_battler(ai.user.side) do |b, _i|
-      foe_results = cached_results[b.index]
-      next unless foe_results
-
-      expected_into_current = foe_results[:foe_vs_current]
-      next unless expected_into_current
-
-      expected_into_reserve = foe_results[:reserve_candidates]&.find do |move_data|
-        move_data[:key] == expected_into_current[:key]
-      end
-      next unless expected_into_reserve
-
-      reserve_hp = [pkmn.hp, 1].max
-      reserve_damage = expected_into_reserve[:dmg].to_i
-      move_name = expected_into_current[:move]&.name || expected_into_current[:base_move]&.name || "expected move"
-
-      if reserve_damage <= 0
-        score += 10
-        PBDebug.log_score_change(10, "#{pkmn.name} vs #{b.name}: #{move_name} fails or does no damage on switch-in")
-      elsif reserve_damage < (reserve_hp * 0.2)
-        score += 5
-        pct = (100.0 * reserve_damage / reserve_hp).round(1)
-        PBDebug.log_score_change(5, "#{pkmn.name} vs #{b.name}: #{move_name} only does #{pct}% on switch-in")
-      end
-    end
-    next score
-  }
-)
-
 Battle::AI::Handlers::ScoreReplacement.add(:slow_pivot_followup,
   proc { |idxBattler, pkmn, score, battle, ai|
     party = battle.pbParty(idxBattler)
@@ -542,11 +507,7 @@ Battle::AI::Handlers::ScoreReplacement.add(:utility_switch_in,
     foe_has_screens = false
     foe_has_status_moves = false
     foe_has_boosted_target = false
-    foe_has_fast_target = false
-    foe_has_tanky_target = false
     foe_has_physical_target = false
-
-    cached_results = ai.replacement_1v1_results(idxBattler, pkmn)
 
     ai.each_foe_battler(ai.user.side) do |b, _i|
       foe_positive_boosts = ai.total_positive_boosts(b)
@@ -563,12 +524,6 @@ Battle::AI::Handlers::ScoreReplacement.add(:utility_switch_in,
       visible_moves = ai.known_foe_moves(b)
       has_physical = visible_moves.any? { |m| m.physicalMove? }
       foe_has_physical_target ||= has_physical && !b.has_active_ability?(:GUTS)
-
-      foe_has_fast_target ||= b.rough_stat(:SPEED) >= 110
-
-      foe_results = cached_results[b.index] if cached_results
-      best_reserve_damage = foe_results&.dig(:reserve_candidates)&.first&.dig(:dmg).to_i
-      foe_has_tanky_target ||= best_reserve_damage > 0 && best_reserve_damage < (b.totalhp * 0.4)
     end
 
     succeeds_move = proc { |m_id|
@@ -593,18 +548,16 @@ Battle::AI::Handlers::ScoreReplacement.add(:utility_switch_in,
         PBDebug.log_score_change(12, "Utility: #{m.name} vs physical foe")
         break
       when "ParalyzeTarget", "ParalyzeTargetIfNotTypeImmune"
-        next unless foe_has_boosted_target || foe_has_fast_target 
         bonus = 8
-        bonus += 4 if foe_has_fast_target || foe_has_boosted_target
+        bonus += 4 if foe_has_boosted_target
         score += bonus
-        PBDebug.log_score_change(bonus, "Utility: #{m.name} vs boosted/fast/tanky foe")
+        PBDebug.log_score_change(bonus, "Utility: #{m.name}")
         break
       when "PoisonTarget", "BadPoisonTarget"
-        next unless foe_has_boosted_target || foe_has_tanky_target
         bonus = 8
-        bonus += 6 if foe_has_tanky_target || foe_has_boosted_target
+        bonus += 4 if foe_has_boosted_target
         score += bonus
-        PBDebug.log_score_change(bonus, "Utility: #{m.name} vs boosted/fast/tanky foe")
+        PBDebug.log_score_change(bonus, "Utility: #{m.name}")
         break
       end
     end
@@ -673,11 +626,13 @@ Battle::AI::Handlers::ScoreReplacement.add(:utility_switch_in,
     end
 
     #start own screen
-    if ["StartWeakenDamageAgainstUserSideIfHail", "StartWeakenPhysicalDamageAgainstUserSide", "StartWeakenSpecialDamageAgainstUserSide"].include?(m.function_code)
-      next unless succeeds_move.call(m.id)
-      score += 10
-      PBDebug.log_score_change(10, "Utility: #{m.name} to set up screens")
-      break
+    pkmn.moves.each do |m|
+      if ["StartWeakenDamageAgainstUserSideIfHail", "StartWeakenPhysicalDamageAgainstUserSide", "StartWeakenSpecialDamageAgainstUserSide"].include?(m.function_code)
+        next unless succeeds_move.call(m.id)
+        score += 10
+        PBDebug.log_score_change(10, "Utility: #{m.name} to set up screens")
+        break
+      end
     end
     next score
   }
