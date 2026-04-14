@@ -143,16 +143,24 @@ class Battle::AI
     # Pre-compute priority moves for KO interception.
     user_priority_moves = []
     target_priority_moves = []
+    # Pre-compute recovery moves for recovery interception.
+    user_recovery_move = nil
+    target_recovery_move = nil
+    # Max foe damage (used for recovery interception threshold).
+    user_max_foe_dmg = 0
+    target_max_foe_dmg = 0
 
     if max_turns > 1
       if options[:sim]
         if options[:pre_switch]
           pre_switch = options[:pre_switch]
           damage_moves_with_switch(user_index, target_index, pre_switch)&.each_value do |data|
+            target_max_foe_dmg = data[:dmg] if data[:dmg] > target_max_foe_dmg
             next unless data[:move].priority > 0
             user_priority_moves << { action: data[:action], dmg: data[:dmg], pri: data[:move].priority, zmove: data[:zmove] }
           end
           damage_moves_with_switch(target_index, user_index, pre_switch)&.each_value do |data|
+            user_max_foe_dmg = data[:dmg] if data[:dmg] > user_max_foe_dmg
             next unless data[:move].priority > 0
             target_priority_moves << { action: data[:action], dmg: data[:dmg], pri: data[:move].priority, zmove: data[:zmove] }
           end
@@ -163,13 +171,39 @@ class Battle::AI
         target_ai = @battlers[target_index]
         if user_ai && target_ai
           damage_moves(user_ai, target_ai).each do |_move_key, data|
+            target_max_foe_dmg = data[:dmg] if data[:dmg] > target_max_foe_dmg
             next unless data[:move].priority > 0
             user_priority_moves << { action: data[:action], dmg: data[:dmg], pri: data[:move].priority, zmove: data[:zmove] }
           end
           damage_moves(target_ai, user_ai).each do |_move_key, data|
+            user_max_foe_dmg = data[:dmg] if data[:dmg] > user_max_foe_dmg
             next unless data[:move].priority > 0
             target_priority_moves << { action: data[:action], dmg: data[:dmg], pri: data[:move].priority, zmove: data[:zmove] }
           end
+        end
+      end
+      # Find recovery moves for each side.
+      recovery_codes = [
+        "HealUserHalfOfTotalHP",
+        "HealUserHalfOfTotalHPLoseFlyingTypeThisTurn",
+        "HealUserDependingOnWeather",
+      ]
+      sim_user_temp = sim.battlers[user_index]
+      sim_target_temp = sim.battlers[target_index]
+      if sim_user_temp
+        sim_user_temp.moves.each do |m|
+          next unless m && recovery_codes.include?(m.function_code)
+          next unless sim_user_temp.pbCanChooseMove?(m, false, false)
+          user_recovery_move = m.id
+          break
+        end
+      end
+      if sim_target_temp
+        sim_target_temp.moves.each do |m|
+          next unless m && recovery_codes.include?(m.function_code)
+          next unless sim_target_temp.pbCanChooseMove?(m, false, false)
+          target_recovery_move = m.id
+          break
         end
       end
     end
@@ -195,7 +229,8 @@ class Battle::AI
         user_move = resolve_sim_action_move(user, user_action)
         next unless user_move
         stop_after_turn ||= user_move.respond_to?(:zMove?) && user_move.zMove?
-        # Priority move KO interception.
+        # Priority move KO interception (checked first — takes precedence).
+        priority_intercepted_user = false
         if turn > 1 || options[:sim]
           user_priority_moves.each do |pm|
             next unless pm[:dmg] >= target.hp
@@ -204,7 +239,18 @@ class Battle::AI
               PBDebug.log_ai("[AI SIM] KO priority interception proc: #{user.pbThis} swaps #{user_move.name} -> #{pri_move.name} against #{target.pbThis} on turn #{turn} (predicted #{pm[:dmg]} >= #{target.hp} HP)")
               user_move = pri_move
               stop_after_turn ||= user_move.respond_to?(:zMove?) && user_move.zMove?
+              priority_intercepted_user = true
               break
+            end
+          end
+        end
+        # Recovery interception: swap to recovery when foe damage is low and HP is low.
+        if !priority_intercepted_user && user_recovery_move && (turn > 1 || options[:sim])
+          if user_max_foe_dmg < user.totalhp * 0.4 && user.hp < user.totalhp * 0.6
+            rec_move = resolve_sim_action_move(user, user_recovery_move)
+            if rec_move && user.pbCanChooseMove?(rec_move, false, false)
+              PBDebug.log_ai("[AI SIM] Recovery interception: #{user.pbThis} swaps #{user_move.name} -> #{rec_move.name} on turn #{turn} (foe dmg #{user_max_foe_dmg} < 40% totalhp, HP #{user.hp}/#{user.totalhp} < 60%)")
+              user_move = rec_move
             end
           end
         end
@@ -225,7 +271,8 @@ class Battle::AI
           target_move = resolve_sim_action_move(target, target_action)
           if target_move
             stop_after_turn ||= target_move.respond_to?(:zMove?) && target_move.zMove?
-            # Priority move KO interception
+            # Priority move KO interception (checked first — takes precedence)
+            priority_intercepted_target = false
             target_priority_moves.each do |pm|
               next unless pm[:dmg] >= user.hp
               pri_move = resolve_sim_action_move(target, pm[:action])
@@ -233,7 +280,18 @@ class Battle::AI
                 PBDebug.log_ai("[AI SIM] KO priority interception proc: #{target.pbThis} swaps #{target_move.name} -> #{pri_move.name} against #{user.pbThis} on turn #{turn} (predicted #{pm[:dmg]} >= #{user.hp} HP)")
                 target_move = pri_move
                 stop_after_turn ||= target_move.respond_to?(:zMove?) && target_move.zMove?
+                priority_intercepted_target = true
                 break
+              end
+            end
+            # Recovery interception for target
+            if !priority_intercepted_target && target_recovery_move
+              if target_max_foe_dmg < target.totalhp * 0.4 && target.hp < target.totalhp * 0.6
+                rec_move = resolve_sim_action_move(target, target_recovery_move)
+                if rec_move && target.pbCanChooseMove?(rec_move, false, false)
+                  PBDebug.log_ai("[AI SIM] Recovery interception: #{target.pbThis} swaps #{target_move.name} -> #{rec_move.name} on turn #{turn} (foe dmg #{target_max_foe_dmg} < 40% totalhp, HP #{target.hp}/#{target.totalhp} < 60%)")
+                  target_move = rec_move
+                end
               end
             end
             target_move_idx = target.moves.index(target_move) || 0
