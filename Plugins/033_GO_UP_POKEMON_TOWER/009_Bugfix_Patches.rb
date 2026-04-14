@@ -21,10 +21,12 @@ end
 # Can only change speed in battle during command phase (delta speed up overridden by battle AI improved)
 #===============================================================================#
 class Battle
-  alias_method :original_pbCommandPhase, :pbCommandPhase unless method_defined?(:original_pbCommandPhase)
+  alias_method :battleAI_pbCommandPhase, :pbCommandPhase unless method_defined?(:battleAI_pbCommandPhase)
   def pbCommandPhase
     $CanToggle = true
-    original_pbCommandPhase
+    battleAI_pbCommandPhase
     $CanToggle = false
   end
 end
+
+

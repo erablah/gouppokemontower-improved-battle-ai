@@ -396,7 +396,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_recovery,
 
     next score if foe_damage_ratio > 0.50
 
-    bonus += 20
+    score += 20
 
     next score
   }
