@@ -159,11 +159,16 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:phaze_with_hazards,
     ]
     next score unless phaze_codes.include?(ai.safe_function_code(move))
 
+    score -= 20
+
     # Boost if target has set up
     target_boosts = ai.total_positive_boosts(target)
     if target_boosts >= 1
       score +=30
       PBDebug.log_score_change(30, "Phaze to reset target's +#{target_boosts} boosts.")
+    elsif ai.battler_has_setup_move?(target)
+      score += 15
+      PBDebug.log_score_change(15, "Phaze to reset target's potential setup.")
     end
 
     next score
@@ -219,6 +224,19 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:boost_priority_when_slo
 #===============================================================================
 Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:trigger_target_ability_or_item_upon_hit,
   proc { |score, move, user, target, ai, battle|
+    next score
+  }
+)
+
+Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:fixed_damage,
+  proc { |score, move, user, target, ai, battle|
+    next score unless ai.safe_function_code(move) == "FixedDamageHalfTargetHP"
+    
+    target_hp_ratio = target.hp.to_f / [target.totalhp, 1].max
+    if target_hp_ratio > 0.8
+      score += 20
+      PBDebug.log_score_change(20, "Fixed damage bonus: target above 80% HP.")
+    end
     next score
   }
 )

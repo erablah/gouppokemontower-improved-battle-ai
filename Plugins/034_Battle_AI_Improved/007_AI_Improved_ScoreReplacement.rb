@@ -267,6 +267,9 @@ class Battle::AI
       end
       net_trade = dmg_dealt_pct - hp_lost_pct
       bonus = (net_trade * 15).round.clamp(-10, 10) - fragility_penalty
+      
+      # walls foe
+      bonus += best_result.turn_log.length * 5 if best_result.turn_log.length > 2
       PBDebug.log_score_change(bonus + fragility_penalty,
         "#{pkmn.name} vs #{foe_battler.name}: no KO (dealt #{(dmg_dealt_pct * 100).round}%, lost #{(hp_lost_pct * 100).round}%)")
       return bonus
@@ -559,6 +562,12 @@ Battle::AI::Handlers::ScoreReplacement.add(:utility_switch_in,
         score += bonus
         PBDebug.log_score_change(bonus, "Utility: #{m.name}")
         break
+      when "SleepTargetNextTurn"
+        bonus = 5
+        bonus += 5 if foe_has_boosted_target
+        score += bonus
+        PBDebug.log_score_change(bonus, "Utility: #{m.name}")
+        break
       end
     end
 
@@ -629,8 +638,8 @@ Battle::AI::Handlers::ScoreReplacement.add(:utility_switch_in,
     pkmn.moves.each do |m|
       if ["StartWeakenDamageAgainstUserSideIfHail", "StartWeakenPhysicalDamageAgainstUserSide", "StartWeakenSpecialDamageAgainstUserSide"].include?(m.function_code)
         next unless succeeds_move.call(m.id)
-        score += 10
-        PBDebug.log_score_change(10, "Utility: #{m.name} to set up screens")
+        score += 20
+        PBDebug.log_score_change(20, "Utility: #{m.name} to set up screens")
         break
       end
     end

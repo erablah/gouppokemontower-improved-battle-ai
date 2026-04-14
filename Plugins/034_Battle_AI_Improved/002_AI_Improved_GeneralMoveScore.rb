@@ -369,7 +369,6 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_recovery,
       "HealUserHalfOfTotalHP",
       "HealUserHalfOfTotalHPLoseFlyingTypeThisTurn",
       "HealUserDependingOnWeather",
-      "HealUserAndAlliesQuarterOfTotalHP"
     ]
     next score unless healing_codes.include?(ai.safe_function_code(move))
 
@@ -397,12 +396,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_recovery,
 
     next score if foe_damage_ratio > 0.50
 
-    # Good recovery range: 40~60% HP
-    if hp_ratio <= 0.60 && hp_ratio >= 0.40
-      bonus = (10 + (20 * (0.60 - hp_ratio) / 0.20)).to_i  # 15~35
-      score += bonus
-      PBDebug.log_score_change(bonus, "Smart recovery at #{(hp_ratio * 100).to_i}% HP.")
-    end
+    bonus += 20
 
     next score
   }

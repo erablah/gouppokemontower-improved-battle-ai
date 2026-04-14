@@ -465,7 +465,7 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("DisableTargetStatusMoves
     score += status_count * 3
 
     # Prefer taunting setup mons
-    score += 10 if has_setup
+    score += 10 if ai.battler_has_setup_move?(target)
 
     # Prefer taunting recovery users
     score += 8 if has_recovery
@@ -740,6 +740,7 @@ Battle::AI::Handlers::MoveEffectScore.add("TwoTurnAttackRaiseUserSpAtkSpDefSpd2"
     next score
   }
 )
+
 
 
 #===============================================================================
