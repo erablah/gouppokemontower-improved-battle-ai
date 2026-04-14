@@ -10,18 +10,12 @@ class Battle
   def pbCommandPhase
     @command_phase = true
     @scene.pbBeginCommandPhase
-    # Reset choices if commands can be shown
     @battlers.each_with_index do |b, i|
       next if !b
       pbClearChoice(i) if pbCanShowCommands?(i)
+      pbDeluxeTriggers(i, nil, "RoundStartCommand", 1 + @turnCount) if !b.fainted?
     end
-    # Reset choices to perform Mega Evolution if it wasn't done somehow
-    2.times do |side|
-      @megaEvolution[side].each_with_index do |megaEvo, i|
-        @megaEvolution[side][i] = -1 if megaEvo >= 0
-      end
-    end
-    # Choose actions for the round (AI first, then player)
+    2.times { |side| pbActionCommands(side) }
     pbCommandPhaseLoop(false)   # AI chooses their actions
     if @decision != 0   # Battle ended, stop choosing actions
       @command_phase = false
