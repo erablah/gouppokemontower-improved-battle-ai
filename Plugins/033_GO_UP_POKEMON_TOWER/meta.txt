@@ -5,4 +5,5 @@ Requires   = v21.1 Hotfixes, 1.0.7
 Requires   = Deluxe Battle Kit, 1.2.9
 Requires   = Battle AI Improved, 1.0
 Optional   = [DBK] Enhanced Battle UI, 2.0.9
+Optional   = Delta Speed Up, 1.2
 Credits    = YOUNG
