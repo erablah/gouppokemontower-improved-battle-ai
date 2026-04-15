@@ -310,7 +310,7 @@ class Battle::AI
         # cleanup can reset move-tracking fields on battlers that acted.
         switch_event = catch(SIM_SWITCH_TRIGGERED) do
           sim.pbAttackPhase
-          tick_scene
+          # tick_scene
           false
         end
 
@@ -340,7 +340,7 @@ class Battle::AI
         unless switch_event
           switch_event = catch(SIM_SWITCH_TRIGGERED) do
             sim.pbEndOfRoundPhase
-            tick_scene
+            # tick_scene
             false
           end
           user = sim.battlers[user_index]
@@ -434,9 +434,9 @@ class Battle::AI
   def create_switched_sim(pre_switch, options = {})
     sim = create_battle_copy
     pre_switch.each do |battler_idx, party_idx|
-      tick_scene
+      # tick_scene
       sim.pbRecallAndReplace(battler_idx, party_idx)
-      tick_scene
+      # tick_scene
       sim.pbOnBattlerEnteringBattle(battler_idx)
       if options[:voluntary_switch] && options[:foe_move_id]
         # Simulate the foe hitting the incoming pokemon
@@ -456,9 +456,9 @@ class Battle::AI
         sim.instance_variable_set(:@turnCount, @battle.turnCount + 1)
         catch(SIM_SWITCH_TRIGGERED) do
           sim.pbAttackPhase
-          tick_scene
+          # tick_scene
           sim.pbEndOfRoundPhase
-          tick_scene
+          # tick_scene
         end
       end
       

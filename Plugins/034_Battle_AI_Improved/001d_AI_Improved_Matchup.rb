@@ -23,7 +23,6 @@ class Battle::AI
         [move.id], foe_actions,
         max_turns: 1
       )
-      tick_scene
       status_survival[move.id] = {
         success: status_move_succeeded_in_result?(result, target_battler.index),
         result:  result
@@ -70,7 +69,6 @@ class Battle::AI
             )
             move_results[move_key] = result
             move_results_by_id[data[:move].id] = result
-            tick_scene
           end
         end
         sim_result = user_best ? move_results[user_best[:key]] : nil
@@ -138,7 +136,6 @@ class Battle::AI
         [move_id], sim_foe_actions,
         sim: sim, max_turns: 1
       )
-      tick_scene
       {
         success: status_move_succeeded_in_result?(res, target_index),
         result:  res

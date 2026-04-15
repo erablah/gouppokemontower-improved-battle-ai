@@ -143,7 +143,6 @@ class Battle::AI
       PBDebug.log_ai("  #{attacker.name} #{move.name}#{z_tag}: #{dmg} dmg (#{pct_total}% totalhp / #{pct_hp}% curhp)")
       entry = _build_damage_entry(base_move, move, dmg)
       fwd[entry[:key]] = entry
-      tick_scene
     end
     cache[fwd_key] = fwd
 
@@ -161,7 +160,6 @@ class Battle::AI
         PBDebug.log_ai("  #{defender.name} #{move.name}#{z_tag}: #{dmg} dmg (#{pct_total}% totalhp / #{pct_hp}% curhp)")
         entry = _build_damage_entry(base_move, move, dmg)
         rev[entry[:key]] = entry
-        tick_scene
       end
       cache[rev_key] = rev
     end
@@ -435,7 +433,6 @@ class Battle::AI
       dmg = calc_move_damage(move, sim_a, sim_b)
       entry = _build_damage_entry(base_move, move, dmg)
       fwd[entry[:key]] = entry
-      tick_scene
     end
     cache[fwd_key] = fwd
     attacker_name = sim_a.name
@@ -456,7 +453,6 @@ class Battle::AI
         dmg = calc_move_damage(move, sim_b, sim_a)
         entry = _build_damage_entry(base_move, move, dmg)
         rev[entry[:key]] = entry
-        tick_scene
       end
       cache[rev_key] = rev
     end

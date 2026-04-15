@@ -28,7 +28,7 @@ class Battle::AI
   #---------------------------------------------------------------------------
   def tick_scene
     now = System.uptime
-    return if @_last_tick && (now - @_last_tick) < TICK_INTERVAL
+    # return if @_last_tick && (now - @_last_tick) < TICK_INTERVAL
     @_last_tick = now
     scene = @battle.scene
     return unless scene.is_a?(Battle::Scene)
@@ -98,7 +98,6 @@ class Battle::AI
       throw Battle::AI::SIM_SWITCH_TRIGGERED, { reason: reason, battler_index: idxBattler }
     end
     @_sim_cache_key = cache_key
-    tick_scene
     @_sim_template
   end
 

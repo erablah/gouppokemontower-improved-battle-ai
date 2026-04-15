@@ -178,9 +178,7 @@ class Battle::AI
       sim.instance_variable_set(:@turnCount, @battle.turnCount + 1)
       catch(SIM_SWITCH_TRIGGERED) do
         sim.pbAttackPhase
-        tick_scene
         sim.pbEndOfRoundPhase
-        tick_scene
       end
     end
 
