@@ -575,7 +575,7 @@ class Battle::AI
     # 1) Try replacement at threshold 80
     idxParty = choose_best_replacement_pokemon(@user.index, false, threshold: threshold)
     if idxParty < 0
-      PBDebug.log_ai("   => no replacement at threshold #{REPLACEMENT_THRESHOLD_TERRIBLE_MOVES}, trying ShouldSwitch handlers")
+      PBDebug.log_ai("   => no replacement at threshold #{threshold}, trying ShouldSwitch handlers")
       # 2) ShouldSwitch handlers gate a lower threshold (70)
       if @trainer.has_skill_flag?("ConsiderSwitching")
         reserves = get_non_active_party_pokemon(@user.index)
@@ -585,7 +585,7 @@ class Battle::AI
             should_switch = false if Battle::AI::Handlers.should_not_switch?(@user, reserves, self, @battle)
           end
           if should_switch
-            idxParty = choose_best_replacement_pokemon(@user.index, false, threshold: REPLACEMENT_THRESHOLD_SHOULD_SWITCH)
+            idxParty = choose_best_replacement_pokemon(@user.index, false, threshold: threshold - 10)
           end
         end
       end
