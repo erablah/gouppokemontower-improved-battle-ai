@@ -604,7 +604,7 @@ class Battle::AI
     return false
   end
 
-  # Record the replacement score of a voluntarily chosen switch-in so the AI
+  # Record the replacement score so the AI
   # won't immediately switch it out on its first turn unless something better
   # comes along.
   def register_fresh_switch_score(idxBattler, idxParty)
@@ -652,19 +652,25 @@ class Battle::AI
     return -1 if reserves.length == 0
     # Double KO: both sides fainted and are sending in fresh replacements,
     # meaning we don't know what the player chose — pick randomly.
-    # Does NOT apply to pivot switches where the foe is visible on field.
     if forced_switch && @battle.battlers[idxBattler].fainted?
-      foe_is_unknown = true
-      @battle.allOtherSideBattlers(idxBattler).each do |b|
-        if !b.fainted? && b.turnCount > 0
-          foe_is_unknown = false
-          break
+      # Check if our battler's underlying Pokémon still has HP (i.e. was
+      # recalled alive, not truly KO'd). 
+      truly_fainted = @battle.pbParty(idxBattler).none? { |pkmn|
+        pkmn && pkmn == @battle.battlers[idxBattler].pokemon && pkmn.hp > 0
+      }
+      if truly_fainted
+        foe_is_unknown = true
+        @battle.allOtherSideBattlers(idxBattler).each do |b|
+          if !b.fainted? && b.turnCount > 0
+            foe_is_unknown = false
+            break
+          end
         end
-      end
-      if foe_is_unknown
-        chosen = reserves.sample
-        PBDebug.log_ai("=> double KO: randomly choosing #{party[chosen[0]].name}")
-        return chosen[0]
+        if foe_is_unknown
+          chosen = reserves.sample
+          PBDebug.log_ai("=> double KO: randomly choosing #{party[chosen[0]].name}")
+          return chosen[0]
+        end
       end
     end
     reserves = scored_replacement_candidates(idxBattler, forced_switch, party, reserves)

@@ -104,6 +104,31 @@ class Battle::Move
   end
 end
 
+# Fix: EOR Eject Pack recalls first, then pbEORSwitch picks a replacement.
+# This means pbFindBattler can't exclude the recalled mon (HP set to 0 by
+# pbAbilitiesOnSwitchOut), so it becomes a valid reserve and can replace itself.
+# Override to use the same full inline switch that non-EOR Eject Pack already does.
+Battle::ItemEffects::OnStatLoss.add(:EJECTPACK,
+  proc { |item, battler, move_user, battle|
+    next false if battler.effects[PBEffects::SkyDrop] >= 0 ||
+                  battler.inTwoTurnAttack?("TwoTurnAttackInvulnerableInSkyTargetCannotAct")
+    next false if battle.pbAllFainted?(battler.idxOpposingSide)
+    next false if battler.wild?
+    next false if !battle.pbCanSwitchOut?(battler.index)
+    next false if !battle.pbCanChooseNonActive?(battler.index)
+    battle.pbCommonAnimation("UseItem", battler)
+    battle.pbDisplay(_INTL("\\j[{1},은,는] \\j[{2},으로,로] 인해 교체되었다!", battler.pbThis, battler.itemName))
+    battler.pbConsumeItem(true, false)
+    newPkmn = battle.pbGetReplacementPokemonIndex(battler.index)   # Owner chooses
+    next false if newPkmn < 0
+    battle.pbRecallAndReplace(battler.index, newPkmn)
+    battle.pbClearChoice(battler.index)
+    battle.moldBreaker = false if move_user && battler.index == move_user.index
+    battle.pbOnBattlerEnteringBattle(battler.index)
+    next true
+  }
+)
+
 Battle::AI::Handlers::MoveFailureCheck.add("CantSelectConsecutiveTurns",
   proc { |move, user, ai, battle|
     next true if user.effects[PBEffects::SuccessiveMove] && user.effects[PBEffects::SuccessiveMove] == @id 
