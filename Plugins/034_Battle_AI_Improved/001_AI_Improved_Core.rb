@@ -671,8 +671,8 @@ class Battle::AI
     @_last_replacement_score = reserves[0][1]
     # Fresh switch-in protection: if the current battler just switched in
     # (turnCount == 0) and hasn't acted yet, require the replacement to beat its
-    # original replacement score — 
-    battler = @battle.battlers[idxBattler]prevents flip-flopping.
+    # original replacement score — prevents flip-flopping.
+    battler = @battle.battlers[idxBattler]
     fresh = (@_fresh_switch_scores || {})[idxBattler]
     if fresh && battler.turnCount == 0 && !battler.fainted? &&
         battler.pokemon&.personalID == fresh[:personal_id]

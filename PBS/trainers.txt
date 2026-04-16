@@ -889,7 +889,7 @@ Pokemon = GRENINJA,5
 LoseText = 역시 안 되려나..?
 Pokemon = CRAWDAUNT,5
 Pokemon = AZUMARILL,5
-Pokemon = BASCULIN,5
+Pokemon = BASCULEGION,5
 #-------------------------------
 [TUBER_M,하준,3]
 LoseText = 역시 안 되려나..?
@@ -939,7 +939,7 @@ Pokemon = LUVDISC,5
 #-------------------------------
 [ACETRAINER2_F,희수,1]
 LoseText = 깔끔한 패배입니다.
-Pokemon = BASCULIN,5
+Pokemon = BASCULEGION,5
 Pokemon = RAMPARDOS,5
 Pokemon = INTELEON,5
 Pokemon = CHIMECHO,5
@@ -1135,7 +1135,7 @@ Pokemon = LUDICOLO,5
 #-------------------------------
 [FISHERMAN,석남,1]
 LoseText = 낚시 타워는 없나?
-Pokemon = BASCULIN,5
+Pokemon = BASCULEGION,5
 Pokemon = DRAGALGE,5
 Pokemon = CORSOLA,5
 #-------------------------------
@@ -1248,7 +1248,7 @@ Pokemon = CLAWITZER,5
 [SWIMMER_M,형규,3]
 LoseText = 어푸어푸, 어푸!
 Pokemon = MANTINE,5
-Pokemon = BASCULIN,5
+Pokemon = BASCULEGION,5
 Pokemon = SWAMPERT,5
 Pokemon = DRAGALGE,5
 #-------------------------------
@@ -2748,7 +2748,7 @@ Pokemon = DRIFBLIM,5
 LoseText = 아니었을 수도 있고.
 Pokemon = POLTEAGEIST,5
 Pokemon = MISMAGIUS,5
-Pokemon = BASCULIN,5
+Pokemon = BASCULEGION,5
     Form = 2
 Pokemon = ROTOM,5
 #-------------------------------
@@ -3582,7 +3582,7 @@ Pokemon = KROOKODILE,5
 LoseText = 나 말고 다른 누군가에게 패배할 것이야.
 Pokemon = ELECTRODE,5
 Pokemon = DHELMISE,5
-Pokemon = BASCULIN,5
+Pokemon = BASCULEGION,5
 #-------------------------------
 [SUPERNERD,재덕,2]
 LoseText = 나 말고 다른 누군가에게 패배할 것이야.
@@ -3929,7 +3929,7 @@ Pokemon = CHANDELURE,5
 LoseText = 숨이.. 차서... 말을...
 Pokemon = BANETTE,5
 Pokemon = POLTEAGEIST,5
-Pokemon = BASCULIN,5
+Pokemon = BASCULEGION,5
     Form = 2
 #-------------------------------
 [HEX,진순,3]
@@ -6534,7 +6534,7 @@ Pokemon = GENGAR,10
     Item = GENGARITE
     IV = 31,31,31,31,31,31
     EV = 0,0,4,252,252,0
-Pokemon = BASCULIN,10
+Pokemon = BASCULEGION,10
     Form = 2
     Moves = SUBSTITUTE,AQUAJET,WAVECRASH,LASTRESPECTS
     AbilityIndex = 0
@@ -7924,7 +7924,7 @@ Pokemon = PELIPPER,10
     Item = DAMPROCK
     IV = 31,31,31,31,31,31
     EV = 0,0,4,252,252,0
-Pokemon = BASCULIN,10
+Pokemon = BASCULEGION,10
     Form = 2
     Moves = ZENHEADBUTT,AQUAJET,WAVECRASH,LASTRESPECTS
     AbilityIndex = 0
@@ -8401,7 +8401,7 @@ Pokemon = TYPHLOSION,10
     Item = ASSAULTVEST
     IV = 31,31,31,31,31,31
     EV = 4,0,0,252,252,0
-Pokemon = BASCULIN,10
+Pokemon = BASCULEGION,10
     Form = 2
     Moves = ZENHEADBUTT,AQUAJET,WAVECRASH,LASTRESPECTS
     AbilityIndex = 2
@@ -9601,7 +9601,7 @@ Pokemon = TYPHLOSION,10
     Item = ASSAULTVEST
     IV = 31,31,31,31,31,31
     EV = 4,0,0,252,252,0
-Pokemon = BASCULIN,10
+Pokemon = BASCULEGION,10
     Form = 2
     Moves = ZENHEADBUTT,AQUAJET,WAVECRASH,LASTRESPECTS
     AbilityIndex = 2
@@ -12331,7 +12331,7 @@ Pokemon = PELIPPER,95
     Item = DAMPROCK
     IV = 31,31,31,31,31,31
     EV = 0,0,4,252,252,0
-Pokemon = BASCULIN,95
+Pokemon = BASCULEGION,95
     Form = 2
     Moves = ZENHEADBUTT,AQUAJET,WAVECRASH,LASTRESPECTS
     AbilityIndex = 0
@@ -12454,7 +12454,7 @@ Pokemon = PELIPPER,10
     Item = DAMPROCK
     IV = 31,31,31,31,31,31
     EV = 0,0,4,252,252,0
-Pokemon = BASCULIN,10
+Pokemon = BASCULEGION,10
     Form = 2
     Moves = ZENHEADBUTT,AQUAJET,WAVECRASH,LASTRESPECTS
     AbilityIndex = 0
@@ -13613,7 +13613,7 @@ Pokemon = CHANDELURE,10
     Item = FOCUSSASH
     IV = 31,31,31,31,31,31
     EV = 0,0,156,0,252,100
-Pokemon = BASCULIN,10
+Pokemon = BASCULEGION,10
     Form = 2
     Moves = ZENHEADBUTT,AQUAJET,WAVECRASH,LASTRESPECTS
     AbilityIndex = 2
