@@ -492,10 +492,12 @@ class Battle::AI
   end
 
   def pbDefaultChooseNewEnemy(idxBattler)
-    with_decision_cache do
+    result = with_decision_cache do
       set_up(idxBattler)
       choose_best_replacement_pokemon(idxBattler, true)
     end
+    register_fresh_switch_score(idxBattler, result) if result >= 0
+    result
   end
 
   # Sucker Punch mind games: 20% chance to swap to a OHKO damaging move
@@ -667,23 +669,21 @@ class Battle::AI
     end
     reserves = scored_replacement_candidates(idxBattler, forced_switch, party, reserves)
     @_last_replacement_score = reserves[0][1]
-    # Fresh switch-in protection: if the current battler just switched in voluntarily
+    # Fresh switch-in protection: if the current battler just switched in
     # (turnCount == 0) and hasn't acted yet, require the replacement to beat its
-    # original replacement score — prevents flip-flopping.
-    unless forced_switch
-      battler = @battle.battlers[idxBattler]
-      fresh = (@_fresh_switch_scores || {})[idxBattler]
-      if fresh && battler.turnCount == 0 &&
-         battler.pokemon&.personalID == fresh[:personal_id]
-        current_foes = current_foe_personal_ids(idxBattler)
-        if fresh[:foe_ids] && fresh[:foe_ids] != current_foes
-          PBDebug.log_ai("=> fresh switch-in protection skipped for #{battler.name}: foe changed from #{fresh[:foe_ids].inspect} to #{current_foes.inspect}")
-        elsif reserves[0][1] <= fresh[:score]
-          PBDebug.log_ai("=> fresh switch-in #{battler.name} (entry score #{fresh[:score]}) >= best replacement #{party[reserves[0][0]].name} (#{reserves[0][1]}), not switching")
-          return -1
-        else
-          PBDebug.log_ai("=> fresh switch-in #{battler.name} (entry score #{fresh[:score]}) beaten by #{party[reserves[0][0]].name} (#{reserves[0][1]})")
-        end
+    # original replacement score — 
+    battler = @battle.battlers[idxBattler]prevents flip-flopping.
+    fresh = (@_fresh_switch_scores || {})[idxBattler]
+    if fresh && battler.turnCount == 0 && !battler.fainted? &&
+        battler.pokemon&.personalID == fresh[:personal_id]
+      current_foes = current_foe_personal_ids(idxBattler)
+      if fresh[:foe_ids] && fresh[:foe_ids] != current_foes
+        PBDebug.log_ai("=> fresh switch-in protection skipped for #{battler.name}: foe changed from #{fresh[:foe_ids].inspect} to #{current_foes.inspect}")
+      elsif reserves[0][1] <= fresh[:score]
+        PBDebug.log_ai("=> fresh switch-in #{battler.name} (entry score #{fresh[:score]}) >= best replacement #{party[reserves[0][0]].name} (#{reserves[0][1]}), not switching")
+        return -1
+      else
+        PBDebug.log_ai("=> fresh switch-in #{battler.name} (entry score #{fresh[:score]}) beaten by #{party[reserves[0][0]].name} (#{reserves[0][1]})")
       end
     end
     if reserves[0][1] < threshold
