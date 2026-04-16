@@ -103,3 +103,10 @@ class Battle::Move
     end
   end
 end
+
+Battle::AI::Handlers::MoveFailureCheck.add("CantSelectConsecutiveTurns",
+  proc { |move, user, ai, battle|
+    next true if user.effects[PBEffects::SuccessiveMove] && user.effects[PBEffects::SuccessiveMove] == @id 
+    next false
+  }
+)
