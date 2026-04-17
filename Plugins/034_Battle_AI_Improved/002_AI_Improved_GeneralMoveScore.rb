@@ -71,6 +71,9 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
       score -= speed_penalty
       PBDebug.log_score_change(-speed_penalty,
         "Setup speed penalty: Speed stage already #{battler.stages[:SPEED]}.")
+    elsif speed_stage_gain > 0 && ai.get_target_stat_raise_score_one(score, user, :SPEED, 1) <= score
+      score += 5 * speed_stage_gain
+      PBDebug.log_score_change(10, "Setup speed bonus: move boosts Speed and user isn't already fast.")
     end
 
     # -----------------------------------------------------------------------
