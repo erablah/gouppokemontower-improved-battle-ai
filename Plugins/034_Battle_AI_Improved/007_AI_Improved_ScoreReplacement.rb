@@ -349,7 +349,7 @@ class Battle::AI
       hp_pct = result.user_hp.to_f / [pkmn.totalhp, 1].max
       move_data = GameData::Move.get(move.id)
       damaging_pivot = move_data&.category != 2
-      bonus = 8 + (damaging_pivot ? 2 : 0) + (hp_pct * 5).round
+      bonus = 15 + (damaging_pivot ? 2 : 0) + (hp_pct * 5).round
       if bonus > best_bonus
         best_bonus = bonus
         PBDebug.log_ai("[slow_pivot] #{pkmn.name} can slow pivot with #{move.name} vs #{foe_battler.name} (+#{bonus})")

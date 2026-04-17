@@ -741,6 +741,17 @@ Battle::AI::Handlers::MoveEffectScore.add("TwoTurnAttackRaiseUserSpAtkSpDefSpd2"
   }
 )
 
+# chillyreception
+Battle::AI::Handlers::MoveEffectScore.add("SwitchOutUserStartHailWeather",
+  proc { |score, move, user, ai, battle|
+    score = Battle::AI::Handlers.apply_move_effect_score("SwitchOutUserStatusMove",
+      score, move, user, ai, battle)
+    score = Battle::AI::Handlers.apply_move_effect_score("StartHailWeather",
+      score, move, user, ai, battle)
+    next score
+  }
+)
+
 
 
 #===============================================================================
