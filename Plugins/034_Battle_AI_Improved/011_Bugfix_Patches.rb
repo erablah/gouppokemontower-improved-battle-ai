@@ -129,6 +129,27 @@ Battle::ItemEffects::OnStatLoss.add(:EJECTPACK,
   }
 )
 
+# Fix: Sunsteel Strike / Moongeist Beam / Photon Geyser and their G-Max/Z-Move
+# subclasses crash when targets[0] is nil (e.g. attacking an already-fainted slot).
+class Battle::Move::IgnoreTargetAbility < Battle::Move
+  def pbOnStartUse(user, targets)
+    return if !targets[0]
+    if @battle.moldBreaker && targets[0].hasActiveItem?(:ABILITYSHIELD)
+      @battle.moldBreaker = false
+    end
+  end
+end
+
+class Battle::Move::CategoryDependsOnHigherDamageIgnoreTargetAbility < Battle::Move::IgnoreTargetAbility
+  def pbOnStartUse(user, targets)
+    super
+    return if !targets[0]
+    if @battle.moldBreaker && targets[0].hasActiveItem?(:ABILITYSHIELD)
+      @battle.moldBreaker = false
+    end
+  end
+end
+
 Battle::AI::Handlers::MoveFailureCheck.add("CantSelectConsecutiveTurns",
   proc { |move, user, ai, battle|
     next true if user.effects[PBEffects::SuccessiveMove] && user.effects[PBEffects::SuccessiveMove] == @id 
