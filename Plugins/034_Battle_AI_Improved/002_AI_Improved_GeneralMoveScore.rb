@@ -149,7 +149,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
         bst_hp_pct = boosted_result.user_hp.to_f / [user.totalhp, 1].max
         hp_saved = bst_hp_pct - cur_hp_pct
         # Base value: you win AND end up boosted for future matchups
-        base = [cur_turns * 3, 15].min + 10
+        base = [cur_turns * 3, 15].min + 15
         if hp_saved > -0.25
           foe_bonus = base + ((hp_saved + 0.25) * 40).round.clamp(0, 10)
         elsif hp_saved >= -0.5
