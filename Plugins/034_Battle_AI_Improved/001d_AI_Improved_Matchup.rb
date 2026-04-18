@@ -179,7 +179,29 @@ class Battle::AI
       return cached_entry == true
     end
 
+    # Skip sim when foe damage is clearly non-threatening to the reserve
     pre_switch = { idxBattler => party_index }
+    foe_vs_reserve_data = cached_foe_results[:foe_vs_reserve]
+    foe_vs_reserve_dmg = foe_vs_reserve_data ? foe_vs_reserve_data[:dmg].to_i : 0
+    voluntary = cached_foe_results[:voluntary_switch]
+    total_threat = foe_vs_reserve_dmg
+    if voluntary
+      foe_vs_current_data = cached_foe_results[:foe_vs_current]
+      if foe_vs_current_data
+        # Look up foe's best-vs-current move's actual damage against the reserve (cache hit)
+        foe_to_reserve = damage_moves_with_switch(target_battler.index, idxBattler, pre_switch)
+        switch_in_dmg = foe_to_reserve&.dig(foe_vs_current_data[:key], :dmg).to_i
+        total_threat += switch_in_dmg
+      else
+        total_threat += foe_vs_reserve_dmg
+      end
+    end
+    if total_threat < pkmn.hp * 0.9
+      PBDebug.log_ai("[status_skip] #{pkmn.name} clearly survives vs #{target_battler.name} (threat #{total_threat} < #{(pkmn.hp * 0.9).round} HP)")
+      cached_foe_results[:status_move_survival][m_id] = { success: true, result: nil }
+      return true
+    end
+
     foe_vs_reserve = cached_foe_results[:foe_vs_reserve]
     foe_vs_reserve_action = foe_vs_reserve ? simulation_action_for_move_data(foe_vs_reserve) : nil
     foe_vs_current = cached_foe_results[:foe_vs_current]
