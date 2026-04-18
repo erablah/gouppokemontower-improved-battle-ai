@@ -67,7 +67,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_setup_move_final,
       speed_stage_gain += stages if stat_id == :SPEED
     end
     if speed_stage_gain > 0 && battler.stages[:SPEED] >= 2
-      speed_penalty = (boosted_stats.uniq == [:SPEED]) ? 40 : 20
+      speed_penalty = (boosted_stats.uniq == [:SPEED]) ? 40 : 0
       score -= speed_penalty
       PBDebug.log_score_change(-speed_penalty,
         "Setup speed penalty: Speed stage already #{battler.stages[:SPEED]}.")
