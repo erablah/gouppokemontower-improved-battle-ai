@@ -15,7 +15,7 @@ class Battle::Scene::FightMenu < Battle::Scene::MenuBase
   GET_MOVE_TEXT_COLOR_FROM_MOVE_BUTTON = false
 end
 
-class Battle::Scene::PokemonDataBox < BitmapWrapper
+class Battle::Scene::PokemonDataBox < Sprite
   def draw_shiny_icon
     return if !@battler.shiny?
     shiny_x = (@battler.opposes?(0)) ? 206 : -6   # Foe's/player's
@@ -68,4 +68,4 @@ end
 
 class Battle::Scene::PokemonDataBox < Sprite
   STATUS_ICON_HEIGHT = 24
-  end
+end
