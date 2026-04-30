@@ -425,7 +425,6 @@ class Battle::AI
   #---------------------------------------------------------------------------
   def pbDefaultChooseEnemyCommand(idxBattler)
     with_decision_cache do
-      # show_thinking_indicator
       set_up(idxBattler)
       # 1. Special commands (Mega, Dynamax, etc.)
       ret = false
@@ -444,9 +443,13 @@ class Battle::AI
       begin
         # 2. Score moves
         choices = pbGetMoveScores
+        # chance to not care about score
+        roll = pbAIRandom(100)
         max_move_score = choices.map { |c| c[1] }.max || 0
+        max_move_score -= 10 if @battle.battlers[idxBattler].effects[PBEffects::Yawn] == 1 && @battle.battlers[idxBattler].pbCanSleepYawn?
+        PBDebug.log_ai("Best move score: #{max_move_score},  dont care roll: #{roll}")
         # 3. Try items on the current battler first if moves are mediocre.
-        if max_move_score < MOVE_BASE_SCORE
+        if max_move_score < MOVE_BASE_SCORE && roll > 20
           ret = false
           PBDebug.logonerr { ret = pbChooseToUseItem(:current) }
           if ret
@@ -460,7 +463,7 @@ class Battle::AI
           end
         end
         # 4. Terrible moves: try switching
-        if max_move_score < REPLACEMENT_THRESHOLD_TERRIBLE_MOVES
+        if max_move_score < REPLACEMENT_THRESHOLD_TERRIBLE_MOVES && roll > 20
           ret = false
           PBDebug.logonerr { ret = pbChooseToSwitchOut(true, threshold: REPLACEMENT_THRESHOLD_TERRIBLE_MOVES) }
           if ret
@@ -487,7 +490,6 @@ class Battle::AI
         restore_registered_transforms(sim)
       end
     ensure
-      # hide_thinking_indicator
     end
   end
 
@@ -500,7 +502,7 @@ class Battle::AI
     result
   end
 
-  # Sucker Punch mind games: 20% chance to swap to a OHKO damaging move
+  # Sucker Punch mind games: 30% chance to swap to a OHKO damaging move
   # instead, punishing players who predict priority and use status moves.
   def try_sucker_punch_mindgame(choices, user_battler)
     chosen_move = @battle.choices[user_battler.index][2]
@@ -538,6 +540,7 @@ class Battle::AI
     end
 
     threshold = [max_score - 20, 120].min
+    threshold = -20 if threshold > -20 && threshold < 50
     choices.each { |c| c[3] = [c[1] - threshold, 0].max }
     total_score = choices.sum { |c| c[3] }
     PBDebug.log_ai("Move choices for #{@user.name} with threshold: #{threshold}: ")

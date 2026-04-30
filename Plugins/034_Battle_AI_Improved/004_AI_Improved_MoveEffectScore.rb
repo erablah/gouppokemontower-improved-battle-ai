@@ -514,8 +514,8 @@ Battle::AI::Handlers::MoveEffectAgainstTargetScore.add("SleepTargetNextTurn",
     foe_side = target.pbOwnSide
     hazard_value = 0
     hazard_value += 8 if foe_side.effects[PBEffects::StealthRock]
-    hazard_value += 4 if foe_side.effects[PBEffects::Spikes]
-    hazard_value += 4 if foe_side.effects[PBEffects::ToxicSpikes]
+    hazard_value += 4 if foe_side.effects[PBEffects::Spikes] > 0
+    hazard_value += 4 if foe_side.effects[PBEffects::ToxicSpikes] > 0
 
     if hazard_value > 0
       score += hazard_value
@@ -710,7 +710,7 @@ Battle::AI::Handlers::MoveEffectScore.add("SwitchOutUserDamagingMove",
     score += 10 if user.effects[PBEffects::Attract] >= 0
     # Prefer if the user switching out will change its form
     score += 20 if user.has_active_ability?(:ZEROTOHERO) && user.battler.form == 0
-    score += 10 if user.has_active_ability?(:REGENERATOR) && user.battler.form == 0
+    score += 10 if user.has_active_ability?(:REGENERATOR) && user.hp <= user.totalhp * 0.75
     # Consider the user's stat stages
     if user.stages.any? { |key, val| val >= 2 }
       score -= 15
@@ -746,8 +746,7 @@ Battle::AI::Handlers::MoveEffectScore.add("SwitchOutUserStartHailWeather",
   proc { |score, move, user, ai, battle|
     score = Battle::AI::Handlers.apply_move_effect_score("SwitchOutUserStatusMove",
       score, move, user, ai, battle)
-    score = Battle::AI::Handlers.apply_move_effect_score("StartHailWeather",
-      score, move, user, ai, battle)
+    score += ai.get_score_for_weather(:Hail, user, true)
     next score
   }
 )

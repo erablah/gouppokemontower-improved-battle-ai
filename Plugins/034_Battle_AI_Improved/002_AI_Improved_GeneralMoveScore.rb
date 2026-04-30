@@ -474,7 +474,7 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_protect,
 Battle::AI::Handlers::GeneralMoveScore.add(:smart_rest,
   proc { |score, move, user, ai, battle|
     next score unless ai.trainer.high_skill?
-    next score unless ai.safe_function_code(move) == "HealUserFullAndSleep"
+    next score unless ai.safe_function_code(move) == "HealUserFullyAndFallAsleep"
 
     battler = user.battler
     next score unless battler
@@ -506,11 +506,26 @@ Battle::AI::Handlers::GeneralMoveScore.add(:smart_rest,
     end
 
     # Penalize if foe can set up while user sleeps
-    if ai.foe_has_setup_move?(user)
+    if ai.foe_has_setup_move?(user) && !user.has_active_ability?(:UNAWARE)
       score -= 40
       PBDebug.log_score_change(-40, "Rest: foe has setup potential while user sleeps.")
     end
 
+    next score
+  }
+)
+
+Battle::AI::Handlers::GeneralMoveScore.add(:boost_pivot_moves,
+  proc { |score, move, user, ai, battle|
+    next score if !ai.trainer.high_skill?
+    next score if !battle.pbCanChooseNonActive?(user.battler.index)
+
+    is_pivot = ai.safe_function_code(move).include?("SwitchOutUser")
+    next score unless is_pivot
+
+    score += 5  
+    score += 5 if user.has_active_ability?(:REGENERATOR) && user.hp <= user.totalhp * 0.75
+    score += 10 if user.battler.effects[PBEffects::Yawn] == 1 && user.battler.pbCanSleepYawn?
     next score
   }
 )

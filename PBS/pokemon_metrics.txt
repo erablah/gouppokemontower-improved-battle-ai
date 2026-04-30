@@ -6480,19 +6480,192 @@ DmaxBackSprite = 0,0
 DmaxFrontSprite = 3,12
 ShadowSprite = 2,28,8
 #-------------------------------
+[DRAGONITE,1]
+BackSprite = -10,37
+FrontSprite = 14,7
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 9,9
+ShadowSprite = 1,9,8
+AnimationSpeed = 1
+#-------------------------------
+[FROSLASS,1]
+BackSprite = -1,73
+FrontSprite = 3,8
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 6,19
+ShadowSprite = 2,14,17
+#-------------------------------
+[SCOLIPEDE,1]
+BackSprite = 0,50
+FrontSprite = 3,5
+DmaxBackSprite = 0,0
+DmaxFrontSprite = -7,17
+ShadowSprite = 2,-1,4
+#-------------------------------
+[STARMIE,1]
+BackSprite = 5,42
+FrontSprite = 7,17
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 0,26
+ShadowSprite = 0,12,4
+#-------------------------------
+[CHANDELURE,1]
+BackSprite = -1,39
+FrontSprite = 8,6
+ShadowSize = -1
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 0,21
+ShadowSprite = 2,17,15
+#-------------------------------
+[DELPHOX,1]
+BackSprite = 0,44
+FrontSprite = 3,12
+DmaxBackSprite = 0,0
+DmaxFrontSprite = -6,14
+ShadowSprite = 0,17,11
+#-------------------------------
+[GRENINJA,3]
+BackSprite = -1,30
+FrontSprite = 6,11
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 3,31
+ShadowSprite = 1,8,2
+AnimationSpeed = 1
+#-------------------------------
+[CLEFABLE,1]
+BackSprite = 2,28
+FrontSprite = 10,14
+ShadowSize = 2
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 3,29
+ShadowSprite = 2,7,4
+#-------------------------------
+[FALINKS,1]
+BackSprite = 10,21
+FrontSprite = 3,16
+DmaxBackSprite = 0,0
+DmaxFrontSprite = -1,44
+ShadowSprite = 4,-36,-11
+#-------------------------------
+[HAWLUCHA,1]
+BackSprite = 5,42
+FrontSprite = 2,17
+DmaxBackSprite = 0,0
+DmaxFrontSprite = -3,29
+ShadowSprite = 4,-13,6
+#-------------------------------
+[MALAMAR,1]
+BackSprite = 10,46
+FrontSprite = 3,29
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 0,10
+ShadowSprite = 1,7,3
+#-------------------------------
+[CHESNAUGHT,1]
+BackSprite = 4,62
+FrontSprite = 3,10
+DmaxBackSprite = 0,0
+DmaxFrontSprite = -4,20
+ShadowSprite = 1,3,8
+#-------------------------------
+[EXCADRILL,1]
+BackSprite = 23,48
+FrontSprite = 2,15
+DmaxBackSprite = 0,0
+DmaxFrontSprite = -1,33
+ShadowSprite = 0,-18,-3
+#-------------------------------
+[RAICHU,3]
+BackSprite = 1,32
+FrontSprite = 3,22
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 15,16
+ShadowSprite = 2,15,5
+#-------------------------------
+[RAICHU,2]
+BackSprite = 4,33
+FrontSprite = 3,14
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 15,16
+ShadowSprite = 2,15,5
+#-------------------------------
+[SKARMORY,1]
+BackSprite = 6,43
+FrontSprite = 10,14
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 0,15
+ShadowSprite = 2,-2,4
+#-------------------------------
+[DRAMPA,1]
+BackSprite = -14,45
+FrontSprite = 5,9
+DmaxBackSprite = 0,0
+DmaxFrontSprite = -3,27
+ShadowSprite = 2,-12,-10
+#-------------------------------
+[PYROAR,1]
+BackSprite = -6,41
+FrontSprite = 5,7
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 3,24
+ShadowSprite = 4,1,3
+#-------------------------------
+[SCRAFTY,1]
+BackSprite = -3,54
+FrontSprite = 7,14
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 0,30
+ShadowSprite = 0,13,7
+#-------------------------------
+[MEGANIUM,1]
+BackSprite = -2,42
+FrontSprite = 1,19
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 0,9
+ShadowSprite = 4,8,6
+#-------------------------------
+[BARBARACLE,1]
+BackSprite = 19,45
+FrontSprite = 2,8
+DmaxBackSprite = 0,0
+DmaxFrontSprite = -2,18
+ShadowSprite = 4,5,4
+#-------------------------------
+[EELEKTROSS,1]
+BackSprite = 9,82
+FrontSprite = 7,21
+DmaxBackSprite = 0,0
+DmaxFrontSprite = -2,30
+ShadowSprite = 3,8,-1
+#-------------------------------
+[FERALIGATR,1]
+BackSprite = 2,33
+FrontSprite = 2,11
+DmaxBackSprite = 0,0
+DmaxFrontSprite = -6,14
+ShadowSprite = 0,6,4
+#-------------------------------
+[FLOETTE,6]
+BackSprite = -2,31
+FrontSprite = 4,7
+ShadowSize = -2
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 5,32
+ShadowSprite = 0,10,13
+#-------------------------------
+[EMBOAR,1]
+BackSprite = -12,45
+FrontSprite = 5,8
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 0,23
+ShadowSprite = 1,2,4
+#-------------------------------
 [ABSOL,2]
-BackSprite = 11,43
-FrontSprite = 2,12
+BackSprite = 4,46
+FrontSprite = 2,17
 DmaxBackSprite = 0,0
 DmaxFrontSprite = -2,26
 ShadowSprite = 3,-2,-1
-#-------------------------------
-[BAXCALIBUR,1]
-BackSprite = 0,53
-FrontSprite = 2,12
-DmaxBackSprite = 0,0
-DmaxFrontSprite = 5,20
-ShadowSprite = 3,2,8
 #-------------------------------
 [CAMERUPT,1,female]
 BackSprite = 7,38
@@ -6501,53 +6674,147 @@ DmaxBackSprite = 0,0
 DmaxFrontSprite = 0,23
 ShadowSprite = 2,-8,0
 #-------------------------------
-[EELEKTROSS,1]
-BackSprite = 11,90
-FrontSprite = 1,6
+[CHIMECHO,1]
+BackSprite = 9,22
+FrontSprite = 0,-10
+ShadowSize = -1
 DmaxBackSprite = 0,0
-DmaxFrontSprite = -2,30
-ShadowSprite = 3,8,-1
+DmaxFrontSprite = 0,12
+ShadowSprite = 4,35,24
 #-------------------------------
-[FALINKS,1]
-BackSprite = 14,35
-FrontSprite = 0,8
+[CRABOMINABLE,1]
+BackSprite = 4,38
+FrontSprite = -4,13
 DmaxBackSprite = 0,0
-DmaxFrontSprite = -1,44
-ShadowSprite = 4,-36,-11
-#-------------------------------
-[FROSLASS,1]
-BackSprite = 0,72
-FrontSprite = 0,12
-DmaxBackSprite = 0,0
-DmaxFrontSprite = 6,19
-ShadowSprite = 2,14,17
+DmaxFrontSprite = -3,12
+ShadowSprite = 1,6,4
 #-------------------------------
 [GARCHOMP,2]
-BackSprite = 2,55
-FrontSprite = -1,8
+BackSprite = 10,72
+FrontSprite = 7,20
 DmaxBackSprite = 0,0
 DmaxFrontSprite = -8,9
 ShadowSprite = 2,-5,6
 #-------------------------------
 [GLIMMORA,1]
-BackSprite = 4,90
-FrontSprite = 1,26
+BackSprite = -4,84
+FrontSprite = 10,27
 ShadowSize = -1
 DmaxBackSprite = 0,0
 DmaxFrontSprite = 0,25
 ShadowSprite = 2,24,22
 AnimationSpeed = 2,1
 #-------------------------------
+[GOLISOPOD,1]
+BackSprite = 3,47
+FrontSprite = 10,27
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 0,17
+ShadowSprite = 3,0,4
+#-------------------------------
 [GOLURK,1]
-BackSprite = 10,62
-FrontSprite = 5,8
+BackSprite = 1,60
+FrontSprite = 5,16
 DmaxBackSprite = 0,0
 DmaxFrontSprite = 2,18
 ShadowSprite = 2,20,7
 #-------------------------------
 [LUCARIO,2]
-BackSprite = -6,58
+BackSprite = -8,53
 FrontSprite = 1,3
 DmaxBackSprite = 0,0
 DmaxFrontSprite = 0,16
 ShadowSprite = 0,14,6
+#-------------------------------
+[MAGEARNA,2]
+BackSprite = 3,38
+FrontSprite = 0,17
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 0,24
+ShadowSprite = 1,17,7
+#-------------------------------
+[MAGEARNA,3]
+BackSprite = 3,38
+FrontSprite = 0,17
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 0,24
+ShadowSprite = 1,17,7
+#-------------------------------
+[MEOWSTIC,2]
+BackSprite = 7,55
+FrontSprite = 1,14
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 0,32
+ShadowSprite = 1,-19,0
+#-------------------------------
+[MEOWSTIC,3]
+BackSprite = 7,55
+FrontSprite = 1,14
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 0,32
+ShadowSprite = 1,-19,0
+#-------------------------------
+[SCOVILLAIN,1]
+BackSprite = 3,47
+FrontSprite = 6,8
+DmaxBackSprite = 0,0
+DmaxFrontSprite = -15,27
+ShadowSprite = 0,9,9
+#-------------------------------
+[STARAPTOR,1]
+BackSprite = 12,36
+FrontSprite = 3,8
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 0,16
+ShadowSprite = 0,6,5
+#-------------------------------
+[TATSUGIRI,3]
+BackSprite = 2,53
+FrontSprite = -1,18
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 1,47
+ShadowSprite = 0,10,2
+#-------------------------------
+[TATSUGIRI,4]
+BackSprite = 2,53
+FrontSprite = -1,18
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 1,47
+ShadowSprite = 0,10,2
+#-------------------------------
+[TATSUGIRI,5]
+BackSprite = 2,53
+FrontSprite = -1,18
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 1,47
+ShadowSprite = 0,10,2
+#-------------------------------
+[VICTREEBEL,1]
+BackSprite = 0,26
+FrontSprite = 3,8
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 0,20
+ShadowSprite = 4,0,7
+AnimationSpeed = 1,2
+#-------------------------------
+[ZERAORA,1]
+BackSprite = 0,39
+FrontSprite = 13,5
+DmaxBackSprite = 0,0
+DmaxFrontSprite = 10,27
+ShadowSprite = 1,-7,-1
+AnimationSpeed = 1
+#-------------------------------
+[ZYGARDE,4]
+BackSprite = 0,46
+FrontSprite = 3,7
+DmaxBackSprite = 0,0
+DmaxFrontSprite = -1,9
+ShadowSprite = 4,1,11
+#-------------------------------
+[ZYGARDE,5]
+BackSprite = 0,46
+FrontSprite = 3,7
+DmaxBackSprite = 0,0
+DmaxFrontSprite = -1,9
+ShadowSprite = 4,1,11

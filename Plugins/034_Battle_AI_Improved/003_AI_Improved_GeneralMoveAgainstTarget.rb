@@ -56,9 +56,9 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:one_v_one_move_score,
     end
 
     # pivot
-    pivot_codes = ["SwitchOutUserDamagingMove", "LowerTargetAtkSpAtk1SwitchOutUser"]
-    is_pivot = pivot_codes.include?(ai.safe_function_code(move)) && battle.pbCanChooseNonActive?(user.battler.index)
-    next score if is_pivot  # pivot moves: base damage + survival check only
+    # pivot_codes = ["SwitchOutUserDamagingMove", "LowerTargetAtkSpAtk1SwitchOutUser"]
+    # is_pivot = pivot_codes.include?(ai.safe_function_code(move)) && battle.pbCanChooseNonActive?(user.battler.index)
+    # next score if is_pivot  # pivot moves: base damage + survival check only
 
     # setup moves
     stat_up = move.move.respond_to?(:statUp) && move.move.statUp && move.move.addlEffect != 100 ? move.move.statUp : []
@@ -79,7 +79,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:one_v_one_move_score,
         dmg_dealt = target.hp - result.target_hp
         dmg_dealt_pct = dmg_dealt.to_f / target.totalhp
       end
-      user_hp_pct = user.hp.to_f / [user.totalhp, 1].max
+      user_hp_pct = (user.hp - result.user_hp).to_f / [user.totalhp, 1].max
 
       # Base penalty + scale by damage not dealt + reduce when user HP is low
       # HP relief: zero above 70%, ramps steeply below
@@ -109,7 +109,7 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:one_v_one_move_score,
     end
 
     # D) Positive sim bonus
-    if result.user_can_ohko? && !interrupted_by_live_switch
+    if result.user_can_ohko? 
       bonus = result.target_got_action ? 15 : 30
       score += bonus
       PBDebug.log_score_change(bonus, "1v1: can OHKO target#{result.target_got_action ? '' : ' (before target acts)'}")
@@ -126,15 +126,13 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:one_v_one_move_score,
 #===============================================================================
 # 6. Active pivot move boost (U-turn, Volt Switch, etc.)
 #===============================================================================
-Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:boost_pivot_moves,
+Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:slow_pivot_boost,
   proc { |score, move, user, target, ai, battle|
     next score if !ai.trainer.high_skill?
     next score if !battle.pbCanChooseNonActive?(user.battler.index)
 
-    is_pivot = Battle::AI::SLOW_PIVOT_FUNCTION_CODES.include?(ai.safe_function_code(move))
+    is_pivot = ai.safe_function_code(move).include?("SwitchOutUser")
     next score unless is_pivot
-
-    score += 5
 
     # Prefer if target is slower than a foe
     if !user.faster_than?(target)
@@ -142,7 +140,6 @@ Battle::AI::Handlers::GeneralMoveAgainstTargetScore.add(:boost_pivot_moves,
       PBDebug.log_score_change(5, "6. Slow Pivot preference.")
     end
 
-    score += 5 if user.has_active_ability?(:REGENERATOR) && user.hp <= user.totalhp * 0.75
     next score
   }
 )

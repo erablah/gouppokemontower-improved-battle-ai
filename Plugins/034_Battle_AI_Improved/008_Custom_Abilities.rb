@@ -128,7 +128,12 @@ class Battle::Battler
   def contactBypassProtect?(move)
     return move.pbContactMove?(self) && (hasActiveAbility?(:UNSEENFIST) || hasActiveAbility?(:PIERCINGDRILL))
   end
+end
 
+# Prepended so this definition wins method lookup regardless of plugin load
+# order. Aliases set up later (e.g. DBK Dynamax's dynamax_pbSuccessCheckAgainstTarget)
+# also resolve to this module's method instead of the untouched base.
+module BattleAIImproved_SuccessCheckAgainstTarget
   def pbSuccessCheckAgainstTarget(move, user, target, targets)
     show_message = move.pbShowFailMessages?(targets)
     typeMod = move.pbCalcTypeMod(move.calcType, user, target)
@@ -350,7 +355,9 @@ class Battle::Battler
     end
     return true
   end
-
+end
+Battle::Battler.prepend(BattleAIImproved_SuccessCheckAgainstTarget)
+class Battle::Battler
   def isProtected?(user, move)
     return false if move.function_code == "IgnoreProtections"
     return true if @damageState.protected
@@ -358,7 +365,7 @@ class Battle::Battler
     return true if pbOwnSide.effects[PBEffects::WideGuard] &&
                    GameData::Target.get(move.target).num_targets > 1
     [:Protect, :KingsShield, :SpikyShield, :BanefulBunker, :Obstruct,
-     :SilkTrap, :BurningBulwark].each do |id|
+     :SilkTrap, :BurningBulwark, :MaxGuard].each do |id|
       next if !PBEffects.const_defined?(id)
       return true if @effects[PBEffects.const_get(id)]
     end
