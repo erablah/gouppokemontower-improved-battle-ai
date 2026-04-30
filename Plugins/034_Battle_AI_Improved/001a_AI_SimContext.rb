@@ -17,7 +17,35 @@ class Battle::AI
   #=============================================================================
   # SilentScene: No-op scene for simulation.
   #=============================================================================
+  class NullSprite
+    attr_accessor :speed, :reversed, :substitute, :visible
+    attr_accessor :x, :y, :z, :ox, :oy, :zoom_x, :zoom_y, :opacity
+
+    def initialize
+      @speed = 0
+      @reversed = false
+      @substitute = false
+      @visible = false
+      @x = @y = @z = @ox = @oy = 0
+      @zoom_x = @zoom_y = 1
+      @opacity = 0
+    end
+
+    def iconBitmap; self; end
+    def disposed?; false; end
+    def update; nil; end
+    def deanimate; nil; end
+    def dispose; nil; end
+    def method_missing(_method, *_args, &_block); nil; end
+    def respond_to_missing?(_method, _include_private = false); true; end
+  end
+
   class SilentScene
+    def pbGetBattlerSprites(_idxBattler)
+      @_null_sprite ||= NullSprite.new
+      return @_null_sprite, @_null_sprite
+    end
+
     def method_missing(_method, *_args, &_block); nil; end
     def respond_to_missing?(_method, _include_private = false); true; end
   end
@@ -71,6 +99,7 @@ class Battle::AI
     cache_key = [@battle.turnCount, @user&.index]
     if @_sim_template && @_sim_cache_key == cache_key
       restore_sim_from_real
+      reset_sim_choices
       tick_scene
       return @_sim_template
     end
@@ -97,8 +126,20 @@ class Battle::AI
                end
       throw Battle::AI::SIM_SWITCH_TRIGGERED, { reason: reason, battler_index: idxBattler }
     end
+    reset_sim_choices
     @_sim_cache_key = cache_key
     @_sim_template
+  end
+
+  # Blank every sim choice so an ally AI's already-committed move/switch in
+  # the real battle does not carry into sims for the next AI decider. Every
+  # simulate_battle / create_switched_sim caller explicitly sets the choices
+  # it needs (user_index and target_index), so starting from :None is safe.
+  def reset_sim_choices
+    return unless @_sim_template
+    @_sim_template.battlers.each_with_index do |_b, i|
+      @_sim_template.pbClearChoice(i)
+    end
   end
 
   # Invalidate the sim template cache (called on forced switches, etc.)
