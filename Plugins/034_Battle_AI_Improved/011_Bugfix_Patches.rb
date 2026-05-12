@@ -33,6 +33,34 @@ class DeluxeBitmapWrapper
   end
 end
 
+class Battle::Battler
+  OGERPON_TERA_MASKS = [
+    :TEALMASK,
+    :WELLSPRINGMASK,
+    :HEARTHFLAMEMASK,
+    :CORNERSTONEMASK
+  ] unless const_defined?(:OGERPON_TERA_MASKS)
+
+  alias tower_ogerpon_mask_hasTera? hasTera?
+  def hasTera?(check_available = true)
+    return tower_ogerpon_mask_hasTera?(check_available) if !isSpecies?(:OGERPON) ||
+                                                            !OGERPON_TERA_MASKS.include?(@item_id)
+    return false if shadowPokemon?
+    return false if wild? && @battle.wildBattleMode != :tera
+    return false if @battle.raidBattle? && @battle.raidRules[:style] != :Tera
+    return false if @pokemon.hasTerastalForm? && @effects[PBEffects::Transform]
+    return false if @effects[PBEffects::TransformPokemon]&.hasTerastalForm?
+    return false if !getActiveState.nil?
+    # Mask Ogerpon should be allowed to Tera even though DBK's generic
+    # Dynamax eligibility says it can Dynamax without checking Max Mushroom.
+    return false if hasEligibleAction?(:mega, :primal, :zmove, :ultra, :style, :zodiac)
+    side  = idxOwnSide
+    owner = @battle.pbGetOwnerIndexFromBattlerIndex(@index)
+    return false if check_available && @battle.terastallize[side][owner] == -2
+    return !tera_type.nil?
+  end
+end
+
 class Battle::Move
   # drdooms charm bugfix and also drought water move bugfix
   def pbCalcDamageMultipliers(user, target, numTargets, type, baseDmg, multipliers)
